@@ -30,11 +30,13 @@ Nutrition Score · to'liq ma'lumot modeli · dizayn nafisligi · uch til.
 
 ## Hisobot
 
-<!-- hisobotchi to'ldiradi -->
+- 2026-09-13: E1-E10 ekranlar uchun dizayn TZ va dizayn tizimi hujjatlari tayyorlandi (dizayn-tz.md, DESIGN.md)
 
 ## Handoff
 
-<!-- hisobotchi to'ldiradi -->
+Keyingi: S1 tasklarini kod darajasida boshlash — Prisma `taomlar` jadvali va seed'dan.
+Ekran talablari uchun dizayn-tz.md (E1, E2, E4, E5, E8) va vizual qoidalar uchun
+DESIGN.md tayyor, shulardan foydalanib boshlash mumkin.
 
 ---
 

@@ -36,7 +36,8 @@ Ro'yxatdan o'tish va rollar · skan limitlari · Nutrition Score · to'lov · bo
 
 ## Handoff
 
-<!-- hisobotchi to'ldiradi -->
+S2 ekranlari (E3 kamera, E6 AI tahlil, E7 AI natija tasdiq/tahrir, E9 jurnal,
+E10 yozuv tahriri) uchun dizayn-tz.md va DESIGN.md tayyor, boshlashda shulardan foydalan.
 
 ---
 

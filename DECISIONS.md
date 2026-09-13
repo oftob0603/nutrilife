@@ -141,6 +141,11 @@ tavsiya etiladi, ilova faqat taxminiy kaloriya o'lchaydi va retsept tavsiya qila
 garovni tekshiradi. 6 sprint qurib, keyin model oshni shavladan ajratmasligini bilish
 eng qimmat yo'l. Test paytida bitta skan tannarxi ham o'lchanadi.
 
+**2026-09-13 · Dizayn tizimi uchun "A — qat'iy asbob" varianti tanlandi: monoxrom asos
+(#0B0B0C / #F2F2F3 / #FFFFFF) + bitta lime aksent (#C6F04C), Inter Tight + Inter.**
+*Sabab:* Foydalanuvchi tanlovi — uch variant orasidan eng qat'iy va aksent bilan
+ishlaydigan yo'nalish tanlandi, DESIGN.md shu asosda yozildi.
+
 ---
 
 ## OCHIQ SAVOLLAR
