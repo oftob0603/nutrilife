@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kalori — loyiha progressi</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --fon: #f6f7f9;
+    --karta: #ffffff;
+    --chegara: #e4e7ec;
+    --matn: #14171f;
+    --xira: #6b7280;
+    --asos: #e8590c;
+    --asos-yumshoq: #fff1e8;
+    --yashil: #16a34a;
+    --sariq: #ca8a04;
+    --soya: 0 1px 2px rgba(16,24,40,.06), 0 4px 16px rgba(16,24,40,.05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fon: #0d0f14;
+      --karta: #161a22;
+      --chegara: #262c38;
+      --matn: #e8eaed;
+      --xira: #98a2b3;
+      --asos: #ff8a4c;
+      --asos-yumshoq: #2a1a11;
+      --yashil: #4ade80;
+      --sariq: #fbbf24;
+      --soya: none;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 28px 20px 64px;
+    background: var(--fon);
+    color: var(--matn);
+    font: 15px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif;
+  }
+  .sahifa { max-width: 1080px; margin: 0 auto; }
+  code {
+    font: 13px/1.4 ui-monospace, SFMono-Regular, Consolas, monospace;
+    background: var(--asos-yumshoq); color: var(--asos);
+    padding: 1px 5px; border-radius: 5px;
+  }
+
+  header.bosh { margin-bottom: 24px; }
+  .logo { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .logo span {
+    width: 30px; height: 30px; border-radius: 9px;
+    background: var(--asos); color: #fff;
+    display: grid; place-items: center; font-weight: 700; font-size: 15px;
+  }
+  h1 { font-size: 21px; margin: 0; letter-spacing: -.2px; }
+  .bosh p { margin: 2px 0 0; color: var(--xira); font-size: 13px; }
+
+  .umumiy {
+    background: var(--karta); border: 1px solid var(--chegara);
+    border-radius: 16px; padding: 20px; margin: 20px 0 26px; box-shadow: var(--soya);
+  }
+  .umumiy-bosh { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .umumiy-bosh h2 { font-size: 15px; margin: 0; }
+  .katta { font-size: 26px; font-weight: 700; letter-spacing: -.5px; }
+
+  .chiziq { height: 8px; background: var(--chegara); border-radius: 99px; overflow: hidden; margin: 12px 0 0; }
+  .chiziq-ich { height: 100%; background: var(--asos); border-radius: 99px; transition: width .3s; }
+  .tugallangan .chiziq-ich { background: var(--yashil); }
+
+  .statlar { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+  .stat {
+    flex: 1 1 120px; background: var(--fon); border: 1px solid var(--chegara);
+    border-radius: 11px; padding: 10px 12px;
+  }
+  .stat b { display: block; font-size: 18px; line-height: 1.3; }
+  .stat span { font-size: 12px; color: var(--xira); }
+
+  .setka { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+
+  .sprint {
+    background: var(--karta); border: 1px solid var(--chegara);
+    border-radius: 16px; padding: 18px; box-shadow: var(--soya);
+  }
+  .sprint.jarayonda { border-color: var(--asos); }
+  .sprint-bosh { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  .sprint-nom { display: flex; align-items: center; gap: 9px; min-width: 0; }
+  .raqam {
+    flex: none; width: 28px; height: 28px; border-radius: 8px;
+    background: var(--asos-yumshoq); color: var(--asos);
+    display: grid; place-items: center; font-size: 12px; font-weight: 700;
+  }
+  .sprint h3 { font-size: 15px; margin: 0; }
+
+  .belgi { flex: none; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 99px; border: 1px solid var(--chegara); color: var(--xira); }
+  .belgi.tugallangan { color: var(--yashil); border-color: color-mix(in srgb, var(--yashil) 40%, transparent); }
+  .belgi.jarayonda { color: var(--asos); border-color: color-mix(in srgb, var(--asos) 40%, transparent); }
+
+  .savol { margin: 12px 0 2px; font-weight: 600; font-size: 13px; }
+  .maqsad { margin: 0; color: var(--xira); font-size: 13px; }
+  .hisob { margin: 7px 0 14px; font-size: 12px; color: var(--xira); }
+
+  ul.tasklar { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
+  .task { display: flex; gap: 9px; align-items: flex-start; font-size: 13px; }
+  .quti {
+    flex: none; width: 17px; height: 17px; margin-top: 2px; border-radius: 5px;
+    border: 1.5px solid var(--chegara); display: grid; place-items: center;
+    font-size: 11px; color: #fff;
+  }
+  .task.bajarildi .quti { background: var(--yashil); border-color: var(--yashil); }
+  .task.bajarildi .task-matn { color: var(--xira); text-decoration: line-through; text-decoration-thickness: 1px; }
+
+  .blok { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--chegara); }
+  .blok h4 { margin: 0 0 7px; font-size: 12px; text-transform: uppercase; letter-spacing: .5px; color: var(--xira); }
+  ul.hisobot { margin: 0; padding-left: 18px; font-size: 13px; display: grid; gap: 5px; }
+  .handoff { margin: 0; font-size: 13px; background: var(--asos-yumshoq); padding: 10px 12px; border-radius: 10px; }
+
+  details.qoshimcha { margin-top: 12px; font-size: 13px; }
+  details.qoshimcha summary { cursor: pointer; color: var(--xira); font-size: 12px; }
+  details.qoshimcha ul { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 5px; }
+  .muted { color: var(--xira); margin: 8px 0 0; }
+
+  footer { margin-top: 32px; text-align: center; font-size: 12px; color: var(--xira); }
+  footer code { font-size: 12px; }
+
+  @media (max-width: 560px) {
+    body { padding: 20px 14px 48px; }
+    .setka { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="sahifa">
+
+  <header class="bosh">
+    <div class="logo"><span>K</span><h1>Kalori — loyiha progressi</h1></div>
+    <p>Yangilangan: 2026-09-13 12:12 · manba: <code>sprints/</code> papkasi</p>
+  </header>
+
+  <section class="umumiy">
+    <div class="umumiy-bosh">
+      <h2>Umumiy holat</h2>
+      <span class="katta">0%</span>
+    </div>
+    <div class="chiziq"><div class="chiziq-ich" style="width:0%"></div></div>
+    <div class="statlar">
+      <div class="stat"><b>0 / 52</b><span>task bajarildi</span></div>
+      <div class="stat"><b>0 / 6</b><span>sprint tugallandi</span></div>
+      <div class="stat"><b>S1</b><span>joriy sprint</span></div>
+      <div class="stat"><b>5</b><span>ochiq savol</span></div>
+      <div class="stat"><b>SHARTLI GO</b><span>savala qarori</span></div>
+    </div>
+  </section>
+
+  <div class="setka">
+    
+    <article class="sprint boshlanmagan">
+      <header class="sprint-bosh">
+        <div class="sprint-nom">
+          <span class="raqam">S1</span>
+          <h3>kesim</h3>
+        </div>
+        <span class="belgi boshlanmagan">Boshlanmagan</span>
+      </header>
+
+      <p class="savol">Ishlaydimi?</p>
+      <p class="maqsad">Yurak amalni boshidan oxirigacha bitta vertikal kesimda ishlatib ko'rish —</p>
+
+      <div class="chiziq" role="img" aria-label="0 / 7 task bajarildi">
+        <div class="chiziq-ich" style="width:0%"></div>
+      </div>
+      <p class="hisob"><strong>0 / 7</strong> task · 0%</p>
+
+      <ul class="tasklar">
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn"><code>taomlar</code> jadvali (Prisma, minimal maydonlar: nomi, porsiya grammi, kaloriya, oqsil, yog', uglevod) + 4 ta seed yozuv: osh, manti, somsa, non</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Taomlar ro'yxati sahifasi — seed'dagi 4 ta taom karta ko'rinishida chiqadi</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Taom detal ekrani: porsiya tanlash (masalan 150 g / 250 g / 350 g), tanlangan porsiyaga qarab kaloriya qayta hisoblanadi, hech qanday tekshiruv yo'q</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn"><code>ovqat_yozuvlari</code> jadvali (minimal: taom, porsiya, kaloriya, makrolar, vaqt) va yozuv yaratadigan bitta API yo'li: <code>POST /api/ovqat-yozuvlari</code></span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Home sahifasi — kunlik doira: bugungi jami kaloriya / qat'iy belgilangan norma (masalan 2,190 kkal, hozircha kodda yozilgan son) va uch makro chizig'i</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Tasdiq ekrani: yozuv qo'shilgandan keyin &quot;qo'shildi&quot; xabari va Home'ga qaytish</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Deploy: Hetzner + Caddy + GitHub Actions — mahsulot o'z domenida ochiladi</span>
+        </li></ul>
+
+      
+      
+      <details class="qoshimcha">
+         <summary>Qabul mezoni (5)</summary>
+         <ul><li>Domen ochilganda taomlar ro'yxatida 4 ta taom ko'rinadi</li><li>Taomga bosilganda porsiya tanlash ochiladi va kaloriya porsiyaga qarab o'zgaradi</li><li>&quot;Jurnalga qo'shish&quot; bosilgandan keyin Home doirasi to'ladi (masalan 0 / 2,190 -&gt; 620 / 2,190)</li><li>Sahifa yangilanganda ham yozuv joyida qoladi — ma'lumot bazada</li><li>Telefon brauzerida ekran to'g'ri joylashadi</li></ul>
+       </details>
+      <details class="qoshimcha">
+         <summary>Bu sprintda yo'q</summary>
+         <p class="muted">Ro'yxatdan o'tish va rollar · AI skan va rasm yuklash · onboarding · paywall va to'lov ·
+Nutrition Score · to'liq ma'lumot modeli · dizayn nafisligi · uch til.</p>
+       </details>
+    </article>
+    <article class="sprint boshlanmagan">
+      <header class="sprint-bosh">
+        <div class="sprint-nom">
+          <span class="raqam">S2</span>
+          <h3>xotira</h3>
+        </div>
+        <span class="belgi boshlanmagan">Boshlanmagan</span>
+      </header>
+
+      <p class="savol">Eslab qoladimi?</p>
+      <p class="maqsad">Ma'lumot modeli to'lsin, rasm yuklash ishlasin va AI skan oqimi birinchi</p>
+
+      <div class="chiziq" role="img" aria-label="0 / 9 task bajarildi">
+        <div class="chiziq-ich" style="width:0%"></div>
+      </div>
+      <p class="hisob"><strong>0 / 9</strong> task · 0%</p>
+
+      <ul class="tasklar">
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">PRD'dagi to'liq ma'lumot modelini migratsiya bilan qo'shish: <code>foydalanuvchilar</code>, <code>profillar</code>, <code>vazn_yozuvlari</code>, <code>rejalar</code>, <code>rasmlar</code>, <code>kunlik_xulosa</code> — S1'dagi mavjud yozuvlar omon qolsin</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn"><code>taomlar</code> bazasini kengaytirish: nomi uch tilda (o'zbek, rus, ingliz) + kamida 30 ta o'zbek taomi (osh, manti, somsa, lag'mon, norin, dimlama, mastava, shurpa, chuchvara, qozonkabob, non va salatlar)</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Rasm yuklash va ombor: kamera va galereyadan rasm olish, serverga yuborish, <code>rasmlar</code> jadvaliga bog'lash</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">AI skan API yo'li: <code>POST /api/skan</code> — rasm yoki matn qabul qiladi, taom nomi, taxminiy porsiya, kaloriya va makrolarni qaytaradi</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">AI tahlil ekrani: &quot;Ovqatingiz tahlil qilinmoqda…&quot; holati, keyin natija — &quot;AI taxmini&quot; belgisi va aniqlik ogohlantirishi bilan</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Tasdiqlash va tahrirlash ekrani: taom nomi, porsiya, kaloriya, oqsil, yog', uglevod tahrirlanadi. Faqat tasdiqlangandan keyin jurnalga tushadi</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Jurnal (Meals) sahifasi: yozuvlar bugungi kun bo'yicha guruhlanadi, tepada kunlik jami, har yozuvda rasm, vaqt va makrolar</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Yozuv amallari: tahrirlash, o'chirish, nusxalash, porsiyani o'zgartirish</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Mavzu tizimi: yorug', qorong'i va tizim — barcha mavjud ekranlarda ishlaydi</span>
+        </li></ul>
+
+      
+      
+      <details class="qoshimcha">
+         <summary>Qabul mezoni (6)</summary>
+         <ul><li>Galereyadan osh rasmi yuklanadi va tahlil ekrani chiqadi</li><li>Natijada taom nomi va taxminiy kaloriya ko'rinadi, &quot;AI taxmini&quot; belgisi bor</li><li>Porsiyani 350 g dan 250 g ga o'zgartirilsa kaloriya qayta hisoblanadi</li><li>Tasdiqlanmagan natija Home doirasiga qo'shilmaydi — bekor qilinsa doira o'zgarmaydi</li><li>Jurnal sahifasida yozuv rasmi bilan ko'rinadi</li><li>Qorong'i mavzuga o'tilganda barcha ekran to'g'ri ko'rinadi</li></ul>
+       </details>
+      <details class="qoshimcha">
+         <summary>Bu sprintda yo'q</summary>
+         <p class="muted">Ro'yxatdan o'tish va rollar · skan limitlari · Nutrition Score · to'lov · bot.</p>
+       </details>
+    </article>
+    <article class="sprint boshlanmagan">
+      <header class="sprint-bosh">
+        <div class="sprint-nom">
+          <span class="raqam">S3</span>
+          <h3>auth</h3>
+        </div>
+        <span class="belgi boshlanmagan">Boshlanmagan</span>
+      </header>
+
+      <p class="savol">Kim kirdi?</p>
+      <p class="maqsad">Foydalanuvchi Telegram akkaunti bilan kirsin va har rol faqat o'ziga</p>
+
+      <div class="chiziq" role="img" aria-label="0 / 9 task bajarildi">
+        <div class="chiziq-ich" style="width:0%"></div>
+      </div>
+      <p class="hisob"><strong>0 / 9</strong> task · 0%</p>
+
+      <ul class="tasklar">
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Telegram initData tekshiruvi: server tomonda imzo tasdiqlanadi, Telegram ID bo'yicha <code>foydalanuvchilar</code> yozuvi topiladi yoki yaratiladi</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Sessiya saqlanishi — foydalanuvchi ilovani qayta ochganda qaytadan kirmaydi</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Onboarding oqimi: Intro -&gt; til -&gt; ism -&gt; maqsad -&gt; yosh, bo'y, joriy vazn, maqsad vazn -&gt; faollik -&gt; ovqat afzalliklari -&gt; ovqatlanish odatlari -&gt; motivatsiya. Javoblar <code>profillar</code> jadvaliga yoziladi</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">18+ katakchasi va Terms qabul qilish onboardingda — belgilanmasa davom etilmaydi</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Rollar: FREE, PRO va admin. PRD'dagi huquqlar jadvali bo'yicha</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Himoyalangan API yo'llari: foydalanuvchi faqat o'z jurnalini, o'z profilini va o'z progressini ko'radi</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Profil sahifasi: avatar, ism, obuna holati, asosiy maqsad, joriy va maqsad vazn, ilovadagi kunlar</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Sozlamalar sahifasi: til, mavzu, birliklar (kg/lb, sm/ft, kkal/kJ), shaxsiy ma'lumot, hisobni o'chirish (tasdiqlash oynasi bilan)</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Analitika hodisalari: ro'yxatdan o'tish, onboarding yakunlanishi, birinchi skan, kunlik faollik</span>
+        </li></ul>
+
+      
+      
+      <details class="qoshimcha">
+         <summary>Qabul mezoni (6)</summary>
+         <ul><li>Telegramdan ochilganda foydalanuvchi hech narsa yozmasdan ichkariga kiradi</li><li>Birinchi kirishda onboarding chiqadi, ikkinchi kirishda to'g'ri Home ochiladi</li><li>Boshqa foydalanuvchining yozuviga API orqali murojaat qilinsa rad javobi keladi</li><li>18+ katakchasi belgilanmasa &quot;Davom etish&quot; tugmasi ishlamaydi</li><li>Sozlamalarda til rus tiliga o'zgartirilsa interfeys rus tiliga o'tadi</li><li>Hisobni o'chirish tasdiqlash oynasisiz bajarilmaydi</li></ul>
+       </details>
+      <details class="qoshimcha">
+         <summary>Bu sprintda yo'q</summary>
+         <p class="muted">Skan limitlari va paywall · to'lov · Nutrition Score · bot · admin paneli.</p>
+       </details>
+    </article>
+    <article class="sprint boshlanmagan">
+      <header class="sprint-bosh">
+        <div class="sprint-nom">
+          <span class="raqam">S4</span>
+          <h3>chuqurlik</h3>
+        </div>
+        <span class="belgi boshlanmagan">Boshlanmagan</span>
+      </header>
+
+      <p class="savol">Haqiqiy hayotda chidaydimi?</p>
+      <p class="maqsad">Biznes qoidalari, holatlar va chegaraviy holatlar haqiqiy foydalanishda</p>
+
+      <div class="chiziq" role="img" aria-label="0 / 9 task bajarildi">
+        <div class="chiziq-ich" style="width:0%"></div>
+      </div>
+      <p class="hisob"><strong>0 / 9</strong> task · 0%</p>
+
+      <ul class="tasklar">
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Mifflin-St Jeor formulasi: onboarding javoblaridan BMR, faollik koeffitsienti va maqsadga qarab tuzatish. Natija — taxminiy kunlik kaloriya va makro maqsadlari, <code>rejalar</code> jadvaliga yoziladi</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Natija oqimi (2 qadam): AI tahlil xulosasi -&gt; &quot;Rejangiz tayyor&quot; ekrani, &quot;nega shunday&quot; izohi va profil ro'yxati bilan. Har joyda &quot;taxminiy&quot; belgisi</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Nutrition Score formulasi: kaloriya normaga yaqinlik + makro balans, natija <code>kunlik_xulosa</code> jadvaliga. Izoh matni: axborot xarakteridagi ball</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Skan limitlari: FREE — umr davomida 3 ta, PRO — kuniga 20 ta. <code>skan_hisobi</code> jadvali, limit tugaganda tegishli ekran</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Holatlar zanjiri: ovqat yozuvi (<code>tahlil qilinmoqda</code> -&gt; <code>tasdiq kutilmoqda</code> -&gt; <code>tasdiqlandi</code> -&gt; <code>tahrirlandi</code> -&gt; <code>o'chirildi</code>) va obuna (<code>FREE</code> -&gt; <code>faol</code> -&gt; <code>muddati tugadi</code>)</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">AI ishonchi past holati: qiymat uydirilmaydi, &quot;Bu taomni aniq taniy olmadik&quot; + &quot;Boshqa rasm&quot; va &quot;Qo'lda qo'shish&quot; tugmalari</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Xato va chegaraviy holatlar: internet yo'q, AI xizmati javob bermadi, kamera ruxsati berilmadi, bo'sh jurnal, noto'g'ri qiymat kiritildi, o'chirishni tasdiqlash</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Progress sahifasi: joriy va maqsad vazn, vazn grafigi, streak, kuzatilgan kunlar. Tibbiy xulosa va BMI talqini yo'q</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Qolgan kaloriya bo'yicha taom taklifi: &quot;Bugun taxminan 650 kkal qoldi&quot; + mos taom variantlari</span>
+        </li></ul>
+
+      
+      
+      <details class="qoshimcha">
+         <summary>Qabul mezoni (6)</summary>
+         <ul><li>Onboardingdan o'tgan yangi foydalanuvchiga taxminiy kunlik maqsad chiqadi va u <code>rejalar</code> jadvalida saqlanadi</li><li>FREE foydalanuvchi 4-marta skan qilmoqchi bo'lsa paywall chiqadi, qo'lda matn bilan qo'shish ochiq qoladi</li><li>Ataylab tanib bo'lmaydigan rasm yuborilsa hech qanday kaloriya ko'rsatilmaydi</li><li>Internetni o'chirib skan qilinsa xato ekrani va &quot;Qayta urinish&quot; chiqadi</li><li>Yozuv o'chirilganda tasdiqlash oynasi chiqadi va doira qayta hisoblanadi</li><li>Nutrition Score kun davomida yozuv qo'shilgani sayin o'zgaradi</li></ul>
+       </details>
+      <details class="qoshimcha">
+         <summary>Bu sprintda yo'q</summary>
+         <p class="muted">To'lov integratsiyasi · bot · admin paneli · retseptlar kutubxonasi.</p>
+       </details>
+    </article>
+    <article class="sprint boshlanmagan">
+      <header class="sprint-bosh">
+        <div class="sprint-nom">
+          <span class="raqam">S5</span>
+          <h3>telegram</h3>
+        </div>
+        <span class="belgi boshlanmagan">Boshlanmagan</span>
+      </header>
+
+      <p class="savol">Qo'lda turadimi?</p>
+      <p class="maqsad">Mahsulot Telegram ichida tabiiy ishlasin, o'zi xabar bersin va to'lovni</p>
+
+      <div class="chiziq" role="img" aria-label="0 / 8 task bajarildi">
+        <div class="chiziq-ich" style="width:0%"></div>
+      </div>
+      <p class="hisob"><strong>0 / 8</strong> task · 0%</p>
+
+      <ul class="tasklar">
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Telegram Mini App sifatida to'liq ishlashi: WebApp SDK ulanishi, tema Telegram mavzusiga moslashishi, orqaga tugmasi, xavfsiz maydon (safe area) va bir qo'l bilan ishlatish uchun pastki navigatsiya</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Bot kirish nuqtasi: <code>/start</code> — salomlashish, til tanlash (o'zbek, rus, ingliz) va &quot;Ilovani ochish&quot; tugmasi. Bot ichida ovqat kiritish yo'q</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Paywall va obuna ekrani: uch tarif (39,000 so'm/oy · 170,000 so'm/6 oy · 290,000 so'm/yil), yillik tavsiya belgisi, oylik ekvivalent va tejash ko'rsatilishi, &quot;Hozir emas&quot; tugmasi</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">To'lov integratsiyasi: Click, Payme va Telegram Stars. <code>tolovlar</code> jadvali, holat zanjiri <code>boshlandi</code> -&gt; <code>to'landi</code> / <code>bekor qilindi</code></span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Obuna faollashuvi: muvaffaqiyatli to'lovdan keyin <code>obunalar</code> yozuvi va PRO huquqlari darhol ochiladi</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Bildirishnomalar bot orqali: nonushta, tushlik, kechki ovqat va suv eslatmalari; sozlamalarda har biri alohida yoqiladi va o'chiriladi</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Fon vazifalari: obuna muddati tugashi va tugashdan oldingi ogohlantirish, PRO kunlik skan limitining yangilanishi, kunlik xulosani yopish</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Privacy Policy va Terms of Use sahifalari: 18+, AI taxminlari, obuna va to'lov, bekor qilish, pul qaytarilmasligi, sog'liq bo'yicha ogohlantirish, rasmlar uchinchi tomon AI xizmatiga yuborilishi, O'zbekiston Respublikasi qonuni</span>
+        </li></ul>
+
+      
+      
+      <details class="qoshimcha">
+         <summary>Qabul mezoni (6)</summary>
+         <ul><li>Botda <code>/start</code> bosilganda til tanlanadi va &quot;Ilovani ochish&quot; tugmasi Mini App'ni ochadi</li><li>Mini App Telegram ichida to'liq ekranda ochiladi, pastki navigatsiya barmoq yetadigan joyda</li><li>Telegram Stars orqali test to'lov o'tkaziladi va PRO darhol faollashadi</li><li>Obuna muddati tugagach yangi skan yopiladi, lekin butun jurnal va progress ochiq qoladi</li><li>Nonushta eslatmasi belgilangan vaqtda botdan keladi</li><li>Terms sahifasida sog'liq bo'yicha ogohlantirish matni to'liq ko'rinadi</li></ul>
+       </details>
+      <details class="qoshimcha">
+         <summary>Bu sprintda yo'q</summary>
+         <p class="muted">Bot ichida ovqat kiritish · to'liq bot menyusi (/profile, /progress, /settings) ·
+avtomatik takroriy to'lov · admin paneli.</p>
+       </details>
+    </article>
+    <article class="sprint boshlanmagan">
+      <header class="sprint-bosh">
+        <div class="sprint-nom">
+          <span class="raqam">S6</span>
+          <h3>admin</h3>
+        </div>
+        <span class="belgi boshlanmagan">Boshlanmagan</span>
+      </header>
+
+      <p class="savol">Boshqarib bo'ladimi?</p>
+      <p class="maqsad">Egasi mahsulotni kod yozmasdan boshqara olsin: kontent kiritsin, obunani</p>
+
+      <div class="chiziq" role="img" aria-label="0 / 10 task bajarildi">
+        <div class="chiziq-ich" style="width:0%"></div>
+      </div>
+      <p class="hisob"><strong>0 / 10</strong> task · 0%</p>
+
+      <ul class="tasklar">
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Admin paneli va kirish nazorati: faqat admin roli ochadi, alohida bo'lim</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Foydalanuvchilar ro'yxati: qidiruv, filtr (FREE / PRO / bloklangan), bitta foydalanuvchi kartasi</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Obunani qo'lda boshqarish: PRO berish, muddatini uzaytirish, olib qo'yish</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Taom takliflari navbati: foydalanuvchi tuzatishlari ro'yxati, tasdiqlash yoki rad etish, tasdiqlangani umumiy <code>taomlar</code> bazasiga qo'shiladi</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Taom bazasini tahrirlash: yangi taom qo'shish, nomi uch tilda, taxminiy kaloriya va makrolar</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Retseptlar bo'limi (PRO ostida): <code>retseptlar</code> jadvali, admin panelidan kiritish — nomi, rasmi, kaloriya, oqsil, tayyorlash vaqti, murakkablik, kategoriya</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Retseptlar sahifasi foydalanuvchi tomonida: qidiruv, kategoriyalar, filtr oynasi (tayyorlash vaqti, kaloriya, afzalliklar), retsept detali. FREE'ga sarlavha ko'rinadi, to'liq matn PRO'da</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Statistika: ro'yxatdan o'tganlar, kunlik faol foydalanuvchilar, skanlar soni, PRO obunachilar, 7-kun retention</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Foydalanuvchini bloklash va ma'lumotini o'chirish, shikoyatlarni ko'rish</span>
+        </li>
+        <li class="task ">
+          <span class="quti" aria-hidden="true"></span>
+          <span class="task-matn">Narxlarni panel orqali o'zgartirish</span>
+        </li></ul>
+
+      
+      
+      <details class="qoshimcha">
+         <summary>Qabul mezoni (6)</summary>
+         <ul><li>Admin bo'lmagan foydalanuvchi admin havolasini ochsa rad javobi keladi</li><li>Foydalanuvchi &quot;bu manti emas, chuchvara&quot; deb tuzatsa, taklif admin navbatida paydo bo'ladi</li><li>Admin taklifni tasdiqlasa, taom umumiy bazada ko'rinadi</li><li>Admin paneldan kiritilgan retsept foydalanuvchi tomonida chiqadi; FREE foydalanuvchi to'liq matnni ocholmaydi</li><li>Admin qo'lda PRO bergan foydalanuvchida skan limiti kuniga 20 ga o'zgaradi</li><li>Statistika sahifasida kunlik faol foydalanuvchilar soni ko'rinadi</li></ul>
+       </details>
+      <details class="qoshimcha">
+         <summary>Bu sprintda yo'q</summary>
+         <p class="muted">Haftalik hisobot va chuqur analitika · PDF/CSV eksport · murabbiy roli ·
+avtomatik takroriy to'lov.</p>
+       </details>
+    </article>
+  </div>
+
+  <footer>
+    Bu sahifa qo'lda tahrirlanmaydi — <code>node scripts/progress.mjs</code> uni qayta yozadi.<br>
+    Kalori · vibecoding plugin bilan yaratilgan · vibecoding.uz
+  </footer>
+
+</div>
+</body>
+</html>
