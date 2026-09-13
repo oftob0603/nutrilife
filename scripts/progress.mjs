@@ -432,7 +432,7 @@ if (!sprintlar.length) {
 const yangi = html(sprintlar);
 
 /** Vaqt tamg'asini olib tashlaydi — faqat mazmun solishtiriladi. */
-const mazmun = (s) => s.replace(/<p>Yangilangan:[^<]*<\/p>/, '');
+const mazmun = (s) => s.replace(/<p>Yangilangan:[\s\S]*?<\/p>/, '');
 
 let ozgardi = true;
 if (fs.existsSync(OUT)) {
