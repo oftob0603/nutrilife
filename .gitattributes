@@ -1,0 +1,4 @@
+# Barcha matn fayllari repoda ham, ish papkasida ham LF bilan saqlanadi.
+# Sabab: scripts/progress.mjs progress.html ni LF bilan yozadi — Windows'da
+# avtomatik CRLF o'girish fayl doim "o'zgargan" bo'lib ko'rinishiga olib keladi.
+* text=auto eol=lf

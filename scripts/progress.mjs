@@ -429,11 +429,33 @@ if (!sprintlar.length) {
   process.exit(1);
 }
 
-fs.writeFileSync(OUT, html(sprintlar), 'utf8');
+const yangi = html(sprintlar);
+
+/** Vaqt tamg'asini olib tashlaydi — faqat mazmun solishtiriladi. */
+const mazmun = (s) => s.replace(/<p>Yangilangan:[^<]*<\/p>/, '');
+
+let ozgardi = true;
+if (fs.existsSync(OUT)) {
+  try {
+    ozgardi = mazmun(fs.readFileSync(OUT, 'utf8')) !== mazmun(yangi);
+  } catch (e) {
+    ozgardi = true;
+  }
+}
+
+if (ozgardi) {
+  fs.writeFileSync(OUT, yangi, 'utf8');
+} else {
+  // Mazmun o'zgarmagan: faylga tegmaymiz (git toza qoladi), lekin mtime'ni
+  // yangilaymiz — push qorovuli faylni eskirgan deb hisoblamasin.
+  const hozir = new Date();
+  fs.utimesSync(OUT, hozir, hozir);
+}
 
 const jamiTask = sprintlar.reduce((a, s) => a + s.jami, 0);
 const jamiBajarildi = sprintlar.reduce((a, s) => a + s.bajarildi, 0);
 console.log(
-  `progress.html yangilandi — ${sprintlar.length} sprint, ${jamiBajarildi}/${jamiTask} task ` +
+  `progress.html ${ozgardi ? 'yangilandi' : 'dolzarb (o\'zgarish yo\'q)'} — ` +
+    `${sprintlar.length} sprint, ${jamiBajarildi}/${jamiTask} task ` +
     `(${jamiTask ? Math.round((jamiBajarildi / jamiTask) * 100) : 0}%)`
 );
