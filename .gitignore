@@ -36,3 +36,11 @@ Thumbs.db
 coverage/
 .turbo/
 .vercel/
+
+# next.js va typescript
+next-env.d.ts
+*.tsbuildinfo
+*.pem
+
+# prisma tomonidan generatsiya qilinadigan klient
+lib/generated/

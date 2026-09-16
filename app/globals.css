@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+/* Tokenlar — DESIGN.md, 1-bo'lim */
+:root {
+  --siyoh: #0b0b0c;
+  --aksent: #c6f04c;
+  --aksent-matn: #2e3d07;
+  --fon: #f2f2f3;
+  --karta: #ffffff;
+  --matn-2: #6b6b70;
+  --matn-3: #a1a1a6;
+  --chegara: #e3e3e5;
+  --xato: #d93a3a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --siyoh: #f2f2f3;
+    --fon: #0b0b0c;
+    --karta: #161618;
+    --matn-2: #8a8a8f;
+    --matn-3: #5c5c61;
+    --chegara: #26262a;
+    --xato: #ff6b6b;
+  }
+}
+
+@theme inline {
+  --color-siyoh: var(--siyoh);
+  --color-aksent: var(--aksent);
+  --color-aksent-matn: var(--aksent-matn);
+  --color-fon: var(--fon);
+  --color-karta: var(--karta);
+  --color-matn-2: var(--matn-2);
+  --color-matn-3: var(--matn-3);
+  --color-chegara: var(--chegara);
+  --color-xato: var(--xato);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-inter-tight);
+}
+
+body {
+  background: var(--fon);
+  color: var(--siyoh);
+}

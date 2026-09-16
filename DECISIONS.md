@@ -155,6 +155,15 @@ yosh kiritish qadamida (O5) beriladi — yosh 18 dan kichik bo'lsa oqim davom et
 *Sabab:* Kiritilgan yosh katakchadan kuchliroq dalil, ikkalasini so'rash bir ishni
 ikki marta qilish. Batafsil [onboarding-tz.md](onboarding-tz.md) O5 bo'limida.
 
+## 2026-09-16 — loyiha skeleti
+
+**2026-09-16 · GitHub repo nomi `nutrilife` (avvalgi `kalori` qayta nomlandi).**
+*Sabab:* Foydalanuvchi qarori; qayta nomlash commit tarixini saqlaydi.
+
+**2026-09-16 · Versiyalar: Next.js 16.3.5, Prisma 7.10.0, Tailwind 4.3, TypeScript 6.0, ESLint 9.**
+*Sabab:* Prisma'ning `latest` tegi 8.0 RC — barqaror emas. TypeScript 7 va ESLint 10
+`eslint-config-next` bilan hali ishlamaydi (lint yiqildi), shuning uchun oldingi barqaror liniyalar olindi.
+
 ---
 
 ## OCHIQ SAVOLLAR

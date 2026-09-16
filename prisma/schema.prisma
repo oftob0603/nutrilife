@@ -1,0 +1,10 @@
+// Ma'lumot modeli. Jadvallar S1'dan boshlab qo'shiladi (PRD.md, 7-bo'lim).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
