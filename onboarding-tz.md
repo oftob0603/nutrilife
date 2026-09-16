@@ -37,7 +37,7 @@ O1 Intro + Terms -> O2 Til -> O3 Ism -> O4 Maqsad -> O5 Jins va yosh
 
 ### O1 — Intro va shartlar
 
-**Vazifasi:** Ilova nima qilishini bir jumlada aytish va 18+ hamda shartlarni tasdiqlatish.
+**Vazifasi:** Ilova nima qilishini bir jumlada aytish va shartlarni tasdiqlatish.
 
 - Sarlavha: "Ovqatingiz qancha kaloriya — rasmga oling, bilib oling"
 - Ostida uch qator: rasmdan taniydi · o'zbek taomlarini biladi · kunlik normani yig'adi

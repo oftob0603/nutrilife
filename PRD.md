@@ -43,8 +43,8 @@ maqsad emas. Butun mahsulot shu doira atrofida quriladi.
 | **Admin** | Umumiy statistika, foydalanuvchilar ro'yxati, obunalar, taom takliflari navbati, shikoyatlar | Obunani qo'lda berish va olib qo'yish; taom va retsept bazasini tahrirlash; AI xato tanigan natijalarni tuzatish; foydalanuvchini bloklash va ma'lumotini o'chirish; narxlarni o'zgartirish |
 
 Kirish: Telegram initData orqali avtomatik. Telefon, email, parol so'ralmaydi.
-18+ chegarasi: Terms of Use'da yoziladi va onboardingda katakcha belgilanadi, hujjat
-tekshirilmaydi.
+18+ chegarasi: Terms of Use'da yoziladi va onboardingda yosh kiritilganda tekshiriladi —
+18 dan kichik bo'lsa oqim davom etmaydi. Hujjat tekshirilmaydi.
 
 ## 5. Asosiy oqim
 

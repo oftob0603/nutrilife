@@ -32,6 +32,7 @@ Nutrition Score · to'liq ma'lumot modeli · dizayn nafisligi · uch til.
 
 - 2026-09-13: E1-E10 ekranlar uchun dizayn TZ va dizayn tizimi hujjatlari tayyorlandi (dizayn-tz.md, DESIGN.md)
 - 2026-09-16: dizayn-tz.md'ga pastki navigatsiya bo'limi qo'shildi, onboarding-tz.md, admin-tz.md, progress-tz.md, profil-tz.md, paywall-tz.md yaratildi (kod yozilmadi)
+- 2026-09-16: 18+ tekshiruvi katakchadan O5 yosh qadamiga ko'chirildi (PRD.md, onboarding-tz.md, SPRINT-3-auth.md)
 
 ## Handoff
 
