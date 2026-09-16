@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "baza": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["scripts/mcp-db.mjs"]
+    }
+  }
+}

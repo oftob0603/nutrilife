@@ -164,6 +164,13 @@ ikki marta qilish. Batafsil [onboarding-tz.md](onboarding-tz.md) O5 bo'limida.
 *Sabab:* Prisma'ning `latest` tegi 8.0 RC — barqaror emas. TypeScript 7 va ESLint 10
 `eslint-config-next` bilan hali ishlamaydi (lint yiqildi), shuning uchun oldingi barqaror liniyalar olindi.
 
+**2026-09-16 · Deploy: frontend Vercel, backend Railway, PostgreSQL Railway. Docker va Docker Compose ishlatilmaydi.**
+*Sabab:* Foydalanuvchi qarori. Production sirlari platformalarning Environment Variables orqali beriladi;
+lokal ishlashda ham Railway bazasiga public URL orqali ulaniladi. STACK.md'dagi Hetzner/Caddy qatorlari eskirdi.
+
+**2026-09-16 · "baza" MCP serveri SDK'siz, mavjud `pg` bilan yozildi; DELETE/DROP/TRUNCATE alohida `xavfli_sorov` vositasida va har safar ruxsat so'raladi.**
+*Sabab:* Yangi dependency qo'shmaslik; o'chirish faqat aniq ruxsat bilan bo'lishi qoidasini sozlama darajasida ta'minlash.
+
 ---
 
 ## OCHIQ SAVOLLAR
