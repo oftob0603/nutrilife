@@ -135,7 +135,7 @@
 
   <header class="bosh">
     <div class="logo"><span>K</span><h1>Kalori — loyiha progressi</h1></div>
-    <p>Yangilangan: 2026-09-13 14:14 · manba: <code>sprints/</code> papkasi</p>
+    <p>Yangilangan: 2026-09-16 17:34 · manba: <code>sprints/</code> papkasi</p>
   </header>
 
   <section class="umumiy">
@@ -204,7 +204,7 @@
 
       <div class="blok">
          <h4>Hisobot</h4>
-         <ul class="hisobot"><li>2026-09-13: E1-E10 ekranlar uchun dizayn TZ va dizayn tizimi hujjatlari tayyorlandi (dizayn-tz.md, DESIGN.md)</li></ul>
+         <ul class="hisobot"><li>2026-09-13: E1-E10 ekranlar uchun dizayn TZ va dizayn tizimi hujjatlari tayyorlandi (dizayn-tz.md, DESIGN.md)</li><li>2026-09-16: dizayn-tz.md'ga pastki navigatsiya bo'limi qo'shildi, onboarding-tz.md, admin-tz.md, progress-tz.md, profil-tz.md, paywall-tz.md yaratildi (kod yozilmadi)</li></ul>
        </div>
       <div class="blok">
          <h4>Handoff</h4>
@@ -278,7 +278,7 @@ Nutrition Score · to'liq ma'lumot modeli · dizayn nafisligi · uch til.</p>
       
       <div class="blok">
          <h4>Handoff</h4>
-         <p class="handoff">S2 ekranlari (E3 kamera, E6 AI tahlil, E7 AI natija tasdiq/tahrir, E9 jurnal,<br>E10 yozuv tahriri) uchun dizayn-tz.md va DESIGN.md tayyor, boshlashda shulardan foydalan.</p>
+         <p class="handoff">S2 ekranlari (E3 kamera, E6 AI tahlil, E7 AI natija tasdiq/tahrir, E9 jurnal,<br>E10 yozuv tahriri) uchun dizayn-tz.md va DESIGN.md tayyor, boshlashda shulardan foydalan.<br><code>profillar</code> migratsiyasi uchun onboarding-tz.md 4-bo'limidagi ustunlar ro'yxatiga qara.</p>
        </div>
       <details class="qoshimcha">
          <summary>Qabul mezoni (6)</summary>
@@ -345,7 +345,10 @@ Nutrition Score · to'liq ma'lumot modeli · dizayn nafisligi · uch til.</p>
         </li></ul>
 
       
-      
+      <div class="blok">
+         <h4>Handoff</h4>
+         <p class="handoff">Onboarding oqimi (O1-O13) uchun onboarding-tz.md, profil va sozlamalar ekranlari<br>(F1-F5) uchun profil-tz.md tayyor, boshlashda shulardan foydalan.</p>
+       </div>
       <details class="qoshimcha">
          <summary>Qabul mezoni (6)</summary>
          <ul><li>Telegramdan ochilganda foydalanuvchi hech narsa yozmasdan ichkariga kiradi</li><li>Birinchi kirishda onboarding chiqadi, ikkinchi kirishda to'g'ri Home ochiladi</li><li>Boshqa foydalanuvchining yozuviga API orqali murojaat qilinsa rad javobi keladi</li><li>18+ katakchasi belgilanmasa &quot;Davom etish&quot; tugmasi ishlamaydi</li><li>Sozlamalarda til rus tiliga o'zgartirilsa interfeys rus tiliga o'tadi</li><li>Hisobni o'chirish tasdiqlash oynasisiz bajarilmaydi</li></ul>
@@ -411,7 +414,10 @@ Nutrition Score · to'liq ma'lumot modeli · dizayn nafisligi · uch til.</p>
         </li></ul>
 
       
-      
+      <div class="blok">
+         <h4>Handoff</h4>
+         <p class="handoff">Progress sahifasi (P1-P3, streak va kuzatilgan kun ta'riflari) uchun progress-tz.md,<br>paywall ekrani (W1) uchun paywall-tz.md, obuna ekrani (F4) uchun profil-tz.md tayyor.</p>
+       </div>
       <details class="qoshimcha">
          <summary>Qabul mezoni (6)</summary>
          <ul><li>Onboardingdan o'tgan yangi foydalanuvchiga taxminiy kunlik maqsad chiqadi va u <code>rejalar</code> jadvalida saqlanadi</li><li>FREE foydalanuvchi 4-marta skan qilmoqchi bo'lsa paywall chiqadi, qo'lda matn bilan qo'shish ochiq qoladi</li><li>Ataylab tanib bo'lmaydigan rasm yuborilsa hech qanday kaloriya ko'rsatilmaydi</li><li>Internetni o'chirib skan qilinsa xato ekrani va &quot;Qayta urinish&quot; chiqadi</li><li>Yozuv o'chirilganda tasdiqlash oynasi chiqadi va doira qayta hisoblanadi</li><li>Nutrition Score kun davomida yozuv qo'shilgani sayin o'zgaradi</li></ul>
@@ -544,7 +550,10 @@ avtomatik takroriy to'lov · admin paneli.</p>
         </li></ul>
 
       
-      
+      <div class="blok">
+         <h4>Handoff</h4>
+         <p class="handoff">Admin paneli ekranlari (A0-A12) uchun admin-tz.md tayyor, boshlashda shundan foydalan.</p>
+       </div>
       <details class="qoshimcha">
          <summary>Qabul mezoni (6)</summary>
          <ul><li>Admin bo'lmagan foydalanuvchi admin havolasini ochsa rad javobi keladi</li><li>Foydalanuvchi &quot;bu manti emas, chuchvara&quot; deb tuzatsa, taklif admin navbatida paydo bo'ladi</li><li>Admin taklifni tasdiqlasa, taom umumiy bazada ko'rinadi</li><li>Admin paneldan kiritilgan retsept foydalanuvchi tomonida chiqadi; FREE foydalanuvchi to'liq matnni ocholmaydi</li><li>Admin qo'lda PRO bergan foydalanuvchida skan limiti kuniga 20 ga o'zgaradi</li><li>Statistika sahifasida kunlik faol foydalanuvchilar soni ko'rinadi</li></ul>

@@ -36,7 +36,8 @@ To'lov integratsiyasi · bot · admin paneli · retseptlar kutubxonasi.
 
 ## Handoff
 
-<!-- hisobotchi to'ldiradi -->
+Progress sahifasi (P1-P3, streak va kuzatilgan kun ta'riflari) uchun progress-tz.md,
+paywall ekrani (W1) uchun paywall-tz.md, obuna ekrani (F4) uchun profil-tz.md tayyor.
 
 ---
 

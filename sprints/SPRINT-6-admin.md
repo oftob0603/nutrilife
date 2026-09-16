@@ -38,7 +38,7 @@ avtomatik takroriy to'lov.
 
 ## Handoff
 
-<!-- hisobotchi to'ldiradi -->
+Admin paneli ekranlari (A0-A12) uchun admin-tz.md tayyor, boshlashda shundan foydalan.
 
 ---
 

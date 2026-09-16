@@ -4,8 +4,10 @@ Bu hujjat faqat **yurak oqim** uchun yozilgan: foydalanuvchi ilovani ochadi -> k
 doirani ko'radi -> ovqat qo'shadi -> doira to'ladi. PRD 3-bo'lim ("Yurak amal") va
 5-bo'limning 6–10 qadamlari shu yerda ekranga aylantirilgan.
 
-**Qamrovda YO'Q:** onboarding, AI reja tayyorlash, paywall va to'lov, progress sahifasi,
-sozlamalar, retseptlar, admin paneli, bot ekranlari. Ular alohida TZ'da yoziladi.
+**Qamrovda YO'Q (ichki tuzilishi bo'yicha):** onboarding, AI reja tayyorlash, paywall va
+to'lov, progress sahifasi, retseptlar, sozlamalar, admin paneli, bot ekranlari. Ular
+alohida TZ'da yoziladi — lekin pastki paneldagi o'rni 2-bo'limda belgilangan, chunki
+navigatsiya skeletini keyin qo'shib bo'lmaydi.
 
 ## 1. Oqim xaritasi
 
@@ -53,7 +55,49 @@ sozlamalar, retseptlar, admin paneli, bot ekranlari. Ular alohida TZ'da yoziladi
 **Qoida:** jurnalga yozuv faqat E7 yoki E5 dagi tasdiq tugmasidan keyin tushadi.
 E6 va E7 dagi natija hali yozuv emas — u `tasdiq kutilmoqda` holatida (PRD 8-bo'lim).
 
-## 2. Ekranlar
+## 2. Global navigatsiya — pastki panel
+
+Suzuvchi pastki panel: **to'rt bo'lim + markazda "+"**. Beshta bo'lim qo'yilmaydi —
+"+" bilan birga oltita nishon telefon ekranida bir-biriga tiqiladi.
+
+| O'rin | Bo'lim | Ekran | Kimga |
+|---|---|---|---|
+| 1 | Home | E1 — kunlik doira | hammaga |
+| 2 | Retseptlar | *(alohida TZ, S6)* | FREE sarlavha ko'radi, PRO to'liq matn |
+| — | **"+"** | E2 — manba tanlash | hammaga |
+| 3 | Progress | *(alohida TZ)* — vazn, streak, kuzatilgan kunlar | hammaga |
+| 4 | Profil | *(alohida TZ)* — sozlamalar, til, mavzu, obuna | hammaga |
+
+**Nega Retseptlar alohida bo'lim, "Yana" menyusi ichida emas:** bu mahsulotning asosiy
+PRO yuzasi. FREE foydalanuvchi faqat sarlavhalarni ko'radi (PRD 4-bo'lim), ya'ni har
+kirish — yumshoq paywall teginishi. Menyu ichiga yashirilsa, obunaga o'tish yo'li
+ko'rinmay qoladi.
+
+**Nega Jurnal panelda yo'q:** u Home'ning davomi — E1'dagi "Bugungi ovqatlar -> Hammasi"
+orqali ochiladi (E9). Panelda ham Home, ham Jurnal turishi ikkalasini ham zaiflashtiradi.
+
+**Qoidalar:**
+
+- Panel E1, E9 va bo'lim ildiz ekranlarida ko'rinadi. Oqim ichida (E3, E5, E6, E7, E8,
+  E10) va bottom sheet ochiq bo'lganda **yashiriladi** — foydalanuvchi oqimdan
+  tasodifan chiqib ketmasin.
+- "+" qolgan nishonlardan kattaroq va `--siyoh` fonli — ekrandagi yagona doimiy asosiy
+  harakat.
+- Faol bo'lim `--siyoh`, nofaol `--matn-2`. Nishon ostida yozuv doim bor (yolg'iz ikona
+  tushunarsiz).
+- Bo'lim almashganda o'tish animatsiyasi yo'q — oniy.
+- Hali tayyor bo'lmagan bo'lim panelda **ko'rsatilmaydi** (o'chgan holda ham emas).
+
+**Sprint bo'yicha panel:**
+
+| Sprint | Panel ko'rinishi |
+|---|---|
+| S1 | Panel yo'q — faqat Home va "+" |
+| S2 | Home · [+] · Jurnal (vaqtinchalik, Progress va Retseptlar hali yo'q) |
+| S4 | Home · [+] · Progress · Profil |
+| S6 | To'liq: Home · Retseptlar · [+] · Progress · Profil |
+
+## 3. Ekranlar
 
 ### E1 — Home (kunlik doira) · S1
 
@@ -67,7 +111,8 @@ ko'rsatish — butun mahsulotning markazi.
 - Haftalik kun tanlagichi (Du–Ya, bugungi kun ajratilgan) — S2'da faol bo'ladi
 - "Bugungi ovqatlar" bloki: oxirgi 3 yozuv (mitti rasm, taom nomi, vaqt, kkal)
 - Qolgan kaloriyaga mos taom taklifi (bitta karta) — S4
-- **"+" — asosiy harakat tugmasi** (pastda, o'ngda, doim ko'rinadi)
+- **"+" — asosiy harakat tugmasi.** S1'da panel yo'q, shuning uchun pastda o'ngda
+  suzadi; S2'dan boshlab pastki panelning markaziga ko'chadi (2-bo'lim)
 
 **Navigatsiya:**
 
@@ -366,7 +411,7 @@ boshqarish.
 | Bo'sh | yo'q | — |
 | Xato | amal bajarilmadi | "O'zgarish saqlanmadi. Qayta urinish" — ekran yopilmaydi |
 
-## 3. Umumiy holat qoidalari
+## 4. Umumiy holat qoidalari
 
 Bu qoidalar barcha ekranga baravar tegishli — har ekranda qaytarilmaydi.
 
@@ -383,7 +428,7 @@ Bu qoidalar barcha ekranga baravar tegishli — har ekranda qaytarilmaydi.
 | **Mavzu** | Har ekran yorug' va qorong'i mavzuda tekshiriladi (S2) |
 | **Til** | Barcha matn uch tilda: o'zbek, rus, ingliz. Kodda qotirilgan matn yo'q |
 
-## 4. Sprint bo'yicha bo'linish
+## 5. Sprint bo'yicha bo'linish
 
 | Sprint | Ekranlar |
 |---|---|
@@ -391,7 +436,7 @@ Bu qoidalar barcha ekranga baravar tegishli — har ekranda qaytarilmaydi.
 | **S2 — xotira** | E3, E6, E7, E9, E10 + E1 to'ldiriladi (rasm, kun tanlagich, mavzu) |
 | **S4 — chuqurlik** | E2'ga skan limiti holati, E1'ga Nutrition Score va taom taklifi |
 
-## 5. Hal qilinmagan dizayn savollari
+## 6. Hal qilinmagan dizayn savollari
 
 | # | Savol | Qachon |
 |---|---|---|

@@ -148,6 +148,15 @@ ishlaydigan yo'nalish tanlandi, DESIGN.md shu asosda yozildi.
 
 ---
 
+## 2026-09-16 — onboarding aniqlashtirish
+
+**2026-09-16 · 18+ tasdig'i onboardingning birinchi ekranidagi katakcha bilan emas,
+yosh kiritish qadamida (O5) beriladi — yosh 18 dan kichik bo'lsa oqim davom etmaydi.**
+*Sabab:* Kiritilgan yosh katakchadan kuchliroq dalil, ikkalasini so'rash bir ishni
+ikki marta qilish. Batafsil [onboarding-tz.md](onboarding-tz.md) O5 bo'limida.
+
+---
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

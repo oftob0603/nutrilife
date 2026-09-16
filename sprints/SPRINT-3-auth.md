@@ -36,7 +36,8 @@ Skan limitlari va paywall · to'lov · Nutrition Score · bot · admin paneli.
 
 ## Handoff
 
-<!-- hisobotchi to'ldiradi -->
+Onboarding oqimi (O1-O13) uchun onboarding-tz.md, profil va sozlamalar ekranlari
+(F1-F5) uchun profil-tz.md tayyor, boshlashda shulardan foydalan.
 
 ---
 
