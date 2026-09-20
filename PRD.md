@@ -136,7 +136,9 @@ Bu axborot xarakteridagi ball, tibbiy baho emas.
 - Taom taklifi: `yuborildi` -> `ko'rib chiqilmoqda` -> `tasdiqlandi` yoki `rad etildi`.
 
 **Oflayn va xato:** internet yo'q yoki AI javob bermasa — xato ekrani va "Qayta urinish".
-Rasm navbatga olinmaydi va saqlanmaydi.
+Rasm oflayn navbatga olinmaydi. Yuklangan rasm AI xatosida o'chirilmaydi — "Qayta urinish"
+qayta yuklashsiz ishlaydi; foydalanuvchi bekor qilsa yoki natijani tasdiqlamasa, egasiz
+qolgan rasm tozalanadi ([DECISIONS.md](DECISIONS.md), 2026-09-20).
 
 **Ma'lumot va maxfiylik:** ovqat rasmlari doimiy saqlanadi va jurnalda ko'rinadi.
 Rasmlar tahlil uchun uchinchi tomon AI xizmatiga yuboriladi — bu Privacy Policy'da ochiq

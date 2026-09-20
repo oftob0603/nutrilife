@@ -71,6 +71,12 @@ body {
   color: var(--siyoh);
 }
 
+/* AI tahlili paytida rasm ustidan o'tadigan chiziq (E6). Chiziq balandligi rasmning 10% i. */
+@keyframes skaner {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(1000%); }
+}
+
 /* Bottom sheet ochilishi — DESIGN.md, 8-bo'lim */
 @keyframes panel {
   from { transform: translateY(100%); }

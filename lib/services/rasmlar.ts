@@ -54,6 +54,27 @@ export async function rasmMazmuni(
   return { baytlar: await ombordanOqi(rasm.kalit), mime: rasm.mime as RasmTuri };
 }
 
+/**
+ * Yozuvga bog'lanmagan rasmni ombordan va bazadan o'chiradi — foydalanuvchi tahlilni
+ * bekor qilganda egasiz qolmasin. Jurnalga tushgan rasm o'chirilmaydi ("boglangan").
+ */
+export async function rasmOchirish(id: string): Promise<"ochirildi" | "yoq" | "boglangan"> {
+  const rasm = await db.rasm.findFirst({
+    where: { id, foydalanuvchiId: S1_FOYDALANUVCHI },
+    select: { kalit: true, ovqatYozuviId: true },
+  });
+  if (!rasm) return "yoq";
+  if (rasm.ovqatYozuviId) return "boglangan";
+
+  // Shart qayta tekshiriladi: o'qish va o'chirish orasida rasm yozuvga bog'lanib qolishi mumkin.
+  const { count } = await db.rasm.deleteMany({ where: { id, ovqatYozuviId: null } });
+  if (count === 0) return "boglangan";
+
+  // Ombor o'chira olmasa fayl qolib ketadi, lekin baza toza — davriy tozalash yig'ib oladi.
+  await ombordanOchir(rasm.kalit).catch(() => {});
+  return "ochirildi";
+}
+
 /** Rasmni o'qish uchun vaqtinchalik havola; rasm topilmasa null. */
 export async function rasmHavolasi(id: string): Promise<string | null> {
   const rasm = await db.rasm.findFirst({

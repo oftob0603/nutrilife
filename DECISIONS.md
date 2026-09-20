@@ -259,6 +259,13 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-20 · Umumiy kunlik skan chegarasi (`SKAN_KUNLIK_CHEGARA`, standart 50) S3'gacha zaxira himoya sifatida qo'shildi.**
 *Sabab:* Foydalanuvchi so'rovi; S4'da FREE/PRO limitlari shu jadval ustiga qurilib, umumiy chegara o'rnini oladi.
 
+## 2026-09-20 — AI tahlil ekrani
+
+**2026-09-20 · E6 va E7 alohida sahifa emas, bitta klient komponentning holatlari; AI natijasi faqat React holatida turadi.**
+*Sabab:* Tasdiqlanmagan natija hech qayerga saqlanmasligi kerak (dizayn-tz: tasdiqlanmagan yozuv), va ekranlar orasida natijani uzatish uchun URL/xotira kerak bo'lmaydi.
+
+**2026-09-20 · Tasdiqlanmay qolgan rasm foydalanuvchi voz kechganda darhol o'chiriladi (DELETE /api/rasmlar/[id], faqat yozuvga bog'lanmagan rasm); sahifani yopib ketgandagi yetimlar S5 fon vazifasida tozalanadi.**
+
 ---
 
 ## OCHIQ SAVOLLAR
