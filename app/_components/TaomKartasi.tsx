@@ -26,7 +26,7 @@ export function TaomKartasi({ taom }: { taom: Taom }) {
     <li>
       <Link
         href={`/taomlar/${taom.id}`}
-        className="flex items-center gap-3 rounded-karta border border-chegara bg-karta p-4"
+        className="flex items-center gap-3 rounded-karta border border-karta-chegara bg-karta p-4"
       >
         <TaomRasmi rasm={taom.rasm} />
         <div className="min-w-0 flex-1">

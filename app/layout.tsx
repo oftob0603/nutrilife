@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Inter_Tight } from "next/font/google";
+import { MAVZU_SKRIPTI } from "@/lib/mavzu";
 import "./globals.css";
 
 const inter = Inter({
@@ -24,7 +25,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="uz"
       className={`${inter.variable} ${interTight.variable} h-full antialiased`}
+      // Skript gidratsiyadan oldin data-mavzu ni qo'yadi — React DOM'dagi qiymatni qabul qilsin.
+      suppressHydrationWarning
     >
+      <head>
+        {/* Saqlangan mavzu sahifa chizilishidan oldin qo'llanadi (lib/mavzu.ts). */}
+        <script dangerouslySetInnerHTML={{ __html: MAVZU_SKRIPTI }} />
+      </head>
       <body className="flex min-h-full flex-col font-sans">{children}</body>
     </html>
   );

@@ -95,7 +95,7 @@ function KunlikJami({ jami }: { jami: Jami }) {
   return (
     <section
       aria-label="Kunlik jami"
-      className="flex flex-col gap-4 rounded-karta border border-chegara bg-karta p-4"
+      className="flex flex-col gap-4 rounded-karta border border-karta-chegara bg-karta p-4"
     >
       <p className="flex items-baseline gap-2">
         <span className="font-display text-raqam tabular-nums">{raqam(jami.kaloriya)}</span>
@@ -115,7 +115,7 @@ function KunlikJami({ jami }: { jami: Jami }) {
 /** Bo'sh holat: nima yo'q, nega yo'q va (faqat bugun uchun) bitta harakat (dizayn-tz E9). */
 function BoshKun({ bugunmi }: { bugunmi: boolean }) {
   return (
-    <div className="flex flex-col items-center gap-3 rounded-karta border border-chegara bg-karta p-6 text-center">
+    <div className="flex flex-col items-center gap-3 rounded-karta border border-karta-chegara bg-karta p-6 text-center">
       <svg
         viewBox="0 0 24 24"
         width="32"
@@ -145,7 +145,7 @@ function YuklanmadiKartasi({ manzil }: { manzil: string }) {
   return (
     <div
       role="alert"
-      className="flex flex-col items-center gap-3 rounded-karta border border-chegara bg-karta p-6 text-center"
+      className="flex flex-col items-center gap-3 rounded-karta border border-karta-chegara bg-karta p-6 text-center"
     >
       <p className="text-karta-sarlavha">Jurnalni yuklab bo&apos;lmadi</p>
       <p className="text-izoh text-matn-2">

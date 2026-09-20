@@ -55,7 +55,7 @@ export function TaomlarRoyxati({ taomlar }: { taomlar: Taom[] }) {
       </label>
 
       {natijalar.length === 0 ? (
-        <div className="flex flex-col items-center gap-3 rounded-karta border border-chegara bg-karta p-4 text-center">
+        <div className="flex flex-col items-center gap-3 rounded-karta border border-karta-chegara bg-karta p-4 text-center">
           <p className="text-karta-sarlavha">«{sorov.trim()}» topilmadi</p>
           <p className="text-izoh text-matn-2">
             Boshqa nom bilan qidirib ko&apos;ring yoki taomni AI yordamida qo&apos;shing.

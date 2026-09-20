@@ -72,7 +72,7 @@ export default async function QoshildiSahifasi({
         boshlangich={oldingi}
       />
 
-      <div className="flex w-full items-center gap-3 rounded-karta border border-chegara bg-karta p-4">
+      <div className="flex w-full items-center gap-3 rounded-karta border border-karta-chegara bg-karta p-4">
         <TaomRasmi rasm={yozuv.rasm} />
         <div className="min-w-0 flex-1">
           <p className="truncate text-karta-sarlavha">{yozuv.taomNomi}</p>

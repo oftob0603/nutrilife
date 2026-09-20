@@ -32,7 +32,7 @@ async function kunniYukla(): Promise<Kun | null> {
 /** E1 xato holati: doira o'rnida karta, "+" tugmasi faolligicha qoladi. */
 function XatoKartasi() {
   return (
-    <div className="flex flex-col items-center gap-3 rounded-karta border border-chegara bg-karta p-4 text-center">
+    <div className="flex flex-col items-center gap-3 rounded-karta border border-karta-chegara bg-karta p-4 text-center">
       <p className="text-karta-sarlavha">Ma&apos;lumotni yuklab bo&apos;lmadi</p>
       <p className="text-izoh text-matn-2">
         Hisobot serveriga ulanolmadik. Internetni tekshirib, qayta urinib
@@ -44,7 +44,7 @@ function XatoKartasi() {
 
 function BoshHolat() {
   return (
-    <div className="flex flex-col items-center gap-3 rounded-karta border border-chegara bg-karta p-4 text-center">
+    <div className="flex flex-col items-center gap-3 rounded-karta border border-karta-chegara bg-karta p-4 text-center">
       <p className="text-karta-sarlavha">
         Bugun hali hech narsa qo&apos;shilmadi
       </p>

@@ -59,9 +59,9 @@ function OchirishTasdigi({
         type="button"
         aria-label="Yopish"
         onClick={onBekor}
-        className="absolute inset-0 bg-siyoh/20"
+        className="absolute inset-0 bg-parda"
       />
-      <div className="relative mx-auto flex w-full max-w-md flex-col gap-4 rounded-t-panel border border-chegara bg-karta p-4 pb-8 motion-safe:animate-[panel_250ms_cubic-bezier(0.2,0,0,1)]">
+      <div className="relative mx-auto flex w-full max-w-md flex-col gap-4 rounded-t-panel border border-karta-chegara bg-karta p-4 pb-8 motion-safe:animate-[panel_250ms_cubic-bezier(0.2,0,0,1)]">
         <div className="mx-auto h-1 w-10 rounded-full bg-chegara" />
         <div className="flex flex-col gap-1 text-center">
           <h2 id="ochirish-sarlavha" className="text-karta-sarlavha">

@@ -22,7 +22,7 @@ export function YozuvQatori({
     <li>
       <Link
         href={`/yozuv/${yozuv.id}?qaytish=${encodeURIComponent(qaytish)}`}
-        className="flex items-center gap-3 rounded-karta border border-chegara bg-karta p-4 transition-transform active:scale-[0.98]"
+        className="flex items-center gap-3 rounded-karta border border-karta-chegara bg-karta p-4 transition-transform active:scale-[0.98]"
       >
         <TaomRasmi rasm={yozuv.rasm} />
         <div className="min-w-0 flex-1">

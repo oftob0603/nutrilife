@@ -11,10 +11,21 @@
   --matn-3: #a1a1a6;
   --chegara: #e3e3e5;
   --xato: #d93a3a;
+  /* Karta chegarasi faqat yorug' mavzuda chiziladi (DESIGN.md, 6-bo'lim). */
+  --karta-chegara: var(--chegara);
+  /* Panel ortidagi parda — ikkala mavzuda bir xil: --siyoh qorong'ida och rang bo'lib qoladi. */
+  --parda: rgba(11, 11, 12, 0.4);
+  /* Brauzerning o'z elementlari (vaqt maydoni, scroll chizig'i) ham mavzuga ergashsin. */
+  color-scheme: light;
 }
 
+/*
+ * Mavzu: <html data-mavzu="yorug" | "qorongi">; atribut yo'q — "tizim" (lib/mavzu.ts).
+ * Qorong'i tokenlar ikki joyda takrorlanadi: CSS'da media so'rovi bilan atribut tanlagichini
+ * bitta blokka birlashtirib bo'lmaydi. Birini o'zgartirsangiz, ikkinchisini ham o'zgartiring.
+ */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-mavzu="yorug"]) {
     --siyoh: #f2f2f3;
     --fon: #0b0b0c;
     --karta: #161618;
@@ -22,7 +33,21 @@
     --matn-3: #5c5c61;
     --chegara: #26262a;
     --xato: #ff6b6b;
+    --karta-chegara: transparent;
+    color-scheme: dark;
   }
+}
+
+:root[data-mavzu="qorongi"] {
+  --siyoh: #f2f2f3;
+  --fon: #0b0b0c;
+  --karta: #161618;
+  --matn-2: #8a8a8f;
+  --matn-3: #5c5c61;
+  --chegara: #26262a;
+  --xato: #ff6b6b;
+  --karta-chegara: transparent;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -62,6 +87,8 @@
   --color-matn-3: var(--matn-3);
   --color-chegara: var(--chegara);
   --color-xato: var(--xato);
+  --color-karta-chegara: var(--karta-chegara);
+  --color-parda: var(--parda);
   --font-sans: var(--font-inter);
   --font-display: var(--font-inter-tight);
 }
