@@ -135,7 +135,7 @@
 
   <header class="bosh">
     <div class="logo"><span>K</span><h1>Kalori — loyiha progressi</h1></div>
-    <p>Yangilangan: 2026-09-20 14:55 · manba: <code>sprints/</code> papkasi</p>
+    <p>Yangilangan: 2026-09-20 15:07 · manba: <code>sprints/</code> papkasi</p>
   </header>
 
   <section class="umumiy">
@@ -301,7 +301,7 @@ Nutrition Score · to'liq ma'lumot modeli · dizayn nafisligi · uch til.</p>
        </div>
       <div class="blok">
          <h4>Handoff</h4>
-         <p class="handoff">S1'dan meros: API yo'llari <code>/api/taomlar</code>, <code>/api/taomlar/[id]</code>, <code>/api/ovqat-yozuvlari</code> tayyor; klient komponent<br>ishlatadigan sof hisob <code>lib/services/*-hisob.ts</code> da turadi — bazaga ulanadigan modulni klientga import qilma.<br>S2 ekranlari (E3 kamera, E6 AI tahlil, E7 AI natija tasdiq/tahrir, E9 jurnal,<br>E10 yozuv tahriri) uchun dizayn-tz.md va DESIGN.md tayyor, boshlashda shulardan foydalan.<br>Keyingi: 4-task — <code>POST /api/skan</code> (AI skan API yo'li). Rasm allaqachon <code>rasmlar</code> da, ID orqali keladi: <code>/tahlil/[rasmId]</code>.<br>3-task yopilishi uchun: telefonda <code>/kamera</code> ni HTTPS'da sinash (orqa kamera, ramka, suratga olish) va Vercel Environment Variables'ga to'rtta R2_* qiymatini qo'shish — ularsiz production'da yuklash 502 qaytaradi.<br><code>rasmlar</code> jadvalida va R2'da 4 ta sinov rasmi qoldi (ovqat_yozuvi_id NULL) — o'chirish foydalanuvchi ruxsatini kutmoqda; <code>prisma generate</code> yoki lib/services konstantasi o'zgargach dev server qayta ishga tushirilishi kerak bo'lishi mumkin.</p>
+         <p class="handoff">S1'dan meros: API yo'llari <code>/api/taomlar</code>, <code>/api/taomlar/[id]</code>, <code>/api/ovqat-yozuvlari</code> tayyor; klient komponent<br>ishlatadigan sof hisob <code>lib/services/*-hisob.ts</code> da turadi — bazaga ulanadigan modulni klientga import qilma.<br>S2 ekranlari (E3 kamera, E6 AI tahlil, E7 AI natija tasdiq/tahrir, E9 jurnal,<br>E10 yozuv tahriri) uchun dizayn-tz.md va DESIGN.md tayyor, boshlashda shulardan foydalan.<br>Keyingi: 4-task — <code>POST /api/skan</code> (AI skan API yo'li). Rasm allaqachon <code>rasmlar</code> da, ID orqali keladi: <code>/tahlil/[rasmId]</code>.<br>3-task yopilishi uchun: telefonda <code>/kamera</code> ni HTTPS'da sinash (orqa kamera, ramka, suratga olish) va Vercel Environment Variables'ga to'rtta R2_* qiymatini qo'shish — ularsiz production'da yuklash 502 qaytaradi.<br>Doiradan tashqarida qolgan: tasdiqlanmay qolgan yetim rasmlarni tozalash va AI xatosida rasmni o'chirish (PRD 8-bo'lim) — 4–5-tasklarda; rasmni yozuvga bog'lash — 6-taskda.<br><code>GET /api/ovqat-yozuvlari</code> javobida <code>manba</code> hali chiqmaydi — AI tasdiq/jurnal tasklarida qo'shiladi.<br>Yangi migratsiya <code>prisma migrate dev --create-only</code> bilan yaratilib, SQL o'qilgach <code>prisma migrate deploy</code> bilan qo'llanadi.<br><code>rasmlar</code> jadvalida va R2'da 4 ta sinov rasmi qoldi (ovqat_yozuvi_id NULL) — o'chirish foydalanuvchi ruxsatini kutmoqda; <code>prisma generate</code> yoki lib/services konstantasi o'zgargach dev server qayta ishga tushirilishi kerak bo'lishi mumkin.</p>
        </div>
       <details class="qoshimcha">
          <summary>Qabul mezoni (6)</summary>
