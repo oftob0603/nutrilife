@@ -16,25 +16,24 @@ export type SkanNatijasi = SkanJavobi | { holat: "rasm_yoq" } | { holat: "limit"
  * foydalanuvchi tasdiqlagandan keyingina tushadi (DECISIONS 2026-09-13).
  * AI ishlamasa `AiXatosi` tashlaydi.
  */
-export async function skanQil({
-  rasmId,
-  matn,
-  vaznGramm = null,
-}: SkanKirish): Promise<SkanNatijasi> {
+export async function skanQil(
+  foydalanuvchiId: string,
+  { rasmId, matn, vaznGramm = null }: SkanKirish,
+): Promise<SkanNatijasi> {
   let rasm;
   if (rasmId) {
-    rasm = await rasmMazmuni(rasmId);
+    rasm = await rasmMazmuni(foydalanuvchiId, rasmId);
     if (!rasm) return { holat: "rasm_yoq" };
   }
 
-  if (!(await skanBandQil())) return { holat: "limit" };
+  if (!(await skanBandQil(foydalanuvchiId))) return { holat: "limit" };
 
   try {
     const xom = await aiTahlil({ rasm, matn, vaznGramm });
     // "Tanib bo'lmadi" ham hisobga kiradi — AI chaqirildi va xarajat bo'ldi.
     return skanJavobiniTekshir(xom, vaznGramm);
   } catch (xato) {
-    await skanQaytar().catch(() => {});
+    await skanQaytar(foydalanuvchiId).catch(() => {});
     throw xato;
   }
 }

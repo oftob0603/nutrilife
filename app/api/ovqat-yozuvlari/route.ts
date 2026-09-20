@@ -3,6 +3,7 @@ import {
   RasmBoglanmadi,
   yozuvYaratish,
 } from "@/lib/services/ovqat-yozuvlari";
+import { joriyFoydalanuvchiId, kirishKerak } from "@/lib/services/sessiya";
 import { bugunSana, kunlikJami, sanaYaroqli } from "@/lib/services/yozuv-hisob";
 import { yozuvKirishiniTekshir } from "@/lib/services/yozuv-kirish";
 
@@ -10,15 +11,21 @@ const UUID_QOLIPI = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{1
 
 /** Bir kunning yozuvlari va jami: `?sana=2026-09-20` (standart — bugun). */
 export async function GET(sorov: Request) {
+  const foydalanuvchiId = await joriyFoydalanuvchiId(sorov);
+  if (!foydalanuvchiId) return kirishKerak();
+
   const berilgan = new URL(sorov.url).searchParams.get("sana");
   const sana = berilgan && sanaYaroqli(berilgan) ? berilgan : bugunSana();
 
-  const yozuvlar = await kunlikYozuvlar(sana);
+  const yozuvlar = await kunlikYozuvlar(foydalanuvchiId, sana);
   return Response.json({ sana, yozuvlar, jami: kunlikJami(yozuvlar) });
 }
 
 /** Jurnalga yangi yozuv qo'shadi. */
 export async function POST(sorov: Request) {
+  const foydalanuvchiId = await joriyFoydalanuvchiId(sorov);
+  if (!foydalanuvchiId) return kirishKerak();
+
   let tana: Record<string, unknown>;
   try {
     tana = (await sorov.json()) as Record<string, unknown>;
@@ -37,7 +44,7 @@ export async function POST(sorov: Request) {
   }
 
   try {
-    const yozuv = await yozuvYaratish({
+    const yozuv = await yozuvYaratish(foydalanuvchiId, {
       taomId: typeof tana.taomId === "string" ? tana.taomId : null,
       ...tekshiruv.kirish,
       manba: tana.manba === "ai" ? "ai" : "qolda",

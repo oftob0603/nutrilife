@@ -4,11 +4,15 @@ import {
   RASM_CHEGARASI_MB,
   rasmTuri,
 } from "@/lib/services/rasm-hisob";
+import { joriyFoydalanuvchiId, kirishKerak } from "@/lib/services/sessiya";
 
 const KATTA = `Rasm ${RASM_CHEGARASI_MB} MB dan katta`;
 
 /** Ovqat rasmini qabul qiladi: multipart, `rasm` maydoni. Faqat rasm, hajmi chegaralangan. */
 export async function POST(sorov: Request) {
+  const foydalanuvchiId = await joriyFoydalanuvchiId(sorov);
+  if (!foydalanuvchiId) return kirishKerak();
+
   // Katta tana o'qilmasdan rad etiladi; multipart chegaralari uchun biroz zaxira.
   const uzunlik = Number(sorov.headers.get("content-length"));
   if (uzunlik > RASM_CHEGARASI + 64 * 1024) {
@@ -39,7 +43,7 @@ export async function POST(sorov: Request) {
   }
 
   try {
-    const rasm = await rasmSaqlash(baytlar, tur);
+    const rasm = await rasmSaqlash(foydalanuvchiId, baytlar, tur);
     return Response.json({ rasm }, { status: 201 });
   } catch (xato) {
     console.error("Rasm saqlanmadi:", xato instanceof Error ? xato.message : xato);

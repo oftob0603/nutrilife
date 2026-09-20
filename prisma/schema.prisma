@@ -40,8 +40,7 @@ model Taom {
 
 /// Jurnalga tushgan har bir ovqat (PRD.md, 7-bo'lim). Taom nomi va raqamlari yozuv
 /// ichiga ko'chiriladi — baza yozuvi keyin o'zgarsa ham jurnal o'sha kungi holatini
-/// saqlaydi. S1'da foydalanuvchi tizimi yo'q, shuning uchun `foydalanuvchiId`
-/// qotirilgan sinov qiymatini oladi va S3'da real ID ga almashadi.
+/// saqlaydi.
 /// Jadvalga faqat tasdiqlangan yozuv tushadi — tasdiqlanmagan AI natijasi saqlanmaydi.
 model OvqatYozuvi {
   id              String   @id @default(uuid())
@@ -58,15 +57,16 @@ model OvqatYozuvi {
   manba           String   @default("qolda")
   vaqt            DateTime @default(now())
 
-  taom    Taom?  @relation(fields: [taomId], references: [id], onDelete: SetNull)
-  rasmlar Rasm[]
+  foydalanuvchi Foydalanuvchi @relation(fields: [foydalanuvchiId], references: [id], onDelete: Cascade)
+  taom          Taom?         @relation(fields: [taomId], references: [id], onDelete: SetNull)
+  rasmlar       Rasm[]
 
   @@index([foydalanuvchiId, vaqt])
   @@map("ovqat_yozuvlari")
 }
 
 /// Hisob egasi va butun ilovaga tegishli sozlamalar (PRD.md, 7-bo'lim;
-/// onboarding-tz.md, 4-bo'lim). Ro'yxatdan o'tish S3'da yoziladi — ungacha jadval bo'sh.
+/// onboarding-tz.md, 4-bo'lim). Hisob Telegram initData bilan birinchi kirishda yaratiladi.
 model Foydalanuvchi {
   id            String    @id @default(uuid())
   telegramId    BigInt?   @unique @map("telegram_id")
@@ -80,9 +80,13 @@ model Foydalanuvchi {
   tasdiq18plus  DateTime? @map("tasdiq_18plus")
   yaratilgan    DateTime  @default(now())
 
-  profil        Profil?
-  vaznYozuvlari VaznYozuvi[]
-  rejalar       Reja[]
+  profil          Profil?
+  vaznYozuvlari   VaznYozuvi[]
+  rejalar         Reja[]
+  ovqatYozuvlari  OvqatYozuvi[]
+  rasmlar         Rasm[]
+  kunlikXulosalar KunlikXulosa[]
+  skanHisoblari   SkanHisobi[]
 
   @@map("foydalanuvchilar")
 }
@@ -145,8 +149,8 @@ model Reja {
 }
 
 /// Ovqat rasmlari. Rasm avval yuklanadi, yozuv esa tasdiqdan keyin yaratiladi —
-/// shuning uchun `ovqatYozuviId` bo'sh bo'lishi mumkin. `foydalanuvchiId`
-/// `ovqat_yozuvlari` dagi kabi hozircha matn, S3'da tashqi kalitga aylanadi.
+/// shuning uchun `ovqatYozuviId` bo'sh bo'lishi mumkin. Hisob o'chsa qator ham o'chadi,
+/// ombordagi faylni esa hisobni o'chirish servisi o'zi tozalashi kerak.
 model Rasm {
   id              String   @id @default(uuid())
   foydalanuvchiId String   @map("foydalanuvchi_id")
@@ -157,14 +161,15 @@ model Rasm {
   hajm            Int
   yaratilgan      DateTime @default(now())
 
-  ovqatYozuvi OvqatYozuvi? @relation(fields: [ovqatYozuviId], references: [id], onDelete: SetNull)
+  foydalanuvchi Foydalanuvchi @relation(fields: [foydalanuvchiId], references: [id], onDelete: Cascade)
+  ovqatYozuvi   OvqatYozuvi?  @relation(fields: [ovqatYozuviId], references: [id], onDelete: SetNull)
 
+  @@index([foydalanuvchiId])
   @@index([ovqatYozuviId])
   @@map("rasmlar")
 }
 
-/// Kunlik jami va Nutrition Score (S4). `foydalanuvchiId` hozircha matn, S3'da
-/// tashqi kalitga aylanadi.
+/// Kunlik jami va Nutrition Score (S4).
 model KunlikXulosa {
   id              String   @id @default(uuid())
   foydalanuvchiId String   @map("foydalanuvchi_id")
@@ -175,19 +180,22 @@ model KunlikXulosa {
   uglevod         Float
   nutritionScore  Int?     @map("nutrition_score")
 
+  foydalanuvchi Foydalanuvchi @relation(fields: [foydalanuvchiId], references: [id], onDelete: Cascade)
+
   @@unique([foydalanuvchiId, sana])
   @@map("kunlik_xulosa")
 }
 
 /// AI skan sarfi: har foydalanuvchining bir kundagi skanlari soni (PRD.md, 7-bo'lim).
-/// S3'gacha hamma so'rov bitta foydalanuvchi nomidan keladi, shuning uchun bu qator
-/// amalda umumiy kunlik chegara; S4'da FREE/PRO limitlari shu jadvalga tayanadi.
+/// S4'da FREE/PRO limitlari shu jadvalga tayanadi.
 model SkanHisobi {
   id              String   @id @default(uuid())
   foydalanuvchiId String   @map("foydalanuvchi_id")
   /// Toshkent vaqti bo'yicha kun.
   sana            DateTime @db.Date
   soni            Int      @default(0)
+
+  foydalanuvchi Foydalanuvchi @relation(fields: [foydalanuvchiId], references: [id], onDelete: Cascade)
 
   @@unique([foydalanuvchiId, sana])
   @@map("skan_hisobi")

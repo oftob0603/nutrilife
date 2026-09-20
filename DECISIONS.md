@@ -276,6 +276,19 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-20 · Interfeysda "Home" so'zi ishlatilmaydi — bo'lim va tugmalarda "Asosiy" ("Asosiyga qaytish"); prototipda yo'q dizayn elementi qo'shilmaydi (Home'da hafta strelkalari va "Bugunga qaytish" yo'q).**
 *Sabab:* qolgan yozuvlar o'zbekcha, "Home" bilan panel aralash tilda ko'rinadi (prototipda ham keyinroq "Asosiy" ga o'zgartirilgan); foydalanuvchi qarori.
 
+## 2026-09-20 — Telegram initData tekshiruvi
+
+**2026-09-20 · initData `auth_date` yaroqlilik muddati 24 soat.**
+*Sabab:* Imzoning o'zida muddat yo'q — o'g'irlangan initData abadiy ishlamasligi kerak; har ochilishda Telegram yangi initData beradi, kirgandan keyin esa sessiya (3-task) ushlab turadi, shuning uchun bu muddat foydalanuvchiga sezilmaydi.
+
+## 2026-09-20 — S1 merosini almashtirish
+
+**2026-09-20 · Egani aniqlash bitta joyda — `lib/services/sessiya.ts` dagi `joriyFoydalanuvchiId()`; servislar `foydalanuvchiId` ni har doim birinchi parametr sifatida oladi, o'zlari sessiyani o'qimaydi.**
+*Sabab:* 2-task (meros) sessiyadan (3-task) oldin keladi — bitta nuqta tufayli 3-taskda faqat shu funksiya almashadi; servislar sof va sinaladigan bo'lib qoladi.
+
+**2026-09-20 · `s1-sinov` yozuvlari o'chirilmadi, birinchi admin hisobiga ko'chirildi (foydalanuvchi qarori); `ovqat_yozuvlari`, `rasmlar`, `kunlik_xulosa`, `skan_hisobi` dagi `foydalanuvchi_id` `ON DELETE CASCADE` bilan tashqi kalit bo'ldi.**
+*Sabab:* Hech narsa yo'qolmaydi, egasi Telegram'dan kirganda yozuvlarini ko'radi; kaskad — 10-taskdagi "hisobni o'chirish" uchun (ombordagi fayllarni esa o'sha servis o'zi tozalashi kerak). Ma'lumot ko'chirish migratsiya fayliga kiritilmadi (Telegram ID repoga tushmasin) — migratsiya faqat DDL.
+
 ---
 
 ## OCHIQ SAVOLLAR

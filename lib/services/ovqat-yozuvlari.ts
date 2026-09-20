@@ -2,12 +2,6 @@ import { db } from "../db.ts";
 import { ombordanOchir } from "./ombor.ts";
 import { sanaOraligi, type Yozuv } from "./yozuv-hisob.ts";
 
-/**
- * S1'da foydalanuvchi tizimi yo'q (u S3 sprintida keladi), shuning uchun barcha
- * yozuv shu qotirilgan egaga yoziladi. S3'da real foydalanuvchi ID'si qo'yiladi.
- */
-export const S1_FOYDALANUVCHI = "s1-sinov";
-
 export type YangiYozuv = {
   taomId: string | null;
   taomNomi: string;
@@ -57,15 +51,18 @@ function korinishgaOtkaz({ taom, rasmlar, ...yozuv }: BazaYozuvi): Yozuv {
  * Jurnalga bitta yozuv qo'shadi. Rasm berilsa shu tranzaksiyada yozuvga bog'lanadi —
  * bog'lanmasa (`RasmBoglanmadi`) yozuv ham yaratilmaydi.
  */
-export async function yozuvYaratish({ rasmId, ...kirish }: YangiYozuv): Promise<Yozuv> {
+export async function yozuvYaratish(
+  foydalanuvchiId: string,
+  { rasmId, ...kirish }: YangiYozuv,
+): Promise<Yozuv> {
   const yozuv = await db.$transaction(async (tx) => {
     const { id } = await tx.ovqatYozuvi.create({
-      data: { ...kirish, foydalanuvchiId: S1_FOYDALANUVCHI },
+      data: { ...kirish, foydalanuvchiId },
       select: { id: true },
     });
     if (rasmId) {
       const { count } = await tx.rasm.updateMany({
-        where: { id: rasmId, foydalanuvchiId: S1_FOYDALANUVCHI, ovqatYozuviId: null },
+        where: { id: rasmId, foydalanuvchiId, ovqatYozuviId: null },
         data: { ovqatYozuviId: id },
       });
       if (count === 0) throw new RasmBoglanmadi();
@@ -76,11 +73,11 @@ export async function yozuvYaratish({ rasmId, ...kirish }: YangiYozuv): Promise<
 }
 
 /** Bir kunning yozuvlari, vaqti bo'yicha eskidan yangiga. */
-export async function kunlikYozuvlar(sana: string): Promise<Yozuv[]> {
+export async function kunlikYozuvlar(foydalanuvchiId: string, sana: string): Promise<Yozuv[]> {
   const { boshi, oxiri } = sanaOraligi(sana);
   const yozuvlar = await db.ovqatYozuvi.findMany({
     where: {
-      foydalanuvchiId: S1_FOYDALANUVCHI,
+      foydalanuvchiId,
       vaqt: { gte: boshi, lt: oxiri },
     },
     orderBy: { vaqt: "asc" },
@@ -90,9 +87,9 @@ export async function kunlikYozuvlar(sana: string): Promise<Yozuv[]> {
 }
 
 /** Bitta yozuv; topilmasa null. */
-export async function yozuvniOl(id: string): Promise<Yozuv | null> {
+export async function yozuvniOl(foydalanuvchiId: string, id: string): Promise<Yozuv | null> {
   const yozuv = await db.ovqatYozuvi.findFirst({
-    where: { id, foydalanuvchiId: S1_FOYDALANUVCHI },
+    where: { id, foydalanuvchiId },
     select: YOZUV_MAYDONLARI,
   });
   return yozuv ? korinishgaOtkaz(yozuv) : null;
@@ -105,24 +102,25 @@ export type YozuvOzgarishi = Omit<YangiYozuv, "taomId" | "manba" | "rasmId"> & {
 
 /** Yozuvni tahrirlaydi (E10); topilmasa null. Manba va rasm o'zgarmaydi. */
 export async function yozuvniYangilash(
+  foydalanuvchiId: string,
   id: string,
   ozgarish: YozuvOzgarishi,
 ): Promise<Yozuv | null> {
   const { count } = await db.ovqatYozuvi.updateMany({
-    where: { id, foydalanuvchiId: S1_FOYDALANUVCHI },
+    where: { id, foydalanuvchiId },
     data: ozgarish,
   });
-  return count === 0 ? null : yozuvniOl(id);
+  return count === 0 ? null : yozuvniOl(foydalanuvchiId, id);
 }
 
 /**
  * Yozuvni o'chiradi; topilmasa false. Bog'langan rasm ham bazadan va ombordan o'chadi —
  * aks holda u hech qayerda ko'rinmaydigan egasiz fayl bo'lib qoladi.
  */
-export async function yozuvniOchirish(id: string): Promise<boolean> {
+export async function yozuvniOchirish(foydalanuvchiId: string, id: string): Promise<boolean> {
   const kalitlar = await db.$transaction(async (tx) => {
     const yozuv = await tx.ovqatYozuvi.findFirst({
-      where: { id, foydalanuvchiId: S1_FOYDALANUVCHI },
+      where: { id, foydalanuvchiId },
       select: { rasmlar: { select: { kalit: true } } },
     });
     if (!yozuv) return null;

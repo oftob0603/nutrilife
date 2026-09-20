@@ -3,6 +3,7 @@ import {
   yozuvniOl,
   yozuvniYangilash,
 } from "@/lib/services/ovqat-yozuvlari";
+import { joriyFoydalanuvchiId, kirishKerak } from "@/lib/services/sessiya";
 import { yozuvKirishiniTekshir } from "@/lib/services/yozuv-kirish";
 
 const UUID_QOLIPI = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -14,14 +15,20 @@ function topilmadi() {
 }
 
 /** Bitta yozuv — tahrir ekrani (E10) uchun. */
-export async function GET(_sorov: Request, kontekst: Kontekst) {
+export async function GET(sorov: Request, kontekst: Kontekst) {
+  const foydalanuvchiId = await joriyFoydalanuvchiId(sorov);
+  if (!foydalanuvchiId) return kirishKerak();
+
   const { id } = await kontekst.params;
-  const yozuv = UUID_QOLIPI.test(id) ? await yozuvniOl(id) : null;
+  const yozuv = UUID_QOLIPI.test(id) ? await yozuvniOl(foydalanuvchiId, id) : null;
   return yozuv ? Response.json({ yozuv }) : topilmadi();
 }
 
 /** Yozuvni tahrirlaydi: nom, porsiya, kaloriya, makrolar, ovqat turi va (ixtiyoriy) vaqt. */
 export async function PATCH(sorov: Request, kontekst: Kontekst) {
+  const foydalanuvchiId = await joriyFoydalanuvchiId(sorov);
+  if (!foydalanuvchiId) return kirishKerak();
+
   const { id } = await kontekst.params;
   if (!UUID_QOLIPI.test(id)) return topilmadi();
 
@@ -46,13 +53,16 @@ export async function PATCH(sorov: Request, kontekst: Kontekst) {
     }
   }
 
-  const yozuv = await yozuvniYangilash(id, { ...tekshiruv.kirish, vaqt });
+  const yozuv = await yozuvniYangilash(foydalanuvchiId, id, { ...tekshiruv.kirish, vaqt });
   return yozuv ? Response.json({ yozuv }) : topilmadi();
 }
 
 /** Yozuvni bog'langan rasmi bilan birga o'chiradi. */
-export async function DELETE(_sorov: Request, kontekst: Kontekst) {
+export async function DELETE(sorov: Request, kontekst: Kontekst) {
+  const foydalanuvchiId = await joriyFoydalanuvchiId(sorov);
+  if (!foydalanuvchiId) return kirishKerak();
+
   const { id } = await kontekst.params;
-  const ochirildi = UUID_QOLIPI.test(id) ? await yozuvniOchirish(id) : false;
+  const ochirildi = UUID_QOLIPI.test(id) ? await yozuvniOchirish(foydalanuvchiId, id) : false;
   return ochirildi ? new Response(null, { status: 204 }) : topilmadi();
 }

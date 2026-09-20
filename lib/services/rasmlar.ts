@@ -1,17 +1,20 @@
 import { randomUUID } from "node:crypto";
 import { db } from "../db.ts";
 import { omborgaYoz, ombordanOchir, ombordanOqi, oqishHavolasi } from "./ombor.ts";
-import { S1_FOYDALANUVCHI } from "./ovqat-yozuvlari.ts";
 import { rasmKengaytmasi, type RasmTuri } from "./rasm-hisob.ts";
 
 export type Rasm = { id: string };
 
-/** Ombordagi kalit: `ovqat/<foydalanuvchi>/<yil>/<oy>/<uuid>.<kengaytma>`. */
-function yangiKalit(tur: RasmTuri): string {
+/**
+ * Ombordagi kalit: `ovqat/<foydalanuvchi>/<yil>/<oy>/<uuid>.<kengaytma>`. S3'gacha
+ * yuklangan rasmlarning kaliti `ovqat/s1-sinov/...` bo'lib qolgan — rasm doim bazadagi
+ * `kalit` ustuni orqali topiladi, kalit qayta yig'ilmaydi.
+ */
+function yangiKalit(foydalanuvchiId: string, tur: RasmTuri): string {
   const hozir = new Date();
   const yil = hozir.getUTCFullYear();
   const oy = String(hozir.getUTCMonth() + 1).padStart(2, "0");
-  return `ovqat/${S1_FOYDALANUVCHI}/${yil}/${oy}/${randomUUID()}.${rasmKengaytmasi(tur)}`;
+  return `ovqat/${foydalanuvchiId}/${yil}/${oy}/${randomUUID()}.${rasmKengaytmasi(tur)}`;
 }
 
 /**
@@ -19,16 +22,17 @@ function yangiKalit(tur: RasmTuri): string {
  * faqat ombordagi kaliti turadi. Yozuvga bog'lanish tasdiqdan keyin bo'ladi.
  */
 export async function rasmSaqlash(
+  foydalanuvchiId: string,
   baytlar: Uint8Array<ArrayBuffer>,
   tur: RasmTuri,
 ): Promise<Rasm> {
-  const kalit = yangiKalit(tur);
+  const kalit = yangiKalit(foydalanuvchiId, tur);
   await omborgaYoz(kalit, baytlar, tur);
 
   try {
     return await db.rasm.create({
       data: {
-        foydalanuvchiId: S1_FOYDALANUVCHI,
+        foydalanuvchiId,
         kalit,
         mime: tur,
         hajm: baytlar.byteLength,
@@ -44,10 +48,11 @@ export async function rasmSaqlash(
 
 /** Rasm baytlari va turi — AI tahlili uchun; rasm topilmasa null. */
 export async function rasmMazmuni(
+  foydalanuvchiId: string,
   id: string,
 ): Promise<{ baytlar: Uint8Array; mime: RasmTuri } | null> {
   const rasm = await db.rasm.findFirst({
-    where: { id, foydalanuvchiId: S1_FOYDALANUVCHI },
+    where: { id, foydalanuvchiId },
     select: { kalit: true, mime: true },
   });
   if (!rasm) return null;
@@ -58,9 +63,12 @@ export async function rasmMazmuni(
  * Yozuvga bog'lanmagan rasmni ombordan va bazadan o'chiradi — foydalanuvchi tahlilni
  * bekor qilganda egasiz qolmasin. Jurnalga tushgan rasm o'chirilmaydi ("boglangan").
  */
-export async function rasmOchirish(id: string): Promise<"ochirildi" | "yoq" | "boglangan"> {
+export async function rasmOchirish(
+  foydalanuvchiId: string,
+  id: string,
+): Promise<"ochirildi" | "yoq" | "boglangan"> {
   const rasm = await db.rasm.findFirst({
-    where: { id, foydalanuvchiId: S1_FOYDALANUVCHI },
+    where: { id, foydalanuvchiId },
     select: { kalit: true, ovqatYozuviId: true },
   });
   if (!rasm) return "yoq";
@@ -76,9 +84,9 @@ export async function rasmOchirish(id: string): Promise<"ochirildi" | "yoq" | "b
 }
 
 /** Rasmni o'qish uchun vaqtinchalik havola; rasm topilmasa null. */
-export async function rasmHavolasi(id: string): Promise<string | null> {
+export async function rasmHavolasi(foydalanuvchiId: string, id: string): Promise<string | null> {
   const rasm = await db.rasm.findFirst({
-    where: { id, foydalanuvchiId: S1_FOYDALANUVCHI },
+    where: { id, foydalanuvchiId },
     select: { kalit: true },
   });
   return rasm ? oqishHavolasi(rasm.kalit) : null;

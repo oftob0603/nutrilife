@@ -1,15 +1,19 @@
 import { HAVOLA_MUDDATI_SONIYA } from "@/lib/services/ombor";
 import { rasmHavolasi, rasmOchirish } from "@/lib/services/rasmlar";
+import { joriyFoydalanuvchiId, kirishKerak } from "@/lib/services/sessiya";
 
 const UUID_QOLIPI = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 /** Rasmni ko'rsatadi: ombordagi faylning vaqtinchalik imzoli havolasiga yo'naltiradi. */
 export async function GET(
-  _sorov: Request,
+  sorov: Request,
   kontekst: RouteContext<"/api/rasmlar/[id]">,
 ) {
+  const foydalanuvchiId = await joriyFoydalanuvchiId(sorov);
+  if (!foydalanuvchiId) return kirishKerak();
+
   const { id } = await kontekst.params;
-  const havola = UUID_QOLIPI.test(id) ? await rasmHavolasi(id) : null;
+  const havola = UUID_QOLIPI.test(id) ? await rasmHavolasi(foydalanuvchiId, id) : null;
 
   if (!havola) {
     return Response.json({ xato: "Rasm topilmadi" }, { status: 404 });
@@ -27,11 +31,14 @@ export async function GET(
 
 /** Tasdiqlanmay qolgan rasmni o'chiradi. Jurnalga tushgan rasm bu yo'l bilan o'chmaydi. */
 export async function DELETE(
-  _sorov: Request,
+  sorov: Request,
   kontekst: RouteContext<"/api/rasmlar/[id]">,
 ) {
+  const foydalanuvchiId = await joriyFoydalanuvchiId(sorov);
+  if (!foydalanuvchiId) return kirishKerak();
+
   const { id } = await kontekst.params;
-  const natija = UUID_QOLIPI.test(id) ? await rasmOchirish(id) : "yoq";
+  const natija = UUID_QOLIPI.test(id) ? await rasmOchirish(foydalanuvchiId, id) : "yoq";
 
   if (natija === "yoq") {
     return Response.json({ xato: "Rasm topilmadi" }, { status: 404 });

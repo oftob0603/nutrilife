@@ -135,17 +135,17 @@
 
   <header class="bosh">
     <div class="logo"><span>K</span><h1>Kalori — loyiha progressi</h1></div>
-    <p>Yangilangan: 2026-09-20 20:23 · manba: <code>sprints/</code> papkasi</p>
+    <p>Yangilangan: 2026-09-20 21:42 · manba: <code>sprints/</code> papkasi</p>
   </header>
 
   <section class="umumiy">
     <div class="umumiy-bosh">
       <h2>Umumiy holat</h2>
-      <span class="katta">34%</span>
+      <span class="katta">38%</span>
     </div>
-    <div class="chiziq"><div class="chiziq-ich" style="width:34%"></div></div>
+    <div class="chiziq"><div class="chiziq-ich" style="width:38%"></div></div>
     <div class="statlar">
-      <div class="stat"><b>21 / 61</b><span>task bajarildi</span></div>
+      <div class="stat"><b>23 / 61</b><span>task bajarildi</span></div>
       <div class="stat"><b>2 / 6</b><span>sprint tugallandi</span></div>
       <div class="stat"><b>S3</b><span>joriy sprint</span></div>
       <div class="stat"><b>5</b><span>ochiq savol</span></div>
@@ -312,30 +312,30 @@ Nutrition Score · to'liq ma'lumot modeli · dizayn nafisligi · uch til.</p>
          <p class="muted">Ro'yxatdan o'tish va rollar · skan limitlari · Nutrition Score · to'lov · bot.</p>
        </details>
     </article>
-    <article class="sprint boshlanmagan">
+    <article class="sprint jarayonda">
       <header class="sprint-bosh">
         <div class="sprint-nom">
           <span class="raqam">S3</span>
           <h3>auth</h3>
         </div>
-        <span class="belgi boshlanmagan">Boshlanmagan</span>
+        <span class="belgi jarayonda">Jarayonda</span>
       </header>
 
       <p class="savol">Kim kirdi?</p>
       <p class="maqsad">Foydalanuvchi Telegram akkaunti bilan kirsin va har rol faqat o'ziga</p>
 
-      <div class="chiziq" role="img" aria-label="0 / 12 task bajarildi">
-        <div class="chiziq-ich" style="width:0%"></div>
+      <div class="chiziq" role="img" aria-label="2 / 12 task bajarildi">
+        <div class="chiziq-ich" style="width:17%"></div>
       </div>
-      <p class="hisob"><strong>0 / 12</strong> task · 0%</p>
+      <p class="hisob"><strong>2 / 12</strong> task · 17%</p>
 
       <ul class="tasklar">
-        <li class="task ">
-          <span class="quti" aria-hidden="true"></span>
+        <li class="task bajarildi">
+          <span class="quti" aria-hidden="true">✓</span>
           <span class="task-matn">Telegram initData tekshiruvi: server tomonda imzo tasdiqlanadi, Telegram ID bo'yicha <code>foydalanuvchilar</code> yozuvi topiladi yoki yaratiladi. Bot tokeni Vercel Environment Variables'da</span>
         </li>
-        <li class="task ">
-          <span class="quti" aria-hidden="true"></span>
+        <li class="task bajarildi">
+          <span class="quti" aria-hidden="true">✓</span>
           <span class="task-matn">S1 merosini almashtirish: <code>lib/services/ovqat-yozuvlari.ts</code> dagi qotirilgan <code>S1_FOYDALANUVCHI</code> olib tashlanadi, servislar sessiyadagi foydalanuvchi ID'sini oladi; <code>ovqat_yozuvlari.foydalanuvchi_id</code> <code>foydalanuvchilar</code> ga tashqi kalit bo'ladi, <code>s1-sinov</code> yozuvlari esa birinchi admin hisobiga o'tkaziladi yoki o'chiriladi (o'chirish — faqat ruxsat bilan)</span>
         </li>
         <li class="task ">
@@ -379,10 +379,13 @@ Nutrition Score · to'liq ma'lumot modeli · dizayn nafisligi · uch til.</p>
           <span class="task-matn">&quot;Rasm mualliflari&quot; sahifasi (Profil/Sozlamalar ichida) — public/taomlar/MUALLIFLAR.md dagi muallif va litsenziyalarni ko'rsatadi; CC BY / BY-SA talabi, ommaga chiqishdan oldin shart</span>
         </li></ul>
 
-      
+      <div class="blok">
+         <h4>Hisobot</h4>
+         <ul class="hisobot"><li>2026-09-20: Telegram initData imzosi tekshiriladi va <code>foydalanuvchilar</code> yozuvi topiladi/yaratiladi (lib/services/telegram-initdata.ts, lib/services/foydalanuvchilar.ts, app/api/auth/telegram/route.ts)</li><li>2026-09-20: <code>S1_FOYDALANUVCHI</code> olib tashlandi — servislar <code>foydalanuvchiId</code> ni parametr sifatida oladi, API yo'llari egani <code>joriyFoydalanuvchiId()</code> dan oladi (vaqtincha bazadagi birinchi hisob); 4 jadvalda <code>foydalanuvchi_id</code> tashqi kalit bo'ldi; <code>s1-sinov</code> yozuvlari (4 yozuv, 12 rasm, 1 skan hisobi) birinchi admin hisobiga ko'chirildi (lib/services/sessiya.ts, lib/services/ovqat-yozuvlari.ts, lib/services/rasmlar.ts, lib/services/skan-hisobi.ts, lib/services/skan.ts, app/api/ovqat-yozuvlari/, app/api/rasmlar/, app/api/skan/route.ts, prisma/schema.prisma, prisma/migrations/20260920163418_s3_foydalanuvchi_tashqi_kalit/)</li></ul>
+       </div>
       <div class="blok">
          <h4>Handoff</h4>
-         <p class="handoff">Onboarding oqimi (O1-O13) uchun onboarding-tz.md, profil va sozlamalar ekranlari<br>(F1-F5) uchun profil-tz.md tayyor, boshlashda shulardan foydalan.</p>
+         <p class="handoff">Keyingi: 3-task — sessiya. <code>lib/services/sessiya.ts</code> dagi <code>joriyFoydalanuvchiId(sorov)</code> VAQTINCHA bazadagi birinchi hisobni (birinchi admin) qaytaradi — 3-taskda faqat shu funksiyaning ichi sessiyani o'qishga almashadi, servis va route'lar o'zgarmaydi; vaqtinchalik yo'l lokal dev uchun zaxira bo'lib qolishi mumkin. Hozircha hech bir sahifa <code>/api/auth/telegram</code> ni chaqirmaydi.<br>Tekshirilmagan: haqiqiy Telegram ichidan kelgan initData (faqat o'zimiz imzolagan soxta initData sinaldi) va production'dagi <code>/api/auth/telegram</code> — 3-taskda Telegram ichidan ochib sinaladi; parallel so'rovdagi P2002 tarmog'i (<code>foydalanuvchilar.ts</code>) faqat kodda.<br>3-task uchun ochiq savollar: initData klientda qayerdan o'qiladi — <code>telegram-web-app.js</code> skripti (to'liq SDK ulanishi S5'da) yoki URL hash'dagi <code>tgWebAppData</code>; ilova &quot;sessiya tugadi&quot; javobini olsa jimgina qayta kirishga urinadi, bo'lmasa &quot;Ilovani qayta oching&quot; ko'rsatadi (foydalanuvchi bilan kelishilgan); Telegram'dan tashqarida initData yo'q — lokal dev rejimi uchun yechim kerak.<br>Sinov: <code>TELEGRAM_BOT_TOKEN</code> <code>.env</code> va Vercel'da bor; sinov qatori (telegram_id = 1) ruxsat bilan o'chirildi. Sinov kuni kompyuter DNS'i beqaror edi — Railway'ga ulanish uzilib turdi (P1001, SocketTimeout, MCP'da ETIMEDOUT), bu ilova nuqsoni emas.<br>Onboarding oqimi (O1-O13) uchun onboarding-tz.md, profil va sozlamalar ekranlari (F1-F5) uchun profil-tz.md tayyor.<br>Birinchi admin hisobi: <code>foydalanuvchilar</code> da bitta qator (id <code>02756029-b206-4794-a927-99d6318dee00</code>, egasining Telegram ID'si bilan) — S1–S2 sinov yozuvlari shu hisobda; 6-taskda (rollar) shu hisobga <code>admin</code> roli beriladi. Omborda (R2) eski rasmlar kaliti <code>ovqat/s1-sinov/...</code> bo'lib qolgan, yangilari <code>ovqat/&lt;foydalanuvchi-id&gt;/...</code> — rasm doim bazadagi <code>kalit</code> ustuni orqali topiladi.<br>Sahifalar (app/page.tsx, jurnal, yozuv/[id], qoshildi/[id], tahlil/[rasmId]) o'z API'siga server tomondan <code>fetch(apiAsos() + ...)</code> bilan murojaat qiladi — bu so'rovlar brauzer cookie'sini o'zi olib o'tmaydi; 3-taskda sessiya cookie'da bo'lsa, uni shu so'rovlarga uzatish (yoki sahifalarda servisni to'g'ridan-to'g'ri chaqirish) hal qilinishi kerak.<br>2-taskda sinalmagan: <code>/api/skan</code> (haqiqiy AI chaqiruvi pul sarflaydi — yangi <code>foydalanuvchiId</code> parametri faqat tsc bilan tekshirildi); 401 &quot;Kirish talab qilinadi&quot; tarmog'i (bazada hisob bor, shuning uchun chaqirilmadi). To'liq egalik himoyasi sinovi — 7-taskda.<br>Dev va production bitta Railway bazasida: migratsiya qo'yilgan zahoti eski production kodi buziladi (2-taskda production Home/Jurnal deploy'gacha bo'sh ko'rindi, yozish FK xatosi berdi) — baza sxemasi o'zgaradigan taskdan keyin darhol commit/push qilinadi.</p>
        </div>
       <details class="qoshimcha">
          <summary>Qabul mezoni (7)</summary>

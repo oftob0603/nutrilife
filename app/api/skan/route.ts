@@ -1,4 +1,5 @@
 import { AiXatosi } from "@/lib/services/ai";
+import { joriyFoydalanuvchiId, kirishKerak } from "@/lib/services/sessiya";
 import { skanQil } from "@/lib/services/skan";
 import { MATN_CHEGARASI, VAZN_CHEGARASI } from "@/lib/services/skan-hisob";
 
@@ -12,6 +13,9 @@ const UUID_QOLIPI = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{1
  * ixtiyoriy `vaznGramm`. Javob: `{ holat: "tayyor", natija }` yoki `{ holat: "tanib_bolmadi" }`.
  */
 export async function POST(sorov: Request) {
+  const foydalanuvchiId = await joriyFoydalanuvchiId(sorov);
+  if (!foydalanuvchiId) return kirishKerak();
+
   let tana: Record<string, unknown>;
   try {
     tana = (await sorov.json()) as Record<string, unknown>;
@@ -44,7 +48,7 @@ export async function POST(sorov: Request) {
   }
 
   try {
-    const javob = await skanQil({ rasmId, matn: matn || undefined, vaznGramm });
+    const javob = await skanQil(foydalanuvchiId, { rasmId, matn: matn || undefined, vaznGramm });
     if (javob.holat === "rasm_yoq") {
       return Response.json({ xato: "Rasm topilmadi" }, { status: 404 });
     }
