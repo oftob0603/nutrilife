@@ -7,11 +7,11 @@ export default function TopilmadiSahifasi() {
       <div className="flex flex-col gap-2">
         <h1 className="text-sarlavha">Sahifa topilmadi</h1>
         <p className="text-asosiy text-matn-2">
-          Bu havola eskirgan yoki noto&apos;g&apos;ri yozilgan. Home&apos;dan davom
+          Bu havola eskirgan yoki noto&apos;g&apos;ri yozilgan. Asosiy sahifadan davom
           eting.
         </p>
       </div>
-      <TugmaHavola href="/">Home&apos;ga qaytish</TugmaHavola>
+      <TugmaHavola href="/">Asosiyga qaytish</TugmaHavola>
     </main>
   );
 }

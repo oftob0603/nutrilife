@@ -222,7 +222,7 @@ export default async function JurnalSahifasi({ searchParams }: PageProps<"/jurna
         </div>
       </main>
 
-      <QoshishPaneli />
+      <QoshishPaneli faol="jurnal" />
     </>
   );
 }

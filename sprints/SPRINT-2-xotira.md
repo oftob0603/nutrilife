@@ -16,7 +16,7 @@ marta boshidan oxirigacha o'tsin.
 - [x] Jurnal (E9) sahifasi: kun yozuvlari ovqat turi bo'yicha guruhlanadi (nonushta / tushlik / kechki / gazak — S1'da yozuvga yozilyapti), tepada kunlik jami, har yozuvda rasm, vaqt va makrolar. Mavjud `GET /api/ovqat-yozuvlari?sana=` ishlatiladi; Home'dagi "Bugungi ovqatlar" sarlavhasiga "Hammasi" havolasi qo'shiladi
 - [x] Yozuv amallari (E10): tahrirlash, o'chirish, nusxalash, porsiyani o'zgartirish — `PATCH` va `DELETE /api/ovqat-yozuvlari/[id]`. Home va jurnaldagi yozuv qatori (`YozuvQatori`) bosiladigan bo'ladi
 - [x] Mavzu tizimi: yorug', qorong'i va tizim. Tizim mavzusi S1'dan beri ishlaydi (tokenlar `prefers-color-scheme` bo'yicha almashadi); bu yerda qo'lda tanlash va tanlovni eslab qolish qo'shiladi
-- [ ] Home to'ldiriladi (E1): haftalik kun tanlagich — tanlangan kun `?sana=` orqali yuklanadi; pastki navigatsiya paneli Home · [+] · Jurnal ko'rinishida, suzuvchi "+" panel markaziga ko'chadi va oqim ichidagi ekranlarda (E5, E8) yashiriladi (dizayn-tz 2-bo'lim)
+- [x] Home to'ldiriladi (E1): haftalik kun tanlagich — tanlangan kun `?sana=` orqali yuklanadi; pastki navigatsiya paneli Home · [+] · Jurnal ko'rinishida, suzuvchi "+" panel markaziga ko'chadi va oqim ichidagi ekranlarda (E5, E8) yashiriladi (dizayn-tz 2-bo'lim)
 
 ## Qabul mezoni
 
@@ -41,11 +41,12 @@ Ro'yxatdan o'tish va rollar · skan limitlari · Nutrition Score · to'lov · bo
 - 2026-09-20: 5-task yopildi — AI tahlil ekrani (E6, kutish/natija/taniy olmadik/xato holatlari), egasiz rasm o'chirish (DELETE /api/rasmlar/[id]) va "AI taxmini" belgisi qo'shildi (app/_components/Tahlil.tsx, app/_components/AiBelgisi.tsx, app/tahlil/[rasmId]/page.tsx, app/api/rasmlar/[id]/route.ts, lib/services/rasmlar.ts)
 - 2026-09-20: 6–8-tasklar yopildi — E7 tasdiq/tahrir formasi va rasm bog'lash, jurnal (E9) sana va guruhlar bo'yicha, yozuv tahrirlash/o'chirish/nusxalash (E10) lokal dev'da sinovdan o'tdi (app/_components/Tahlil.tsx, app/_components/YozuvFormasi.tsx, app/jurnal/page.tsx, app/yozuv/[id]/page.tsx, app/_components/YozuvTahriri.tsx, app/api/ovqat-yozuvlari/route.ts, app/api/ovqat-yozuvlari/[id]/route.ts, lib/services/yozuv-forma.ts, lib/services/yozuv-kirish.ts, lib/services/ovqat-yozuvlari.ts, lib/services/yozuv-hisob.ts)
 - 2026-09-20: 9-task yopildi — mavzu tizimi (yorug' / qorong'i / tizim), localStorage saqlash va <head> inline skript bilan gidratsiyasiz qo'llash, kartalar `border-karta-chegara`ga o'tdi (lib/mavzu.ts, app/_components/MavzuTanlagich.tsx, app/layout.tsx, app/globals.css)
+- 2026-09-20: 10-task yopildi — Home'da haftalik kun tanlagich (KunTanlagich) va pastki navigatsiya paneli (Asosiy · [+] · Jurnal) qo'shildi, S2 ning 10 taski yopildi (app/page.tsx, app/_components/KunTanlagich.tsx, app/_components/QoshishPaneli.tsx, app/jurnal/page.tsx, lib/services/yozuv-hisob.ts)
 
 ## Handoff
 
-Keyingi: 10-task — Home to'ldiriladi (E1): haftalik kun tanlagich va pastki navigatsiya paneli. 6–9-tasklar yopilgan; 6–8 production'da, 9-task push qilinmoqda.
-Tekshirilmagan: rasmli yozuvni o'chirishda rasmning R2'dan o'chishi (sinov ruxsati yo'qligi sababli); saqlash xato holatlari (E7, E10) va jurnal xato holati faqat kodda; mavzu: E7 yorug' mavzuda ochilmadi (E10 bilan bitta YozuvFormasi, u ko'rilgan), boshqa tabdan `storage` hodisasi orqali sinxronlash sinalmadi.
+Keyingi: S2 ning barcha 10 taski yopildi — keyingi sessiya S3 (auth) sprint faylini o'qishdan boshlanadi. Undan oldin foydalanuvchi telefonda production'da bir marta "rasm -> tasdiqlash -> jurnal" oqimini o'tkazib ko'rishi kerak (S2 qabul mezoni; 6–10-tasklar asosan lokal dev'da va brauzer panelida sinalgan).
+Tekshirilmagan: rasmli yozuvni o'chirishda rasmning R2'dan o'chishi (sinov ruxsati yo'qligi sababli); saqlash xato holatlari (E7, E10) va jurnal xato holati faqat kodda; mavzu: E7 yorug' mavzuda ochilmadi (E10 bilan bitta YozuvFormasi, u ko'rilgan), boshqa tabdan `storage` hodisasi orqali sinxronlash sinalmadi; 10-task: kun tanlagichdagi kelajak kunlarning o'chgan kataklari (sinov kuni yakshanba edi — haftada kelajak kun yo'q) va bugungi bo'sh holatdagi "Birinchi ovqatni qo'shish" tugmasi ekranda ko'rilmadi; telefondagi haqiqiy safe-area chekinishi sinalmadi.
 Bazada sinov yozuvlari ("Osh 200 g · 300 kkal", "Non 80 g · 212 kkal" — ikkalasi AI) va 11 ta egasiz sinov rasmi qoldi — rasmlarni o'chirish hamon foydalanuvchi ruxsatini kutmoqda. "Non" yozuvi ilovadan o'chirilsa, rasmli o'chirish yo'li ham sinaladi.
 Kuzatuv: mavjud bo'lmagan yozuvga birinchi `DELETE` bir marta 500 qaytardi, keyingi 10+ urinishda barqaror 404 — qayta chaqirib bo'lmadi, sababi noma'lum.
 Reja bo'yicha qoldirilgan (foydalanuvchi tasdiqlagan): E7'dagi "tahrir qilingani" bayrog'i (ustun + migratsiya, S6'da); E9'da chapga surib tezkor amallar; o'chirgandan keyingi 5 soniyalik "Bekor qilish" (yumshoq o'chirish kerak) — hozir faqat tasdiq paneli.
@@ -54,6 +55,8 @@ Sinov asbobi xususiyati: Claude brauzer paneli kadr chizmaguncha (skrinshot olin
 AI aniqligi kuzatuvi: Haiku aralash ovqatni ("ikki dona tuxum va non" -> 250 g, 7,5 g uglevod) bitta 100 g ga keltirishda xato qiladi; imlo xatolari ham bor ("gushti"). Gemini'ga o'tishda 20 taomlik aniqlik testida baholanadi.
 Mavzu: `MavzuTanlagich` (app/_components/) tayyor, lekin hech bir ekranga qo'yilmagan — S3'da Sozlamalar (F2) ga ulanadi va tanlov `foydalanuvchilar.mavzu` ga ham yoziladi; ungacha ilova faqat tizim mavzusiga ergashadi. Sinash uchun vaqtinchalik sahifaga qo'yib ko'riladi (commitga kiritilmaydi) yoki konsolda `localStorage.setItem('nutrilife-mavzu','qorongi')`.
 Rang qoidasi: karta chegarasi uchun `border-karta-chegara` (qorong'ida shaffof), kiritish maydoni va segment uchun `border-chegara`; panel pardasi uchun `bg-parda` — `bg-siyoh/NN` ishlatma (qorong'ida `--siyoh` och rang). globals.css da qorong'i tokenlar ikki blokda takrorlanadi — birini o'zgartirsang ikkinchisini ham o'zgartir.
+Ochiq qoldiq (S1'dan): Home xato kartasida dizayn-tz'dagi "Qayta urinish" tugmasi yo'q (app/page.tsx, XatoKartasi) — 10-task doirasiga kirmadi. Kuzatuv: 10-task sinovida Home bir marta "Ma'lumotni yuklab bo'lmadi" ko'rsatdi, API o'sha payt 200 qaytarayotgan edi, qayta yuklashda ishladi — ehtimol dev server qayta kompilyatsiyasi; qayta chaqirib bo'lmadi.
+Navigatsiya: pastki panel QoshishPaneli ichida (`faol` parametri) va faqat E1/E9 da chiziladi. S4'da panel Asosiy · [+] · Progress · Profil bo'ladi (dizayn-tz 2-bo'lim) — Jurnal bo'limi o'shanda paneldan chiqadi, Home'dagi "Hammasi" orqali ochiladi.
 
 ---
 

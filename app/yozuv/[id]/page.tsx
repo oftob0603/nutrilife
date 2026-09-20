@@ -19,9 +19,9 @@ async function yozuvniYukla(id: string): Promise<Yozuv | null> {
   return yozuv;
 }
 
-/** Kelingan ekran: faqat Home yoki jurnal (sanasi bilan) — boshqa manzil qabul qilinmaydi. */
+/** Kelingan ekran: faqat Home yoki jurnal (ikkalasi ham sanasi bilan) — boshqa manzil qabul qilinmaydi. */
 function qaytishManzili(qiymat: unknown): string {
-  return typeof qiymat === "string" && /^\/jurnal(\?sana=\d{4}-\d{2}-\d{2})?$/.test(qiymat)
+  return typeof qiymat === "string" && /^\/(jurnal)?(\?sana=\d{4}-\d{2}-\d{2})?$/.test(qiymat)
     ? qiymat
     : "/";
 }

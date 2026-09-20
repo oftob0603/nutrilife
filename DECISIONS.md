@@ -271,6 +271,11 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-20 · Mavzu tanlovi cookie'da emas, localStorage'da saqlanadi va <head> dagi inline skript bilan qo'llanadi. `MavzuTanlagich` S2'da ekranga qo'yilmadi, S3'da Sozlamalarga ulanadi (foydalanuvchi qarori).**
 *Sabab:* Cookie ildiz layout'da o'qilsa barcha sahifa majburan dinamik bo'ladi (/kamera va 404 hozir statik), foydalanuvchi uchun ko'rinishda farq yo'q; S3'da tanlov foydalanuvchilar.mavzu ga ham yoziladi, localStorage tez ochilish uchun kesh bo'lib qoladi.
 
+## 2026-09-20 — Home va navigatsiya
+
+**2026-09-20 · Interfeysda "Home" so'zi ishlatilmaydi — bo'lim va tugmalarda "Asosiy" ("Asosiyga qaytish"); prototipda yo'q dizayn elementi qo'shilmaydi (Home'da hafta strelkalari va "Bugunga qaytish" yo'q).**
+*Sabab:* qolgan yozuvlar o'zbekcha, "Home" bilan panel aralash tilda ko'rinadi (prototipda ham keyinroq "Asosiy" ga o'zgartirilgan); foydalanuvchi qarori.
+
 ---
 
 ## OCHIQ SAVOLLAR

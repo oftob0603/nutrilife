@@ -81,6 +81,20 @@ export function qoshniSana(sana: string, kun: number): string {
   return new Date(vaqt).toISOString().slice(0, 10);
 }
 
+const HAFTA_KUNLARI = ["Du", "Se", "Ch", "Pa", "Ju", "Sh", "Ya"] as const;
+
+export type HaftaKuni = { sana: string; nomi: string; kun: number };
+
+/** Sana joylashgan haftaning yetti kuni, dushanbadan yakshanbagacha (Home'dagi kun tanlagich). */
+export function haftaKunlari(sana: string): HaftaKuni[] {
+  // getUTCDay: yakshanba = 0. Dushanbadan sanash uchun bir kunga suriladi.
+  const dushanbadan = (new Date(`${sana}T00:00:00.000Z`).getUTCDay() + 6) % 7;
+  return HAFTA_KUNLARI.map((nomi, i) => {
+    const kunSanasi = qoshniSana(sana, i - dushanbadan);
+    return { sana: kunSanasi, nomi, kun: Number(kunSanasi.slice(8)) };
+  });
+}
+
 // O'zbekiston vaqti — UTC+5, yozgi vaqt yo'q. Server qaysi mintaqada turishidan
 // qat'i nazar "bugun" bir xil hisoblansin uchun siljish qo'lda qo'shiladi.
 const SILJISH_MS = 5 * 60 * 60 * 1000;

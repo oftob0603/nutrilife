@@ -1,18 +1,17 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Tugma } from "@/app/_components/Tugma";
 import { rasmniYukla } from "@/lib/services/rasm-yuklash";
 
 const PANELNI_OCH = "qoshish-panelini-och";
 
-/** Bo'sh holatdagi "Ovqat qo'shish" — shu sahifadagi `QoshishPaneli` ni (E2) ochadi. */
-export function QoshishTugmasi() {
+/** Bo'sh holatdagi tugma — shu sahifadagi `QoshishPaneli` ni (E2) ochadi. */
+export function QoshishTugmasi({ children = "Ovqat qo'shish" }: { children?: React.ReactNode }) {
   return (
-    <Tugma onClick={() => window.dispatchEvent(new Event(PANELNI_OCH))}>
-      Ovqat qo&apos;shish
-    </Tugma>
+    <Tugma onClick={() => window.dispatchEvent(new Event(PANELNI_OCH))}>{children}</Tugma>
   );
 }
 
@@ -87,12 +86,51 @@ function Qator({
   );
 }
 
+/** Pastki paneldagi bitta bo'lim: nishon va ostida yozuv. Faol bo'lim ostida --fon rangli joy. */
+function Bolim({
+  href,
+  nomi,
+  faol,
+  children,
+}: {
+  href: string;
+  nomi: string;
+  faol: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      aria-current={faol ? "page" : undefined}
+      className={`flex min-h-11 min-w-0 flex-1 flex-col items-center gap-0.5 rounded-full py-2 ${
+        faol ? "bg-fon text-siyoh" : "text-matn-2"
+      }`}
+    >
+      <svg
+        viewBox="0 0 24 24"
+        width="20"
+        height="20"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        {children}
+      </svg>
+      <span className={`text-[11px] leading-none ${faol ? "font-medium" : ""}`}>{nomi}</span>
+    </Link>
+  );
+}
+
 /**
- * E2 — ovqat qo'shish manbasini tanlash paneli (dizayn-tz E2). Kamera E3 ekranini
- * ochadi; galereya tizim rasm tanlagichini ochadi va tanlangan rasm yuklangach
- * tahlil sahifasiga o'tadi.
+ * Suzuvchi pastki panel (dizayn-tz 2-bo'lim; S2'da Asosiy · [+] · Jurnal) va "+" ochadigan
+ * E2 — ovqat qo'shish manbasini tanlash paneli. Kamera E3 ekranini ochadi; galereya tizim
+ * rasm tanlagichini ochadi va tanlangan rasm yuklangach tahlil sahifasiga o'tadi.
+ * Faqat E1 va E9 da chiziladi — oqim ichidagi ekranlarda panel yo'q.
  */
-export function QoshishPaneli() {
+export function QoshishPaneli({ faol }: { faol: "asosiy" | "jurnal" }) {
   const router = useRouter();
   const [ochiq, setOchiq] = useState(false);
   const [yuklanmoqda, setYuklanmoqda] = useState(false);
@@ -137,26 +175,41 @@ export function QoshishPaneli() {
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setOchiq(true)}
-        aria-label="Ovqat qo'shish"
-        aria-expanded={ochiq}
-        className="fixed bottom-6 right-[max(1rem,calc(50%-14rem))] flex size-14 items-center justify-center rounded-full bg-siyoh text-fon shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-transform active:scale-[0.98]"
-      >
-        <svg
-          viewBox="0 0 24 24"
-          width="24"
-          height="24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          aria-hidden="true"
+      {/* E2 ochiq bo'lganda panel yashiriladi — foydalanuvchi oqimdan tasodifan chiqib ketmasin. */}
+      {!ochiq && (
+        <nav
+          aria-label="Asosiy navigatsiya"
+          className="fixed inset-x-4 bottom-[max(1.5rem,env(safe-area-inset-bottom))] mx-auto flex max-w-xs items-center gap-2 rounded-full border border-chegara bg-karta px-3 py-1 shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
         >
-          <path d="M12 5v14M5 12h14" />
-        </svg>
-      </button>
+          <Bolim href="/" nomi="Asosiy" faol={faol === "asosiy"}>
+            <path d="M15.6 2.7a10 10 0 1 0 5.7 5.7" />
+            <circle cx="12" cy="12" r="2" />
+            <path d="M13.4 10.6 19 5" />
+          </Bolim>
+          <button
+            type="button"
+            onClick={() => setOchiq(true)}
+            aria-label="Ovqat qo'shish"
+            className="flex size-14 shrink-0 items-center justify-center rounded-full bg-siyoh text-fon shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-transform active:scale-[0.98]"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="24"
+              height="24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              aria-hidden="true"
+            >
+              <path d="M12 5v14M5 12h14" />
+            </svg>
+          </button>
+          <Bolim href="/jurnal" nomi="Jurnal" faol={faol === "jurnal"}>
+            <path d="M3 6h.01M3 12h.01M3 18h.01M8 6h13M8 12h13M8 18h13" />
+          </Bolim>
+        </nav>
+      )}
 
       {ochiq && (
         <div

@@ -83,7 +83,7 @@ export default async function QoshildiSahifasi({
       </div>
 
       <div className="flex w-full flex-col gap-2">
-        <TugmaHavola href="/">Home&apos;ga qaytish</TugmaHavola>
+        <TugmaHavola href="/">Asosiyga qaytish</TugmaHavola>
         <TugmaHavola korinish="uchinchi" href="/taomlar">
           Yana qo&apos;shish
         </TugmaHavola>
