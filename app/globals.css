@@ -15,6 +15,15 @@
   --karta-chegara: var(--chegara);
   /* Panel ortidagi parda — ikkala mavzuda bir xil: --siyoh qorong'ida och rang bo'lib qoladi. */
   --parda: rgba(11, 11, 12, 0.4);
+  /*
+   * O1 (onboarding intro) istisnosi — DESIGN.md, 1-bo'lim. Poster doim och pastel rangda,
+   * shuning uchun bu ranglar mavzuga qarab o'zgarmaydi va boshqa hech qayerda ishlatilmaydi.
+   */
+  --o1-fon: #edf6e4;
+  --o1-panel: #f0fdf4;
+  --o1-chegara: #dcfce7;
+  --o1-matn: #0f1c14;
+  --o1-matn-2: #3f5347;
   /* Brauzerning o'z elementlari (vaqt maydoni, scroll chizig'i) ham mavzuga ergashsin. */
   color-scheme: light;
 }
@@ -89,6 +98,11 @@
   --color-xato: var(--xato);
   --color-karta-chegara: var(--karta-chegara);
   --color-parda: var(--parda);
+  --color-o1-fon: var(--o1-fon);
+  --color-o1-panel: var(--o1-panel);
+  --color-o1-chegara: var(--o1-chegara);
+  --color-o1-matn: var(--o1-matn);
+  --color-o1-matn-2: var(--o1-matn-2);
   --font-sans: var(--font-inter);
   --font-display: var(--font-inter-tight);
 }

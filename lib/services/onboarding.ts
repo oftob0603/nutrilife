@@ -22,7 +22,6 @@ export async function onboardingHolati(foydalanuvchiId: string): Promise<Onboard
   const foydalanuvchi = await db.foydalanuvchi.findUnique({
     where: { id: foydalanuvchiId },
     select: {
-      til: true,
       birliklar: true,
       profil: true,
       // Onboardingdagi vazn — eng birinchi yozuv (progress grafigining boshlang'ich nuqtasi).
@@ -34,7 +33,6 @@ export async function onboardingHolati(foydalanuvchiId: string): Promise<Onboard
   const { profil } = foydalanuvchi;
   const vaznYozuvi = foydalanuvchi.vaznYozuvlari[0] ?? null;
   const javoblar: Javoblar = {
-    til: foydalanuvchi.til,
     birliklar: foydalanuvchi.birliklar,
     ism: profil?.ism ?? null,
     maqsad: profil?.maqsad ?? null,
@@ -56,7 +54,7 @@ export async function onboardingHolati(foydalanuvchiId: string): Promise<Onboard
   };
 }
 
-/** O4'da tanlangan maqsad — O6 tekshiruvi shunga tayanadi. */
+/** 3-qadamda tanlangan maqsad — o'lchovlar (5-qadam) tekshiruvi shunga tayanadi. */
 export async function tanlanganMaqsad(foydalanuvchiId: string): Promise<string | null> {
   const profil = await db.profil.findUnique({
     where: { foydalanuvchiId },
@@ -90,19 +88,16 @@ export async function qadamniSaqlash(foydalanuvchiId: string, javob: QadamJavobi
 
     switch (javob.qadam) {
       case 2:
-        await tx.foydalanuvchi.update({ where: { id: foydalanuvchiId }, data: { til: javob.til } });
-        break;
-      case 3:
         profil.ism = javob.ism;
         break;
-      case 4:
+      case 3:
         profil.maqsad = javob.maqsad;
         break;
-      case 5:
+      case 4:
         profil.jins = javob.jins;
         profil.yosh = javob.yosh;
         break;
-      case 6: {
+      case 5: {
         profil.boyi = javob.boyi;
         await tx.foydalanuvchi.update({
           where: { id: foydalanuvchiId },
@@ -119,17 +114,17 @@ export async function qadamniSaqlash(foydalanuvchiId: string, javob: QadamJavobi
         else await tx.vaznYozuvi.create({ data: { foydalanuvchiId, ...vazn } });
         break;
       }
-      case 7:
+      case 6:
         profil.faollik = javob.faollik;
         break;
-      case 8:
-        profil.ovqatAfzalliklari = javob.ovqatAfzalliklari;
+      // O'tkazib yuborilsa (7–9) avvalgi javob (bo'lsa) o'zgarmaydi.
+      case 7:
+        if (javob.ovqatAfzalliklari) profil.ovqatAfzalliklari = javob.ovqatAfzalliklari;
         break;
-      case 9:
-        // O'tkazib yuborilsa avvalgi javob (bo'lsa) o'zgarmaydi.
+      case 8:
         if (javob.ovqatlanishOdati) profil.ovqatlanishOdati = javob.ovqatlanishOdati;
         break;
-      case 10:
+      case 9:
         if (javob.motivatsiya) profil.motivatsiya = javob.motivatsiya;
         break;
     }

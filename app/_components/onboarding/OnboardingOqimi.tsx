@@ -1,13 +1,14 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Tugma } from "@/app/_components/Tugma";
+import { Gildirak, GildirakMaydoni } from "@/app/_components/onboarding/Gildirak";
 import { OnboardingMaydoni } from "@/app/_components/onboarding/OnboardingMaydoni";
-import { Variantlar } from "@/app/_components/onboarding/Variantlar";
+import { SegmentTanlagich, Variantlar } from "@/app/_components/onboarding/Variantlar";
 import {
   afzallikBosildi,
-  birlikOzgardi,
   formaYarat,
   qadamniTayyorla,
   type Forma,
@@ -15,96 +16,104 @@ import {
 } from "@/lib/services/onboarding-forma";
 import {
   AFZALLIKLAR,
+  BOY,
   FAOLLIKLAR,
   JINSLAR,
   JOYLAR,
   MAHALLAR,
+  MAQSAD_QADAMI,
   MAQSADLAR,
   MOTIVATSIYALAR,
   OTKAZILADIGAN_QADAMLAR,
   QADAMLAR_SONI,
-  TILLAR,
+  VAZN,
+  ftdanSm,
+  kgdanLb,
+  lbdanKg,
   maqsadVaznKerakmi,
+  smdanFt,
   type Birliklar,
   type OnboardingHolati,
 } from "@/lib/services/onboarding-hisob";
 
-const MAQSAD_QADAMI = 4;
-
 const SAVOLLAR: Record<number, { savol: string; izoh?: string }> = {
-  2: { savol: "Qaysi tilda davom etamiz?" },
-  3: { savol: "Sizni qanday chaqiraylik?", izoh: "Bu faqat salomlashish uchun" },
-  4: { savol: "Nimaga erishmoqchisiz?" },
-  5: {
-    savol: "Hisob to'g'ri chiqishi uchun bir-ikki raqam kerak",
-    izoh: "Jins va yosh faqat kaloriya formulasi uchun ishlatiladi",
+  2: { savol: "Sizni qanday chaqiraylik?" },
+  3: { savol: "Nimaga erishmoqchisiz?" },
+  4: { savol: "Hisob to'g'ri chiqishi uchun bir-ikki raqam kerak" },
+  5: { savol: "Bo'yingiz va vazningiz?" },
+  6: { savol: "Kuningiz qanday o'tadi?" },
+  7: {
+    savol: "Ovqatda cheklovingiz bormi?",
+    izoh: "Bu normaga ta'sir qilmaydi — taom takliflari va retseptlar uchun.",
   },
-  6: { savol: "Bo'yingiz va vazningiz?" },
-  7: { savol: "Kuningiz qanday o'tadi?" },
-  8: { savol: "Ovqatda cheklovingiz bormi?" },
-  9: { savol: "Odatda qanday ovqatlanasiz?" },
-  10: { savol: "Nima sizni harakatga undaydi?" },
+  8: { savol: "Odatda qanday ovqatlanasiz?" },
+  9: {
+    savol: "Nima sizni harakatga undaydi?",
+    izoh: "Eslatma va matnlarni shunga qarab tanlaymiz.",
+  },
 };
+
+const BIRLIK_VARIANTLARI: { qiymat: Birliklar; nomi: string }[] = [
+  { qiymat: "metrik", nomi: "kg · sm" },
+  { qiymat: "imperial", nomi: "lb · ft" },
+];
 
 type Saqlash =
   | { holat: "tinch" | "saqlanmoqda" | "xato" | "oflayn" }
   | { holat: "rad"; matn: string };
 
-function OrqagaTugmasi({ onClick }: { onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-label="Orqaga"
-      className="-ml-3 flex size-11 shrink-0 items-center justify-center rounded-full text-siyoh active:scale-[0.98]"
-    >
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M15 5l-7 7 7 7" />
-      </svg>
-    </button>
-  );
+function saqlashMatni(saqlash: Saqlash): string | null {
+  switch (saqlash.holat) {
+    case "oflayn":
+      return "Internet yo'q. Ulanishni tekshiring";
+    case "rad":
+      return saqlash.matn;
+    case "xato":
+      return "Saqlanmadi. Qayta urinib ko'ring";
+    default:
+      return null;
+  }
 }
 
-/** kg/lb va sm/ft almashtirgichi — tanlov `foydalanuvchilar.birliklar` ga yoziladi. */
-function BirlikTanlagich({
-  qiymat,
-  onChange,
-}: {
-  qiymat: Birliklar;
-  onChange: (birliklar: Birliklar) => void;
-}) {
-  const variantlar: { qiymat: Birliklar; nomi: string }[] = [
-    { qiymat: "metrik", nomi: "kg · sm" },
-    { qiymat: "imperial", nomi: "lb · ft" },
-  ];
-  return (
-    <div
-      role="radiogroup"
-      aria-label="O'lchov birliklari"
-      className="flex gap-1 self-start rounded-chip border border-chegara bg-fon p-1"
-    >
-      {variantlar.map((variant) => {
-        const faol = variant.qiymat === qiymat;
-        return (
-          <button
-            key={variant.qiymat}
-            type="button"
-            role="radio"
-            aria-checked={faol}
-            onClick={() => onChange(variant.qiymat)}
-            className={`min-h-9 rounded-chip px-4 text-izoh transition-colors ${
-              faol
-                ? "bg-karta font-medium text-siyoh shadow-[inset_0_0_0_1px_var(--chegara)]"
-                : "text-matn-2"
-            }`}
-          >
-            {variant.nomi}
-          </button>
-        );
-      })}
-    </div>
-  );
+// ---------- G'ildirak qiymatlari ----------
+
+type Oraliq = { min: number; max: number; qadam: number; kasr: number };
+
+/** Butun sonli hisob: 0,1 ni yuzlab marta qo'shish kasr xatosini to'playdi. */
+function qiymatlar({ min, max, qadam, kasr }: Oraliq): string[] {
+  const soni = Math.round((max - min) / qadam);
+  return Array.from({ length: soni + 1 }, (_, i) => (min + i * qadam).toFixed(kasr));
 }
+
+/** Qiymat qadam to'riga tushmasa ham (69,9 kg yarim kilolik g'ildirakda) eng yaqin indeks olinadi. */
+function indeks(qiymat: number | null, { min, max, qadam }: Oraliq): number {
+  if (qiymat === null) return -1;
+  const oxirgi = Math.round((max - min) / qadam);
+  return Math.max(0, Math.min(oxirgi, Math.round((qiymat - min) / qadam)));
+}
+
+const YOSH_ORALIGI: Oraliq = { min: 13, max: 100, qadam: 1, kasr: 0 };
+const ORALIQLAR: Record<Birliklar, { boy: Oraliq; vazn: Oraliq }> = {
+  metrik: {
+    boy: { min: BOY.min, max: BOY.max, qadam: 1, kasr: 0 },
+    vazn: { min: VAZN.min, max: VAZN.max, qadam: 0.5, kasr: 1 },
+  },
+  imperial: {
+    boy: { min: 3.9, max: 7.6, qadam: 0.1, kasr: 1 },
+    vazn: { min: 66, max: 660, qadam: 1, kasr: 0 },
+  },
+};
+
+const YOSHLAR = qiymatlar(YOSH_ORALIGI);
+const QIYMATLAR: Record<Birliklar, { boy: string[]; vazn: string[] }> = {
+  metrik: { boy: qiymatlar(ORALIQLAR.metrik.boy), vazn: qiymatlar(ORALIQLAR.metrik.vazn) },
+  imperial: { boy: qiymatlar(ORALIQLAR.imperial.boy), vazn: qiymatlar(ORALIQLAR.imperial.vazn) },
+};
+
+/** Tanlanmagan g'ildirak turadigan joy: 170 sm va 70 kg. */
+const BOSHLANGICH = { boyi: 170, vazn: 70 };
+
+// ---------- Bo'laklar ----------
 
 function Guruh({ sarlavha, children }: { sarlavha: string; children: React.ReactNode }) {
   return (
@@ -115,32 +124,109 @@ function Guruh({ sarlavha, children }: { sarlavha: string; children: React.React
   );
 }
 
-/** O1 — ilova nima qilishini aytadi. Shartlar katakchasi alohida taskda qo'shiladi. */
-function Intro() {
-  const qatorlar = [
-    "Ovqatni rasmdan taniydi",
-    "O'zbek taomlarini biladi",
-    "Kunlik normangizni yig'ib boradi",
-  ];
+/** Prototipdagi StepProgress: orqaga · "9 dan 3" · (o'tkazib yuborish), ostida progress chizig'i. */
+function QadamSarlavhasi({
+  qadam,
+  onOrqaga,
+  onOtkazish,
+}: {
+  qadam: number;
+  onOrqaga: () => void;
+  onOtkazish?: () => void;
+}) {
   return (
-    <div className="flex flex-col gap-6 pt-6">
-      <h1 className="font-display text-sarlavha">
-        Ovqatingiz qancha kaloriya — rasmga oling, bilib oling
-      </h1>
-      <ul className="flex flex-col gap-3">
-        {qatorlar.map((qator) => (
-          <li key={qator} className="flex items-center gap-3 text-asosiy">
-            <span aria-hidden="true" className="size-2 shrink-0 rounded-full bg-siyoh" />
-            {qator}
-          </li>
-        ))}
-      </ul>
-      <p className="text-izoh text-matn-2">Barcha raqamlar taxminiy. Ilova tibbiy xizmat emas.</p>
-    </div>
+    <header className="flex flex-col gap-2 px-4 pb-3 pt-2">
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          onClick={onOrqaga}
+          aria-label="Orqaga"
+          className="-ml-3 flex size-11 shrink-0 items-center justify-center text-siyoh active:scale-[0.98]"
+        >
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M15 5l-7 7 7 7" />
+          </svg>
+        </button>
+        <span className="flex-1 text-izoh tabular-nums text-matn-2">
+          {QADAMLAR_SONI} dan {qadam}
+        </span>
+        {onOtkazish && (
+          <button
+            type="button"
+            onClick={onOtkazish}
+            className="-mr-2 min-h-11 px-2 text-izoh text-matn-2 active:scale-[0.98]"
+          >
+            O&apos;tkazib yuborish
+          </button>
+        )}
+      </div>
+      <div
+        role="progressbar"
+        aria-valuemin={1}
+        aria-valuemax={QADAMLAR_SONI}
+        aria-valuenow={qadam}
+        aria-label="Onboarding bosqichi"
+        className="h-1 overflow-hidden rounded-full bg-chegara"
+      >
+        <div
+          className="h-full rounded-full bg-siyoh transition-[width] duration-[250ms]"
+          style={{ width: `${(qadam / QADAMLAR_SONI) * 100}%` }}
+        />
+      </div>
+    </header>
   );
 }
 
-/** O6 — bo'y, joriy va maqsad vazn; tekshiruv izohlari har biri o'z maydoni ostida. */
+/**
+ * 1-qadam — to'liq ekranli poster va pastki panel (prototip O1). "Boshlash"ni bosish
+ * shartlarni qabul qilish hisoblanadi; havola loyiha oxirida qo'shiladi. Ranglar — faqat
+ * shu ekranga tegishli `o1-*` tokenlari (DESIGN.md, 1-bo'lim).
+ */
+function Intro({
+  band,
+  xato,
+  onBoshlash,
+}: {
+  band: boolean;
+  xato: string | null;
+  onBoshlash: () => void;
+}) {
+  return (
+    <main className="relative mx-auto flex w-full max-w-md flex-1 flex-col overflow-hidden bg-o1-fon">
+      <Image
+        src="/onboarding/intro.png"
+        alt="Ozish, vazn olish, sog'lom turmush tarzi va vaznni saqlash"
+        fill
+        priority
+        sizes="(max-width: 448px) 100vw, 448px"
+        className="object-contain object-top"
+      />
+      <div className="absolute inset-x-0 bottom-0 flex flex-col gap-4 rounded-t-[32px] border-t border-o1-chegara bg-o1-panel px-4 pb-[max(24px,env(safe-area-inset-bottom))] pt-6 text-o1-matn shadow-[0_-2px_32px_rgba(11,11,12,0.14)]">
+        <div className="flex flex-col gap-2">
+          <span className="font-display text-karta-sarlavha text-o1-matn-2">NutriLife</span>
+          <h1 className="font-display text-sarlavha">
+            Taomingiz haqida ko&apos;proq bilishni xohlaysizmi?
+          </h1>
+        </div>
+        {xato && (
+          <p role="alert" className="text-center text-izoh text-xato">
+            {xato}
+          </p>
+        )}
+        <p className="text-center text-izoh text-o1-matn-2">
+          «Boshlash»ni bosish orqali Ommaviy oferta shartlarini qabul qilasiz.
+        </p>
+        <div className="rounded-full shadow-[0_1px_2px_rgba(21,128,61,0.18),0_4px_12px_rgba(21,128,61,0.16)]">
+          <Tugma korinish="aksent" yuklanmoqda={band} onClick={onBoshlash}>
+            Boshlash
+          </Tugma>
+        </div>
+      </div>
+    </main>
+  );
+}
+
+/** 5-qadam — bo'y, joriy va maqsad vazn g'ildiraklari; izohlar har biri o'z maydoni ostida. */
 function Olchovlar({
   forma,
   tekshiruv,
@@ -152,108 +238,101 @@ function Olchovlar({
   onChange: (forma: Forma) => void;
   onMaqsadgaQaytish: () => void;
 }) {
-  const maqsadVaznRef = useRef<HTMLInputElement>(null);
-  const imperial = forma.birliklar === "imperial";
-  const vaznBirligi = imperial ? "lb" : "kg";
-  const { xatolar, ogohlantirishlar, yonalishXatosi } = tekshiruv;
+  const { birliklar } = forma;
+  const metrik = birliklar === "metrik";
+  const oraliq = ORALIQLAR[birliklar];
+  const royxat = QIYMATLAR[birliklar];
+  const { olchov } = tekshiruv;
+
+  // Holat doim sm/kg; g'ildirak boshqa birlikni faqat ko'rsatadi.
+  const boyKorinishi = (sm: number) => (metrik ? sm : smdanFt(sm));
+  const vaznKorinishi = (kg: number) => (metrik ? kg : kgdanLb(kg));
+  const boyniOl = (i: number) => (metrik ? Number(royxat.boy[i]) : ftdanSm(Number(royxat.boy[i])));
+  const vaznniOl = (i: number) => (metrik ? Number(royxat.vazn[i]) : lbdanKg(Number(royxat.vazn[i])));
+  const vaznIndeksi = (kg: number | null) =>
+    indeks(kg === null ? null : vaznKorinishi(kg), oraliq.vazn);
+
+  const vaznBirligi = metrik ? "kg" : "lb";
+  const havola = "min-h-11 text-izoh font-medium text-siyoh underline underline-offset-4";
 
   return (
-    <div className="flex flex-col gap-4">
-      <BirlikTanlagich
-        qiymat={forma.birliklar}
-        onChange={(birliklar) => onChange(birlikOzgardi(forma, birliklar))}
+    <>
+      <SegmentTanlagich
+        nomi="O'lchov birliklari"
+        variantlar={BIRLIK_VARIANTLARI}
+        tanlangan={birliklar}
+        onTanla={(qiymat) => onChange({ ...forma, birliklar: qiymat as Birliklar })}
       />
 
-      {imperial ? (
-        <div className="flex flex-col gap-1">
-          <div className="grid grid-cols-2 gap-3">
-            <OnboardingMaydoni
-              nomi="Bo'y"
-              birlik="ft"
-              turi="butun"
-              qiymat={forma.boyiFt}
-              xato={xatolar.boyi ? true : undefined}
-              onChange={(boyiFt) => onChange({ ...forma, boyiFt })}
-            />
-            <OnboardingMaydoni
-              nomi="Dyuym"
-              birlik="in"
-              turi="butun"
-              qiymat={forma.boyiDyuym}
-              xato={xatolar.boyi ? true : undefined}
-              onChange={(boyiDyuym) => onChange({ ...forma, boyiDyuym })}
-            />
-          </div>
-          {xatolar.boyi && <p className="text-izoh text-xato">{xatolar.boyi}</p>}
-        </div>
-      ) : (
-        <OnboardingMaydoni
+      {/* `key`: birlik almashganda qiymatlar ro'yxati butunlay boshqa — g'ildirak qaytadan joylashadi. */}
+      <GildirakMaydoni nomi="Bo'y" birlik={metrik ? "sm" : "ft"}>
+        <Gildirak
+          key={birliklar}
           nomi="Bo'y"
-          birlik="sm"
-          turi="butun"
-          qiymat={forma.boyi}
-          xato={xatolar.boyi}
-          onChange={(boyi) => onChange({ ...forma, boyi })}
+          yonalish="yotiq"
+          qiymatlar={royxat.boy}
+          tanlangan={indeks(forma.boyi === null ? null : boyKorinishi(forma.boyi), oraliq.boy)}
+          boshlangich={indeks(boyKorinishi(BOSHLANGICH.boyi), oraliq.boy)}
+          onTanla={(i) => onChange({ ...forma, boyi: boyniOl(i) })}
         />
-      )}
+      </GildirakMaydoni>
 
-      <OnboardingMaydoni
-        nomi="Joriy vazn"
-        birlik={vaznBirligi}
-        qiymat={forma.vazn}
-        xato={xatolar.vazn}
-        ogohlantirish={ogohlantirishlar.vazn}
-        onChange={(vazn) => onChange({ ...forma, vazn })}
-      />
+      <GildirakMaydoni nomi="Joriy vazn" birlik={vaznBirligi} ogohlantirish={olchov.vazn}>
+        <Gildirak
+          key={birliklar}
+          nomi="Joriy vazn"
+          yonalish="yotiq"
+          qiymatlar={royxat.vazn}
+          tanlangan={vaznIndeksi(forma.vazn)}
+          boshlangich={vaznIndeksi(BOSHLANGICH.vazn)}
+          onTanla={(i) => onChange({ ...forma, vazn: vaznniOl(i) })}
+        />
+      </GildirakMaydoni>
 
       {maqsadVaznKerakmi(forma.maqsad) && (
-        <div className="flex flex-col gap-2">
-          <OnboardingMaydoni
-            nomi="Maqsad vazn"
-            birlik={vaznBirligi}
-            qiymat={forma.maqsadVazn}
-            xato={xatolar.maqsadVazn ?? yonalishXatosi ?? undefined}
-            ogohlantirish={
-              ogohlantirishlar.yaqin
-                ? "Bu maqsad joriy vaznga juda yaqin — «Vaznni saqlash» to'g'riroq bo'lishi mumkin"
-                : ogohlantirishlar.maqsadVazn
-            }
-            inputRef={maqsadVaznRef}
-            onChange={(maqsadVazn) => onChange({ ...forma, maqsadVazn })}
-          />
-          {(yonalishXatosi || ogohlantirishlar.yaqin) && (
-            <div className="flex flex-wrap gap-x-4">
-              {yonalishXatosi && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    maqsadVaznRef.current?.focus();
-                    maqsadVaznRef.current?.select();
-                  }}
-                  className="min-h-11 text-izoh font-medium text-siyoh underline underline-offset-4"
-                >
-                  Raqamni to&apos;g&apos;rilash
+        <GildirakMaydoni
+          nomi="Maqsad vazn"
+          birlik={vaznBirligi}
+          xato={olchov.yonalish}
+          ogohlantirish={olchov.maqsadVazn}
+          amallar={
+            (olchov.yonalish || olchov.yaqin) && (
+              <div className="flex flex-wrap gap-x-4">
+                {olchov.yonalish && (
+                  <button
+                    type="button"
+                    onClick={() => onChange({ ...forma, maqsadVazn: null })}
+                    className={havola}
+                  >
+                    Raqamni to&apos;g&apos;rilash
+                  </button>
+                )}
+                <button type="button" onClick={onMaqsadgaQaytish} className={havola}>
+                  Maqsadni o&apos;zgartirish
                 </button>
-              )}
-              <button
-                type="button"
-                onClick={onMaqsadgaQaytish}
-                className="min-h-11 text-izoh font-medium text-siyoh underline underline-offset-4"
-              >
-                Maqsadni o&apos;zgartirish
-              </button>
-            </div>
-          )}
-        </div>
+              </div>
+            )
+          }
+        >
+          <Gildirak
+            key={birliklar}
+            nomi="Maqsad vazn"
+            yonalish="yotiq"
+            qiymatlar={royxat.vazn}
+            tanlangan={vaznIndeksi(forma.maqsadVazn)}
+            boshlangich={vaznIndeksi(forma.vazn ?? BOSHLANGICH.vazn)}
+            onTanla={(i) => onChange({ ...forma, maqsadVazn: vaznniOl(i) })}
+          />
+        </GildirakMaydoni>
       )}
-    </div>
+    </>
   );
 }
 
 /**
- * O1–O10 onboarding oqimi (onboarding-tz.md). Har javob "Davom etish" bosilganda darhol
- * saqlanadi; forma holati shu yerda turadi — orqaga qaytilganda va saqlash xatosida
- * kiritilgan javob yo'qolmaydi.
+ * Onboarding oqimi (onboarding-tz.md; ko'rinish — prototip/ui_kits/onboarding). Har javob
+ * "Davom etish" bosilganda darhol saqlanadi; forma holati shu yerda turadi — orqaga
+ * qaytilganda va saqlash xatosida kiritilgan javob yo'qolmaydi.
  */
 export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati }) {
   const router = useRouter();
@@ -264,10 +343,11 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
   const tekshiruv = qadamniTayyorla(qadam, forma);
   const otkazsaBoladi = OTKAZILADIGAN_QADAMLAR.includes(qadam);
   const band = saqlash.holat === "saqlanmoqda";
+  const xatoMatni = saqlashMatni(saqlash);
 
   function formaOzgardi(yangi: Forma) {
     setForma(yangi);
-    if (saqlash.holat !== "tinch") setSaqlash({ holat: "tinch" });
+    if (saqlash.holat !== "tinch" && !band) setSaqlash({ holat: "tinch" });
   }
 
   function qadamgaOt(yangi: number) {
@@ -277,6 +357,7 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
   }
 
   async function yubor(tana: Record<string, unknown>) {
+    if (band) return;
     if (!window.navigator.onLine) {
       setSaqlash({ holat: "oflayn" });
       return;
@@ -308,64 +389,40 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
     }
   }
 
+  if (qadam === 1) {
+    return <Intro band={band} xato={xatoMatni} onBoshlash={() => void yubor({ qadam: 1 })} />;
+  }
+
   const savol = SAVOLLAR[qadam];
 
   return (
-    <main className="mx-auto flex w-full max-w-md flex-1 flex-col px-4">
-      <header className="flex min-h-13 items-center gap-3 pt-2">
-        {qadam > 1 ? (
-          <OrqagaTugmasi onClick={() => !band && qadamgaOt(qadam - 1)} />
-        ) : (
-          <span className="size-2" />
-        )}
-        <div
-          role="progressbar"
-          aria-valuemin={1}
-          aria-valuemax={QADAMLAR_SONI}
-          aria-valuenow={qadam}
-          aria-label="Onboarding bosqichi"
-          className="h-1 flex-1 overflow-hidden rounded-full bg-chegara"
-        >
-          <div
-            className="h-full rounded-full bg-siyoh transition-[width] duration-[250ms]"
-            style={{ width: `${(qadam / QADAMLAR_SONI) * 100}%` }}
-          />
+    <main className="mx-auto flex w-full max-w-md flex-1 flex-col">
+      <QadamSarlavhasi
+        qadam={qadam}
+        onOrqaga={() => !band && qadamgaOt(qadam - 1)}
+        onOtkazish={otkazsaBoladi ? () => void yubor({ qadam, otkazildi: true }) : undefined}
+      />
+
+      <div className="flex flex-1 flex-col gap-6 px-4 pb-6 pt-2">
+        <div className="flex flex-col gap-2">
+          <h1 className="font-display text-sarlavha">{savol.savol}</h1>
+          {savol.izoh && <p className="text-asosiy text-matn-2">{savol.izoh}</p>}
         </div>
-        <span className="shrink-0 text-izoh tabular-nums text-matn-2">
-          {QADAMLAR_SONI} dan {qadam}
-        </span>
-      </header>
-
-      <div className="flex flex-1 flex-col gap-6 pb-6 pt-4">
-        {savol && (
-          <div className="flex flex-col gap-2">
-            <h1 className="font-display text-sarlavha">{savol.savol}</h1>
-            {savol.izoh && <p className="text-izoh text-matn-2">{savol.izoh}</p>}
-          </div>
-        )}
-
-        {qadam === 1 && <Intro />}
 
         {qadam === 2 && (
-          <Variantlar
-            nomi="Til"
-            variantlar={TILLAR}
-            tanlangan={[forma.til]}
-            onTanla={(til) => formaOzgardi({ ...forma, til })}
-          />
+          <>
+            <OnboardingMaydoni
+              nomi="Ism"
+              turi="matn"
+              qiymat={forma.ism}
+              xato={tekshiruv.ismXatosi}
+              onChange={(ism) => formaOzgardi({ ...forma, ism })}
+            />
+            <p className="text-izoh text-matn-2">Bu faqat salomlashish uchun</p>
+          </>
         )}
 
         {qadam === 3 && (
-          <OnboardingMaydoni
-            nomi="Ism"
-            turi="matn"
-            qiymat={forma.ism}
-            xato={tekshiruv.xatolar.ism}
-            onChange={(ism) => formaOzgardi({ ...forma, ism })}
-          />
-        )}
-
-        {qadam === 4 && (
           <Variantlar
             nomi="Asosiy maqsad"
             variantlar={MAQSADLAR}
@@ -374,7 +431,7 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
           />
         )}
 
-        {qadam === 5 && (
+        {qadam === 4 && (
           <>
             <Guruh sarlavha="Jins">
               <Variantlar
@@ -384,17 +441,23 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
                 onTanla={(jins) => formaOzgardi({ ...forma, jins })}
               />
             </Guruh>
-            <OnboardingMaydoni
-              nomi="Yosh"
-              turi="butun"
-              qiymat={forma.yosh}
-              xato={tekshiruv.xatolar.yosh}
-              onChange={(yosh) => formaOzgardi({ ...forma, yosh })}
-            />
+            <GildirakMaydoni nomi="Yosh" xato={tekshiruv.yoshXatosi}>
+              <Gildirak
+                nomi="Yosh"
+                yonalish="tik"
+                qiymatlar={YOSHLAR}
+                tanlangan={indeks(forma.yosh, YOSH_ORALIGI)}
+                boshlangich={indeks(forma.yosh, YOSH_ORALIGI)}
+                onTanla={(i) => formaOzgardi({ ...forma, yosh: Number(YOSHLAR[i]) })}
+              />
+            </GildirakMaydoni>
+            <p className="text-izoh text-matn-2">
+              Jins va yosh faqat kaloriya formulasi uchun ishlatiladi
+            </p>
           </>
         )}
 
-        {qadam === 6 && (
+        {qadam === 5 && (
           <Olchovlar
             forma={forma}
             tekshiruv={tekshiruv}
@@ -403,7 +466,7 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
           />
         )}
 
-        {qadam === 7 && (
+        {qadam === 6 && (
           <Variantlar
             nomi="Faollik darajasi"
             variantlar={FAOLLIKLAR}
@@ -412,7 +475,7 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
           />
         )}
 
-        {qadam === 8 && (
+        {qadam === 7 && (
           <Variantlar
             nomi="Ovqat afzalliklari"
             kop
@@ -427,13 +490,13 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
           />
         )}
 
-        {qadam === 9 && (
+        {qadam === 8 && (
           <>
             <Guruh sarlavha="Kuniga necha mahal">
-              <Variantlar
+              <SegmentTanlagich
                 nomi="Kuniga necha mahal"
                 variantlar={MAHALLAR}
-                tanlangan={forma.mahal ? [forma.mahal] : []}
+                tanlangan={forma.mahal}
                 onTanla={(mahal) => formaOzgardi({ ...forma, mahal })}
               />
             </Guruh>
@@ -448,7 +511,7 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
           </>
         )}
 
-        {qadam === 10 && (
+        {qadam === 9 && (
           <Variantlar
             nomi="Motivatsiya"
             variantlar={MOTIVATSIYALAR}
@@ -458,32 +521,21 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
         )}
       </div>
 
-      <footer className="sticky bottom-0 flex flex-col gap-2 bg-fon pb-[max(16px,env(safe-area-inset-bottom))] pt-3">
-        {saqlash.holat !== "tinch" && saqlash.holat !== "saqlanmoqda" && (
-          <p role="alert" className="text-center text-izoh text-xato">
-            {saqlash.holat === "oflayn"
-              ? "Internet yo'q. Ulanishni tekshiring"
-              : saqlash.holat === "rad"
-                ? saqlash.matn
-                : "Saqlanmadi. Qayta urinib ko'ring"}
+      <footer className="sticky bottom-0 flex flex-col border-t border-chegara bg-fon">
+        {xatoMatni && (
+          <p role="alert" className="border-b border-xato bg-karta px-4 py-3 text-izoh text-xato">
+            {xatoMatni}
           </p>
         )}
-        <Tugma
-          yuklanmoqda={band}
-          disabled={!tekshiruv.tana}
-          onClick={() => tekshiruv.tana && void yubor(tekshiruv.tana)}
-        >
-          {qadam === 1 ? "Boshlash" : qadam === QADAMLAR_SONI ? "Tugatish" : "Davom etish"}
-        </Tugma>
-        {otkazsaBoladi && (
+        <div className="px-4 pb-[max(24px,env(safe-area-inset-bottom))] pt-3">
           <Tugma
-            korinish="uchinchi"
-            disabled={band}
-            onClick={() => void yubor({ qadam, otkazildi: true })}
+            yuklanmoqda={band}
+            disabled={!tekshiruv.tana}
+            onClick={() => tekshiruv.tana && void yubor(tekshiruv.tana)}
           >
-            O&apos;tkazib yuborish
+            {qadam === QADAMLAR_SONI ? "Tugatish" : "Davom etish"}
           </Tugma>
-        )}
+        </div>
       </footer>
     </main>
   );

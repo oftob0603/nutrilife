@@ -2,27 +2,28 @@
 
 type Variant = { qiymat: string; nomi: string; tavsif?: string };
 
-/** Tanlov belgisi: bitta tanlovda doira, ko'p tanlovda kvadrat. Lime emas — ekranda bitta aksent qoidasi. */
-function Belgi({ tanlangan, kop }: { tanlangan: boolean; kop: boolean }) {
+function Belgi() {
   return (
-    <span
+    <svg
+      viewBox="0 0 24 24"
+      width="20"
+      height="20"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       aria-hidden="true"
-      className={`flex size-5 shrink-0 items-center justify-center border ${
-        kop ? "rounded-md" : "rounded-full"
-      } ${tanlangan ? "border-siyoh bg-siyoh text-fon" : "border-matn-3"}`}
+      className="shrink-0"
     >
-      {tanlangan && (
-        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M5 12.5l4.5 4.5L19 7.5" />
-        </svg>
-      )}
-    </span>
+      <path d="M5 12.5l4.5 4.5L19 7.5" />
+    </svg>
   );
 }
 
 /**
- * Onboarding savolining variantlari — karta ko'rinishidagi ro'yxat. `kop` bo'lsa bir
- * nechta variant tanlanadi (O8), aks holda bitta.
+ * Onboarding savolining variantlari (prototipdagi OptionRow): tanlangan karta to'liq
+ * `--siyoh` fonga o'tadi va o'ngida belgi chiqadi. `kop` bo'lsa bir nechta variant tanlanadi.
  */
 export function Variantlar({
   nomi,
@@ -39,11 +40,7 @@ export function Variantlar({
   onTanla: (qiymat: string) => void;
 }) {
   return (
-    <div
-      role={kop ? "group" : "radiogroup"}
-      aria-label={nomi}
-      className="flex flex-col gap-3"
-    >
+    <div role={kop ? "group" : "radiogroup"} aria-label={nomi} className="flex flex-col gap-3">
       {variantlar.map((variant) => {
         const faol = tanlangan.includes(variant.qiymat);
         return (
@@ -53,15 +50,60 @@ export function Variantlar({
             role={kop ? "checkbox" : "radio"}
             aria-checked={faol}
             onClick={() => onTanla(variant.qiymat)}
-            className={`flex min-h-13 items-center gap-3 rounded-karta border bg-karta px-4 py-3 text-left transition-transform active:scale-[0.98] ${
-              faol ? "border-siyoh shadow-[inset_0_0_0_1px_var(--siyoh)]" : "border-karta-chegara"
+            className={`flex min-h-11 w-full items-center gap-3 rounded-karta border p-4 text-left transition-[transform,background-color,color] duration-150 active:scale-[0.98] ${
+              faol ? "border-siyoh bg-siyoh text-fon" : "border-chegara bg-karta text-siyoh"
             }`}
           >
-            <Belgi tanlangan={faol} kop={kop} />
-            <span className="flex min-w-0 flex-col gap-1">
-              <span className="text-asosiy font-medium">{variant.nomi}</span>
-              {variant.tavsif && <span className="text-izoh text-matn-2">{variant.tavsif}</span>}
+            <span className="flex min-w-0 flex-1 flex-col gap-1">
+              <span className="text-karta-sarlavha">{variant.nomi}</span>
+              {variant.tavsif && (
+                <span className={`text-izoh ${faol ? "opacity-70" : "text-matn-2"}`}>
+                  {variant.tavsif}
+                </span>
+              )}
             </span>
+            {faol && <Belgi />}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+/** Qisqa variantlar uchun segmentli boshqaruv: fon ustida, tanlangani karta rangida. */
+export function SegmentTanlagich({
+  nomi,
+  variantlar,
+  tanlangan,
+  onTanla,
+}: {
+  nomi: string;
+  variantlar: readonly Variant[];
+  tanlangan: string | null;
+  onTanla: (qiymat: string) => void;
+}) {
+  return (
+    <div
+      role="radiogroup"
+      aria-label={nomi}
+      className="flex gap-1 rounded-chip border border-chegara bg-fon p-1"
+    >
+      {variantlar.map((variant) => {
+        const faol = variant.qiymat === tanlangan;
+        return (
+          <button
+            key={variant.qiymat}
+            type="button"
+            role="radio"
+            aria-checked={faol}
+            onClick={() => onTanla(variant.qiymat)}
+            className={`min-h-11 flex-1 rounded-chip px-2 text-izoh transition-colors ${
+              faol
+                ? "bg-karta font-medium text-siyoh shadow-[inset_0_0_0_1px_var(--chegara)]"
+                : "text-matn-2"
+            }`}
+          >
+            {variant.nomi}
           </button>
         );
       })}

@@ -47,6 +47,25 @@ tasdiq tugmasi. Lime matn rangi sifatida ishlatilmaydi (oq fonda kontrast yetmay
 Rang holatni yolg'iz o'zi bildirmaydi — yonida doim matn yoki belgi turadi
 (rang ko'rmaydigan foydalanuvchi uchun).
 
+### O1 istisnosi (onboarding intro)
+
+Tizimdan yagona chetga chiqish — onboardingning birinchi ekrani. U foydalanuvchi bergan
+poster (`public/onboarding/intro.png`) ustiga quriladi (prototip/ui_kits/onboarding, O1) va
+quyidagi ranglar **faqat shu ekranda** ishlatiladi. Poster doim och pastel rangda, shuning
+uchun ular mavzuga qarab o'zgarmaydi — qorong'i mavzuda ham O1 och ko'rinadi.
+
+| Token | Hex | Qayerda |
+|---|---|---|
+| `--o1-fon` | `#EDF6E4` | Poster ortidagi fon |
+| `--o1-panel` | `#F0FDF4` | Pastki panel |
+| `--o1-chegara` | `#DCFCE7` | Panelning yuqori chegarasi |
+| `--o1-matn` | `#0F1C14` | Panel sarlavhasi |
+| `--o1-matn-2` | `#3F5347` | "NutriLife" yozuvi va oferta matni |
+
+Shu ekranning o'zida: asosiy tugma lime (`--aksent`), panel burchagi 32px, panel va tugmada
+yumshoq soya bor (5-bo'limdagi "soya ishlatilmaydi" qoidasidan istisno). Boshqa ekranlarga
+ko'chirilmaydi.
+
 ## 2. Shriftlar
 
 **Inter Tight** — sarlavha va raqam · **Inter** — matn. Ikkalasi kirill va lotinni

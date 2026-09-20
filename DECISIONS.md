@@ -310,6 +310,20 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 
 ---
 
+## 2026-09-20 — onboarding ko'rinishini prototipga moslash
+
+**2026-09-20 · Onboardingda til tanlash ekrani yo'q — 9 qadam (S4'da 12). Til Telegram'dan olinadi: hisob yaratilganda `language_code`, S5'dan boshlab botdagi `/start` da chiqadigan uch tilli tanlov; keyin ilova Sozlamalaridan o'zgartiriladi.**
+*Sabab:* Til botda tanlanadi, ilova shu tilda ochiladi — onboardingda qayta so'rash ortiqcha. onboarding-tz.md dagi O2 va sprint faylidagi "til" qadami shu qaror bilan bekor.
+
+**2026-09-20 · O1'da Terms katakchasi yo'q: "«Boshlash»ni bosish orqali Ommaviy oferta shartlarini qabul qilasiz" matni turadi, havola loyiha oxirida qo'shiladi.**
+*Sabab:* Prototipdagi yechim — bitta bosish kam, qabul baribir qayd etiladi (5-taskda `shartlar_qabul` + versiya). Sprintning 5-taski va "katakcha belgilanmasa Boshlash ishlamaydi" qabul mezoni 5-taskda shunga moslab tuzatiladi.
+
+**2026-09-20 · O1 foydalanuvchi bergan poster bilan, prototipdagidek (`public/onboarding/intro.png`): to'liq ekranli rasm, yashil pastki panel, lime "Boshlash". Bu DESIGN.md tizimidan yagona istisno — beshta `--o1-*` rang, 32px burchak va soya faqat shu ekranda (DESIGN.md "O1 istisnosi").**
+*Sabab:* Posterdagi "NutriLiferobot" brendi va 3D uslub tizimga mos emasligi prototip README'sida qayd etilgan — foydalanuvchi shu rasmni qoldirdi.
+
+**2026-09-20 · O'lchovlar ekranidagi izohlar prototip tahriri bo'yicha (onboarding-tz.md dagidan keyingi qaror): joriy vazn uchun "tekshirib ko'ring" ogohlantirishi yo'q; "Vaznni saqlash"da joriy vazn ostida bo'yga nisbatan eslatma; maqsad vazn uchun yo'nalishga qarab "pastroq" / "yuqoriroq" eslatmasi (TMI 18,5–25), "Bu tibbiy maslahat emas." bilan — undov belgisisiz (DESIGN.md, 7-bo'lim).**
+*Sabab:* Yosh, bo'y va vaznlar matn maydoni emas, aylanuvchi g'ildirak — foydalanuvchi qarori.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

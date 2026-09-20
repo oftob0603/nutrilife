@@ -1,5 +1,5 @@
 import { onboardingHolati, qadamniSaqlash, tanlanganMaqsad } from "@/lib/services/onboarding";
-import { qadamniTekshir } from "@/lib/services/onboarding-hisob";
+import { OLCHOV_QADAMI, qadamniTekshir } from "@/lib/services/onboarding-hisob";
 import { joriyFoydalanuvchiId, kirishKerak } from "@/lib/services/sessiya";
 
 /** Onboarding holati: qaysi qadamda to'xtagan va shu paytgacha bergan javoblari. */
@@ -24,8 +24,8 @@ export async function PATCH(sorov: Request) {
     return Response.json({ xato: "So'rov o'qilmadi" }, { status: 400 });
   }
 
-  // O4'dagi maqsad faqat O6 tekshiruviga kerak (maqsad vazn talabi va yo'nalishi).
-  const maqsad = tana.qadam === 6 ? await tanlanganMaqsad(foydalanuvchiId) : null;
+  // Tanlangan maqsad faqat o'lchovlar tekshiruviga kerak (maqsad vazn talabi va yo'nalishi).
+  const maqsad = tana.qadam === OLCHOV_QADAMI ? await tanlanganMaqsad(foydalanuvchiId) : null;
   const tekshiruv = qadamniTekshir(tana, maqsad);
   if ("xato" in tekshiruv) {
     return Response.json({ xato: tekshiruv.xato }, { status: 400 });

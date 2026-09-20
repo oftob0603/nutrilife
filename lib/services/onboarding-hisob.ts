@@ -1,22 +1,23 @@
-// Onboarding qoidalari (onboarding-tz.md): variantlar, chegaralar, tekshiruv va o'girish.
+// Onboarding qoidalari (onboarding-tz.md; ko'rinish va O5 matnlari — prototip/ui_kits/onboarding):
+// variantlar, chegaralar, tekshiruv va o'girish.
 // Sof modul — bazaga bog'liq emas, klient ham, server ham ishlatadi.
 
-/** O1–O10. O11–O13 (norma natijasi va paywall) S4'da qo'shiladi. */
-export const QADAMLAR_SONI = 10;
+/**
+ * 1 Intro · 2 Ism · 3 Maqsad · 4 Jins va yosh · 5 O'lchovlar · 6 Faollik · 7 Afzalliklar ·
+ * 8 Odatlar · 9 Motivatsiya. Til ekrani yo'q: til Telegram'dan olinadi, keyin Sozlamalardan
+ * o'zgartiriladi. "Reja tayyorlanmoqda", norma natijasi va paywall S4'da qo'shiladi.
+ */
+export const QADAMLAR_SONI = 9;
+export const MAQSAD_QADAMI = 3;
+export const OLCHOV_QADAMI = 5;
 /** Shu qadamlarni javobsiz o'tkazib yuborish mumkin — ular normaga ta'sir qilmaydi. */
-export const OTKAZILADIGAN_QADAMLAR: readonly number[] = [8, 9, 10];
-
-export const TILLAR = [
-  { qiymat: "uz", nomi: "O'zbekcha" },
-  { qiymat: "ru", nomi: "Русский" },
-  { qiymat: "en", nomi: "English" },
-] as const;
+export const OTKAZILADIGAN_QADAMLAR: readonly number[] = [7, 8, 9];
 
 export const MAQSADLAR = [
-  { qiymat: "vazn_tashlash", nomi: "Vazn tashlash" },
-  { qiymat: "vazn_saqlash", nomi: "Vaznni saqlash" },
-  { qiymat: "vazn_ortdirish", nomi: "Vazn ortdirish" },
-  { qiymat: "mushak_yigish", nomi: "Mushak yig'ish" },
+  { qiymat: "vazn_tashlash", nomi: "Vazn tashlash", tavsif: "Ortiqcha vazndan xalos bo'ling" },
+  { qiymat: "vazn_saqlash", nomi: "Vaznni saqlash", tavsif: "Hozirgi vazningizni ushlab turing" },
+  { qiymat: "vazn_ortdirish", nomi: "Vazn ortdirish", tavsif: "Sog'lom yo'l bilan vazn qo'shing" },
+  { qiymat: "mushak_yigish", nomi: "Mushak yig'ish", tavsif: "Mushak massasini oshiring" },
 ] as const;
 
 export const JINSLAR = [
@@ -69,7 +70,6 @@ export const MOTIVATSIYALAR = [
 
 export const BIRLIKLAR = ["metrik", "imperial"] as const;
 
-export type Til = (typeof TILLAR)[number]["qiymat"];
 export type Maqsad = (typeof MAQSADLAR)[number]["qiymat"];
 export type Jins = (typeof JINSLAR)[number]["qiymat"];
 export type Faollik = (typeof FAOLLIKLAR)[number]["qiymat"];
@@ -83,7 +83,6 @@ export const VAZN = { min: 30, max: 300 };
 
 /** Onboardingda yig'ilgan javoblar; hali berilmagani null. Vazn kg, bo'y sm da. */
 export type Javoblar = {
-  til: string;
   birliklar: string;
   ism: string | null;
   maqsad: string | null;
@@ -102,28 +101,33 @@ export type Javoblar = {
 export type OnboardingHolati = { qadam: number; tugadi: boolean; javoblar: Javoblar };
 
 // ---------- O'girish ----------
+// Bazada va forma holatida har doim sm va kg; boshqa birlik faqat ko'rsatish uchun.
 
-const KG_LB = 0.45359237;
-const SM_DYUYM = 2.54;
+const SM_FT = 30.48;
+const LB_KG = 2.20462;
 
-export function lbdanKg(lb: number): number {
-  return Math.round(lb * KG_LB * 10) / 10;
+function chegarala(qiymat: number, { min, max }: { min: number; max: number }): number {
+  return Math.min(max, Math.max(min, qiymat));
 }
 
 export function kgdanLb(kg: number): number {
-  return Math.round((kg / KG_LB) * 10) / 10;
+  return Math.round(kg * LB_KG);
 }
 
-export function ftdanSm(ft: number, dyuym: number): number {
-  return Math.round((ft * 12 + dyuym) * SM_DYUYM);
+/** Natija 0,1 kg gacha yaxlitlanadi va ruxsat etilgan oraliqqa tushiriladi (66 lb = 29,9 kg -> 30). */
+export function lbdanKg(lb: number): number {
+  return chegarala(Math.round((lb / LB_KG) * 10) / 10, VAZN);
 }
 
-export function smdanFt(sm: number): { ft: number; dyuym: number } {
-  const jami = Math.round(sm / SM_DYUYM);
-  return { ft: Math.floor(jami / 12), dyuym: jami % 12 };
+export function smdanFt(sm: number): number {
+  return Math.round((sm / SM_FT) * 10) / 10;
 }
 
-// ---------- O6 tekshiruvlari ----------
+export function ftdanSm(ft: number): number {
+  return chegarala(Math.round(ft * SM_FT), BOY);
+}
+
+// ---------- O'lchovlar tekshiruvi ----------
 
 function tmi(boyiSm: number, vaznKg: number): number {
   const metr = boyiSm / 100;
@@ -135,7 +139,9 @@ export function maqsadVaznKerakmi(maqsad: string | null): boolean {
   return maqsad !== null && maqsad !== "vazn_saqlash";
 }
 
-/** 1-tekshiruv (to'sadi): maqsad vazn O4'da tanlangan maqsad yo'nalishiga mos kelishi shart. */
+const ORTDIRISH: readonly (string | null)[] = ["vazn_ortdirish", "mushak_yigish"];
+
+/** To'sadi: maqsad vazn tanlangan maqsad yo'nalishiga mos kelishi shart. */
 export function yonalishXatosi(
   maqsad: string | null,
   vazn: number,
@@ -144,26 +150,68 @@ export function yonalishXatosi(
   if (maqsad === "vazn_tashlash" && maqsadVazn > vazn) {
     return "Vazn tashlashni tanlagansiz, lekin maqsad vazn joriysidan katta";
   }
-  if ((maqsad === "vazn_ortdirish" || maqsad === "mushak_yigish") && maqsadVazn < vazn) {
+  if (ORTDIRISH.includes(maqsad) && maqsadVazn < vazn) {
     return "Vazn ortdirishni tanlagansiz, lekin maqsad vazn joriysidan kichik";
   }
   return null;
 }
 
-/** To'smaydi: ikki vazn orasi 1 kg dan kam. */
-export function yaqinMaqsadmi(vazn: number, maqsadVazn: number): boolean {
-  return Math.abs(vazn - maqsadVazn) < 1;
-}
+export type OlchovIzohlari = {
+  /** To'sadi — maqsad vazn ostida, ikki chiqish yo'li bilan. */
+  yonalish: string | null;
+  /** To'smaydi — joriy vazn ostida ("Vaznni saqlash"da bo'yga nisbatan eslatma). */
+  vazn: string | null;
+  /** To'smaydi — maqsad vazn ostida. */
+  maqsadVazn: string | null;
+  /** `maqsadVazn` izohi "joriy vaznga juda yaqin" — ostida maqsadni o'zgartirish havolasi turadi. */
+  yaqin: boolean;
+};
 
-/** 2-tekshiruv (to'smaydi): joriy vazn terish xatosiga o'xshaydi — TMI 16 dan past yoki 50 dan yuqori. */
-export function joriyVaznShubhalimi(boyi: number, vazn: number): boolean {
-  const qiymat = tmi(boyi, vazn);
-  return qiymat < 16 || qiymat > 50;
-}
+/**
+ * O'lchovlar ekranidagi izohlar — har biri faqat o'zi tegishli maydon ostida. Bo'y-vazn
+ * nisbati hamma joyda bir xil TMI oralig'i (18,5–25) bilan baholanadi; joriy vaznning o'zi
+ * foydalanuvchi aytganidek qabul qilinadi.
+ */
+export function olchovIzohlari(
+  maqsad: string | null,
+  boyi: number | null,
+  vazn: number | null,
+  maqsadVazn: number | null,
+): OlchovIzohlari {
+  const izohlar: OlchovIzohlari = { yonalish: null, vazn: null, maqsadVazn: null, yaqin: false };
 
-/** 3-tekshiruv (to'smaydi): maqsad juda past — TMI 18,5 dan past yoki joriydan 25% dan ko'p kam. */
-export function maqsadJudaPastmi(boyi: number, vazn: number, maqsadVazn: number): boolean {
-  return tmi(boyi, maqsadVazn) < 18.5 || maqsadVazn < vazn * 0.75;
+  if (maqsad === "vazn_saqlash") {
+    if (boyi !== null && vazn !== null) {
+      const qiymat = tmi(boyi, vazn);
+      if (qiymat < 18.5) {
+        izohlar.vazn = "Bu vazn bo'yingizga nisbatan pastroq bo'lishi mumkin. Bu tibbiy maslahat emas.";
+      } else if (qiymat > 25) {
+        izohlar.vazn = "Bu vazn bo'yingizga nisbatan yuqoriroq bo'lishi mumkin. Bu tibbiy maslahat emas.";
+      }
+    }
+    return izohlar;
+  }
+
+  if (vazn === null || maqsadVazn === null) return izohlar;
+
+  izohlar.yonalish = yonalishXatosi(maqsad, vazn, maqsadVazn);
+  if (izohlar.yonalish) return izohlar;
+
+  if (Math.abs(vazn - maqsadVazn) < 1) {
+    izohlar.yaqin = true;
+    izohlar.maqsadVazn =
+      "Bu maqsad joriy vaznga juda yaqin — «Vaznni saqlash» to'g'riroq bo'lishi mumkin";
+  } else if (boyi !== null) {
+    const qiymat = tmi(boyi, maqsadVazn);
+    if (maqsad === "vazn_tashlash" && qiymat < 18.5) {
+      izohlar.maqsadVazn =
+        "Bu maqsad vazni bo'yingizga nisbatan pastroq bo'lishi mumkin. Bu tibbiy maslahat emas.";
+    } else if (ORTDIRISH.includes(maqsad) && qiymat > 25) {
+      izohlar.maqsadVazn =
+        "Bu maqsad vazni bo'yingizga nisbatan yuqoriroq bo'lishi mumkin. Bu tibbiy maslahat emas.";
+    }
+  }
+  return izohlar;
 }
 
 // ---------- API tanasini tekshirish ----------
@@ -171,15 +219,14 @@ export function maqsadJudaPastmi(boyi: number, vazn: number, maqsadVazn: number)
 /** Bitta qadamning tekshirilgan javobi — servis shuni bazaga yozadi. */
 export type QadamJavobi =
   | { qadam: 1 }
-  | { qadam: 2; til: Til }
-  | { qadam: 3; ism: string }
-  | { qadam: 4; maqsad: Maqsad }
-  | { qadam: 5; jins: Jins; yosh: number }
-  | { qadam: 6; boyi: number; vazn: number; maqsadVazn: number | null; birliklar: Birliklar }
-  | { qadam: 7; faollik: Faollik }
-  | { qadam: 8; ovqatAfzalliklari: string[] }
-  | { qadam: 9; ovqatlanishOdati: OvqatlanishOdati | null }
-  | { qadam: 10; motivatsiya: string | null };
+  | { qadam: 2; ism: string }
+  | { qadam: 3; maqsad: Maqsad }
+  | { qadam: 4; jins: Jins; yosh: number }
+  | { qadam: 5; boyi: number; vazn: number; maqsadVazn: number | null; birliklar: Birliklar }
+  | { qadam: 6; faollik: Faollik }
+  | { qadam: 7; ovqatAfzalliklari: string[] | null }
+  | { qadam: 8; ovqatlanishOdati: OvqatlanishOdati | null }
+  | { qadam: 9; motivatsiya: string | null };
 
 function variantmi<T extends string>(
   royxat: readonly { qiymat: T }[],
@@ -194,9 +241,11 @@ function oraliqdami(qiymat: unknown, { min, max }: { min: number; max: number })
 
 const NOTOGRI = { xato: "Javob noto'g'ri" } as const;
 
+export const YOSH_XATOSI = "Ilovadan 18 yoshdan katta foydalanuvchilar foydalanishi mumkin";
+
 /**
- * `PATCH /api/onboarding` tanasini tekshiradi. `maqsad` — bazadagi O4 javobi: O6'dagi
- * maqsad vazn shunga qarab talab qilinadi va yo'nalishi tekshiriladi.
+ * `PATCH /api/onboarding` tanasini tekshiradi. `maqsad` — bazadagi 3-qadam javobi:
+ * 5-qadamdagi maqsad vazn shunga qarab talab qilinadi va yo'nalishi tekshiriladi.
  */
 export function qadamniTekshir(
   tana: Record<string, unknown>,
@@ -208,36 +257,31 @@ export function qadamniTekshir(
     case 1:
       return { javob: { qadam: 1 } };
 
-    case 2:
-      return variantmi(TILLAR, tana.til) ? { javob: { qadam: 2, til: tana.til } } : NOTOGRI;
-
-    case 3: {
+    case 2: {
       const ism = typeof tana.ism === "string" ? tana.ism.trim() : "";
       if (ism.length < 1 || ism.length > ISM_CHEGARASI) {
         return { xato: `Ism 1 dan ${ISM_CHEGARASI} belgigacha bo'lishi kerak` };
       }
-      return { javob: { qadam: 3, ism } };
+      return { javob: { qadam: 2, ism } };
     }
 
-    case 4:
+    case 3:
       return variantmi(MAQSADLAR, tana.maqsad)
-        ? { javob: { qadam: 4, maqsad: tana.maqsad } }
+        ? { javob: { qadam: 3, maqsad: tana.maqsad } }
         : NOTOGRI;
 
-    case 5: {
+    case 4: {
       if (!variantmi(JINSLAR, tana.jins)) return NOTOGRI;
-      if (!oraliqdami(tana.yosh, YOSH) || !Number.isInteger(tana.yosh)) {
-        return { xato: "Ilovadan 18 yoshdan katta foydalanuvchilar foydalanishi mumkin" };
-      }
-      return { javob: { qadam: 5, jins: tana.jins, yosh: tana.yosh } };
+      if (!oraliqdami(tana.yosh, YOSH) || !Number.isInteger(tana.yosh)) return { xato: YOSH_XATOSI };
+      return { javob: { qadam: 4, jins: tana.jins, yosh: tana.yosh } };
     }
 
-    case 6: {
+    case 5: {
       if (!oraliqdami(tana.boyi, BOY) || !Number.isInteger(tana.boyi)) {
-        return { xato: `Bo'y ${BOY.min} dan ${BOY.max} sm gacha bo'lishi kerak` };
+        return { xato: `Bo'y ${BOY.min}–${BOY.max} sm oralig'ida bo'lsin` };
       }
       if (!oraliqdami(tana.vazn, VAZN)) {
-        return { xato: `Vazn ${VAZN.min} dan ${VAZN.max} kg gacha bo'lishi kerak` };
+        return { xato: `Vazn ${VAZN.min}–${VAZN.max} kg oralig'ida bo'lsin` };
       }
       const birliklar = BIRLIKLAR.find((b) => b === tana.birliklar);
       if (!birliklar) return NOTOGRI;
@@ -245,22 +289,22 @@ export function qadamniTekshir(
       let maqsadVazn: number | null = null;
       if (maqsadVaznKerakmi(maqsad)) {
         if (!oraliqdami(tana.maqsadVazn, VAZN)) {
-          return { xato: `Maqsad vazn ${VAZN.min} dan ${VAZN.max} kg gacha bo'lishi kerak` };
+          return { xato: `Maqsad vazn ${VAZN.min}–${VAZN.max} kg oralig'ida bo'lsin` };
         }
         const yonalish = yonalishXatosi(maqsad, tana.vazn, tana.maqsadVazn);
         if (yonalish) return { xato: yonalish };
         maqsadVazn = tana.maqsadVazn;
       }
-      return { javob: { qadam: 6, boyi: tana.boyi, vazn: tana.vazn, maqsadVazn, birliklar } };
+      return { javob: { qadam: 5, boyi: tana.boyi, vazn: tana.vazn, maqsadVazn, birliklar } };
     }
 
-    case 7:
+    case 6:
       return variantmi(FAOLLIKLAR, tana.faollik)
-        ? { javob: { qadam: 7, faollik: tana.faollik } }
+        ? { javob: { qadam: 6, faollik: tana.faollik } }
         : NOTOGRI;
 
-    case 8: {
-      if (otkazildi) return { javob: { qadam: 8, ovqatAfzalliklari: [] } };
+    case 7: {
+      if (otkazildi) return { javob: { qadam: 7, ovqatAfzalliklari: null } };
       const tanlangan = Array.isArray(tana.ovqatAfzalliklari) ? tana.ovqatAfzalliklari : null;
       if (!tanlangan || tanlangan.length === 0) return NOTOGRI;
       if (!tanlangan.every((qiymat) => variantmi(AFZALLIKLAR, qiymat))) return NOTOGRI;
@@ -268,22 +312,22 @@ export function qadamniTekshir(
       // "Cheklov yo'q" boshqa variantlar bilan birga turmaydi.
       return {
         javob: {
-          qadam: 8,
+          qadam: 7,
           ovqatAfzalliklari: noyob.includes(CHEKLOV_YOQ) ? [CHEKLOV_YOQ] : noyob,
         },
       };
     }
 
-    case 9: {
-      if (otkazildi) return { javob: { qadam: 9, ovqatlanishOdati: null } };
+    case 8: {
+      if (otkazildi) return { javob: { qadam: 8, ovqatlanishOdati: null } };
       if (!variantmi(MAHALLAR, tana.mahal) || !variantmi(JOYLAR, tana.joy)) return NOTOGRI;
-      return { javob: { qadam: 9, ovqatlanishOdati: { mahal: tana.mahal, joy: tana.joy } } };
+      return { javob: { qadam: 8, ovqatlanishOdati: { mahal: tana.mahal, joy: tana.joy } } };
     }
 
-    case 10: {
-      if (otkazildi) return { javob: { qadam: 10, motivatsiya: null } };
+    case 9: {
+      if (otkazildi) return { javob: { qadam: 9, motivatsiya: null } };
       return variantmi(MOTIVATSIYALAR, tana.motivatsiya)
-        ? { javob: { qadam: 10, motivatsiya: tana.motivatsiya } }
+        ? { javob: { qadam: 9, motivatsiya: tana.motivatsiya } }
         : NOTOGRI;
     }
 
