@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { rasmniYukla } from "@/lib/services/rasm-yuklash";
 
 function Ikona({ nomi }: { nomi: "kamera" | "galereya" | "qolda" }) {
   const yollar = {
@@ -75,12 +76,36 @@ function Qator({
 }
 
 /**
- * E2 — ovqat qo'shish manbasini tanlash paneli. S1'da faqat "Qo'lda qo'shish"
- * faol; kamera va galereya S2 sprintida ochiladi (dizayn-tz E2).
+ * E2 — ovqat qo'shish manbasini tanlash paneli (dizayn-tz E2). Kamera E3 ekranini
+ * ochadi; galereya tizim rasm tanlagichini ochadi va tanlangan rasm yuklangach
+ * tahlil sahifasiga o'tadi.
  */
 export function QoshishPaneli() {
   const router = useRouter();
   const [ochiq, setOchiq] = useState(false);
+  const [yuklanmoqda, setYuklanmoqda] = useState(false);
+  const [xato, setXato] = useState<string | null>(null);
+  const tanlagich = useRef<HTMLInputElement>(null);
+  // Xatodan keyin "Qayta urinish" rasmni qayta tanlatmasdan yuboradi.
+  const oxirgiRasm = useRef<Blob | null>(null);
+
+  async function yubor(rasm: Blob) {
+    oxirgiRasm.current = rasm;
+    setXato(null);
+    setYuklanmoqda(true);
+    try {
+      router.push(`/tahlil/${await rasmniYukla(rasm)}`);
+    } catch (sabab) {
+      setXato(sabab instanceof Error ? sabab.message : "Yuklanmadi");
+      setYuklanmoqda(false);
+    }
+  }
+
+  function yop() {
+    if (yuklanmoqda) return;
+    setOchiq(false);
+    setXato(null);
+  }
 
   useEffect(() => {
     if (!ochiq) return;
@@ -124,7 +149,7 @@ export function QoshishPaneli() {
           <button
             type="button"
             aria-label="Yopish"
-            onClick={() => setOchiq(false)}
+            onClick={yop}
             className="absolute inset-0 bg-siyoh/20"
           />
 
@@ -134,26 +159,55 @@ export function QoshishPaneli() {
               <Qator
                 ikona="kamera"
                 nomi="Kamera"
-                izoh="S2'da ochiladi"
-                ochiq={false}
+                izoh="Ovqatni rasmga oling"
+                ochiq={!yuklanmoqda}
+                onClick={() => router.push("/kamera")}
               />
               <Qator
                 ikona="galereya"
                 nomi="Galereya"
-                izoh="S2'da ochiladi"
-                ochiq={false}
+                izoh={yuklanmoqda ? "Rasm yuklanmoqda…" : "Tayyor rasmni tanlang"}
+                ochiq={!yuklanmoqda}
+                onClick={() => tanlagich.current?.click()}
+              />
+              <input
+                ref={tanlagich}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(hodisa) => {
+                  const rasm = hodisa.target.files?.[0];
+                  // Xuddi shu rasm qayta tanlansa ham onChange ishlashi uchun.
+                  hodisa.target.value = "";
+                  if (rasm) void yubor(rasm);
+                }}
               />
               <Qator
                 ikona="qolda"
                 nomi="Qo'lda qo'shish"
                 izoh="Taom bazasidan tanlang"
-                ochiq
+                ochiq={!yuklanmoqda}
                 onClick={() => router.push("/taomlar")}
               />
+
+              {xato && (
+                <div role="alert" className="flex items-center justify-between gap-3 px-1">
+                  <p className="text-izoh text-xato">{xato}</p>
+                  <button
+                    type="button"
+                    onClick={() => oxirgiRasm.current && void yubor(oxirgiRasm.current)}
+                    className="min-h-11 shrink-0 text-izoh font-medium text-siyoh"
+                  >
+                    Qayta urinish
+                  </button>
+                </div>
+              )}
+
               <button
                 type="button"
-                onClick={() => setOchiq(false)}
-                className="min-h-11 text-asosiy text-matn-2"
+                onClick={yop}
+                disabled={yuklanmoqda}
+                className="min-h-11 text-asosiy text-matn-2 disabled:opacity-40"
               >
                 Bekor qilish
               </button>

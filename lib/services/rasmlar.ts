@@ -1,0 +1,52 @@
+import { randomUUID } from "node:crypto";
+import { db } from "../db.ts";
+import { omborgaYoz, ombordanOchir, oqishHavolasi } from "./ombor.ts";
+import { S1_FOYDALANUVCHI } from "./ovqat-yozuvlari.ts";
+import { rasmKengaytmasi, type RasmTuri } from "./rasm-hisob.ts";
+
+export type Rasm = { id: string };
+
+/** Ombordagi kalit: `ovqat/<foydalanuvchi>/<yil>/<oy>/<uuid>.<kengaytma>`. */
+function yangiKalit(tur: RasmTuri): string {
+  const hozir = new Date();
+  const yil = hozir.getUTCFullYear();
+  const oy = String(hozir.getUTCMonth() + 1).padStart(2, "0");
+  return `ovqat/${S1_FOYDALANUVCHI}/${yil}/${oy}/${randomUUID()}.${rasmKengaytmasi(tur)}`;
+}
+
+/**
+ * Rasmni omborga yozadi va `rasmlar` jadvaliga bog'laydi. Bazada faylning o'zi emas,
+ * faqat ombordagi kaliti turadi. Yozuvga bog'lanish tasdiqdan keyin bo'ladi.
+ */
+export async function rasmSaqlash(
+  baytlar: Uint8Array<ArrayBuffer>,
+  tur: RasmTuri,
+): Promise<Rasm> {
+  const kalit = yangiKalit(tur);
+  await omborgaYoz(kalit, baytlar, tur);
+
+  try {
+    return await db.rasm.create({
+      data: {
+        foydalanuvchiId: S1_FOYDALANUVCHI,
+        kalit,
+        mime: tur,
+        hajm: baytlar.byteLength,
+      },
+      select: { id: true },
+    });
+  } catch (xato) {
+    // Baza yozuvi bo'lmasa fayl egasiz qoladi — omborda qoldirmaymiz.
+    await ombordanOchir(kalit).catch(() => {});
+    throw xato;
+  }
+}
+
+/** Rasmni o'qish uchun vaqtinchalik havola; rasm topilmasa null. */
+export async function rasmHavolasi(id: string): Promise<string | null> {
+  const rasm = await db.rasm.findFirst({
+    where: { id, foydalanuvchiId: S1_FOYDALANUVCHI },
+    select: { kalit: true },
+  });
+  return rasm ? oqishHavolasi(rasm.kalit) : null;
+}

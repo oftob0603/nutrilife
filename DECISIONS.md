@@ -223,6 +223,24 @@ S2'dagi rasm yuklash taski shunga moslandi.
 **2026-09-20 · Yangi jadvallardagi matn qiymatlar (masalan `manba`) enum emas, `String` — mavjud `ovqat_turi` uslubiga mos.**
 *Sabab:* Qiymatlar servis qatlamida tekshiriladi, Prisma enum migratsiyasini murakkablashtirmaslik uchun.
 
+## 2026-09-20 — rasm ombori va taom rasmlari
+
+**2026-09-20 · `rasmlar` jadvalida to'liq URL emas, R2 obyekt kaliti saqlanadi; rasm 1 soatlik imzoli havola orqali o'qiladi, bucket yopiq.**
+*Sabab:* Ovqat rasmlari shaxsiy ma'lumot; yopiq bucket'da havolalar eskiradi, shuning uchun URL'ni bazaga yozib bo'lmaydi. (Foydalanuvchi avval "faqat URL" degan, tushuntirishdan keyin kalitga rozi bo'ldi.)
+
+**2026-09-20 · Rasm chegarasi: faqat JPEG/PNG/WebP, 4 MB gacha (avval 3 MB edi).**
+*Sabab:* Vercel funksiyasi 4,5 MB dan katta tanani olmaydi, shuning uchun chegara bundan oshirilmaydi; klient rasmni yuborishdan oldin 1600px gacha siqadi.
+
+**2026-09-20 · R2 uchun aws4fetch tanlandi, @aws-sdk/client-s3 emas.**
+*Sabab:* Faqat so'rov imzolash kerak; aws4fetch ~2,5 KB va dependency'siz, rasmiy SDK o'nlab paket tortadi.
+
+**2026-09-20 · Taom rasmlari Wikimedia Commons'dan, public/taomlar/ da statik fayl — R2'ga bog'liq emas.**
+*Sabab:* Foydalanuvchi qarori; statik fayl bo'lgani uchun taom rasmlari R2 sozlanmagan muhitda ham ishlaydi.
+Oqibati: CC BY / BY-SA litsenziyalari muallifni ko'rsatishni talab qiladi — hozircha ro'yxat public/taomlar/MUALLIFLAR.md da, ilova ichidagi "Rasm mualliflari" sahifasi ommaga chiqishdan oldin kerak (S3'ga task qilib yozildi).
+
+**2026-09-20 · `taomlar.nomi` o'zbekcha nom bo'lib qoldi, `nomi_ru`/`nomi_en` yoniga qo'shildi (nomi_uz ga qayta nomlanmadi).**
+*Sabab:* S1 kodi va jurnaldagi taom_nomi buzilmasin; ru/en hozircha faqat qidiruv uchun.
+
 ---
 
 ## OCHIQ SAVOLLAR

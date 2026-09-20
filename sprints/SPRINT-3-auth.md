@@ -18,6 +18,7 @@ tegishlisini ko'rsin.
 - [ ] Interfeys matnlarini lug'atga chiqarish (o'zbek, rus, ingliz): S1–S2 ekranlaridagi komponent ichida qotirilgan o'zbekcha matnlar, ovqat turlari va sana formati (`yozuv-hisob.ts`) til bo'yicha almashadi — sozlamalardagi til tanlovi shunga tayanadi
 - [ ] Sozlamalar sahifasi: til, mavzu (S2'dagi almashtirgich shu yerga ko'chadi), birliklar (kg/lb, sm/ft, kkal/kJ), shaxsiy ma'lumot, hisobni o'chirish (tasdiqlash oynasi bilan)
 - [ ] Analitika hodisalari: ro'yxatdan o'tish, onboarding yakunlanishi, birinchi skan, kunlik faollik. North star metrikasi shu yerda tanlanadi (DECISIONS ochiq savol 1) — S1'da analitika qo'yilmagan
+- [ ] "Rasm mualliflari" sahifasi (Profil/Sozlamalar ichida) — public/taomlar/MUALLIFLAR.md dagi muallif va litsenziyalarni ko'rsatadi; CC BY / BY-SA talabi, ommaga chiqishdan oldin shart
 
 ## Qabul mezoni
 
