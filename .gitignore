@@ -44,3 +44,6 @@ next-env.d.ts
 
 # prisma tomonidan generatsiya qilinadigan klient
 lib/generated/
+
+# dizayn arxivi — ochilgani prototip/ papkasida
+*.zip

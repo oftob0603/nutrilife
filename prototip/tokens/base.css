@@ -1,0 +1,8 @@
+*{box-sizing:border-box}
+body{margin:0;background:var(--fon);color:var(--siyoh);font:var(--type-body);-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+input,button{border-radius:0}
+a{color:var(--siyoh);text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px}
+a:hover{color:var(--matn-2)}
+h1,h2,h3{font-family:var(--font-display);letter-spacing:var(--ls-title);font-weight:var(--w-semibold);margin:0}
+.tnum,[data-num]{font-variant-numeric:tabular-nums}

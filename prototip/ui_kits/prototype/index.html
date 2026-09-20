@@ -1,0 +1,65 @@
+<!-- @dsCard group="Prototype" viewport="390x844" name="NutriLife — full prototype" subtitle="Onboarding → Home → scan → recipes → statistics → profile → PRO, one session" -->
+<!doctype html><html lang="uz"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NutriLife — prototip</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css"><link rel="stylesheet" href="../../guidelines/keyframes.css">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],tight:['"Inter Tight"','Inter','sans-serif']}}}}</script>
+<style>
+/* The paywall kit's aliases onto the design-system tokens — carried verbatim so that kit
+   renders here exactly as it does on its own page. Not a second palette. */
+:root,[data-theme=dark]{--ink:var(--siyoh);--accent:var(--aksent);--on-accent:var(--aksent-matn);--page:var(--fon);--card:var(--karta);--text-2:var(--matn-2);--text-3:var(--matn-3);--border:var(--chegara);--error:var(--xato);--accent-tint:var(--aksent-fon);--on-ink:var(--on-siyoh)}
+body{margin:0;padding:24px;background:#E8E8EA;display:flex;justify-content:center;font-family:var(--font-text)}
+@media (max-width:639px){body{padding:0;background:var(--fon)}}
+#root{width:100%;max-width:390px}
+.font-tight{font-family:var(--font-display)}
+a{color:var(--siyoh)}a:hover{color:var(--matn-2)}
+.no-bar{scrollbar-width:none;-ms-overflow-style:none}
+.no-bar::-webkit-scrollbar{width:0;height:0}
+@keyframes pw-shimmer{from{transform:translateX(-120%)}to{transform:translateX(220%)}}
+.pw-shimmer{position:relative;overflow:hidden}
+.pw-shimmer::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(100deg,transparent 20%,rgba(255,255,255,.65) 50%,transparent 80%);animation:pw-shimmer 1100ms var(--ease) 420ms 1 both}
+.pw-glow{box-shadow:0 0 0 4px color-mix(in oklch, var(--aksent) 22%, transparent)}
+.pw-press{transition:transform var(--tez) var(--ease)}
+.pw-press:active{transform:scale(.97)}
+@media (prefers-reduced-motion:reduce){.pw-shimmer::after{animation:none;display:none}.pw-press{transition:none}.pw-press:active{transform:none}}
+</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/lucide@0.454.0/dist/umd/lucide.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script>Object.assign(window, window.OzishBot_d5aadd || {});</script>
+<script src="../shared/recipes.js"></script>
+<script src="../shared/pro.js"></script>
+<script src="../shared/support.js"></script>
+<!-- Onboarding kit, unchanged. Loaded before the app kit so the app's fmt/Phone win. -->
+<script src="../shared/i18n.js"></script>
+<script src="../shared/plan.js"></script>
+<script type="text/babel" src="../onboarding/flow.jsx"></script>
+<script type="text/babel" src="../onboarding/step.jsx"></script>
+<script type="text/babel" src="../onboarding/screens-a.jsx"></script>
+<script type="text/babel" src="../onboarding/screens-b.jsx"></script>
+<script type="text/babel" src="../onboarding/screens-c.jsx"></script>
+<!-- Mobile app kit, unchanged. -->
+<script type="text/babel" src="../mobile-app/data.jsx"></script>
+<script type="text/babel" src="../mobile-app/data-nutrition.jsx"></script>
+<script type="text/babel" src="../mobile-app/data-progress.jsx"></script>
+<script type="text/babel" src="../mobile-app/phone.jsx"></script>
+<script type="text/babel" src="../mobile-app/screens-home.jsx"></script>
+<script type="text/babel" src="../mobile-app/screens-manual.jsx"></script>
+<script type="text/babel" src="../mobile-app/screens-ai.jsx"></script>
+<script type="text/babel" src="../mobile-app/screens-recipes.jsx"></script>
+<script type="text/babel" src="../mobile-app/screens-progress.jsx"></script>
+<script type="text/babel" src="../mobile-app/screens-profile.jsx"></script>
+<script type="text/babel" src="../mobile-app/app.jsx"></script>
+<!-- Paywall kit, unchanged (its own app.jsx is the standalone harness, not needed here). -->
+<script type="text/babel" src="../paywall/plans.jsx"></script>
+<script type="text/babel" src="../paywall/Tariffs.jsx"></script>
+<script type="text/babel" src="../paywall/PaymentMethod.jsx"></script>
+<script type="text/babel" src="shell.jsx"></script>
+<script type="text/babel">ReactDOM.createRoot(document.getElementById('root')).render(<PrototypeShell/>);</script>
+</body></html>

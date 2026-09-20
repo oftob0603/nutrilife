@@ -1,0 +1,95 @@
+/* admin-tz.md §1 — the panel is a separate desktop page (/admin), min 1024px wide.
+   Same colours, type and radii as the app; only layout metrics are new. */
+:root{
+  --admin-min:1024px;
+  --admin-sidebar:240px;
+  --admin-gutter:32px;
+  --admin-content-max:1280px;
+
+  --admin-row-h:48px;
+  --admin-cell-pad:12px var(--space-4);
+  --admin-modal-w:480px;
+  --admin-modal-w-wide:720px;
+
+  /* Column headers are the only place small caps type is used. */
+  --type-table-head:var(--w-medium) var(--size-caption)/var(--lh-caption) var(--font-text);
+  --type-table-cell:var(--w-regular) var(--size-body)/var(--lh-body) var(--font-text);
+  --type-stat:var(--w-semibold) var(--size-screen-title)/var(--lh-title) var(--font-display);
+}
+
+/* The panel keeps the INK primary button. Emerald became the user app's primary CTA at
+   the product owner's direction, explicitly for the user app only — the operator surface
+   was to stay as it is.
+
+   Scoped to the admin PAGE, not to `[data-admin-shell]`: the A0 login gate renders before
+   the shell mounts, so a shell-scoped override would leave that one screen green. The
+   attribute lives on the admin document's own <body>, which also covers the prototype,
+   where the panel is a separate document inside an iframe. This selector matches nothing
+   on any user-app page, so the rule is inert there.
+
+   The label uses --on-siyoh, the token for ink sitting on a --siyoh fill, which already
+   inverts by theme — so one declaration gives white-on-ink in light and ink-on-light in
+   dark, with no nested dark-theme selector. */
+[data-admin-page]{
+  --btn-primary-bg:var(--siyoh);
+  --btn-primary-press:var(--siyoh);
+  --btn-primary-fg:var(--on-siyoh);
+}
+/* Re-declared on the shell because --btn-primary-fg's value contains var(): a custom
+   property resolves at the element that DECLARES it, so the rule above computes at <body>
+   and would freeze the label at the light value. The panel's dark theme lives on the
+   shell, and the A0 login gate sits outside it and is always light, so this one compound
+   selector covers every case. */
+[data-admin-shell][data-theme=dark]{
+  --btn-primary-fg:var(--on-siyoh);
+}
+
+/* Mobile panel (Telegram Mini App). admin-tz.md §1 specifies the panel as a desktop page,
+   so the desktop layout above is untouched and everything here lives behind a breakpoint.
+
+   The overrides are layout metrics plus four structural hooks. They carry !important only
+   because the shell's geometry is authored inline (the kit's rule), and inline styles
+   would otherwise win — not to outrank another stylesheet.
+
+   Column grids are NOT handled here: the screens use auto-fit/minmax, which already
+   reflows and — with three items — never produces more than three tracks, so desktop
+   keeps its three columns without a query. */
+@media (max-width:860px){
+  :root{
+    --admin-min:0px;
+    --admin-sidebar:100%;
+    --admin-gutter:var(--space-4);
+    --admin-cell-pad:10px var(--space-3);
+    --admin-modal-w:100%;
+    --admin-modal-w-wide:100%;
+  }
+
+  /* Sidebar becomes a scrollable tab strip above the content. */
+  [data-admin-shell]{flex-direction:column!important;height:100dvh!important;border:0!important;border-radius:0!important}
+  [data-admin-shell]>nav{flex:0 0 auto!important;width:100%!important;flex-direction:row!important;align-items:center;gap:var(--space-2)!important;padding:var(--space-2) var(--space-3)!important;border-right:0!important;border-bottom:var(--hairline);overflow-x:auto;overflow-y:hidden;scrollbar-width:none}
+  [data-admin-shell]>nav::-webkit-scrollbar{display:none}
+  [data-admin-shell]>nav>span:first-child{margin-bottom:0!important;padding:0 var(--space-2) 0 0!important;flex:0 0 auto}
+  [data-admin-shell]>nav>button{width:auto!important;flex:0 0 auto!important;padding:0 var(--space-3)!important;white-space:nowrap}
+  [data-admin-shell]>nav>button>span{overflow:visible!important;text-overflow:clip!important}
+  [data-admin-shell]>nav>span[style*="flex: 1"]{display:none!important}
+
+  /* Wide tables scroll sideways instead of crushing every column to nothing. */
+  [data-admin-table]{overflow-x:auto!important}
+  [data-admin-table]>div{min-width:720px}
+
+  /* Two-pane views stack; their fixed pane height becomes content height. */
+  [data-admin-cols]{grid-template-columns:1fr!important;height:auto!important}
+  [data-admin-cols]>div:first-child{max-height:260px}
+  [data-admin-cols]>div:last-child{height:70dvh}
+
+  /* The kit's annotation panel is positioned off the right edge of the frame. */
+  [data-admin-note]{display:none!important}
+
+  /* Touch targets. The segment button is deliberately inset inside its track
+     (`calc(--hit-min - --space-2)` = 36px), which is fine for a mouse but leaves a finger
+     only a 36px band. Needs !important: the component sets minHeight inline, and an
+     inline style beats a stylesheet rule. Scoped to the admin shell at mobile widths, so
+     the mobile app's own segmented controls and every desktop width keep the inset. */
+  [data-admin-shell] [role="tablist"]>button{min-height:44px!important}
+  [data-admin-shell]>nav>button{min-height:44px}
+}

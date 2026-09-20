@@ -171,6 +171,16 @@ lokal ishlashda ham Railway bazasiga public URL orqali ulaniladi. STACK.md'dagi 
 **2026-09-16 · "baza" MCP serveri SDK'siz, mavjud `pg` bilan yozildi; DELETE/DROP/TRUNCATE alohida `xavfli_sorov` vositasida va har safar ruxsat so'raladi.**
 *Sabab:* Yangi dependency qo'shmaslik; o'chirish faqat aniq ruxsat bilan bo'lishi qoidasini sozlama darajasida ta'minlash.
 
+## 2026-09-20 — prototip va taomlar jadvali
+
+**2026-09-20 · Prototip (Claude Design paketi) `prototip/` papkasida saqlanadi va ekranlar uning kodiga tayanib quriladi.**
+*Sabab:* Foydalanuvchi qarori: reja bilan prototip dizayni zid kelsa, prototip ustun. CLAUDE.md'dagi
+"prototip kodi ko'chirilmaydi" qoidasi shu bilan yumshatildi; papka lint va tsconfig tekshiruvidan chiqarilgan.
+
+**2026-09-20 · `taomlar` jadvali maydonlari prototipdagi FOODS tuzilmasidan olindi: bitta "porsiya grammi" o'rniga o'lchov miqdori, o'lchov birligi va porsiyalar ro'yxati. Seed 4 ta emas, 8 ta taom.**
+*Sabab:* Prototipda taomlar ikki xil o'lchanadi (osh grammda, manti va somsa donada); sprintdagi minimal
+tavsif buni ifodalay olmasdi.
+
 ---
 
 ## OCHIQ SAVOLLAR

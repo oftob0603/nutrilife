@@ -1,5 +1,7 @@
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "@/lib/generated/prisma/client";
+// Nisbiy yo'l va .ts kengaytmasi — shunda bu fayl Next.js'da ham, seed kabi
+// oddiy Node skriptlarida ham bir xil ishlaydi.
+import { PrismaClient } from "./generated/prisma/client.ts";
 
 // Dev rejimida hot reload har safar yangi ulanish ochmasligi uchun
 // klient globalThis'da saqlanadi.

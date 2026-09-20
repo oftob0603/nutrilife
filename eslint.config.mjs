@@ -15,6 +15,8 @@ const eslintConfig = defineConfig([
     // Generatsiya qilingan Prisma klienti va hujjat skriptlari
     "lib/generated/**",
     "scripts/**",
+    // Vizual referens — loyiha kodi emas (CLAUDE.md)
+    "prototip/**",
   ]),
 ]);
 

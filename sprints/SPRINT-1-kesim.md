@@ -7,7 +7,7 @@ taom tanlash ekrani -> jurnalga yozish -> kunlik doira to'lishi -> jonli domen.
 
 ## Tasklar
 
-- [ ] `taomlar` jadvali (Prisma, minimal maydonlar: nomi, porsiya grammi, kaloriya, oqsil, yog', uglevod) + 4 ta seed yozuv: osh, manti, somsa, non
+- [x] `taomlar` jadvali (Prisma; maydonlar prototipga moslandi: nomi, o'lchov miqdori va birligi, kaloriya, oqsil, yog', uglevod, porsiyalar) + prototipdagi 8 ta seed yozuv
 - [ ] Taomlar ro'yxati sahifasi — seed'dagi 4 ta taom karta ko'rinishida chiqadi
 - [ ] Taom detal ekrani: porsiya tanlash (masalan 150 g / 250 g / 350 g), tanlangan porsiyaga qarab kaloriya qayta hisoblanadi, hech qanday tekshiruv yo'q
 - [ ] `ovqat_yozuvlari` jadvali (minimal: taom, porsiya, kaloriya, makrolar, vaqt) va yozuv yaratadigan bitta API yo'li: `POST /api/ovqat-yozuvlari`
@@ -35,12 +35,13 @@ Nutrition Score · to'liq ma'lumot modeli · dizayn nafisligi · uch til.
 - 2026-09-16: 18+ tekshiruvi katakchadan O5 yosh qadamiga ko'chirildi (PRD.md, onboarding-tz.md, SPRINT-3-auth.md)
 - 2026-09-16: Loyiha skeleti ochildi — Next.js 16, TypeScript 6, Tailwind 4, Prisma 7; "Loyiha tayyor" sahifasi va /api/health (app/, lib/db.ts, prisma/)
 - 2026-09-16: Loyiha konvensiyalari o'rnatildi, Railway PostgreSQL ulanishi tekshirildi (CLAUDE.md, .claude/settings.json, .env.example, .mcp.json, scripts/mcp-db.mjs)
+- 2026-09-20: 1-task bajarildi — prototip referens sifatida olindi, `taomlar` jadvali, migratsiya va 8 ta seed yozuv (prototip/, prisma/schema.prisma, prisma/seed.mjs)
 
 ## Handoff
 
-Baza Railway'da ulangan (`.env`da public URL). Keyingi: `prisma/schema.prisma`ga `taomlar` modeli,
-migratsiya va seed (osh, manti, somsa, non). STACK.md va S1 deploy taski hali Hetzner'ni
-ko'rsatadi — Vercel/Railway'ga moslashtirish kerak (DECISIONS.md, 2026-09-16).
+Keyingi: 2-task — taomlar ro'yxati sahifasi. Ma'lumot bazada tayyor, ekran ko'rinishi
+prototipdan olinadi (prototip/ui_kits/mobile-app/screens-manual.jsx). STACK.md va S1 deploy
+taski hali Hetzner'ni ko'rsatadi — Vercel/Railway'ga moslashtirish kerak.
 
 ---
 

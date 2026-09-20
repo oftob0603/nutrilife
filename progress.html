@@ -135,17 +135,17 @@
 
   <header class="bosh">
     <div class="logo"><span>K</span><h1>Kalori — loyiha progressi</h1></div>
-    <p>Yangilangan: 2026-09-16 19:17 · manba: <code>sprints/</code> papkasi</p>
+    <p>Yangilangan: 2026-09-20 10:15 · manba: <code>sprints/</code> papkasi</p>
   </header>
 
   <section class="umumiy">
     <div class="umumiy-bosh">
       <h2>Umumiy holat</h2>
-      <span class="katta">0%</span>
+      <span class="katta">2%</span>
     </div>
-    <div class="chiziq"><div class="chiziq-ich" style="width:0%"></div></div>
+    <div class="chiziq"><div class="chiziq-ich" style="width:2%"></div></div>
     <div class="statlar">
-      <div class="stat"><b>0 / 52</b><span>task bajarildi</span></div>
+      <div class="stat"><b>1 / 52</b><span>task bajarildi</span></div>
       <div class="stat"><b>0 / 6</b><span>sprint tugallandi</span></div>
       <div class="stat"><b>S1</b><span>joriy sprint</span></div>
       <div class="stat"><b>5</b><span>ochiq savol</span></div>
@@ -155,27 +155,27 @@
 
   <div class="setka">
     
-    <article class="sprint boshlanmagan">
+    <article class="sprint jarayonda">
       <header class="sprint-bosh">
         <div class="sprint-nom">
           <span class="raqam">S1</span>
           <h3>kesim</h3>
         </div>
-        <span class="belgi boshlanmagan">Boshlanmagan</span>
+        <span class="belgi jarayonda">Jarayonda</span>
       </header>
 
       <p class="savol">Ishlaydimi?</p>
       <p class="maqsad">Yurak amalni boshidan oxirigacha bitta vertikal kesimda ishlatib ko'rish —</p>
 
-      <div class="chiziq" role="img" aria-label="0 / 7 task bajarildi">
-        <div class="chiziq-ich" style="width:0%"></div>
+      <div class="chiziq" role="img" aria-label="1 / 7 task bajarildi">
+        <div class="chiziq-ich" style="width:14%"></div>
       </div>
-      <p class="hisob"><strong>0 / 7</strong> task · 0%</p>
+      <p class="hisob"><strong>1 / 7</strong> task · 14%</p>
 
       <ul class="tasklar">
-        <li class="task ">
-          <span class="quti" aria-hidden="true"></span>
-          <span class="task-matn"><code>taomlar</code> jadvali (Prisma, minimal maydonlar: nomi, porsiya grammi, kaloriya, oqsil, yog', uglevod) + 4 ta seed yozuv: osh, manti, somsa, non</span>
+        <li class="task bajarildi">
+          <span class="quti" aria-hidden="true">✓</span>
+          <span class="task-matn"><code>taomlar</code> jadvali (Prisma; maydonlar prototipga moslandi: nomi, o'lchov miqdori va birligi, kaloriya, oqsil, yog', uglevod, porsiyalar) + prototipdagi 8 ta seed yozuv</span>
         </li>
         <li class="task ">
           <span class="quti" aria-hidden="true"></span>
@@ -204,11 +204,11 @@
 
       <div class="blok">
          <h4>Hisobot</h4>
-         <ul class="hisobot"><li>2026-09-13: E1-E10 ekranlar uchun dizayn TZ va dizayn tizimi hujjatlari tayyorlandi (dizayn-tz.md, DESIGN.md)</li><li>2026-09-16: dizayn-tz.md'ga pastki navigatsiya bo'limi qo'shildi, onboarding-tz.md, admin-tz.md, progress-tz.md, profil-tz.md, paywall-tz.md yaratildi (kod yozilmadi)</li><li>2026-09-16: 18+ tekshiruvi katakchadan O5 yosh qadamiga ko'chirildi (PRD.md, onboarding-tz.md, SPRINT-3-auth.md)</li><li>2026-09-16: Loyiha skeleti ochildi — Next.js 16, TypeScript 6, Tailwind 4, Prisma 7; &quot;Loyiha tayyor&quot; sahifasi va /api/health (app/, lib/db.ts, prisma/)</li><li>2026-09-16: Loyiha konvensiyalari o'rnatildi, Railway PostgreSQL ulanishi tekshirildi (CLAUDE.md, .claude/settings.json, .env.example, .mcp.json, scripts/mcp-db.mjs)</li></ul>
+         <ul class="hisobot"><li>2026-09-13: E1-E10 ekranlar uchun dizayn TZ va dizayn tizimi hujjatlari tayyorlandi (dizayn-tz.md, DESIGN.md)</li><li>2026-09-16: dizayn-tz.md'ga pastki navigatsiya bo'limi qo'shildi, onboarding-tz.md, admin-tz.md, progress-tz.md, profil-tz.md, paywall-tz.md yaratildi (kod yozilmadi)</li><li>2026-09-16: 18+ tekshiruvi katakchadan O5 yosh qadamiga ko'chirildi (PRD.md, onboarding-tz.md, SPRINT-3-auth.md)</li><li>2026-09-16: Loyiha skeleti ochildi — Next.js 16, TypeScript 6, Tailwind 4, Prisma 7; &quot;Loyiha tayyor&quot; sahifasi va /api/health (app/, lib/db.ts, prisma/)</li><li>2026-09-16: Loyiha konvensiyalari o'rnatildi, Railway PostgreSQL ulanishi tekshirildi (CLAUDE.md, .claude/settings.json, .env.example, .mcp.json, scripts/mcp-db.mjs)</li><li>2026-09-20: 1-task bajarildi — prototip referens sifatida olindi, <code>taomlar</code> jadvali, migratsiya va 8 ta seed yozuv (prototip/, prisma/schema.prisma, prisma/seed.mjs)</li></ul>
        </div>
       <div class="blok">
          <h4>Handoff</h4>
-         <p class="handoff">Baza Railway'da ulangan (<code>.env</code>da public URL). Keyingi: <code>prisma/schema.prisma</code>ga <code>taomlar</code> modeli,<br>migratsiya va seed (osh, manti, somsa, non). STACK.md va S1 deploy taski hali Hetzner'ni<br>ko'rsatadi — Vercel/Railway'ga moslashtirish kerak (DECISIONS.md, 2026-09-16).</p>
+         <p class="handoff">Keyingi: 2-task — taomlar ro'yxati sahifasi. Ma'lumot bazada tayyor, ekran ko'rinishi<br>prototipdan olinadi (prototip/ui_kits/mobile-app/screens-manual.jsx). STACK.md va S1 deploy<br>taski hali Hetzner'ni ko'rsatadi — Vercel/Railway'ga moslashtirish kerak.</p>
        </div>
       <details class="qoshimcha">
          <summary>Qabul mezoni (5)</summary>

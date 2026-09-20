@@ -1,0 +1,184 @@
+/* NutriLife colors. Canonical names are the Uzbek ones from DESIGN.md §1.
+   English aliases exist for consumers; both resolve to the same value.
+   Never hard-code a hex — dark theme breaks if you do. */
+:root{
+  --siyoh:#0B0B0C;
+  --aksent:#C6F04C;
+  --aksent-matn:#2E3D07;
+  --fon:#F2F2F3;
+  --karta:#FFFFFF;
+  --karta-press:#F7F7F8;
+  --matn-2:#6B6B70;
+  --matn-3:#A1A1A6;
+  --chegara:#E3E3E5;
+  --xato:#D93A3A;
+  /* Accent at page strength — the fill behind a selected option, never for text. */
+  --aksent-fon:#F4FCE2;
+
+  /* Emerald — the primary CTA colour. Lime (--aksent) stays the brand's accent for
+     rings, badges and selected fills; emerald is what a user PRESSES. Introduced on the
+     onboarding splash and now the system-wide primary, which closes the palette split
+     that screen used to be an exception to.
+     #15803D on white measures 5.0:1, #166534 7.0:1 — both clear 4.5:1 for button text. */
+  --yashil:#15803D;
+  --yashil-press:#166534;
+  --yashil-fon:#F0FDF4;
+  --yashil-chegara:#DCFCE7;
+
+  /* semantic aliases (en) */
+  --ink:var(--siyoh);
+  --accent:var(--aksent);
+  --on-accent:var(--aksent-matn);
+  --bg:var(--fon);
+  --surface-card:var(--karta);
+  --text-body:var(--siyoh);
+  --text-secondary:var(--matn-2);
+  --text-muted:var(--matn-3);
+  --border-hairline:var(--chegara);
+  --danger:var(--xato);
+
+  /* component-level aliases */
+  /* Primary CTA is the brand lime — the same accent as the calorie ring, so the colour a
+     user presses and the colour that reads "NutriLife" are the same one. Pressed keeps
+     that hue: the system has no darker lime, and inventing one would introduce a second
+     green, so the press state reads through the scale transform instead of a colour
+     shift. */
+  --btn-primary-bg:var(--aksent);
+  --btn-primary-press:var(--aksent);
+  --btn-primary-fg:var(--aksent-matn);
+  /* Text/icon colour for anything FILLED WITH --siyoh — selected chips and option rows,
+     the offline bar, checkbox ticks, the add button, PRO badges, toasts.
+     Separate from --btn-primary-fg on purpose: that one belongs to the emerald primary
+     button and is white in both themes, whereas --siyoh INVERTS between themes, so ink
+     sitting on it must invert too. One token serving both roles is exactly what made
+     dark-theme chips paint white-on-white. */
+  --on-siyoh:#FFFFFF;
+
+  /* PRO tier. The ONLY gradient in the system, reserved for paid-tier CTAs so the
+     treatment means something — using it on an ordinary button would spend the
+     distinction. Stops are the deep end of each hue on purpose: white clears 4.5:1 at
+     every point along the ramp (5.17 / 5.70 / 4.60), where the lighter pinks and purples
+     drop to 3.5 and would fail mid-gradient, which no end-point check would catch. */
+  --pro-gradient:linear-gradient(90deg,#2563EB 0%,#7C3AED 50%,#DB2777 100%); /* @kind color */
+  --pro-fg:#FFFFFF;
+  /* PRO ink for tinted surfaces. The gradient itself is theme-constant, but anything
+     written IN the tier colour sits on --karta, which inverts — so a fixed purple reads
+     7.10:1 in light and 2.54:1 in dark. Two values, one token: violet-700 on light
+     cards, violet-300 on dark (9.79:1). --pro-tint is its wash, used for the savings
+     pill and the benefit icon tiles. */
+  --pro-ink:#6D28D9; /* @kind color */
+  --pro-tint:color-mix(in oklch, #7C3AED 12%, transparent); /* @kind color */
+  --btn-secondary-border:var(--chegara);
+  --ring-track:var(--chegara);
+  --ring-fill:var(--aksent);
+  --ring-over:var(--xato);
+  --skeleton:var(--chegara);
+  --badge-ai-bg:var(--aksent);
+  --badge-ai-fg:var(--aksent-matn);
+  --accent-tint:var(--aksent-fon);
+  --selected-bg:var(--aksent-fon);
+
+  /* Macro identity, one hue per macro in every theme (light, dark, system).
+     Fill colours only — labels and figures keep the theme's text tokens. */
+  --makro-oqsil:#3B82F6;
+  --makro-yog:#FACC15;
+  --makro-uglevod:#EC4899;
+  --makro-norma:#22C55E;
+
+  /* Admin chart series. Aliases, not new colours — each metric borrows an existing hue
+     so five lines on one screen stay tellable apart without widening the palette. */
+  --metrika-1:var(--makro-oqsil);
+  --metrika-2:var(--makro-norma);
+  --metrika-3:var(--makro-uglevod);
+  --metrika-4:var(--makro-yog);
+  --metrika-5:var(--xato);
+}
+[data-theme="dark"]{
+  --siyoh:#F2F2F3;
+  --aksent:#C6F04C;
+  --fon:#0B0B0C;
+  --karta:#161618;
+  --karta-press:#1E1E21;
+  /* Measured on --karta (#161618), the card these almost always sit on.
+     Previously #8A8A8F / #5C5C61: secondary just cleared 4.5:1, but tertiary came in at
+     2.72:1 — which is what made the chart date labels and the caption lines under each
+     statistic hard to read. Both are lifted, keeping a visible step between them so the
+     hierarchy survives: secondary ≈7.4:1, tertiary ≈4.8:1. */
+  --matn-2:#A6A6AD;
+  --matn-3:#85858C;
+  --chegara:#26262A;
+  --xato:#FF6B6B;
+  --aksent-fon:#1C2411;
+  /* The supporting light greens become dark tints in this theme — #F0FDF4 as a panel
+     fill would glare against a #0B0B0C page. Used by the O1 splash panel only. */
+  --yashil:#15803D;
+  --yashil-press:#166534;
+  --yashil-fon:#0F1F14;
+  --yashil-chegara:#1C3325;
+  /* Inverted here, because --siyoh is #F2F2F3 in this theme: ink sitting ON a --siyoh
+     fill must be DARK. Distinct from --btn-primary-fg, which follows the accent. */
+  --on-siyoh:#0B0B0C;
+  /* Same gradient in dark theme — a paid-tier brand treatment, not a surface tint.
+     Re-declared because this scope re-declares every alias. */
+  --pro-gradient:linear-gradient(90deg,#2563EB 0%,#7C3AED 50%,#DB2777 100%); /* @kind color */
+  --pro-fg:#FFFFFF;
+  /* Violet-300: the light-theme violet-700 measures 2.54:1 on #161618. */
+  --pro-ink:#C4B5FD; /* @kind color */
+  --pro-tint:color-mix(in oklch, #C4B5FD 16%, transparent); /* @kind color */
+
+  /* Aliases MUST be re-declared here. A custom property whose value contains var()
+     is substituted at computed-value time on the element that DECLARES it — :root —
+     so overriding --chegara in this scope alone would leave every alias frozen at its
+     light value, which is what painted dark-mode hairlines light grey (#E3E3E5). */
+  --ink:var(--siyoh);
+  --accent:var(--aksent);
+  --on-accent:var(--aksent-matn);
+  --bg:var(--fon);
+  --surface-card:var(--karta);
+  --text-body:var(--siyoh);
+  --text-secondary:var(--matn-2);
+  --text-muted:var(--matn-3);
+  --border-hairline:var(--chegara);
+  --danger:var(--xato);
+  --hairline:1px solid var(--chegara);
+  /* Lime and its on-colour are brand constants — same values in both themes. Re-declared
+     here because their values contain var(). */
+  --btn-primary-bg:var(--aksent);
+  --btn-primary-press:var(--aksent);
+  --btn-primary-fg:var(--aksent-matn);
+  --btn-secondary-border:var(--chegara);
+  --ring-track:var(--chegara);
+  --ring-fill:var(--aksent);
+  --ring-over:var(--xato);
+  --skeleton:var(--chegara);
+  --badge-ai-bg:var(--aksent);
+  --badge-ai-fg:var(--aksent-matn);
+  --accent-tint:var(--aksent-fon);
+  --selected-bg:var(--aksent-fon);
+
+  /* Same four hues as :root — repeated here only so the dark scope is self-describing.
+     Fill colours only — labels and figures stay light. */
+  --makro-oqsil:#3B82F6;
+  --makro-yog:#FACC15;
+  --makro-uglevod:#EC4899;
+  --makro-norma:#22C55E;
+
+  /* --xato differs per theme, so the series aliases are re-declared here too. */
+  --metrika-1:var(--makro-oqsil);
+  --metrika-2:var(--makro-norma);
+  --metrika-3:var(--makro-uglevod);
+  --metrika-4:var(--makro-yog);
+  --metrika-5:var(--xato);
+}
+
+/* A theme scope must carry the ink as well as the tokens.
+
+   Declaring the variables alone was not enough: a themed subtree only changes what var()
+   resolves to — it does not re-apply `color`. So any element that set no colour of its own
+   kept inheriting the LIGHT ink from <body>, which is why the large statistics numbers and
+   the «Daromad» heading came out near-black on the dark panel while the labels beside them
+   (which name --matn-2 explicitly) stayed readable.
+
+   Binding colour to the scope itself fixes the whole class of bug at once, for every themed
+   subtree in the system, instead of patching each element. */
+[data-theme]{color:var(--siyoh)}

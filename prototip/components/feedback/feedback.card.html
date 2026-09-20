@@ -1,0 +1,40 @@
+<!-- @dsCard group="Components" viewport="700x520" name="Feedback — Skeleton, Spinner, EmptyState, ErrorState, OfflineBar, Note" subtitle="In-place loading, three-part empty states, human errors, quiet explanations" -->
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css"><link rel="stylesheet" href="../../guidelines/keyframes.css">
+<style>body{margin:0;padding:16px;background:var(--fon)}#r{display:flex;flex-direction:column;gap:16px}.grp{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.cap{font:var(--type-badge);color:var(--matn-2);width:100%}</style></head>
+<body><div id="r"></div>
+<script src="https://unpkg.com/lucide@0.454.0/dist/umd/lucide.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { Skeleton, Spinner, EmptyState, ErrorState, OfflineBar, Note } = window.OzishBot_d5aadd;
+function Demo(){
+  return <>
+    <OfflineBar/>
+    <div className="grp" style={{alignItems:'center'}}><span className="cap">Skeleton · Spinner</span>
+      <Skeleton height={72} circle/>
+      <div style={{flex:1,display:'flex',flexDirection:'column',gap:8}}>
+        <Skeleton height={12} width="60%"/><Skeleton height={12} width="35%"/><Skeleton height={40} radius="var(--r-card)"/>
+      </div>
+      <Spinner size={24}/>
+    </div>
+    <div className="grp" style={{alignItems:'stretch'}}>
+      <EmptyState style={{flex:1,background:'var(--karta)',border:'var(--hairline)',borderRadius:'var(--r-card)'}}
+        icon="utensils" title="Bugun hali hech narsa qo'shilmadi"
+        body="Birinchi ovqatni qo'shsangiz, doira to'lishni boshlaydi."
+        actionLabel="Birinchi ovqatni qo'shish"/>
+      <div style={{flex:1,display:'flex',flexDirection:'column',gap:12}}>
+        <ErrorState title="Tahlil qilib bo'lmadi" body="Internet aloqasi uzildi." onRetry={()=>{}} altLabel="Qo'lda qo'shish"/>
+        <ErrorState inline title="Saqlanmadi. Qayta urinish" onRetry={()=>{}}/>
+      </div>
+    </div>
+    <div className="grp" style={{alignItems:'flex-start'}}>
+      <Note style={{flex:1}} tone="warn" title="Bu maqsad vazni bo'yingizga nisbatan pastroq bo'lishi mumkin">Bu tibbiy maslahat emas!</Note>
+      <Note style={{flex:1}} collapsible title="Nega shunday?">Bo'y, vazn, yosh, jins va faollikdan kunlik sarf hisoblandi, keyin maqsadga qarab tuzatildi.</Note>
+    </div>
+  </>;
+}
+ReactDOM.createRoot(document.getElementById('r')).render(<Demo/>);
+</script></body></html>

@@ -1,0 +1,67 @@
+<!-- @dsCard group="Mobile app" viewport="700x880" name="NutriLife — PRO tariffs + payment" subtitle="Two Mini App screens: plan picker with computed savings, payment method" -->
+<!doctype html><html lang="uz"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NutriLife — PRO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css"><link rel="stylesheet" href="../../guidelines/keyframes.css">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif'],tight:['"Inter Tight"','Inter','sans-serif']}}}}</script>
+<style>
+/* These are ALIASES ONTO THE DESIGN-SYSTEM TOKENS, not a second palette. Declaring
+   hex here is what made this screen's dark theme drift from the rest of the app.
+   Both :root and [data-theme=dark] resolve through styles.css, so one definition wins. */
+:root,[data-theme=dark]{
+  --ink:var(--siyoh);--accent:var(--aksent);--on-accent:var(--aksent-matn);
+  --page:var(--fon);--card:var(--karta);--text-2:var(--matn-2);--text-3:var(--matn-3);
+  --border:var(--chegara);--error:var(--xato);--accent-tint:var(--aksent-fon);
+  /* Pairs with --ink (= --siyoh), so it follows --on-siyoh and inverts by theme. */
+  --on-ink:var(--on-siyoh);
+}
+body{margin:0;padding:24px;background:#E8E8EA;font-family:var(--font-text)}
+/* Under 640px the viewport IS the phone: no desk margin, so the pinned bottom layer
+   runs edge to edge exactly as it does in Telegram. */
+@media (max-width:639px){body{padding:0;background:var(--page)}}
+.font-tight{font-family:var(--font-display)}
+*{font-variant-numeric:tabular-nums}
+a{color:var(--ink)}a:hover{color:var(--text-2)}
+/* Telegram Mini Apps show no scrollbar; without this the native bar paints over the
+   pinned bottom layer's right edge and the layer reads as inset from the viewport. */
+.no-bar{scrollbar-width:none;-ms-overflow-style:none}
+.no-bar::-webkit-scrollbar{width:0;height:0}
+/* --- Micro-interactions. Opacity/transform only, so they stay on the compositor. --- */
+/* No entrance animation for benefit rows or plan cards: content inside a scroll surface
+   must be stable on arrival and while scrolling. */
+/* One pass of light across the recommended badge, then it stops for good. */
+@keyframes pw-shimmer{from{transform:translateX(-120%)}to{transform:translateX(220%)}}
+.pw-shimmer{position:relative;overflow:hidden}
+.pw-shimmer::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(100deg,transparent 20%,rgba(255,255,255,.65) 50%,transparent 80%);
+  animation:pw-shimmer 1100ms var(--ease) 420ms 1 both}
+/* The recommended card's border, lifted just off the page. Not a shadow system —
+   one ring on one element, and the system's no-shadow rule still holds elsewhere. */
+.pw-glow{box-shadow:0 0 0 4px color-mix(in oklch, var(--accent) 22%, transparent)}
+.pw-press{transition:transform var(--tez) var(--ease)}
+.pw-press:active{transform:scale(.97)}
+@media (prefers-reduced-motion:reduce){
+  .pw-shimmer::after{animation:none;display:none}
+  .pw-sweep::after{animation:none;display:none}
+  .pw-press{transition:none}
+  .pw-press:active{transform:none}
+}
+</style></head>
+<body><div id="root"></div>
+<script src="https://unpkg.com/lucide@0.454.0/dist/umd/lucide.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script>Object.assign(window, window.OzishBot_d5aadd || {});</script>
+<script src="../shared/i18n.js"></script>
+<script src="../shared/pro.js"></script>
+<script type="text/babel" src="plans.jsx"></script>
+<script type="text/babel" src="Tariffs.jsx"></script>
+<script type="text/babel" src="PaymentMethod.jsx"></script>
+<script type="text/babel" src="app.jsx"></script>
+<script type="text/babel">ReactDOM.createRoot(document.getElementById('root')).render(<PaywallApp/>);</script>
+</body></html>

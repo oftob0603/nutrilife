@@ -1,0 +1,26 @@
+<!-- @dsCard group="Admin panel" viewport="1632x868" name="NutriLife — admin panel A0–A12" subtitle="Dashboard, users, suggestion queue, dish + recipe content, statistics, prices" -->
+<!doctype html><html lang="uz"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NutriLife — admin</title>
+<link rel="stylesheet" href="../../styles.css"><link rel="stylesheet" href="../../guidelines/keyframes.css">
+<style>body{margin:0;padding:24px 268px 24px 24px;background:#E8E8EA}#root{width:1340px}a{color:var(--siyoh)}a:hover{color:var(--matn-2)}
+/* The desk framing above is the DESKTOP card presentation (annotation panel to the right
+   of a fixed-width frame). On a phone the panel is the whole screen, so the desk padding,
+   the fixed frame width and the page background all go away. */
+@media (max-width:860px){body{padding:0;background:var(--fon)}#root{width:100%}}</style></head>
+<body data-admin-page><div id="root"></div>
+<script src="https://unpkg.com/lucide@0.454.0/dist/umd/lucide.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script>Object.assign(window, window.OzishBot_d5aadd || {});</script>
+<script src="../shared/recipes.js"></script>
+<script src="../shared/support.js"></script>
+<script type="text/babel" src="data.jsx"></script>
+<script type="text/babel" src="shell.jsx"></script>
+<script type="text/babel" src="screens-dash.jsx"></script>
+<script type="text/babel" src="screens-users.jsx"></script>
+<script type="text/babel" src="screens-queue.jsx"></script>
+<script type="text/babel" src="screens-content.jsx"></script>
+<script type="text/babel" src="app.jsx"></script>
+<script type="text/babel">ReactDOM.createRoot(document.getElementById('root')).render(<AdminApp/>);</script>
+</body></html>

@@ -1,0 +1,19 @@
+/* 4px base. Allowed values only: 4 8 12 16 24 32 48. No 6/10/14/18. */
+:root{
+  --space-1:4px;
+  --space-2:8px;
+  --space-3:12px;
+  --space-4:16px;
+  --space-6:24px;
+  --space-8:32px;
+  --space-12:48px;
+
+  --screen-gutter:16px;
+  --card-padding:16px;
+  --card-gap:12px;
+  --block-gap:24px;
+  --title-to-content:8px;
+  --text-to-caption:4px;
+  --above-bottom-bar:24px;
+  --hit-min:44px;
+}

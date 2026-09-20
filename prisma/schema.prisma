@@ -1,10 +1,32 @@
 // Ma'lumot modeli. Jadvallar S1'dan boshlab qo'shiladi (PRD.md, 7-bo'lim).
 
 generator client {
-  provider = "prisma-client"
-  output   = "../lib/generated/prisma"
+  provider            = "prisma-client"
+  output              = "../lib/generated/prisma"
+  moduleFormat        = "esm"
+  // Ichki importlar .ts kengaytmasi bilan yoziladi — shunda klientni Node ham
+  // to'g'ridan-to'g'ri o'qiy oladi (seed skripti uchun kerak).
+  importFileExtension = "ts"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+/// Taom bazasi. Maydonlar prototipdagi FOODS tuzilmasidan olingan
+/// (prototip/ui_kits/mobile-app/data.jsx): taom yo 100 grammga, yo bitta donaga
+/// o'lchanadi, porsiya variantlari esa shu birlikda beriladi.
+model Taom {
+  id            String   @id
+  nomi          String
+  olchovMiqdori Int      @map("olchov_miqdori")
+  olchovBirligi String   @map("olchov_birligi")
+  kaloriya      Float
+  oqsil         Float
+  yog           Float
+  uglevod       Float
+  porsiyalar    Int[]
+  yaratilgan    DateTime @default(now())
+
+  @@map("taomlar")
 }

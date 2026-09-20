@@ -1,0 +1,53 @@
+<!-- @dsCard group="Components" viewport="700x560" name="Admin — SidebarNav, DataTable, StatTile, Modal, Textarea, Select" subtitle="Desktop-only primitives for the /admin panel" -->
+<!doctype html><html lang="uz"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css">
+<style>body{margin:0;padding:20px;background:var(--fon);font:var(--type-body)}.wrap{display:flex;flex-direction:column;gap:20px}.grp{display:flex;gap:16px}a{color:var(--siyoh)}a:hover{color:var(--matn-2)}</style></head>
+<body><div id="root" class="wrap"></div>
+<script src="https://unpkg.com/lucide@0.454.0/dist/umd/lucide.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { SidebarNav, DataTable, StatTile, Modal, Textarea, Select, Badge, Button, EmptyState } = window.OzishBot_d5aadd;
+function Demo(){
+  const [sec,setSec]=React.useState('a4');
+  const [open,setOpen]=React.useState(false);
+  return <>
+    <div className="grp" style={{alignItems:'stretch',height:260}}>
+      <SidebarNav value={sec} onChange={setSec} style={{borderRadius:'var(--r-card)',border:'var(--hairline)',padding:'16px 8px'}} items={[
+        {id:'a1',label:'Boshqaruv paneli',icon:'layout-dashboard'},
+        {id:'a2',label:'Foydalanuvchilar',icon:'users'},
+        {id:'a4',label:'Takliflar navbati',icon:'inbox',count:7},
+        {id:'a11',label:'Shikoyatlar',icon:'message-square-warning',count:2},
+      ]}/>
+      <div style={{flex:1,display:'flex',flexDirection:'column',gap:12}}>
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
+          <StatTile label="Bugungi skanlar" value="1,284" icon="scan-line"/>
+          <StatTile label="Tasdiq kutayotgan" value="7" icon="inbox" onClick={()=>{}}/>
+          <StatTile label="Kunlik faol" loading/>
+          <StatTile label="Faol PRO" value="312" caption="7 kunda +18" icon="crown"/>
+        </div>
+      </div>
+    </div>
+    <DataTable
+      columns={[{key:'ism',label:'Ism',width:'2fr'},{key:'tgid',label:'Telegram ID',numeric:true,muted:true},
+        {key:'rol',label:'Rol',render:r=><Badge tone={r.rol==='PRO'?'ai':'neutral'}>{r.rol}</Badge>},
+        {key:'skan',label:'Skanlar',align:'right',numeric:true}]}
+      rows={[{id:1,ism:'Aziz Karimov',tgid:'184920113',rol:'PRO',skan:412},
+        {id:2,ism:'Dilnoza Yusupova',tgid:'207713948',rol:'FREE',skan:86},
+        {id:3,ism:'Sardor Rahimov',tgid:'391044827',rol:'FREE',skan:19}]}
+      onRowClick={()=>{}} footer={<><span>50 tadan 1–3</span><Button variant="tertiary" size="sm">Keyingi</Button></>}/>
+    <div className="grp" style={{alignItems:'flex-start'}}>
+      <Select style={{flex:1}} label="Tarif" options={['Oylik','6 oylik','Yillik','Boshqa muddat']}/>
+      <Textarea style={{flex:1}} label="Sabab" required rows={2} placeholder="test, kompensatsiya, sovg'a"/>
+      <Button variant="secondary" onClick={()=>setOpen(true)}>Tasdiq oynasi</Button>
+    </div>
+    <DataTable loading skeletonRows={2} columns={[{key:'a',label:'Taom'},{key:'b',label:'Kaloriya',align:'right'}]}/>
+    <Modal open={open} onClose={()=>setOpen(false)} danger title="Ma'lumotini o'chirish"
+      description="Profil, jurnal va rasmlar butunlay o'chadi. Bu amalni qaytarib bo'lmaydi."
+      confirmLabel="O'chirish" onConfirm={()=>setOpen(false)}/>
+  </>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Demo/>);
+</script></body></html>

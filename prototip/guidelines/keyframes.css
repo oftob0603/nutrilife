@@ -1,0 +1,36 @@
+/* The only animations NutriLife uses. Import after styles.css, or paste into the page.
+   Everything here is opacity/transform only, so it stays on the compositor. */
+@keyframes nutrilife-spin{to{transform:rotate(360deg)}}
+@keyframes nutrilife-pulse{0%,100%{opacity:1}50%{opacity:.45}}
+@keyframes nutrilife-sheet-in{from{transform:translateY(100%)}to{transform:translateY(0)}}
+/* Retired: content inside a scroll surface gets no entrance animation at all — not a fade,
+   not a translate, not a stagger. Kept as a no-op so any stray reference is harmless. */
+@keyframes nutrilife-rise{from{opacity:1}to{opacity:1}}
+/* Section-to-section navigation: a shallow crossfade. It starts near-opaque on purpose —
+   fading from 0 leaves a frame of empty page between the outgoing and incoming screen,
+   which reads as a flash. */
+@keyframes nutrilife-nav{from{opacity:.92}to{opacity:1}}
+/* The paywall's entrance. Opacity only — no transform, no per-child stagger. */
+@keyframes nutrilife-paywall-in{from{opacity:0}to{opacity:1}}
+/* One-shot emphasis for a number that just changed (streak increase). Never looped. */
+@keyframes nutrilife-bump{0%{transform:scale(1)}45%{transform:scale(1.15)}100%{transform:scale(1)}}
+/* A day turning tracked: 0.8 -> 1.1 -> 1. */
+@keyframes nutrilife-day-in{0%{transform:scale(.8)}60%{transform:scale(1.1)}100%{transform:scale(1)}}
+/* A point appearing on the weight chart. */
+@keyframes nutrilife-pop{from{transform:scale(0)}to{transform:scale(1)}}
+/* The weight line drawing itself in. Paired with strokeDasharray = path length. */
+@keyframes nutrilife-draw{from{stroke-dashoffset:var(--draw-length)}to{stroke-dashoffset:0}}
+/* The scanning line crossing the photo during analysis. */
+@keyframes nutrilife-scan{0%{transform:translateY(-100%)}100%{transform:translateY(1000%)}}
+@media (prefers-reduced-motion:reduce){
+  @keyframes nutrilife-sheet-in{from{transform:none}to{transform:none}}
+  @keyframes nutrilife-pulse{0%,100%{opacity:1}50%{opacity:1}}
+  @keyframes nutrilife-rise{from{opacity:1}to{opacity:1}}
+  @keyframes nutrilife-nav{from{opacity:1}to{opacity:1}}
+  @keyframes nutrilife-paywall-in{from{opacity:1}to{opacity:1}}
+  @keyframes nutrilife-bump{0%,100%{transform:none}}
+  @keyframes nutrilife-day-in{0%,100%{transform:none}}
+  @keyframes nutrilife-pop{from{transform:none}to{transform:none}}
+  @keyframes nutrilife-draw{from{stroke-dashoffset:0}to{stroke-dashoffset:0}}
+  @keyframes nutrilife-scan{0%,100%{opacity:0}}
+}

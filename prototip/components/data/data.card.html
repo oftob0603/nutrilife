@@ -1,0 +1,45 @@
+<!-- @dsCard group="Components" viewport="700x620" name="Data — DailyRing, MacroBar, LogEntry, FoodImage, DailyTotals, WeightChart, DayGrid" subtitle="The daily ring, the journal row family, and the progress views" -->
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../../styles.css"><link rel="stylesheet" href="../../guidelines/keyframes.css">
+<style>body{margin:0;padding:16px;background:var(--fon)}#r{display:flex;flex-direction:column;gap:16px}.grp{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.cap{font:var(--type-badge);color:var(--matn-2);width:100%}</style></head>
+<body><div id="r"></div>
+<script src="https://unpkg.com/lucide@0.454.0/dist/umd/lucide.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<script type="text/babel">
+const { DailyRing, MacroBar, LogEntry, FoodImage, DailyTotals, WeightChart, DayGrid, Card } = window.OzishBot_d5aadd;
+function Demo(){
+  return <>
+    <div className="grp" style={{alignItems:'center',gap:32}}>
+      <DailyRing value={1240} goal={2190} size={160}/>
+      <DailyRing value={2410} goal={2190} size={160}/>
+      <div style={{flex:1,minWidth:200,display:'flex',flexDirection:'column',gap:12}}>
+        <MacroBar label="Oqsil" value={64} goal={120}/>
+        <MacroBar label="Yog'" value={38} goal={70}/>
+        <MacroBar label="Uglevod" value={142} goal={240}/>
+      </div>
+    </div>
+    <div className="grp" style={{alignItems:'stretch'}}>
+      <div style={{flex:2,display:'flex',flexDirection:'column',gap:12}}>
+        <LogEntry name="Osh" portion="250 g" time="13:20" kcal={620} ai onClick={()=>{}}/>
+        <LogEntry name="Somsa" portion="1 dona" time="09:10" kcal={310}/>
+      </div>
+      <DailyTotals style={{flex:1}} kcal={1240} goal={2190} macros={[{label:"Oqsil",value:64},{label:"Yog'",value:38}]}/>
+      <FoodImage style={{width:120,flex:'0 0 auto'}}/>
+    </div>
+    <div className="grp" style={{alignItems:'stretch'}}>
+      <Card style={{flex:1}}>
+        <WeightChart height={120} goal={82}
+          points={[{sana:'15.08',kg:88.4},{sana:'24.08',kg:87.3},{sana:'02.09',kg:86.9},{sana:'07.09',kg:86.2},{sana:'14.09',kg:87.0}]}/>
+      </Card>
+      <Card style={{flex:1,display:'flex',flexDirection:'column',gap:12,justifyContent:'center'}}>
+        <DayGrid onDayClick={()=>{}} days={Array.from({length:30},(_,i)=>({sana:String(i+1),tracked:![3,4,11,12,20].includes(i)}))}/>
+        <WeightChart height={56} points={[{sana:'15.08',kg:88.4}]}/>
+      </Card>
+    </div>
+  </>;
+}
+ReactDOM.createRoot(document.getElementById('r')).render(<Demo/>);
+</script></body></html>

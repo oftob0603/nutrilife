@@ -1,0 +1,9 @@
+/* Shadows are not used. Depth comes from bg/card colour difference,
+   the 1px hairline, and whitespace. The single exception is the floating
+   bottom bar and the "+" button. */
+:root{
+  --hairline:1px solid var(--chegara);
+  --shadow-none:none;
+  --shadow-float:0 4px 16px rgba(0,0,0,0.08);
+  --ring-stroke:14px;
+}
