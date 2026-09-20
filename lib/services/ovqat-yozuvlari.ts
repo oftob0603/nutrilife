@@ -29,12 +29,16 @@ const YOZUV_MAYDONLARI = {
   uglevod: true,
   ovqatTuri: true,
   vaqt: true,
+  taom: { select: { rasm: true } },
 } as const;
 
-type BazaYozuvi = Omit<Yozuv, "vaqt"> & { vaqt: Date };
+type BazaYozuvi = Omit<Yozuv, "vaqt" | "rasm"> & {
+  vaqt: Date;
+  taom: { rasm: string | null } | null;
+};
 
-function korinishgaOtkaz(yozuv: BazaYozuvi): Yozuv {
-  return { ...yozuv, vaqt: yozuv.vaqt.toISOString() };
+function korinishgaOtkaz({ taom, ...yozuv }: BazaYozuvi): Yozuv {
+  return { ...yozuv, rasm: taom?.rasm ?? null, vaqt: yozuv.vaqt.toISOString() };
 }
 
 /** Jurnalga bitta yozuv qo'shadi. */

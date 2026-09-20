@@ -6,6 +6,9 @@ export type { Taom };
 const TAOM_MAYDONLARI = {
   id: true,
   nomi: true,
+  nomiRu: true,
+  nomiEn: true,
+  rasm: true,
   olchovMiqdori: true,
   olchovBirligi: true,
   kaloriya: true,

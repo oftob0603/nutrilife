@@ -3,7 +3,12 @@
 
 export type Taom = {
   id: string;
+  /** O'zbekcha nom — interfeysda shu ko'rinadi; ru/en nomlar qidiruv uchun. */
   nomi: string;
+  nomiRu: string;
+  nomiEn: string;
+  /** `public/` ichidagi rasm yo'li; rasm yo'q bo'lsa null. */
+  rasm: string | null;
   olchovMiqdori: number;
   olchovBirligi: string;
   kaloriya: number;
@@ -16,6 +21,23 @@ export type Taom = {
 /** Karta ostidagi izoh: "100 g · 186 kkal" yoki "1 dona · 310 kkal". */
 export function olchovIzohi(taom: Taom): string {
   return `${taom.olchovMiqdori} ${taom.olchovBirligi} · ${taom.kaloriya} kkal`;
+}
+
+/**
+ * Qidiruv uchun matnni tekislaydi: kichik harf, tutuq belgisi va tinish belgilarisiz.
+ * Shunda "lagmon" so'rovi "Lag'mon" ni, "shorva" esa "Sho'rva" ni topadi.
+ */
+function tekisla(matn: string): string {
+  return matn.toLowerCase().replace(/['’ʻʼ`\-\s]/g, "");
+}
+
+/** Taom nomi so'rovga uch tilning birida mos keladimi. Bo'sh so'rov hammasiga mos. */
+export function taomMosmi(taom: Taom, sorov: string): boolean {
+  const izlangan = tekisla(sorov);
+  if (!izlangan) return true;
+  return [taom.nomi, taom.nomiRu, taom.nomiEn].some((nom) =>
+    tekisla(nom).includes(izlangan),
+  );
 }
 
 export type PorsiyaHisobi = {

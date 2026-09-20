@@ -15,6 +15,8 @@ export type Yozuv = {
   yog: number;
   uglevod: number;
   ovqatTuri: string;
+  /** Bazadagi taomning rasmi; taom o'chgan yoki rasmsiz bo'lsa null. */
+  rasm: string | null;
   /** ISO matn — server va klient bir xil qiymatni ko'rsin. */
   vaqt: string;
 };

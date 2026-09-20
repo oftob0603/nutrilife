@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { KunlikDoira } from "@/app/_components/KunlikDoira";
 import { QaytishTaymeri } from "@/app/_components/QaytishTaymeri";
+import { TaomRasmi } from "@/app/_components/TaomRasmi";
 import { TugmaHavola } from "@/app/_components/Tugma";
 import { NORMA } from "@/lib/norma";
 import { raqam } from "@/lib/services/taom-hisob";
@@ -44,10 +45,6 @@ function Belgi() {
   );
 }
 
-function RasmOrni() {
-  return <div className="size-12 shrink-0 rounded-chip bg-chegara" />;
-}
-
 export default async function QoshildiSahifasi({
   params,
 }: PageProps<"/qoshildi/[id]">) {
@@ -76,7 +73,7 @@ export default async function QoshildiSahifasi({
       />
 
       <div className="flex w-full items-center gap-3 rounded-karta border border-chegara bg-karta p-4">
-        <RasmOrni />
+        <TaomRasmi rasm={yozuv.rasm} />
         <div className="min-w-0 flex-1">
           <p className="truncate text-karta-sarlavha">{yozuv.taomNomi}</p>
           <p className="mt-1 text-izoh text-matn-2 tabular-nums">

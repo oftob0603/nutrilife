@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { TaomKartasi } from "@/app/_components/TaomKartasi";
-import type { Taom } from "@/lib/services/taom-hisob";
+import { taomMosmi, type Taom } from "@/lib/services/taom-hisob";
 
 function QidiruvIkonasi() {
   return (
@@ -28,10 +28,7 @@ function QidiruvIkonasi() {
 export function TaomlarRoyxati({ taomlar }: { taomlar: Taom[] }) {
   const [sorov, setSorov] = useState("");
 
-  const tozalangan = sorov.trim().toLowerCase();
-  const natijalar = tozalangan
-    ? taomlar.filter((taom) => taom.nomi.toLowerCase().includes(tozalangan))
-    : taomlar;
+  const natijalar = taomlar.filter((taom) => taomMosmi(taom, sorov));
 
   return (
     <div className="flex flex-col gap-4">

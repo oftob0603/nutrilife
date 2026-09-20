@@ -18,7 +18,12 @@ datasource db {
 /// o'lchanadi, porsiya variantlari esa shu birlikda beriladi.
 model Taom {
   id            String   @id
+  /// O'zbekcha nom — interfeysda va jurnal yozuvida shu ko'rinadi.
   nomi          String
+  nomiRu        String   @map("nomi_ru")
+  nomiEn        String   @map("nomi_en")
+  /// `public/` ichidagi rasm yo'li, masalan `/taomlar/osh.webp`; rasm yo'q bo'lsa bo'sh.
+  rasm          String?
   olchovMiqdori Int      @map("olchov_miqdori")
   olchovBirligi String   @map("olchov_birligi")
   kaloriya      Float

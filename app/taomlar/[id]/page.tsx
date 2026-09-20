@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { PorsiyaTanlagich } from "@/app/_components/PorsiyaTanlagich";
+import { TaomRasmi } from "@/app/_components/TaomRasmi";
 import type { Taom } from "@/lib/services/taom-hisob";
 import { apiAsos } from "@/lib/api-asos";
 
@@ -33,11 +34,6 @@ function ChapStrelka() {
   );
 }
 
-/** Taom rasmi hali yo'q — prototipdagidek 4:3 bo'sh o'rin turadi (DESIGN.md, 6-bo'lim). */
-function RasmOrni() {
-  return <div className="aspect-[4/3] w-full rounded-chip bg-chegara" />;
-}
-
 export default async function TaomSahifasi({
   params,
 }: PageProps<"/taomlar/[id]">) {
@@ -60,7 +56,7 @@ export default async function TaomSahifasi({
       </header>
 
       <div className="flex flex-col gap-6">
-        <RasmOrni />
+        <TaomRasmi rasm={taom.rasm} olcham="katta" />
         <PorsiyaTanlagich taom={taom} />
       </div>
     </main>

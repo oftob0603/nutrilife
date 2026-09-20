@@ -1,10 +1,6 @@
 import Link from "next/link";
+import { TaomRasmi } from "@/app/_components/TaomRasmi";
 import { olchovIzohi, type Taom } from "@/lib/services/taom-hisob";
-
-/** Taom rasmi hali yo'q — prototipdagidek bo'sh o'rin ko'rsatiladi. */
-function RasmOrni() {
-  return <div className="size-12 shrink-0 rounded-chip bg-chegara" />;
-}
 
 function OngStrelka() {
   return (
@@ -32,7 +28,7 @@ export function TaomKartasi({ taom }: { taom: Taom }) {
         href={`/taomlar/${taom.id}`}
         className="flex items-center gap-3 rounded-karta border border-chegara bg-karta p-4"
       >
-        <RasmOrni />
+        <TaomRasmi rasm={taom.rasm} />
         <div className="min-w-0 flex-1">
           <p className="truncate text-karta-sarlavha">{taom.nomi}</p>
           <p className="mt-1 text-izoh text-matn-2 tabular-nums">{olchovIzohi(taom)}</p>
