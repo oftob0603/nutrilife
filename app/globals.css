@@ -26,6 +26,26 @@
 }
 
 @theme inline {
+  /* Oraliq, radius va shrift rollari — DESIGN.md va prototip/tokens/ */
+  --radius-chip: 12px;
+  --radius-karta: 20px;
+
+  --text-sarlavha: 24px;
+  --text-sarlavha--line-height: 1.15;
+  --text-sarlavha--letter-spacing: -0.02em;
+  --text-sarlavha--font-weight: 600;
+
+  /* Nomi "karta" emas: u --color-karta bilan to'qnashadi va rang utilitasiga aylanadi. */
+  --text-karta-sarlavha: 17px;
+  --text-karta-sarlavha--line-height: 1.15;
+  --text-karta-sarlavha--font-weight: 600;
+
+  --text-asosiy: 15px;
+  --text-asosiy--line-height: 1.5;
+
+  --text-izoh: 13px;
+  --text-izoh--line-height: 1.4;
+
   --color-siyoh: var(--siyoh);
   --color-aksent: var(--aksent);
   --color-aksent-matn: var(--aksent-matn);

@@ -8,7 +8,7 @@ taom tanlash ekrani -> jurnalga yozish -> kunlik doira to'lishi -> jonli domen.
 ## Tasklar
 
 - [x] `taomlar` jadvali (Prisma; maydonlar prototipga moslandi: nomi, o'lchov miqdori va birligi, kaloriya, oqsil, yog', uglevod, porsiyalar) + prototipdagi 8 ta seed yozuv
-- [ ] Taomlar ro'yxati sahifasi — seed'dagi 4 ta taom karta ko'rinishida chiqadi
+- [x] Taomlar ro'yxati sahifasi — seed'dagi 8 ta taom karta ko'rinishida chiqadi (`/taomlar`)
 - [ ] Taom detal ekrani: porsiya tanlash (masalan 150 g / 250 g / 350 g), tanlangan porsiyaga qarab kaloriya qayta hisoblanadi, hech qanday tekshiruv yo'q
 - [ ] `ovqat_yozuvlari` jadvali (minimal: taom, porsiya, kaloriya, makrolar, vaqt) va yozuv yaratadigan bitta API yo'li: `POST /api/ovqat-yozuvlari`
 - [ ] Home sahifasi — kunlik doira: bugungi jami kaloriya / qat'iy belgilangan norma (masalan 2,190 kkal, hozircha kodda yozilgan son) va uch makro chizig'i
@@ -36,12 +36,13 @@ Nutrition Score · to'liq ma'lumot modeli · dizayn nafisligi · uch til.
 - 2026-09-16: Loyiha skeleti ochildi — Next.js 16, TypeScript 6, Tailwind 4, Prisma 7; "Loyiha tayyor" sahifasi va /api/health (app/, lib/db.ts, prisma/)
 - 2026-09-16: Loyiha konvensiyalari o'rnatildi, Railway PostgreSQL ulanishi tekshirildi (CLAUDE.md, .claude/settings.json, .env.example, .mcp.json, scripts/mcp-db.mjs)
 - 2026-09-20: 1-task bajarildi — prototip referens sifatida olindi, `taomlar` jadvali, migratsiya va 8 ta seed yozuv (prototip/, prisma/schema.prisma, prisma/seed.mjs)
+- 2026-09-20: 2-task bajarildi — /taomlar sahifasi, GET /api/taomlar va taom kartasi (app/taomlar/, app/api/taomlar/, app/_components/TaomKartasi.tsx, lib/services/taomlar.ts)
 
 ## Handoff
 
-Keyingi: 2-task — taomlar ro'yxati sahifasi. Ma'lumot bazada tayyor, ekran ko'rinishi
-prototipdan olinadi (prototip/ui_kits/mobile-app/screens-manual.jsx). STACK.md va S1 deploy
-taski hali Hetzner'ni ko'rsatadi — Vercel/Railway'ga moslashtirish kerak.
+Keyingi: 3-task — taom detal ekrani, porsiya tanlash va kaloriyaning qayta hisoblanishi.
+Ko'rinish prototipdagi FoodScreen'dan olinadi (prototip/ui_kits/mobile-app/screens-manual.jsx).
+STACK.md va S1 deploy taski hali Hetzner'ni ko'rsatadi — Vercel/Railway'ga moslashtirish kerak.
 
 ---
 
