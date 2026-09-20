@@ -135,17 +135,17 @@
 
   <header class="bosh">
     <div class="logo"><span>K</span><h1>Kalori — loyiha progressi</h1></div>
-    <p>Yangilangan: 2026-09-20 11:47 · manba: <code>sprints/</code> papkasi</p>
+    <p>Yangilangan: 2026-09-20 13:40 · manba: <code>sprints/</code> papkasi</p>
   </header>
 
   <section class="umumiy">
     <div class="umumiy-bosh">
       <h2>Umumiy holat</h2>
-      <span class="katta">18%</span>
+      <span class="katta">20%</span>
     </div>
-    <div class="chiziq"><div class="chiziq-ich" style="width:18%"></div></div>
+    <div class="chiziq"><div class="chiziq-ich" style="width:20%"></div></div>
     <div class="statlar">
-      <div class="stat"><b>11 / 60</b><span>task bajarildi</span></div>
+      <div class="stat"><b>12 / 60</b><span>task bajarildi</span></div>
       <div class="stat"><b>1 / 6</b><span>sprint tugallandi</span></div>
       <div class="stat"><b>S2</b><span>joriy sprint</span></div>
       <div class="stat"><b>5</b><span>ochiq savol</span></div>
@@ -236,26 +236,26 @@
 Nutrition Score · to'liq ma'lumot modeli · dizayn nafisligi · uch til.</p>
        </details>
     </article>
-    <article class="sprint boshlanmagan">
+    <article class="sprint jarayonda">
       <header class="sprint-bosh">
         <div class="sprint-nom">
           <span class="raqam">S2</span>
           <h3>xotira</h3>
         </div>
-        <span class="belgi boshlanmagan">Boshlanmagan</span>
+        <span class="belgi jarayonda">Jarayonda</span>
       </header>
 
       <p class="savol">Eslab qoladimi?</p>
       <p class="maqsad">Ma'lumot modeli to'lsin, rasm yuklash ishlasin va AI skan oqimi birinchi</p>
 
-      <div class="chiziq" role="img" aria-label="0 / 10 task bajarildi">
-        <div class="chiziq-ich" style="width:0%"></div>
+      <div class="chiziq" role="img" aria-label="1 / 10 task bajarildi">
+        <div class="chiziq-ich" style="width:10%"></div>
       </div>
-      <p class="hisob"><strong>0 / 10</strong> task · 0%</p>
+      <p class="hisob"><strong>1 / 10</strong> task · 10%</p>
 
       <ul class="tasklar">
-        <li class="task ">
-          <span class="quti" aria-hidden="true"></span>
+        <li class="task bajarildi">
+          <span class="quti" aria-hidden="true">✓</span>
           <span class="task-matn">PRD'dagi to'liq ma'lumot modelini migratsiya bilan qo'shish: <code>foydalanuvchilar</code>, <code>profillar</code>, <code>vazn_yozuvlari</code>, <code>rejalar</code>, <code>rasmlar</code>, <code>kunlik_xulosa</code> — S1'dagi mavjud yozuvlar omon qolsin. <code>ovqat_yozuvlari</code> ga <code>manba</code> (qo'lda / AI) va rasm bog'lanishi qo'shiladi; <code>foydalanuvchi_id</code> hozircha matn (<code>s1-sinov</code>) bo'lib qoladi, tashqi kalitga S3'da aylanadi</span>
         </li>
         <li class="task ">
@@ -295,10 +295,13 @@ Nutrition Score · to'liq ma'lumot modeli · dizayn nafisligi · uch til.</p>
           <span class="task-matn">Home to'ldiriladi (E1): haftalik kun tanlagich — tanlangan kun <code>?sana=</code> orqali yuklanadi; pastki navigatsiya paneli Home · [+] · Jurnal ko'rinishida, suzuvchi &quot;+&quot; panel markaziga ko'chadi va oqim ichidagi ekranlarda (E5, E8) yashiriladi (dizayn-tz 2-bo'lim)</span>
         </li></ul>
 
-      
+      <div class="blok">
+         <h4>Hisobot</h4>
+         <ul class="hisobot"><li>2026-09-20: 6 ta yangi model (foydalanuvchilar, profillar, vazn_yozuvlari, rejalar, rasmlar, kunlik_xulosa) va <code>ovqat_yozuvlari.manba</code> migratsiya bilan qo'shildi, Railway bazasiga qo'llandi (prisma/schema.prisma, prisma/migrations/20260920083412_s2_malumot_modeli/)</li></ul>
+       </div>
       <div class="blok">
          <h4>Handoff</h4>
-         <p class="handoff">S1'dan meros: API yo'llari <code>/api/taomlar</code>, <code>/api/taomlar/[id]</code>, <code>/api/ovqat-yozuvlari</code> tayyor; klient komponent<br>ishlatadigan sof hisob <code>lib/services/*-hisob.ts</code> da turadi — bazaga ulanadigan modulni klientga import qilma.<br>S2 ekranlari (E3 kamera, E6 AI tahlil, E7 AI natija tasdiq/tahrir, E9 jurnal,<br>E10 yozuv tahriri) uchun dizayn-tz.md va DESIGN.md tayyor, boshlashda shulardan foydalan.<br><code>profillar</code> migratsiyasi uchun onboarding-tz.md 4-bo'limidagi ustunlar ro'yxatiga qara.</p>
+         <p class="handoff">Keyingi: 2-task — <code>taomlar</code> ni uch tilli qilish, 30+ o'zbek taomi va rasm maydoni qo'shish.<br><code>GET /api/ovqat-yozuvlari</code> javobida <code>manba</code> hali chiqmaydi — AI tasdiq/jurnal tasklarida qo'shiladi.<br>Yangi migratsiya <code>prisma migrate dev --create-only</code> bilan yaratilib, SQL o'qilgach <code>prisma migrate deploy</code> bilan qo'llanadi.</p>
        </div>
       <details class="qoshimcha">
          <summary>Qabul mezoni (6)</summary>

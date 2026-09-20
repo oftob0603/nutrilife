@@ -37,6 +37,7 @@ model Taom {
 /// ichiga ko'chiriladi — baza yozuvi keyin o'zgarsa ham jurnal o'sha kungi holatini
 /// saqlaydi. S1'da foydalanuvchi tizimi yo'q, shuning uchun `foydalanuvchiId`
 /// qotirilgan sinov qiymatini oladi va S3'da real ID ga almashadi.
+/// Jadvalga faqat tasdiqlangan yozuv tushadi — tasdiqlanmagan AI natijasi saqlanmaydi.
 model OvqatYozuvi {
   id              String   @id @default(uuid())
   foydalanuvchiId String   @map("foydalanuvchi_id")
@@ -48,10 +49,127 @@ model OvqatYozuvi {
   yog             Float
   uglevod         Float
   ovqatTuri       String   @map("ovqat_turi")
+  /// "qolda" yoki "ai".
+  manba           String   @default("qolda")
   vaqt            DateTime @default(now())
 
-  taom Taom? @relation(fields: [taomId], references: [id], onDelete: SetNull)
+  taom    Taom?  @relation(fields: [taomId], references: [id], onDelete: SetNull)
+  rasmlar Rasm[]
 
   @@index([foydalanuvchiId, vaqt])
   @@map("ovqat_yozuvlari")
+}
+
+/// Hisob egasi va butun ilovaga tegishli sozlamalar (PRD.md, 7-bo'lim;
+/// onboarding-tz.md, 4-bo'lim). Ro'yxatdan o'tish S3'da yoziladi — ungacha jadval bo'sh.
+model Foydalanuvchi {
+  id            String    @id @default(uuid())
+  telegramId    BigInt?   @unique @map("telegram_id")
+  til           String    @default("uz")
+  /// "yorug", "qorongi" yoki "tizim".
+  mavzu         String    @default("tizim")
+  /// "metrik" (kg, sm) yoki "imperial" (lb, ft).
+  birliklar     String    @default("metrik")
+  shartlarQabul DateTime? @map("shartlar_qabul")
+  /// Onboardingda yosh qabul qilingan sana va vaqt — 18+ tasdig'i shu.
+  tasdiq18plus  DateTime? @map("tasdiq_18plus")
+  yaratilgan    DateTime  @default(now())
+
+  profil        Profil?
+  vaznYozuvlari VaznYozuvi[]
+  rejalar       Reja[]
+
+  @@map("foydalanuvchilar")
+}
+
+/// Onboarding javoblari. Savollar qadam-baqadam to'ldiriladi, shuning uchun
+/// ustunlar bo'sh bo'lishi mumkin; `onboardingQadami` qayerda to'xtaganini saqlaydi.
+/// Vazn bu yerda emas, `vazn_yozuvlari` da turadi.
+model Profil {
+  id                String   @id @default(uuid())
+  foydalanuvchiId   String   @unique @map("foydalanuvchi_id")
+  ism               String?
+  jins              String?
+  yosh              Int?
+  /// Santimetrda saqlanadi, ko'rsatishda o'giriladi.
+  boyi              Int?
+  maqsad            String?
+  faollik           String?
+  ovqatAfzalliklari String[] @map("ovqat_afzalliklari")
+  /// Kuniga necha mahal va asosan qayerda ovqatlanishi.
+  ovqatlanishOdati  Json?    @map("ovqatlanish_odati")
+  motivatsiya       String?
+  onboardingQadami  Int      @default(0) @map("onboarding_qadami")
+  yangilangan       DateTime @updatedAt
+
+  foydalanuvchi Foydalanuvchi @relation(fields: [foydalanuvchiId], references: [id], onDelete: Cascade)
+
+  @@map("profillar")
+}
+
+/// Vazn o'lchovlari tarixi. Onboardingdagi joriy vazn birinchi yozuv bo'lib tushadi —
+/// progress grafigi shu jadvaldan o'qiydi. Vazn kilogrammda saqlanadi.
+model VaznYozuvi {
+  id              String   @id @default(uuid())
+  foydalanuvchiId String   @map("foydalanuvchi_id")
+  vazn            Float
+  /// Maqsad vazn; "Vaznni saqlash" tanlanganda bo'sh.
+  maqsad          Float?
+  vaqt            DateTime @default(now())
+
+  foydalanuvchi Foydalanuvchi @relation(fields: [foydalanuvchiId], references: [id], onDelete: Cascade)
+
+  @@index([foydalanuvchiId, vaqt])
+  @@map("vazn_yozuvlari")
+}
+
+/// Hisoblangan kunlik norma — Home doirasining maxraji. Har qayta hisob yangi qator.
+model Reja {
+  id              String   @id @default(uuid())
+  foydalanuvchiId String   @map("foydalanuvchi_id")
+  kaloriya        Float
+  oqsil           Float
+  yog             Float
+  uglevod         Float
+  hisoblangan     DateTime @default(now())
+
+  foydalanuvchi Foydalanuvchi @relation(fields: [foydalanuvchiId], references: [id], onDelete: Cascade)
+
+  @@index([foydalanuvchiId, hisoblangan])
+  @@map("rejalar")
+}
+
+/// Ovqat rasmlari. Rasm avval yuklanadi, yozuv esa tasdiqdan keyin yaratiladi —
+/// shuning uchun `ovqatYozuviId` bo'sh bo'lishi mumkin. `foydalanuvchiId`
+/// `ovqat_yozuvlari` dagi kabi hozircha matn, S3'da tashqi kalitga aylanadi.
+model Rasm {
+  id              String   @id @default(uuid())
+  foydalanuvchiId String   @map("foydalanuvchi_id")
+  ovqatYozuviId   String?  @map("ovqat_yozuvi_id")
+  /// Ombordagi (R2) obyekt kaliti.
+  kalit           String   @unique
+  mime            String
+  hajm            Int
+  yaratilgan      DateTime @default(now())
+
+  ovqatYozuvi OvqatYozuvi? @relation(fields: [ovqatYozuviId], references: [id], onDelete: SetNull)
+
+  @@index([ovqatYozuviId])
+  @@map("rasmlar")
+}
+
+/// Kunlik jami va Nutrition Score (S4). `foydalanuvchiId` hozircha matn, S3'da
+/// tashqi kalitga aylanadi.
+model KunlikXulosa {
+  id              String   @id @default(uuid())
+  foydalanuvchiId String   @map("foydalanuvchi_id")
+  sana            DateTime @db.Date
+  kaloriya        Float
+  oqsil           Float
+  yog             Float
+  uglevod         Float
+  nutritionScore  Int?     @map("nutrition_score")
+
+  @@unique([foydalanuvchiId, sana])
+  @@map("kunlik_xulosa")
 }

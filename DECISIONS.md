@@ -208,6 +208,21 @@ Deploy esa 2026-09-16 dagi qarorga moslandi; STACK.md ham shunga qarab tuzatildi
 *Sabab:* Foydalanuvchi qarori. Vercel'da doimiy disk yo'q, R2 esa S3-mos va chiqish trafigi uchun haq olmaydi.
 S2'dagi rasm yuklash taski shunga moslandi.
 
+**2026-09-20 · `rasmlar` va `kunlik_xulosa`da `foydalanuvchi_id` hozircha matn (FK emas), `s1-sinov` bilan yoziladi; `profillar`, `vazn_yozuvlari`, `rejalar`da darhol haqiqiy FK (`onDelete Cascade`). Barchasi S3'da `ovqat_yozuvlari` bilan birga FK'ga aylanadi.**
+*Sabab:* `foydalanuvchilar` jadvali S3'gacha bo'sh, `s1-sinov` esa unda qator emas — haqiqiy FK qo'yilsa S2'dagi har bir yozuv rad etilardi.
+
+**2026-09-20 · `rasmlar.ovqat_yozuvi_id` nullable, `onDelete SetNull`: rasm avval yuklanadi, yozuv tasdiqdan keyin yaratiladi. `ovqat_yozuvlari`ga `holat` ustuni qo'shilmadi.**
+*Sabab:* Tasdiqlanmagan AI natijasi jadvalga umuman tushmasligi kerak (2026-09-13 qaroriga mos).
+
+**2026-09-20 · `ism` `profillar` jadvalida turadi, PRD 7-bo'limdagi `foydalanuvchilar.ism` emas.**
+*Sabab:* onboarding-tz.md 4-bo'limi yangiroq hujjat, shunga ergashildi.
+
+**2026-09-20 · Ustun nomi `18plus_tasdiq` emas, `tasdiq_18plus`.**
+*Sabab:* Raqam bilan boshlanadigan ustun nomi SQL'da doim qo'shtirnoq talab qiladi.
+
+**2026-09-20 · Yangi jadvallardagi matn qiymatlar (masalan `manba`) enum emas, `String` — mavjud `ovqat_turi` uslubiga mos.**
+*Sabab:* Qiymatlar servis qatlamida tekshiriladi, Prisma enum migratsiyasini murakkablashtirmaslik uchun.
+
 ---
 
 ## OCHIQ SAVOLLAR
