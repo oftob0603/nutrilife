@@ -245,6 +245,20 @@ Oqibati: CC BY / BY-SA litsenziyalari muallifni ko'rsatishni talab qiladi — ho
 *Sabab:* Foydalanuvchi sifatni oshirmoqchi edi. 4 MB li rasmlar yuklashni sekinlashtiradi, jurnalni og'irlashtiradi va AI aniqligiga foyda bermaydi; siqmaslik esa EXIF'dagi GPS va vaqtni R2'ga hamda AI xizmatiga o'tkazib yuboradi — qayta chizish ularni tozalaydi.
 Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720), shuning uchun bu o'zgarish faqat galereya rasmlariga ta'sir qiladi.
 
+## 2026-09-20 — AI skan API
+
+**2026-09-20 · AI provayderi hozircha Claude API (claude-haiku-4-5), asosiy provayder keyin Gemini bo'ladi; provayder faqat `lib/services/ai.ts` da, SDK'siz `fetch`.**
+*Sabab:* Foydalanuvchi qarori; provayder almashganda dependency qolmasligi kerak.
+
+**2026-09-20 · AI 100 g uchun qiymat (kaloriya, oqsil, yog', uglevod) va porsiya grammini qaytaradi, jami kodda hisoblanadi.**
+*Sabab:* Porsiya o'zgarganda AI qayta chaqirilmaydi, natija barqaror.
+
+**2026-09-20 · AI xatosida yuklangan rasm o'chirilmaydi — "Qayta urinish" qayta yuklashsiz ishlaydi.**
+*Sabab:* Foydalanuvchi tasdiqladi. PRD 8-bo'limdagi "xatoda rasm saqlanmaydi" qoidasidan ongli chekinish; yetim rasmlarni tozalash keyingi taskdagi bekor qilish oqimi bilan birga qilinadi.
+
+**2026-09-20 · Umumiy kunlik skan chegarasi (`SKAN_KUNLIK_CHEGARA`, standart 50) S3'gacha zaxira himoya sifatida qo'shildi.**
+*Sabab:* Foydalanuvchi so'rovi; S4'da FREE/PRO limitlari shu jadval ustiga qurilib, umumiy chegara o'rnini oladi.
+
 ---
 
 ## OCHIQ SAVOLLAR
@@ -252,7 +266,7 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 | # | Savol | Qachon hal qilamiz |
 |---|-------|--------------------|
 | 1 | North star metrika qaysi biri — DAU, PRO obunachilar yoki 7-kun retention | S3, analitika o'rnatilayotganda (S1'da qo'yilmadi) |
-| 2 | Bitta AI skan tannarxi qancha va 39,000 so'mlik obuna kuniga 20 ta skanni qoplaydimi | S2, AI provayderi tanlanganda |
+| 2 | Bitta AI skan tannarxi qancha va 39,000 so'mlik obuna kuniga 20 ta skanni qoplaydimi | S2, AI provayderi tanlanganda — birinchi o'lchov: matnli skan ≈ $0,001 (Haiku 4.5, ~716 kirish + ~70 chiqish token), rasmli hali o'lchanmagan |
 | 3 | V2 tarkibi va muddati — haftalik hisobot, eksport, avtomatik to'lov qachon qaytadi | V1 ishga tushgach |
 | 4 | Retseptlarning boshlang'ich soni — nechta retsept bilan ishga tushamiz | S6, kontent kiritilganda |
 | 5 | Bildirishnoma jadvali — eslatmalar qaysi vaqtda va qanchalik tez-tez yuboriladi | S5, Telegram sprintida |

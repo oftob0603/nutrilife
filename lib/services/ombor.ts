@@ -60,6 +60,13 @@ export async function omborgaYoz(
   if (!javob.ok) throw new Error(`Ombor yozishni rad etdi: ${javob.status}`);
 }
 
+/** Faylni ombordan o'qiydi — server o'zi ishlatishi uchun (masalan, AI tahliliga). */
+export async function ombordanOqi(kalit: string): Promise<Uint8Array> {
+  const javob = await ombor().klient.fetch(manzil(kalit));
+  if (!javob.ok) throw new Error(`Ombor o'qishni rad etdi: ${javob.status}`);
+  return new Uint8Array(await javob.arrayBuffer());
+}
+
 /** Ombordagi faylni o'chiradi — baza yozuvi yaratilmay qolgan rasmni tozalash uchun. */
 export async function ombordanOchir(kalit: string): Promise<void> {
   await ombor().klient.fetch(manzil(kalit), { method: "DELETE" });

@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { db } from "../db.ts";
-import { omborgaYoz, ombordanOchir, oqishHavolasi } from "./ombor.ts";
+import { omborgaYoz, ombordanOchir, ombordanOqi, oqishHavolasi } from "./ombor.ts";
 import { S1_FOYDALANUVCHI } from "./ovqat-yozuvlari.ts";
 import { rasmKengaytmasi, type RasmTuri } from "./rasm-hisob.ts";
 
@@ -40,6 +40,18 @@ export async function rasmSaqlash(
     await ombordanOchir(kalit).catch(() => {});
     throw xato;
   }
+}
+
+/** Rasm baytlari va turi — AI tahlili uchun; rasm topilmasa null. */
+export async function rasmMazmuni(
+  id: string,
+): Promise<{ baytlar: Uint8Array; mime: RasmTuri } | null> {
+  const rasm = await db.rasm.findFirst({
+    where: { id, foydalanuvchiId: S1_FOYDALANUVCHI },
+    select: { kalit: true, mime: true },
+  });
+  if (!rasm) return null;
+  return { baytlar: await ombordanOqi(rasm.kalit), mime: rasm.mime as RasmTuri };
 }
 
 /** Rasmni o'qish uchun vaqtinchalik havola; rasm topilmasa null. */

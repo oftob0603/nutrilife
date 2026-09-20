@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { TaomKartasi } from "@/app/_components/TaomKartasi";
+import { TugmaHavola } from "@/app/_components/Tugma";
 import { taomMosmi, type Taom } from "@/lib/services/taom-hisob";
 
 function QidiruvIkonasi() {
@@ -57,9 +58,19 @@ export function TaomlarRoyxati({ taomlar }: { taomlar: Taom[] }) {
         <div className="flex flex-col items-center gap-3 rounded-karta border border-chegara bg-karta p-4 text-center">
           <p className="text-karta-sarlavha">«{sorov.trim()}» topilmadi</p>
           <p className="text-izoh text-matn-2">
-            Boshqa nom bilan qidirib ko&apos;ring. Rasm va matn orqali qo&apos;shish
-            S2&apos;da ochiladi.
+            Boshqa nom bilan qidirib ko&apos;ring yoki taomni AI yordamida qo&apos;shing.
           </p>
+          <div className="flex w-full flex-col gap-2">
+            <TugmaHavola
+              korinish="ikkilamchi"
+              href={`/tasvirlash?matn=${encodeURIComponent(sorov.trim())}`}
+            >
+              Matn bilan tasvirlash
+            </TugmaHavola>
+            <TugmaHavola korinish="ikkilamchi" href="/kamera">
+              Rasmga olish
+            </TugmaHavola>
+          </div>
         </div>
       ) : (
         <ul className="flex flex-col gap-3">

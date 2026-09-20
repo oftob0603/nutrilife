@@ -178,3 +178,17 @@ model KunlikXulosa {
   @@unique([foydalanuvchiId, sana])
   @@map("kunlik_xulosa")
 }
+
+/// AI skan sarfi: har foydalanuvchining bir kundagi skanlari soni (PRD.md, 7-bo'lim).
+/// S3'gacha hamma so'rov bitta foydalanuvchi nomidan keladi, shuning uchun bu qator
+/// amalda umumiy kunlik chegara; S4'da FREE/PRO limitlari shu jadvalga tayanadi.
+model SkanHisobi {
+  id              String   @id @default(uuid())
+  foydalanuvchiId String   @map("foydalanuvchi_id")
+  /// Toshkent vaqti bo'yicha kun.
+  sana            DateTime @db.Date
+  soni            Int      @default(0)
+
+  @@unique([foydalanuvchiId, sana])
+  @@map("skan_hisobi")
+}
