@@ -75,7 +75,10 @@ model Foydalanuvchi {
   mavzu         String    @default("tizim")
   /// "metrik" (kg, sm) yoki "imperial" (lb, ft).
   birliklar     String    @default("metrik")
+  /// Onboardingda "Boshlash" bosilgan sana va vaqt — Ommaviy oferta shu bilan qabul qilinadi.
   shartlarQabul DateTime? @map("shartlar_qabul")
+  /// Qabul qilingan hujjat versiyasi (lib/shartlar.ts).
+  shartlarVersiyasi String?   @map("shartlar_versiyasi")
   /// Onboardingda yosh qabul qilingan sana va vaqt — 18+ tasdig'i shu.
   tasdiq18plus  DateTime? @map("tasdiq_18plus")
   yaratilgan    DateTime  @default(now())

@@ -1,4 +1,5 @@
 import { db } from "../db.ts";
+import { SHARTLAR_VERSIYASI } from "../shartlar.ts";
 import {
   QADAMLAR_SONI,
   type Javoblar,
@@ -86,7 +87,15 @@ export async function qadamniSaqlash(foydalanuvchiId: string, javob: QadamJavobi
       motivatsiya?: string | null;
     } = {};
 
+    // Qabul va tasdiq vaqtlari faqat birinchi marta yoziladi — orqaga qaytib qayta bosish
+    // yoki yoshni o'zgartirish dastlabki vaqtni surmaydi.
     switch (javob.qadam) {
+      case 1:
+        await tx.foydalanuvchi.updateMany({
+          where: { id: foydalanuvchiId, shartlarQabul: null },
+          data: { shartlarQabul: new Date(), shartlarVersiyasi: SHARTLAR_VERSIYASI },
+        });
+        break;
       case 2:
         profil.ism = javob.ism;
         break;
@@ -96,6 +105,11 @@ export async function qadamniSaqlash(foydalanuvchiId: string, javob: QadamJavobi
       case 4:
         profil.jins = javob.jins;
         profil.yosh = javob.yosh;
+        // 18 dan kichik yosh bu yerga yetib kelmaydi (`qadamniTekshir`).
+        await tx.foydalanuvchi.updateMany({
+          where: { id: foydalanuvchiId, tasdiq18plus: null },
+          data: { tasdiq18plus: new Date() },
+        });
         break;
       case 5: {
         profil.boyi = javob.boyi;

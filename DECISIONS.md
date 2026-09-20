@@ -324,6 +324,11 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-20 · O'lchovlar ekranidagi izohlar prototip tahriri bo'yicha (onboarding-tz.md dagidan keyingi qaror): joriy vazn uchun "tekshirib ko'ring" ogohlantirishi yo'q; "Vaznni saqlash"da joriy vazn ostida bo'yga nisbatan eslatma; maqsad vazn uchun yo'nalishga qarab "pastroq" / "yuqoriroq" eslatmasi (TMI 18,5–25), "Bu tibbiy maslahat emas." bilan — undov belgisisiz (DESIGN.md, 7-bo'lim).**
 *Sabab:* Yosh, bo'y va vaznlar matn maydoni emas, aylanuvchi g'ildirak — foydalanuvchi qarori.
 
+## 2026-09-20 — shartlar qabuli va 18+ tasdig'i (5-task)
+
+**2026-09-20 · `shartlar_qabul`, `shartlar_versiyasi` va `tasdiq_18plus` faqat birinchi marta yoziladi — qayta saqlashda o'zgarmaydi.**
+*Sabab:* Yuridik dalil — dastlabki rozilik vaqti muhim.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |
