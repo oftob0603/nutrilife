@@ -135,7 +135,7 @@
 
   <header class="bosh">
     <div class="logo"><span>K</span><h1>Kalori — loyiha progressi</h1></div>
-    <p>Yangilangan: 2026-09-20 18:27 · manba: <code>sprints/</code> papkasi</p>
+    <p>Yangilangan: 2026-09-20 18:50 · manba: <code>sprints/</code> papkasi</p>
   </header>
 
   <section class="umumiy">
@@ -301,7 +301,7 @@ Nutrition Score · to'liq ma'lumot modeli · dizayn nafisligi · uch til.</p>
        </div>
       <div class="blok">
          <h4>Handoff</h4>
-         <p class="handoff">Keyingi: 9-task — Mavzu tizimi. 6–8-tasklar lokal dev'da sinovdan o'tdi, production'ga hali push qilinmagan.<br>Tekshirilmagan: rasmli yozuvni o'chirishda rasmning R2'dan o'chishi (sinov ruxsati yo'qligi sababli), saqlash xato holatlari (E7, E10) va jurnal xato holati faqat kodda, <code>next build</code> ishlatilmadi.<br>Bazada sinov yozuvlari va 11 ta egasiz sinov rasmi qoldi — o'chirish hamon foydalanuvchi ruxsatini kutmoqda.</p>
+         <p class="handoff">Keyingi: 9-task — Mavzu tizimi. 6–8-tasklar lokal dev'da sinovdan o'tdi, production'ga hali push qilinmagan.<br>Tekshirilmagan: rasmli yozuvni o'chirishda rasmning R2'dan o'chishi (sinov ruxsati yo'qligi sababli), saqlash xato holatlari (E7, E10) va jurnal xato holati faqat kodda, <code>next build</code> ishlatilmadi.<br>Bazada sinov yozuvlari (&quot;Osh 200 g · 300 kkal&quot;, &quot;Non 80 g · 212 kkal&quot; — ikkalasi AI) va 11 ta egasiz sinov rasmi qoldi — rasmlarni o'chirish hamon foydalanuvchi ruxsatini kutmoqda. &quot;Non&quot; yozuvi ilovadan o'chirilsa, rasmli o'chirish yo'li ham sinaladi.<br>Kuzatuv: mavjud bo'lmagan yozuvga birinchi <code>DELETE</code> bir marta 500 qaytardi, keyingi 10+ urinishda barqaror 404 — qayta chaqirib bo'lmadi, sababi noma'lum.<br>Reja bo'yicha qoldirilgan (foydalanuvchi tasdiqlagan): E7'dagi &quot;tahrir qilingani&quot; bayrog'i (ustun + migratsiya, S6'da); E9'da chapga surib tezkor amallar; o'chirgandan keyingi 5 soniyalik &quot;Bekor qilish&quot; (yumshoq o'chirish kerak) — hozir faqat tasdiq paneli.<br>Kod qoidalari: klient komponent ishlatadigan sof hisob <code>lib/services/*-hisob.ts</code>, <code>yozuv-forma.ts</code>, <code>yozuv-kirish.ts</code> da turadi — bazaga ulanadigan modulni klientga import qilma. E7 va E10 bitta <code>YozuvFormasi</code> ni ishlatadi. <code>react-hooks/purity</code> render ichida <code>Date.now()</code> ni taqiqlaydi — &quot;hozir&quot; modul darajasidagi yordamchidan, hodisa ishlovchisida o'qiladi (<code>YozuvTahriri.tsx</code>, <code>kelajakdami</code>).<br>Sinov asbobi xususiyati: Claude brauzer paneli kadr chizmaguncha (skrinshot olinmaguncha) Next.js oqimli sahifasi skelet holatida qoladi va klient komponent ishga tushmaydi — bu ilova nuqsoni emas; matn o'qishdan oldin skrinshot ol.<br>AI aniqligi kuzatuvi: Haiku aralash ovqatni (&quot;ikki dona tuxum va non&quot; -&gt; 250 g, 7,5 g uglevod) bitta 100 g ga keltirishda xato qiladi; imlo xatolari ham bor (&quot;gushti&quot;). Gemini'ga o'tishda 20 taomlik aniqlik testida baholanadi.</p>
        </div>
       <details class="qoshimcha">
          <summary>Qabul mezoni (6)</summary>
