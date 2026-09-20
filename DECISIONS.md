@@ -201,14 +201,21 @@ lime E8'dagi doira va tasdiq belgisida qoladi.
 *Sabab:* Foydalanuvchi qarori: prototipda bor, sprintda yozilmay qolgan narsalar S1'ga qo'shilsin.
 Deploy esa 2026-09-16 dagi qarorga moslandi; STACK.md ham shunga qarab tuzatildi.
 
+**2026-09-20 · S2–S6 tasklari S1 qoldirgan holatga moslandi: qotirilgan norma va `s1-sinov` egasi qaysi sprintda almashishi, E2/E4'dagi "S2'da ochiladi" joylari, pastki panel bosqichlari, Vercel'ga xos cheklovlar (rasm ombori, bot webhook, cron) tasklarga yozildi.**
+*Sabab:* Foydalanuvchi so'rovi; sprint rejalari Hetzner davrida yozilgan va S1'da yozilmagan qarorlarni bilmas edi.
+
+**2026-09-20 · Rasm ombori — Cloudflare R2 (yoki shu Cloudflare ekotizimidagi xizmat).**
+*Sabab:* Foydalanuvchi qarori. Vercel'da doimiy disk yo'q, R2 esa S3-mos va chiqish trafigi uchun haq olmaydi.
+S2'dagi rasm yuklash taski shunga moslandi.
+
 ---
 
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |
 |---|-------|--------------------|
-| 1 | North star metrika qaysi biri — DAU, PRO obunachilar yoki 7-kun retention | S1, analitika o'rnatilayotganda |
-| 2 | Bitta AI skan tannarxi qancha va 39,000 so'mlik obuna kuniga 20 ta skanni qoplaydimi | S1, AI provayderi tanlanganda |
+| 1 | North star metrika qaysi biri — DAU, PRO obunachilar yoki 7-kun retention | S3, analitika o'rnatilayotganda (S1'da qo'yilmadi) |
+| 2 | Bitta AI skan tannarxi qancha va 39,000 so'mlik obuna kuniga 20 ta skanni qoplaydimi | S2, AI provayderi tanlanganda |
 | 3 | V2 tarkibi va muddati — haftalik hisobot, eksport, avtomatik to'lov qachon qaytadi | V1 ishga tushgach |
 | 4 | Retseptlarning boshlang'ich soni — nechta retsept bilan ishga tushamiz | S6, kontent kiritilganda |
 | 5 | Bildirishnoma jadvali — eslatmalar qaysi vaqtda va qanchalik tez-tez yuboriladi | S5, Telegram sprintida |

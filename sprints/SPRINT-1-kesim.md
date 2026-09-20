@@ -17,7 +17,7 @@ taom tanlash ekrani -> jurnalga yozish -> kunlik doira to'lishi -> jonli domen.
 - [x] Ovqat qo'shish paneli (E2): "+" bosilganda pastdan chiqadi; S1'da faqat "Qo'lda qo'shish" faol, Kamera va Galereya o'chgan holatda ("S2'da ochiladi")
 - [x] Taom qidiruvi (E4): `/taomlar` sahifasiga qidiruv maydoni va "«…» topilmadi" holati
 - [x] O'zbekcha `not-found` sahifasi — Next'ning inglizcha standart 404 ekrani o'rniga
-- [ ] Deploy: Vercel (sahifa va API) + Railway (PostgreSQL) — mahsulot o'z domenida ochiladi; STACK.md'dagi Hetzner/Caddy qatorlari tuzatiladi
+- [x] Deploy: Vercel (sahifa va API) + Railway (PostgreSQL) — mahsulot o'z domenida ochiladi; STACK.md'dagi Hetzner/Caddy qatorlari tuzatiladi
 
 ## Qabul mezoni
 
@@ -50,18 +50,14 @@ Nutrition Score · to'liq ma'lumot modeli · dizayn nafisligi · uch til.
 - 2026-09-20: 8-task bajarildi — E2 ovqat qo'shish paneli; kamera va galereya o'chgan holatda (app/_components/QoshishPaneli.tsx)
 - 2026-09-20: 9-task bajarildi — E4 taom qidiruvi va "topilmadi" holati (app/_components/TaomlarRoyxati.tsx)
 - 2026-09-20: 10-task bajarildi — o'zbekcha not-found sahifasi (app/not-found.tsx)
+- 2026-09-20: 11-task bajarildi — Vercel loyihasi `nutrilife` GitHub repoga ulandi, `DATABASE_URL` Environment Variables'da, mahsulot https://nutrilife-khaki.vercel.app da jonli; domenda yozuv qo'shish va doira to'lishi tekshirildi (lib/api-asos.ts)
 - 2026-09-20: Sinov yozuvlari bazadan o'chirildi (foydalanuvchi ruxsati bilan); STACK.md'dagi Hetzner/Caddy qatorlari Vercel/Railway bilan almashtirildi
 
 ## Handoff
 
-Keyingi: 11-task — Vercel'ga chiqarish. Repo `oftob0603/nutrilife`; baza allaqachon
-Railway'da va migratsiyalar qo'llangan. Vercel'da `DATABASE_URL` Environment
-Variables orqali beriladi, `APP_URL` esa domen aniq bo'lgach qo'yiladi (bo'lmasa
-`VERCEL_URL` ishlatiladi — lib/api-asos.ts).
-
-S1'dan qolgan ochiq nuqtalar keyingi sprintlarga: kunlik norma hozircha
-`lib/norma.ts` da qotirilgan (S3'da rejadan keladi), yozuvlar `s1-sinov` degan
-qotirilgan foydalanuvchiga yoziladi (S3'da real ID), taom rasmlari yo'q (S2).
+S1 yopildi — barcha 11 task bajarildi, mahsulot https://nutrilife-khaki.vercel.app da.
+Keyingi: S2 (sprints/SPRINT-2-xotira.md). S1'dan meros: norma `lib/norma.ts` da qotirilgan,
+yozuvlar `s1-sinov` egasiga yoziladi, taom rasmlari o'rnida bo'sh joy, matnlar faqat o'zbekcha.
 
 ---
 

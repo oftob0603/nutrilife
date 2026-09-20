@@ -14,6 +14,7 @@ qatorda yozilgan. Maqsad: o'ylashni stackka emas, mahsulotga sarflash.
 | **Tailwind CSS** | Dizaynni HTML ichida yozasiz — alohida CSS fayllarni boshqarish yo'q |
 | **Vercel** | Next.js'ning o'z platformasi: push qilinganda o'zi quradi va chiqaradi, HTTPS tayyor |
 | **Railway** | PostgreSQL boshqariladigan xizmat sifatida; nusxa va zaxira o'zi bajariladi |
+| **Cloudflare R2** | Ovqat rasmlari ombori (S2): S3-mos, chiqish trafigi bepul; Vercel'da doimiy disk yo'q |
 | **Telegram Mini App** | Auditoriya allaqachon Telegramda; alohida ilova yuklatish shart emas (S5) |
 
 ## Nega aynan shu to'plam

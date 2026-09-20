@@ -11,9 +11,9 @@ nazorat qilsin, xatolarni tuzatsin.
 - [ ] Foydalanuvchilar ro'yxati: qidiruv, filtr (FREE / PRO / bloklangan), bitta foydalanuvchi kartasi
 - [ ] Obunani qo'lda boshqarish: PRO berish, muddatini uzaytirish, olib qo'yish
 - [ ] Taom takliflari navbati: foydalanuvchi tuzatishlari ro'yxati, tasdiqlash yoki rad etish, tasdiqlangani umumiy `taomlar` bazasiga qo'shiladi
-- [ ] Taom bazasini tahrirlash: yangi taom qo'shish, nomi uch tilda, taxminiy kaloriya va makrolar
+- [ ] Taom bazasini tahrirlash: yangi taom qo'shish, nomi uch tilda, taxminiy kaloriya va makrolar, shuningdek S1 modelidagi o'lchov miqdori va birligi (100 g yoki 1 dona), porsiya variantlari ro'yxati va rasm
 - [ ] Retseptlar bo'limi (PRO ostida): `retseptlar` jadvali, admin panelidan kiritish — nomi, rasmi, kaloriya, oqsil, tayyorlash vaqti, murakkablik, kategoriya
-- [ ] Retseptlar sahifasi foydalanuvchi tomonida: qidiruv, kategoriyalar, filtr oynasi (tayyorlash vaqti, kaloriya, afzalliklar), retsept detali. FREE'ga sarlavha ko'rinadi, to'liq matn PRO'da
+- [ ] Retseptlar sahifasi foydalanuvchi tomonida: qidiruv, kategoriyalar, filtr oynasi (tayyorlash vaqti, kaloriya, afzalliklar), retsept detali. FREE'ga sarlavha ko'rinadi, to'liq matn PRO'da. Pastki panel to'liq ko'rinishga o'tadi: Home · Retseptlar · [+] · Progress · Profil
 - [ ] Statistika: ro'yxatdan o'tganlar, kunlik faol foydalanuvchilar, skanlar soni, PRO obunachilar, 7-kun retention
 - [ ] Foydalanuvchini bloklash va ma'lumotini o'chirish, shikoyatlarni ko'rish
 - [ ] Narxlarni panel orqali o'zgartirish

@@ -4,7 +4,7 @@
 
 | Sprint | Savol | Natija (shu loyihada) |
 |--------|-------|------------------------|
-| **S1 — kesim** | Ishlaydimi? | Home ekranida kunlik doira ko'rinadi; qo'lda matn bilan ovqat qo'shilganda doira to'ladi; yozuv PostgreSQL'ga tushadi; mahsulot o'z domenida jonli |
+| **S1 — kesim** ✅ 2026-09-20 | Ishlaydimi? | Home ekranida kunlik doira ko'rinadi; qo'lda matn bilan ovqat qo'shilganda doira to'ladi; yozuv PostgreSQL'ga tushadi; mahsulot o'z domenida jonli |
 | **S2 — xotira** | Eslab qoladimi? | To'liq ma'lumot modeli; taom bazasi o'zbek taomlari bilan; rasm yuklash va ombor; AI skan oqimi — rasm -> tahlil -> tasdiq -> jurnal; jurnal ro'yxati filtr bilan |
 | **S3 — auth** | Kim kirdi? | Telegram initData orqali kirish; FREE, PRO va admin rollari; har foydalanuvchi faqat o'z jurnalini ko'radi; himoyalangan API yo'llari |
 | **S4 — chuqurlik** | Haqiqiy hayotda chidaydimi? | Mifflin-St Jeor normasi; Nutrition Score formulasi; skan limitlari (FREE 3, PRO kuniga 20); holatlar zanjiri; AI ishonchi past bo'lgan holat; chegaraviy holatlar |
@@ -53,7 +53,7 @@ Magistraldan chiqadigan ishlar. Har biri qovurdoq javobidan kelib chiqadi.
 
 - **Analitika va north star metrikasi**
   *Sabab:* Blok 1 — DAU, PRO obunachilar va 7-kun retention kuzatiladi.
-  *Qachon:* S1 oxirida qo'yiladi, S3 dan keyin to'ldiriladi.
+  *Qachon:* S3'da qo'yiladi (foydalanuvchi ID'si paydo bo'lgach), keyin to'ldiriladi. S1'da qo'yilmadi — kesimda foydalanuvchi yo'q edi.
 
 ## 3. Kelajak (v2+)
 

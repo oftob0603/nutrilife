@@ -7,13 +7,14 @@ qabul qilsin.
 
 ## Tasklar
 
-- [ ] Telegram Mini App sifatida to'liq ishlashi: WebApp SDK ulanishi, tema Telegram mavzusiga moslashishi, orqaga tugmasi, xavfsiz maydon (safe area) va bir qo'l bilan ishlatish uchun pastki navigatsiya
+- [ ] Telegram Mini App sifatida to'liq ishlashi: WebApp SDK ulanishi, tema Telegram mavzusiga moslashishi, orqaga tugmasi (S1–S2 ekranlaridagi o'z orqaga tugmasi o'rniga Telegram'niki), xavfsiz maydon (safe area). Pastki navigatsiya S2–S4'da qurilgan — bu yerda faqat Telegram xavfsiz maydoniga moslanadi
+- [ ] Bot webhook'i Vercel API yo'li sifatida (`/api/bot`) — doimiy ishlaydigan jarayon yo'q, shuning uchun long polling emas
 - [ ] Bot kirish nuqtasi: `/start` — salomlashish, til tanlash (o'zbek, rus, ingliz) va "Ilovani ochish" tugmasi. Bot ichida ovqat kiritish yo'q
 - [ ] Paywall va obuna ekrani: uch tarif (39,000 so'm/oy · 170,000 so'm/6 oy · 290,000 so'm/yil), yillik tavsiya belgisi, oylik ekvivalent va tejash ko'rsatilishi, "Hozir emas" tugmasi
-- [ ] To'lov integratsiyasi: Click, Payme va Telegram Stars. `tolovlar` jadvali, holat zanjiri `boshlandi` -> `to'landi` / `bekor qilindi`
+- [ ] To'lov integratsiyasi: Click, Payme va Telegram Stars. Kalitlar Vercel Environment Variables'da, qaytish manzillari production domeniga yoziladi. `tolovlar` jadvali, holat zanjiri `boshlandi` -> `to'landi` / `bekor qilindi`
 - [ ] Obuna faollashuvi: muvaffaqiyatli to'lovdan keyin `obunalar` yozuvi va PRO huquqlari darhol ochiladi
 - [ ] Bildirishnomalar bot orqali: nonushta, tushlik, kechki ovqat va suv eslatmalari; sozlamalarda har biri alohida yoqiladi va o'chiriladi
-- [ ] Fon vazifalari: obuna muddati tugashi va tugashdan oldingi ogohlantirish, PRO kunlik skan limitining yangilanishi, kunlik xulosani yopish
+- [ ] Fon vazifalari (Vercel Cron Jobs orqali — server doimiy ishlamaydi; Hobby tarifidagi kunlik chegara sprint boshida tekshiriladi, yetmasa Railway cron): obuna muddati tugashi va tugashdan oldingi ogohlantirish, PRO kunlik skan limitining yangilanishi, kunlik xulosani yopish
 - [ ] Privacy Policy va Terms of Use sahifalari: 18+, AI taxminlari, obuna va to'lov, bekor qilish, pul qaytarilmasligi, sog'liq bo'yicha ogohlantirish, rasmlar uchinchi tomon AI xizmatiga yuborilishi, O'zbekiston Respublikasi qonuni
 
 ## Qabul mezoni
@@ -36,7 +37,8 @@ avtomatik takroriy to'lov · admin paneli.
 
 ## Handoff
 
-<!-- hisobotchi to'ldiradi -->
+Deploy Vercel + Railway'da (DECISIONS 2026-09-16): bot webhook, eslatmalar va fon vazifalari
+serverless muhitga moslab rejalangan. Paywall (W1) uchun paywall-tz.md tayyor.
 
 ---
 
