@@ -1,12 +1,37 @@
-import { telegramBoyichaTopYokiYarat } from "@/lib/services/foydalanuvchilar";
+import {
+  foydalanuvchiniOl,
+  telegramBoyichaTopYokiYarat,
+} from "@/lib/services/foydalanuvchilar";
+import {
+  joriyFoydalanuvchiId,
+  kirishKerak,
+  sessiyaCookie,
+  sessiyadagiId,
+  sessiyaniOchirishCookie,
+  SessiyaSiriYoq,
+} from "@/lib/services/sessiya";
 import { initDataniTekshir } from "@/lib/services/telegram-initdata";
 
-/** Telegram initData bilan kirish: imzo tasdiqlansa hisob topiladi yoki yaratiladi. */
+function ishlamayapti() {
+  return Response.json({ xato: "Kirish vaqtincha ishlamayapti" }, { status: 500 });
+}
+
+/** Joriy sessiya egasi — ilova ochilganda initData bo'lmasa shu bilan tekshiriladi. */
+export async function GET(sorov: Request) {
+  const foydalanuvchiId = await joriyFoydalanuvchiId(sorov);
+  const foydalanuvchi = foydalanuvchiId ? await foydalanuvchiniOl(foydalanuvchiId) : null;
+  return foydalanuvchi ? Response.json({ foydalanuvchi }) : kirishKerak();
+}
+
+/**
+ * Telegram initData bilan kirish: imzo tasdiqlansa hisob topiladi yoki yaratiladi va
+ * sessiya cookie'si qo'yiladi (har kirishda yangilanadi).
+ */
 export async function POST(sorov: Request) {
   const botToken = process.env.TELEGRAM_BOT_TOKEN;
   if (!botToken) {
     console.error("TELEGRAM_BOT_TOKEN sozlanmagan");
-    return Response.json({ xato: "Kirish vaqtincha ishlamayapti" }, { status: 500 });
+    return ishlamayapti();
   }
 
   let tana: Record<string, unknown>;
@@ -30,5 +55,28 @@ export async function POST(sorov: Request) {
     tekshiruv.telegramId,
     tekshiruv.til,
   );
-  return Response.json({ foydalanuvchi, yangi });
+
+  let cookie: string;
+  try {
+    cookie = sessiyaCookie(foydalanuvchi.id);
+  } catch (xato) {
+    if (!(xato instanceof SessiyaSiriYoq)) throw xato;
+    console.error(xato.message);
+    return ishlamayapti();
+  }
+
+  // Sahifa shu hisob sessiyasi bilan chizilgan bo'lsa, klient uni qayta yuklamaydi.
+  const sessiyaBorEdi = sessiyadagiId(sorov) === foydalanuvchi.id;
+  return Response.json(
+    { foydalanuvchi, yangi, sessiyaBorEdi },
+    { headers: { "Set-Cookie": cookie } },
+  );
+}
+
+/** Chiqish: sessiya cookie'si o'chiriladi. */
+export async function DELETE() {
+  return new Response(null, {
+    status: 204,
+    headers: { "Set-Cookie": sessiyaniOchirishCookie() },
+  });
 }

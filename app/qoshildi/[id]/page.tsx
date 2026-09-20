@@ -6,7 +6,7 @@ import { TugmaHavola } from "@/app/_components/Tugma";
 import { NORMA } from "@/lib/norma";
 import { raqam } from "@/lib/services/taom-hisob";
 import type { Jami, Yozuv } from "@/lib/services/yozuv-hisob";
-import { apiAsos } from "@/lib/api-asos";
+import { serverdanApi } from "@/lib/api-asos";
 
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
 export const dynamic = "force-dynamic";
@@ -15,9 +15,7 @@ type Kun = { yozuvlar: Yozuv[]; jami: Jami };
 
 async function kunniYukla(): Promise<Kun | null> {
   try {
-    const javob = await fetch(`${apiAsos()}/api/ovqat-yozuvlari`, {
-      cache: "no-store",
-    });
+    const javob = await serverdanApi("/api/ovqat-yozuvlari");
     if (!javob.ok) return null;
     return (await javob.json()) as Kun;
   } catch {

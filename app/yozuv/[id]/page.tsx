@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { AiBelgisi } from "@/app/_components/AiBelgisi";
 import { TaomRasmi } from "@/app/_components/TaomRasmi";
 import { YozuvTahriri } from "@/app/_components/YozuvTahriri";
-import { apiAsos } from "@/lib/api-asos";
+import { serverdanApi } from "@/lib/api-asos";
 import type { Yozuv } from "@/lib/services/yozuv-hisob";
 
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: "Yozuv tahriri — Nutrilife" };
 
 async function yozuvniYukla(id: string): Promise<Yozuv | null> {
-  const javob = await fetch(`${apiAsos()}/api/ovqat-yozuvlari/${id}`, { cache: "no-store" });
+  const javob = await serverdanApi(`/api/ovqat-yozuvlari/${id}`);
   if (javob.status === 404) return null;
   if (!javob.ok) throw new Error("Yozuvni yuklab bo'lmadi");
   const { yozuv } = (await javob.json()) as { yozuv: Yozuv };

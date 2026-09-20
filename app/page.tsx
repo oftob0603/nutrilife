@@ -13,7 +13,7 @@ import {
   type Jami,
   type Yozuv,
 } from "@/lib/services/yozuv-hisob";
-import { apiAsos } from "@/lib/api-asos";
+import { serverdanApi } from "@/lib/api-asos";
 
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
 export const dynamic = "force-dynamic";
@@ -22,9 +22,7 @@ type Kun = { yozuvlar: Yozuv[]; jami: Jami };
 
 async function kunniYukla(sana: string): Promise<Kun | null> {
   try {
-    const javob = await fetch(`${apiAsos()}/api/ovqat-yozuvlari?sana=${sana}`, {
-      cache: "no-store",
-    });
+    const javob = await serverdanApi(`/api/ovqat-yozuvlari?sana=${sana}`);
     if (!javob.ok) return null;
     return (await javob.json()) as Kun;
   } catch {

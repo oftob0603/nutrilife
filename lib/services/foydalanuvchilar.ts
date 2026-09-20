@@ -20,6 +20,11 @@ function takroriyKalitmi(xato: unknown): boolean {
   return typeof xato === "object" && xato !== null && "code" in xato && xato.code === "P2002";
 }
 
+/** Hisob sozlamalari; hisob topilmasa (masalan, o'chirilgan) null. */
+export async function foydalanuvchiniOl(id: string): Promise<Foydalanuvchi | null> {
+  return db.foydalanuvchi.findUnique({ where: { id }, select: FOYDALANUVCHI_MAYDONLARI });
+}
+
 /**
  * Telegram ID bo'yicha hisobni topadi, bo'lmasa yaratadi. `til` faqat yangi hisobga
  * yoziladi — mavjud foydalanuvchining Sozlamalardagi tanlovi ustidan yozilmaydi.

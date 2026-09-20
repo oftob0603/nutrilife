@@ -3,7 +3,7 @@ import { MakroChizigi } from "@/app/_components/MakroChizigi";
 import { QoshishPaneli, QoshishTugmasi } from "@/app/_components/QoshishPaneli";
 import { TugmaHavola } from "@/app/_components/Tugma";
 import { YozuvQatori } from "@/app/_components/YozuvQatori";
-import { apiAsos } from "@/lib/api-asos";
+import { serverdanApi } from "@/lib/api-asos";
 import { NORMA } from "@/lib/norma";
 import { raqam } from "@/lib/services/taom-hisob";
 import {
@@ -25,9 +25,7 @@ type Kun = { yozuvlar: Yozuv[]; jami: Jami };
 
 async function kunniYukla(sana: string): Promise<Kun | null> {
   try {
-    const javob = await fetch(`${apiAsos()}/api/ovqat-yozuvlari?sana=${sana}`, {
-      cache: "no-store",
-    });
+    const javob = await serverdanApi(`/api/ovqat-yozuvlari?sana=${sana}`);
     if (!javob.ok) return null;
     return (await javob.json()) as Kun;
   } catch {

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Inter_Tight } from "next/font/google";
+import { KirishDarvozasi } from "@/app/_components/KirishDarvozasi";
 import { MAVZU_SKRIPTI } from "@/lib/mavzu";
 import "./globals.css";
 
@@ -32,7 +33,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {/* Saqlangan mavzu sahifa chizilishidan oldin qo'llanadi (lib/mavzu.ts). */}
         <script dangerouslySetInnerHTML={{ __html: MAVZU_SKRIPTI }} />
       </head>
-      <body className="flex min-h-full flex-col font-sans">{children}</body>
+      <body className="flex min-h-full flex-col font-sans">
+        <KirishDarvozasi>{children}</KirishDarvozasi>
+      </body>
     </html>
   );
 }

@@ -289,6 +289,14 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-20 · `s1-sinov` yozuvlari o'chirilmadi, birinchi admin hisobiga ko'chirildi (foydalanuvchi qarori); `ovqat_yozuvlari`, `rasmlar`, `kunlik_xulosa`, `skan_hisobi` dagi `foydalanuvchi_id` `ON DELETE CASCADE` bilan tashqi kalit bo'ldi.**
 *Sabab:* Hech narsa yo'qolmaydi, egasi Telegram'dan kirganda yozuvlarini ko'radi; kaskad — 10-taskdagi "hisobni o'chirish" uchun (ombordagi fayllarni esa o'sha servis o'zi tozalashi kerak). Ma'lumot ko'chirish migratsiya fayliga kiritilmadi (Telegram ID repoga tushmasin) — migratsiya faqat DDL.
 
+## 2026-09-20 — sessiya
+
+**2026-09-20 · Sessiya — bazasiz imzolangan token, cookie'da; 30 kun, har ochilishda yangilanadi; kutubxonasiz (`node:crypto`).**
+*Sabab:* Auth kutubxonasi qo'shilmaydi (CLAUDE.md), sessiyalar jadvali ortiqcha — Telegram har ochilishda yangi initData beradi, shuning uchun sessiyani istalgan payt qayta tiklash mumkin. Cookie `SameSite=None; Partitioned` — Telegram Web Mini App'ni iframe'da ochadi; CSRF xavfi `Origin` tekshiruvi bilan yopiladi.
+
+**2026-09-20 · initData klientda URL hash'dan o'qiladi, `telegram-web-app.js` S3'da ulanmaydi; production'da Telegram'dan tashqarida ilova ochilmaydi ("Ilovani Telegram orqali oching"), lokal dev'da esa sessiyasiz so'rov birinchi hisob nomidan o'tadi.**
+*Sabab:* To'liq SDK S5 taski; kanal faqat Telegram Mini App (2026-09-13 qarori); lokal ishlab chiqish brauzerda qolishi kerak.
+
 ---
 
 ## OCHIQ SAVOLLAR
