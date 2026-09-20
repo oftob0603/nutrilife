@@ -29,8 +29,12 @@ function initDataniOl(): string | null {
 
 /** true — sahifa shu hisob sessiyasi bilan chizilgan, qayta yuklash shart emas. */
 type KirishNatijasi =
-  | { holat: "tayyor"; sessiyaBorEdi: boolean }
+  | { holat: "tayyor"; sessiyaBorEdi: boolean; onboardingTugadi: boolean }
   | { holat: "xato" | "qayta_oching" | "telegram_emas" };
+
+type KirishJavobi = { foydalanuvchi: { onboardingTugadi: boolean }; sessiyaBorEdi?: boolean };
+
+const ONBOARDING_MANZILI = "/onboarding";
 
 async function kirish(): Promise<KirishNatijasi> {
   const initData = initDataniOl();
@@ -42,15 +46,26 @@ async function kirish(): Promise<KirishNatijasi> {
         body: JSON.stringify({ initData }),
       });
       if (javob.ok) {
-        const { sessiyaBorEdi } = (await javob.json()) as { sessiyaBorEdi: boolean };
-        return { holat: "tayyor", sessiyaBorEdi };
+        const { foydalanuvchi, sessiyaBorEdi } = (await javob.json()) as KirishJavobi;
+        return {
+          holat: "tayyor",
+          sessiyaBorEdi: sessiyaBorEdi === true,
+          onboardingTugadi: foydalanuvchi.onboardingTugadi,
+        };
       }
       if (javob.status !== 401) return { holat: "xato" };
       // initData eskirgan (ilova uzoq ochiq turgan) — avvalgi sessiya hali yaroqlidir.
     }
 
     const sessiya = await fetch("/api/auth/telegram", { cache: "no-store" });
-    if (sessiya.ok) return { holat: "tayyor", sessiyaBorEdi: true };
+    if (sessiya.ok) {
+      const { foydalanuvchi } = (await sessiya.json()) as KirishJavobi;
+      return {
+        holat: "tayyor",
+        sessiyaBorEdi: true,
+        onboardingTugadi: foydalanuvchi.onboardingTugadi,
+      };
+    }
     if (sessiya.status !== 401) return { holat: "xato" };
     // initData bor, lekin rad etildi va sessiya ham yo'q — yangi initData faqat qayta ochganda keladi.
     return { holat: initData ? "qayta_oching" : "telegram_emas" };
@@ -79,8 +94,14 @@ export function KirishDarvozasi({ children }: { children: React.ReactNode }) {
 
   const natijaniQolla = useCallback(
     (natija: KirishNatijasi) => {
-      if (natija.holat === "tayyor" && !natija.sessiyaBorEdi) {
-        yangila(() => router.refresh());
+      if (natija.holat === "tayyor") {
+        // Onboarding tugamaguncha Home ochilmaydi (onboarding-tz.md, 1-bo'lim). Yangi
+        // manzilga o'tish sahifani sessiya bilan qayta so'raydi, alohida yangilash kerak emas.
+        if (!natija.onboardingTugadi && window.location.pathname !== ONBOARDING_MANZILI) {
+          yangila(() => router.replace(ONBOARDING_MANZILI));
+        } else if (!natija.sessiyaBorEdi) {
+          yangila(() => router.refresh());
+        }
       }
       setHolat(natija.holat);
     },

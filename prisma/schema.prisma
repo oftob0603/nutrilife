@@ -109,6 +109,9 @@ model Profil {
   ovqatlanishOdati  Json?    @map("ovqatlanish_odati")
   motivatsiya       String?
   onboardingQadami  Int      @default(0) @map("onboarding_qadami")
+  /// Onboarding yakunlangan vaqt; bo'sh — hali tugamagan, Home ochilmaydi. Qadam raqamiga
+  /// bog'lanmagan: oqimga keyin ekran qo'shilsa ham tugatganlar qayta o'tmaydi.
+  onboardingTugadi  DateTime? @map("onboarding_tugadi")
   yangilangan       DateTime @updatedAt
 
   foydalanuvchi Foydalanuvchi @relation(fields: [foydalanuvchiId], references: [id], onDelete: Cascade)

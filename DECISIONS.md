@@ -297,6 +297,17 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-20 · initData klientda URL hash'dan o'qiladi, `telegram-web-app.js` S3'da ulanmaydi; production'da Telegram'dan tashqarida ilova ochilmaydi ("Ilovani Telegram orqali oching"), lokal dev'da esa sessiyasiz so'rov birinchi hisob nomidan o'tadi.**
 *Sabab:* To'liq SDK S5 taski; kanal faqat Telegram Mini App (2026-09-13 qarori); lokal ishlab chiqish brauzerda qolishi kerak.
 
+## 2026-09-20 — onboarding oqimi (4-task)
+
+**2026-09-20 · Onboarding yakuni alohida `profillar.onboarding_tugadi` (vaqt) ustunida, qadam raqamida emas.**
+*Sabab:* S4'da O11–O13 qo'shilganda qadamlar soni o'zgaradi — tugatgan foydalanuvchi qayta onboardingga tushmasligi kerak; vaqt 11-taskdagi "onboarding yakunlanishi" hodisasiga ham kerak.
+
+**2026-09-20 · S3'da onboarding O1–O10 bilan tugaydi va Home ochiladi; O11–O13 (norma formulasi va paywall) S4'da. O6'dagi kg/lb · sm/ft almashtirgichi hozir qilindi (A varianti) — bazada har doim kg va sm saqlanadi, `foydalanuvchilar.birliklar` faqat ko'rsatish tanlovi.**
+*Sabab:* Foydalanuvchi qarori.
+
+**2026-09-20 · 18 dan kichik yoshni to'sish 4-taskda, O5 maydonining chegara tekshiruvi sifatida qilindi (5-taskdan oldin).**
+*Sabab:* 18 dan kichik yoshni bazaga o'tkazib yuborish noto'g'ri bo'lardi; 5-taskda faqat `tasdiq_18plus` vaqti va Terms katakchasi qoladi.
+
 ---
 
 ## OCHIQ SAVOLLAR

@@ -54,6 +54,7 @@ export async function POST(sorov: Request) {
   const { foydalanuvchi, yangi } = await telegramBoyichaTopYokiYarat(
     tekshiruv.telegramId,
     tekshiruv.til,
+    tekshiruv.ism,
   );
 
   let cookie: string;

@@ -11,7 +11,8 @@ const TILLAR = ["uz", "ru", "en"] as const;
 export type Til = (typeof TILLAR)[number];
 
 export type InitDataNatijasi =
-  | { telegramId: bigint; til: Til }
+  /** `ism` — Telegram profilidagi `first_name`; onboardingda ism maydonini oldindan to'ldiradi. */
+  | { telegramId: bigint; til: Til; ism: string | null }
   | { xato: "format" | "imzo" | "eskirgan" };
 
 /**
@@ -42,7 +43,7 @@ export function initDataniTekshir(
   const yoshi = Math.floor(hozir.getTime() / 1000) - authDate;
   if (yoshi > YAROQLILIK_SONIYA || yoshi < -SOAT_FARQI_SONIYA) return { xato: "eskirgan" };
 
-  let user: { id?: unknown; language_code?: unknown };
+  let user: { id?: unknown; language_code?: unknown; first_name?: unknown };
   try {
     user = JSON.parse(maydonlar.get("user") ?? "");
   } catch {
@@ -53,5 +54,7 @@ export function initDataniTekshir(
   }
 
   const til = TILLAR.find((t) => t === user.language_code) ?? "uz";
-  return { telegramId: BigInt(user.id), til };
+  const ism =
+    typeof user.first_name === "string" ? user.first_name.trim().slice(0, 40) || null : null;
+  return { telegramId: BigInt(user.id), til, ism };
 }
