@@ -135,17 +135,17 @@
 
   <header class="bosh">
     <div class="logo"><span>K</span><h1>Kalori — loyiha progressi</h1></div>
-    <p>Yangilangan: 2026-09-20 10:30 · manba: <code>sprints/</code> papkasi</p>
+    <p>Yangilangan: 2026-09-20 11:05 · manba: <code>sprints/</code> papkasi</p>
   </header>
 
   <section class="umumiy">
     <div class="umumiy-bosh">
       <h2>Umumiy holat</h2>
-      <span class="katta">4%</span>
+      <span class="katta">18%</span>
     </div>
-    <div class="chiziq"><div class="chiziq-ich" style="width:4%"></div></div>
+    <div class="chiziq"><div class="chiziq-ich" style="width:18%"></div></div>
     <div class="statlar">
-      <div class="stat"><b>2 / 52</b><span>task bajarildi</span></div>
+      <div class="stat"><b>10 / 56</b><span>task bajarildi</span></div>
       <div class="stat"><b>0 / 6</b><span>sprint tugallandi</span></div>
       <div class="stat"><b>S1</b><span>joriy sprint</span></div>
       <div class="stat"><b>5</b><span>ochiq savol</span></div>
@@ -167,10 +167,10 @@
       <p class="savol">Ishlaydimi?</p>
       <p class="maqsad">Yurak amalni boshidan oxirigacha bitta vertikal kesimda ishlatib ko'rish —</p>
 
-      <div class="chiziq" role="img" aria-label="2 / 7 task bajarildi">
-        <div class="chiziq-ich" style="width:29%"></div>
+      <div class="chiziq" role="img" aria-label="10 / 11 task bajarildi">
+        <div class="chiziq-ich" style="width:91%"></div>
       </div>
-      <p class="hisob"><strong>2 / 7</strong> task · 29%</p>
+      <p class="hisob"><strong>10 / 11</strong> task · 91%</p>
 
       <ul class="tasklar">
         <li class="task bajarildi">
@@ -181,38 +181,54 @@
           <span class="quti" aria-hidden="true">✓</span>
           <span class="task-matn">Taomlar ro'yxati sahifasi — seed'dagi 8 ta taom karta ko'rinishida chiqadi (<code>/taomlar</code>)</span>
         </li>
-        <li class="task ">
-          <span class="quti" aria-hidden="true"></span>
-          <span class="task-matn">Taom detal ekrani: porsiya tanlash (masalan 150 g / 250 g / 350 g), tanlangan porsiyaga qarab kaloriya qayta hisoblanadi, hech qanday tekshiruv yo'q</span>
+        <li class="task bajarildi">
+          <span class="quti" aria-hidden="true">✓</span>
+          <span class="task-matn">Taom detal ekrani (E5): porsiya tanlash (150 g / 250 g / 350 g) va &quot;Boshqa&quot;, tanlangan porsiyaga qarab kaloriya va makrolar qayta hisoblanadi, hech qanday tekshiruv yo'q</span>
+        </li>
+        <li class="task bajarildi">
+          <span class="quti" aria-hidden="true">✓</span>
+          <span class="task-matn"><code>ovqat_yozuvlari</code> jadvali (taom, porsiya, kaloriya, makrolar, ovqat turi, vaqt) va ikki API yo'li: <code>POST /api/ovqat-yozuvlari</code>, <code>GET /api/ovqat-yozuvlari?sana=</code></span>
+        </li>
+        <li class="task bajarildi">
+          <span class="quti" aria-hidden="true">✓</span>
+          <span class="task-matn">E5 to'ldiriladi: ovqat turi tanlagichi (nonushta / tushlik / kechki / gazak) va &quot;Jurnalga qo'shish&quot; tugmasi — yuklanmoqda holati va &quot;Saqlanmadi. Qayta urinish&quot; xatosi bilan</span>
+        </li>
+        <li class="task bajarildi">
+          <span class="quti" aria-hidden="true">✓</span>
+          <span class="task-matn">Home sahifasi (E1) — kunlik doira: bugungi jami / qat'iy belgilangan norma (2,190 kkal, hozircha kodda yozilgan son), ostida &quot;qoldi: N kkal&quot; (normadan oshsa yoy va matn <code>--xato</code> rangida), uch makro chizig'i, &quot;Bugungi ovqatlar&quot; (oxirgi 3 yozuv), bo'sh va xato holatlari, suzuvchi &quot;+&quot; tugmasi</span>
+        </li>
+        <li class="task bajarildi">
+          <span class="quti" aria-hidden="true">✓</span>
+          <span class="task-matn">Tasdiq ekrani (E8): &quot;Jurnalga qo'shildi&quot; belgisi, qo'shilgan yozuv kartasi, to'lgan doira (600 ms animatsiya), &quot;Home'ga qaytish&quot; va &quot;Yana qo'shish&quot;, hech narsa bosilmasa 2 soniyadan keyin Home'ga</span>
+        </li>
+        <li class="task bajarildi">
+          <span class="quti" aria-hidden="true">✓</span>
+          <span class="task-matn">Ovqat qo'shish paneli (E2): &quot;+&quot; bosilganda pastdan chiqadi; S1'da faqat &quot;Qo'lda qo'shish&quot; faol, Kamera va Galereya o'chgan holatda (&quot;S2'da ochiladi&quot;)</span>
+        </li>
+        <li class="task bajarildi">
+          <span class="quti" aria-hidden="true">✓</span>
+          <span class="task-matn">Taom qidiruvi (E4): <code>/taomlar</code> sahifasiga qidiruv maydoni va &quot;«…» topilmadi&quot; holati</span>
+        </li>
+        <li class="task bajarildi">
+          <span class="quti" aria-hidden="true">✓</span>
+          <span class="task-matn">O'zbekcha <code>not-found</code> sahifasi — Next'ning inglizcha standart 404 ekrani o'rniga</span>
         </li>
         <li class="task ">
           <span class="quti" aria-hidden="true"></span>
-          <span class="task-matn"><code>ovqat_yozuvlari</code> jadvali (minimal: taom, porsiya, kaloriya, makrolar, vaqt) va yozuv yaratadigan bitta API yo'li: <code>POST /api/ovqat-yozuvlari</code></span>
-        </li>
-        <li class="task ">
-          <span class="quti" aria-hidden="true"></span>
-          <span class="task-matn">Home sahifasi — kunlik doira: bugungi jami kaloriya / qat'iy belgilangan norma (masalan 2,190 kkal, hozircha kodda yozilgan son) va uch makro chizig'i</span>
-        </li>
-        <li class="task ">
-          <span class="quti" aria-hidden="true"></span>
-          <span class="task-matn">Tasdiq ekrani: yozuv qo'shilgandan keyin &quot;qo'shildi&quot; xabari va Home'ga qaytish</span>
-        </li>
-        <li class="task ">
-          <span class="quti" aria-hidden="true"></span>
-          <span class="task-matn">Deploy: Hetzner + Caddy + GitHub Actions — mahsulot o'z domenida ochiladi</span>
+          <span class="task-matn">Deploy: Vercel (sahifa va API) + Railway (PostgreSQL) — mahsulot o'z domenida ochiladi; STACK.md'dagi Hetzner/Caddy qatorlari tuzatiladi</span>
         </li></ul>
 
       <div class="blok">
          <h4>Hisobot</h4>
-         <ul class="hisobot"><li>2026-09-13: E1-E10 ekranlar uchun dizayn TZ va dizayn tizimi hujjatlari tayyorlandi (dizayn-tz.md, DESIGN.md)</li><li>2026-09-16: dizayn-tz.md'ga pastki navigatsiya bo'limi qo'shildi, onboarding-tz.md, admin-tz.md, progress-tz.md, profil-tz.md, paywall-tz.md yaratildi (kod yozilmadi)</li><li>2026-09-16: 18+ tekshiruvi katakchadan O5 yosh qadamiga ko'chirildi (PRD.md, onboarding-tz.md, SPRINT-3-auth.md)</li><li>2026-09-16: Loyiha skeleti ochildi — Next.js 16, TypeScript 6, Tailwind 4, Prisma 7; &quot;Loyiha tayyor&quot; sahifasi va /api/health (app/, lib/db.ts, prisma/)</li><li>2026-09-16: Loyiha konvensiyalari o'rnatildi, Railway PostgreSQL ulanishi tekshirildi (CLAUDE.md, .claude/settings.json, .env.example, .mcp.json, scripts/mcp-db.mjs)</li><li>2026-09-20: 1-task bajarildi — prototip referens sifatida olindi, <code>taomlar</code> jadvali, migratsiya va 8 ta seed yozuv (prototip/, prisma/schema.prisma, prisma/seed.mjs)</li><li>2026-09-20: 2-task bajarildi — /taomlar sahifasi, GET /api/taomlar va taom kartasi (app/taomlar/, app/api/taomlar/, app/_components/TaomKartasi.tsx, lib/services/taomlar.ts)</li></ul>
+         <ul class="hisobot"><li>2026-09-13: E1-E10 ekranlar uchun dizayn TZ va dizayn tizimi hujjatlari tayyorlandi (dizayn-tz.md, DESIGN.md)</li><li>2026-09-16: dizayn-tz.md'ga pastki navigatsiya bo'limi qo'shildi, onboarding-tz.md, admin-tz.md, progress-tz.md, profil-tz.md, paywall-tz.md yaratildi (kod yozilmadi)</li><li>2026-09-16: 18+ tekshiruvi katakchadan O5 yosh qadamiga ko'chirildi (PRD.md, onboarding-tz.md, SPRINT-3-auth.md)</li><li>2026-09-16: Loyiha skeleti ochildi — Next.js 16, TypeScript 6, Tailwind 4, Prisma 7; &quot;Loyiha tayyor&quot; sahifasi va /api/health (app/, lib/db.ts, prisma/)</li><li>2026-09-16: Loyiha konvensiyalari o'rnatildi, Railway PostgreSQL ulanishi tekshirildi (CLAUDE.md, .claude/settings.json, .env.example, .mcp.json, scripts/mcp-db.mjs)</li><li>2026-09-20: 1-task bajarildi — prototip referens sifatida olindi, <code>taomlar</code> jadvali, migratsiya va 8 ta seed yozuv (prototip/, prisma/schema.prisma, prisma/seed.mjs)</li><li>2026-09-20: 2-task bajarildi — /taomlar sahifasi, GET /api/taomlar va taom kartasi (app/taomlar/, app/api/taomlar/, app/_components/TaomKartasi.tsx, lib/services/taomlar.ts)</li><li>2026-09-20: 3-task bajarildi — E5 taom detali va porsiya tanlash; sof hisob bazadan ajratildi, chunki klient komponent <code>pg</code> ni brauzer bandliga tortib keldi (app/taomlar/[id]/, app/_components/PorsiyaTanlagich.tsx, lib/services/taom-hisob.ts)</li><li>2026-09-20: Task ro'yxati prototip va dizayn-tz bo'yicha to'ldirildi — ovqat turi, &quot;Jurnalga qo'shish&quot;, doiradagi &quot;qoldi&quot; satri, bugungi ovqatlar, E2 paneli, E4 qidiruvi va o'zbekcha 404 S1'ga qo'shildi; deploy taski Hetzner o'rniga Vercel/Railway'ga o'tkazildi</li><li>2026-09-20: 4-task bajarildi — <code>ovqat_yozuvlari</code> jadvali, migratsiya, POST va GET /api/ovqat-yozuvlari; kun chegarasi UTC+5 bo'yicha hisoblanadi (prisma/schema.prisma, lib/services/ovqat-yozuvlari.ts, lib/services/yozuv-hisob.ts, app/api/ovqat-yozuvlari/)</li><li>2026-09-20: 5-task bajarildi — E5'ga ovqat turi tanlagichi va &quot;Jurnalga qo'shish&quot; tugmasi qo'shildi, yuklanish va xato holatlari bilan (app/_components/OvqatTuriTanlagich.tsx, app/_components/Tugma.tsx)</li><li>2026-09-20: 6-task bajarildi — E1 Home: kunlik doira, makro chiziqlari, bugungi ovqatlar, bo'sh/xato/yuklanish holatlari (app/page.tsx, app/loading.tsx, app/_components/KunlikDoira.tsx, MakroChizigi.tsx, YozuvQatori.tsx, lib/norma.ts)</li><li>2026-09-20: 7-task bajarildi — E8 tasdiq ekrani, doira eski qiymatdan yangisiga to'ladi, 2 soniyadan keyin Home'ga qaytadi (app/qoshildi/[id]/, app/_components/QaytishTaymeri.tsx)</li><li>2026-09-20: 8-task bajarildi — E2 ovqat qo'shish paneli; kamera va galereya o'chgan holatda (app/_components/QoshishPaneli.tsx)</li><li>2026-09-20: 9-task bajarildi — E4 taom qidiruvi va &quot;topilmadi&quot; holati (app/_components/TaomlarRoyxati.tsx)</li><li>2026-09-20: 10-task bajarildi — o'zbekcha not-found sahifasi (app/not-found.tsx)</li><li>2026-09-20: Sinov yozuvlari bazadan o'chirildi (foydalanuvchi ruxsati bilan); STACK.md'dagi Hetzner/Caddy qatorlari Vercel/Railway bilan almashtirildi</li></ul>
        </div>
       <div class="blok">
          <h4>Handoff</h4>
-         <p class="handoff">Keyingi: 3-task — taom detal ekrani, porsiya tanlash va kaloriyaning qayta hisoblanishi.<br>Ko'rinish prototipdagi FoodScreen'dan olinadi (prototip/ui_kits/mobile-app/screens-manual.jsx).<br>STACK.md va S1 deploy taski hali Hetzner'ni ko'rsatadi — Vercel/Railway'ga moslashtirish kerak.</p>
+         <p class="handoff">Keyingi: 11-task — Vercel'ga chiqarish. Repo <code>oftob0603/nutrilife</code>; baza allaqachon<br>Railway'da va migratsiyalar qo'llangan. Vercel'da <code>DATABASE_URL</code> Environment<br>Variables orqali beriladi, <code>APP_URL</code> esa domen aniq bo'lgach qo'yiladi (bo'lmasa<br><code>VERCEL_URL</code> ishlatiladi — lib/api-asos.ts).<br>S1'dan qolgan ochiq nuqtalar keyingi sprintlarga: kunlik norma hozircha<br><code>lib/norma.ts</code> da qotirilgan (S3'da rejadan keladi), yozuvlar <code>s1-sinov</code> degan<br>qotirilgan foydalanuvchiga yoziladi (S3'da real ID), taom rasmlari yo'q (S2).</p>
        </div>
       <details class="qoshimcha">
          <summary>Qabul mezoni (5)</summary>
-         <ul><li>Domen ochilganda taomlar ro'yxatida 4 ta taom ko'rinadi</li><li>Taomga bosilganda porsiya tanlash ochiladi va kaloriya porsiyaga qarab o'zgaradi</li><li>&quot;Jurnalga qo'shish&quot; bosilgandan keyin Home doirasi to'ladi (masalan 0 / 2,190 -&gt; 620 / 2,190)</li><li>Sahifa yangilanganda ham yozuv joyida qoladi — ma'lumot bazada</li><li>Telefon brauzerida ekran to'g'ri joylashadi</li></ul>
+         <ul><li>Domen ochilganda taomlar ro'yxatida 8 ta taom ko'rinadi va qidiruv ishlaydi</li><li>Taomga bosilganda porsiya tanlash ochiladi va kaloriya porsiyaga qarab o'zgaradi</li><li>&quot;Jurnalga qo'shish&quot; bosilgandan keyin Home doirasi to'ladi (masalan 0 / 2,190 -&gt; 620 / 2,190)</li><li>Sahifa yangilanganda ham yozuv joyida qoladi — ma'lumot bazada</li><li>Telefon brauzerida ekran to'g'ri joylashadi</li></ul>
        </details>
       <details class="qoshimcha">
          <summary>Bu sprintda yo'q</summary>
