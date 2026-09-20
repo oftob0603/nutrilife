@@ -241,6 +241,10 @@ Oqibati: CC BY / BY-SA litsenziyalari muallifni ko'rsatishni talab qiladi — ho
 **2026-09-20 · `taomlar.nomi` o'zbekcha nom bo'lib qoldi, `nomi_ru`/`nomi_en` yoniga qo'shildi (nomi_uz ga qayta nomlanmadi).**
 *Sabab:* S1 kodi va jurnaldagi taom_nomi buzilmasin; ru/en hozircha faqat qidiruv uchun.
 
+**2026-09-20 · Klientdagi rasm siqish yumshatildi: 1600 px / 85% o'rniga 2560 px / 90% (natija odatda 0,8–1,5 MB). "4 MB ga yaqin sifat" va "kichik rasmni siqmaslik" variantlari rad etildi.**
+*Sabab:* Foydalanuvchi sifatni oshirmoqchi edi. 4 MB li rasmlar yuklashni sekinlashtiradi, jurnalni og'irlashtiradi va AI aniqligiga foyda bermaydi; siqmaslik esa EXIF'dagi GPS va vaqtni R2'ga hamda AI xizmatiga o'tkazib yuboradi — qayta chizish ularni tozalaydi.
+Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720), shuning uchun bu o'zgarish faqat galereya rasmlariga ta'sir qiladi.
+
 ---
 
 ## OCHIQ SAVOLLAR

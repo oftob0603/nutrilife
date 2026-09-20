@@ -3,8 +3,14 @@
 
 import { RASM_CHEGARASI } from "./rasm-hisob.ts";
 
-/** Uzun tomoni shu o'lchamgacha kichraytiriladi — AI tahlili uchun yetarli. */
-const ENG_KATTA_TOMON = 1600;
+/**
+ * Uzun tomoni shu o'lchamgacha kichraytiriladi. 2560 px va 90% sifatda rasm ko'z bilan
+ * asldan farq qilmaydi, hajmi esa odatda 0,8–1,5 MB — jurnal og'irlashmaydi.
+ */
+const ENG_KATTA_TOMON = 2560;
+
+/** Birinchisi odatdagi sifat; qolganlari faqat natija chegaradan oshsa sinaladi. */
+const SIFAT_BOSQICHLARI = [0.9, 0.8, 0.65, 0.5];
 
 function jpegga(tuval: HTMLCanvasElement, sifat: number): Promise<Blob | null> {
   return new Promise((hal) => tuval.toBlob(hal, "image/jpeg", sifat));
@@ -29,7 +35,7 @@ export async function rasmniSiq(manba: Blob): Promise<Blob> {
   tuval.getContext("2d")?.drawImage(tasvir, 0, 0, tuval.width, tuval.height);
   tasvir.close();
 
-  for (const sifat of [0.85, 0.7, 0.5]) {
+  for (const sifat of SIFAT_BOSQICHLARI) {
     const natija = await jpegga(tuval, sifat);
     if (natija && natija.size <= RASM_CHEGARASI) return natija;
   }

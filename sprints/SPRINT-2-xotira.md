@@ -36,6 +36,7 @@ Ro'yxatdan o'tish va rollar · skan limitlari · Nutrition Score · to'lov · bo
 - 2026-09-20: 6 ta yangi model (foydalanuvchilar, profillar, vazn_yozuvlari, rejalar, rasmlar, kunlik_xulosa) va `ovqat_yozuvlari.manba` migratsiya bilan qo'shildi, Railway bazasiga qo'llandi (prisma/schema.prisma, prisma/migrations/20260920083412_s2_malumot_modeli/)
 - 2026-09-20: taomlar bazasi uch tilli qilindi va 41 taomga, 35 tasiga rasm qo'shildi; rasm yuklash/ombor (R2) kodi yozildi, jonli kamera sinovi va Vercel R2_* o'zgaruvchilari kutilmoqda (prisma/seed.mjs, app/_components/TaomRasmi.tsx, lib/services/ombor.ts, app/api/rasmlar/, app/kamera/, app/tahlil/)
 - 2026-09-20: 3-task yopildi — R2_* o'zgaruvchilari Vercel'ga qo'shildi, production'ga deploy qilindi; foydalanuvchi telefonda galereyadan va jonli kameradan rasm yukladi, `rasmlar` da 3 ta production yozuvi paydo bo'ldi
+- 2026-09-20: klientdagi rasm siqish 1600 px / 85% dan 2560 px / 90% ga yumshatildi; 5 MB 4000×3000 rasm 2560×1920, ~1,2 MB bo'lib yuklandi (lib/services/rasm-yuklash.ts)
 
 ## Handoff
 
@@ -49,7 +50,8 @@ R2_* o'zgaruvchilari Vercel'da (Production va Preview) turibdi; yangi env o'zgar
 Doiradan tashqarida qolgan: tasdiqlanmay qolgan yetim rasmlarni tozalash va AI xatosida rasmni o'chirish (PRD 8-bo'lim) — 4–5-tasklarda; rasmni yozuvga bog'lash — 6-taskda.
 `GET /api/ovqat-yozuvlari` javobida `manba` hali chiqmaydi — AI tasdiq/jurnal tasklarida qo'shiladi.
 Yangi migratsiya `prisma migrate dev --create-only` bilan yaratilib, SQL o'qilgach `prisma migrate deploy` bilan qo'llanadi.
-`rasmlar` jadvalida va R2'da 5 ta sinov rasmi qoldi (2026-09-20 14:50–14:53 Toshkent vaqti, ~7,3 MB; ovqat_yozuvi_id NULL) — o'chirish foydalanuvchi ruxsatini kutmoqda; `prisma generate` yoki lib/services konstantasi o'zgargach dev server qayta ishga tushirilishi kerak bo'lishi mumkin.
+Kamera (E3) suratni video kadrdan oladi — telefonda odatda 1280×720; sifatni oshirish (yuqoriroq o'lcham so'rash, Android'da `takePhoto`) ochiq, foydalanuvchi hali so'ramagan.
+`rasmlar` jadvalida va R2'da 6 ta sinov rasmi qoldi (2026-09-20 14:50–14:53 va 15:44 Toshkent vaqti, ~8,5 MB; ovqat_yozuvi_id NULL) — o'chirish foydalanuvchi ruxsatini kutmoqda; `prisma generate` yoki lib/services konstantasi o'zgargach dev server qayta ishga tushirilishi kerak bo'lishi mumkin.
 
 ---
 
