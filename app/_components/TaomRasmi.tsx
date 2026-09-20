@@ -24,6 +24,8 @@ export function TaomRasmi({
           alt=""
           fill
           sizes={olcham === "katta" ? "(min-width: 448px) 416px, 100vw" : "48px"}
+          // Yuklangan rasm imzoli ombor havolasiga yo'naltiriladi — optimizator uni o'qiy olmaydi.
+          unoptimized={rasm.startsWith("/api/")}
           priority={olcham === "katta"}
           className="object-cover"
         />

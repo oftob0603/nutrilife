@@ -5,7 +5,16 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AiBelgisi } from "@/app/_components/AiBelgisi";
 import { Tugma } from "@/app/_components/Tugma";
+import { YozuvFormasi } from "@/app/_components/YozuvFormasi";
 import { skanJami, type SkanJavobi, type SkanNatija } from "@/lib/services/skan-hisob";
+import {
+  boshForma,
+  formaQiymatlari,
+  formaTuz,
+  formaXatolari,
+  type Forma,
+  type FormaXatolari,
+} from "@/lib/services/yozuv-forma";
 
 type Javob = SkanJavobi | { holat: "xato"; xabar: string; qaytaUrinsa: boolean };
 
@@ -109,45 +118,113 @@ function Kutish({ rasmId, matn }: { rasmId?: string; matn?: string }) {
   );
 }
 
-function Natija({ natija, rasmId }: { natija: SkanNatija; rasmId?: string }) {
-  const jami = skanJami(natija);
-  const makrolar = [
-    { nom: "Oqsil", qiymat: jami.oqsil },
-    { nom: "Yog'", qiymat: jami.yog },
-    { nom: "Uglevod", qiymat: jami.uglevod },
-  ];
+/**
+ * E7 — tasdiqlash va tahrirlash. `natija` bo'lmasa forma bo'sh ochiladi ("taniy olmadik"
+ * dan kelingan): qiymatni foydalanuvchi o'zi kiritadi, shuning uchun AI belgisi yo'q va
+ * yozuv manbasi "qolda". Yozuv faqat shu yerdagi tasdiqdan keyin yaratiladi.
+ */
+function Tasdiq({
+  natija,
+  rasmId,
+  onBekor,
+}: {
+  natija: SkanNatija | null;
+  rasmId?: string;
+  onBekor: () => void;
+}) {
+  const router = useRouter();
+  const [forma, setForma] = useState<Forma>(() =>
+    natija
+      ? formaTuz({
+          taomNomi: natija.taomNomi,
+          miqdor: natija.porsiyaGramm,
+          ...skanJami(natija),
+        })
+      : boshForma(),
+  );
+  const [saqlanmoqda, setSaqlanmoqda] = useState(false);
+  const [saqlanmadi, setSaqlanmadi] = useState(false);
+
+  const xatolar = formaXatolari(forma);
+  const yaroqsiz = Object.keys(xatolar).length > 0;
+  // Bo'sh formada foydalanuvchi hali yozmagan maydon qizarib turmasin.
+  const korinadiganXatolar: FormaXatolari = natija
+    ? xatolar
+    : Object.fromEntries(
+        Object.entries(xatolar).filter(
+          ([maydon]) => forma[maydon as keyof FormaXatolari].trim() !== "",
+        ),
+      );
+
+  async function tasdiqla() {
+    setSaqlanmoqda(true);
+    setSaqlanmadi(false);
+    const { miqdor, ...qiymatlar } = formaQiymatlari(forma);
+    try {
+      const javob = await fetch("/api/ovqat-yozuvlari", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          ...qiymatlar,
+          taomId: null,
+          porsiya: `${miqdor} g`,
+          manba: natija ? "ai" : "qolda",
+          rasmId,
+        }),
+      });
+      if (!javob.ok) throw new Error("Saqlanmadi");
+      const { yozuv } = (await javob.json()) as { yozuv: { id: string } };
+      router.push(`/qoshildi/${yozuv.id}`);
+    } catch {
+      // Tahrirlar joyida qoladi, ekran yopilmaydi (dizayn-tz E7).
+      setSaqlanmadi(true);
+      setSaqlanmoqda(false);
+    }
+  }
 
   return (
-    <div className="flex flex-1 flex-col gap-4 pt-6">
-      {rasmId && <Manba rasmId={rasmId} kichik />}
-      <div className="flex flex-col gap-4 rounded-karta border border-chegara bg-karta p-4">
-        <div className="flex items-start justify-between gap-3">
-          <h1 className="min-w-0 text-sarlavha">{natija.taomNomi}</h1>
-          <AiBelgisi />
-        </div>
-        <div>
-          <p className="font-display text-raqam">
-            {jami.kaloriya} <span className="font-sans text-asosiy font-normal tracking-normal text-matn-2">kkal</span>
-          </p>
-          <p className="text-izoh text-matn-2">
-            {natija.porsiyaGramm} g porsiya
-            {natija.vaznFoydalanuvchidan ? "" : " · taxminiy"}
-          </p>
-        </div>
-        <dl className="grid grid-cols-3 gap-2">
-          {makrolar.map(({ nom, qiymat }) => (
-            <div key={nom} className="rounded-chip bg-fon p-3">
-              <dt className="text-izoh text-matn-2">{nom}</dt>
-              <dd className="text-karta-sarlavha">{qiymat} g</dd>
-            </div>
-          ))}
-        </dl>
+    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col gap-4 px-4 pb-8 pt-6">
+      <h1 className="text-sarlavha">
+        {natija ? "Natija" : "Ma'lumotni o'zingiz kiriting"}
+      </h1>
+
+      <div className="flex items-center gap-4">
+        {rasmId && <Manba rasmId={rasmId} kichik />}
+        {natija && (
+          <div className="flex min-w-0 flex-col items-start gap-2">
+            <AiBelgisi />
+            <p className="text-izoh text-matn-2">Raqamlar taxminiy, tahrirlash mumkin</p>
+          </div>
+        )}
       </div>
-      <p className="text-izoh text-matn-2">
-        Raqamlar taxminiy — AI rasm yoki tasvirga qarab baholadi. Haqiqiy qiymat porsiya
-        va tayyorlanishiga qarab farq qilishi mumkin.
-      </p>
-    </div>
+
+      <YozuvFormasi
+        forma={forma}
+        xatolar={korinadiganXatolar}
+        birlik="g"
+        bloklangan={saqlanmoqda}
+        onChange={setForma}
+      />
+
+      <div className="mt-auto flex flex-col gap-2 pt-2">
+        {saqlanmadi && (
+          <p role="alert" className="text-center text-asosiy text-xato">
+            Yozuv saqlanmadi. Qayta urinib ko&apos;ring
+          </p>
+        )}
+        <Tugma
+          korinish="aksent"
+          yuklanmoqda={saqlanmoqda}
+          disabled={yaroqsiz}
+          onClick={tasdiqla}
+        >
+          {saqlanmadi ? "Qayta urinish" : "Tasdiqlash va qo'shish"}
+        </Tugma>
+        <Tugma korinish="uchinchi" disabled={saqlanmoqda} onClick={onBekor}>
+          Bekor qilish
+        </Tugma>
+      </div>
+    </main>
   );
 }
 
@@ -163,8 +240,8 @@ function Xabar({ sarlavha, izoh }: { sarlavha: string; izoh: string }) {
 }
 
 /**
- * E6 — AI tahlil va uning natijasi. Natija faqat shu komponent holatida turadi: sahifadan
- * chiqilsa hech narsa saqlanmaydi, yozuv esa tasdiqdan keyingina yaratiladi (dizayn-tz).
+ * E6 — AI tahlil, javob kelgach E7 (tasdiqlash). Natija faqat shu komponent holatida turadi:
+ * sahifadan chiqilsa hech narsa saqlanmaydi, yozuv esa tasdiqdan keyingina yaratiladi (dizayn-tz).
  * `onBekor` berilsa (matn oqimi) bekor qilish oldingi formaga qaytaradi, aks holda Home'ga.
  */
 export function Tahlil({
@@ -179,6 +256,7 @@ export function Tahlil({
   const router = useRouter();
   const [urinish, setUrinish] = useState(0);
   const [kelgan, setKelgan] = useState<{ urinish: number; javob: Javob } | null>(null);
+  const [qoldaKiritish, setQoldaKiritish] = useState(false);
 
   useEffect(() => {
     let bekor = false;
@@ -211,6 +289,13 @@ export function Tahlil({
     </Tugma>
   );
 
+  if (javob?.holat === "tayyor") {
+    return <Tasdiq natija={javob.natija} rasmId={rasmId} onBekor={bekorQil} />;
+  }
+  if (javob?.holat === "tanib_bolmadi" && qoldaKiritish) {
+    return <Tasdiq natija={null} rasmId={rasmId} onBekor={bekorQil} />;
+  }
+
   let mazmun: React.ReactNode;
   let tugmalar: React.ReactNode;
 
@@ -220,16 +305,6 @@ export function Tahlil({
       <Tugma korinish="uchinchi" onClick={bekorQil}>
         Bekor qilish
       </Tugma>
-    );
-  } else if (javob.holat === "tayyor") {
-    mazmun = <Natija natija={javob.natija} rasmId={rasmId} />;
-    tugmalar = (
-      <>
-        {qolda}
-        <Tugma korinish="uchinchi" onClick={bekorQil}>
-          Bekor qilish
-        </Tugma>
-      </>
     );
   } else if (javob.holat === "tanib_bolmadi") {
     mazmun = (
@@ -250,6 +325,9 @@ export function Tahlil({
           <Tugma onClick={bekorQil}>Qayta yozish</Tugma>
         )}
         {qolda}
+        <Tugma korinish="uchinchi" onClick={() => setQoldaKiritish(true)}>
+          Baribir tahrirlab kiritish
+        </Tugma>
       </>
     );
   } else {

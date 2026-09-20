@@ -12,9 +12,9 @@ marta boshidan oxirigacha o'tsin.
 - [x] Rasm yuklash va ombor: kamera (E3) va galereyadan rasm olish, serverga yuborish, `rasmlar` jadvaliga bog'lash. S1'dagi E2 panelida (`QoshishPaneli`) o'chgan turgan Kamera va Galereya qatorlari faollashadi. Ombor — Cloudflare R2 (DECISIONS 2026-09-20): Vercel'da doimiy disk yo'q; R2 kalitlari Vercel Environment Variables'da. R2 S3-mos API bilan ishlaydi — klient kutubxonasi yangi dependency, qo'shishdan oldin so'raladi
 - [x] AI skan API yo'li: `POST /api/skan` — rasm yoki matn qabul qiladi, taom nomi, taxminiy porsiya, kaloriya va makrolarni qaytaradi. E4 qidiruvining "topilmadi" holatiga "Matn bilan tasvirlash" va "Rasmga olish" chiqish yo'llari qo'shiladi (S1'da o'rnida "S2'da ochiladi" matni turibdi). AI kaliti Vercel Environment Variables'da
 - [x] AI tahlil ekrani: "Ovqatingiz tahlil qilinmoqda…" holati, keyin natija — "AI taxmini" belgisi va aniqlik ogohlantirishi bilan
-- [ ] Tasdiqlash va tahrirlash ekrani: taom nomi, porsiya, kaloriya, oqsil, yog', uglevod tahrirlanadi. Faqat tasdiqlangandan keyin jurnalga tushadi
-- [ ] Jurnal (E9) sahifasi: kun yozuvlari ovqat turi bo'yicha guruhlanadi (nonushta / tushlik / kechki / gazak — S1'da yozuvga yozilyapti), tepada kunlik jami, har yozuvda rasm, vaqt va makrolar. Mavjud `GET /api/ovqat-yozuvlari?sana=` ishlatiladi; Home'dagi "Bugungi ovqatlar" sarlavhasiga "Hammasi" havolasi qo'shiladi
-- [ ] Yozuv amallari (E10): tahrirlash, o'chirish, nusxalash, porsiyani o'zgartirish — `PATCH` va `DELETE /api/ovqat-yozuvlari/[id]`. Home va jurnaldagi yozuv qatori (`YozuvQatori`) bosiladigan bo'ladi
+- [x] Tasdiqlash va tahrirlash ekrani: taom nomi, porsiya, kaloriya, oqsil, yog', uglevod tahrirlanadi. Faqat tasdiqlangandan keyin jurnalga tushadi
+- [x] Jurnal (E9) sahifasi: kun yozuvlari ovqat turi bo'yicha guruhlanadi (nonushta / tushlik / kechki / gazak — S1'da yozuvga yozilyapti), tepada kunlik jami, har yozuvda rasm, vaqt va makrolar. Mavjud `GET /api/ovqat-yozuvlari?sana=` ishlatiladi; Home'dagi "Bugungi ovqatlar" sarlavhasiga "Hammasi" havolasi qo'shiladi
+- [x] Yozuv amallari (E10): tahrirlash, o'chirish, nusxalash, porsiyani o'zgartirish — `PATCH` va `DELETE /api/ovqat-yozuvlari/[id]`. Home va jurnaldagi yozuv qatori (`YozuvQatori`) bosiladigan bo'ladi
 - [ ] Mavzu tizimi: yorug', qorong'i va tizim. Tizim mavzusi S1'dan beri ishlaydi (tokenlar `prefers-color-scheme` bo'yicha almashadi); bu yerda qo'lda tanlash va tanlovni eslab qolish qo'shiladi
 - [ ] Home to'ldiriladi (E1): haftalik kun tanlagich — tanlangan kun `?sana=` orqali yuklanadi; pastki navigatsiya paneli Home · [+] · Jurnal ko'rinishida, suzuvchi "+" panel markaziga ko'chadi va oqim ichidagi ekranlarda (E5, E8) yashiriladi (dizayn-tz 2-bo'lim)
 
@@ -39,19 +39,17 @@ Ro'yxatdan o'tish va rollar · skan limitlari · Nutrition Score · to'lov · bo
 - 2026-09-20: klientdagi rasm siqish 1600 px / 85% dan 2560 px / 90% ga yumshatildi; 5 MB 4000×3000 rasm 2560×1920, ~1,2 MB bo'lib yuklandi (lib/services/rasm-yuklash.ts)
 - 2026-09-20: 4-task yopildi — `POST /api/skan` (matn va rasm, Claude API), kunlik skan chegarasi va E4'dan matn/rasm bilan tasvirlash oqimi qo'shildi (app/api/skan/route.ts, lib/services/ai.ts, lib/services/skan.ts, lib/services/skan-hisob.ts, lib/services/skan-hisobi.ts, app/tasvirlash/)
 - 2026-09-20: 5-task yopildi — AI tahlil ekrani (E6, kutish/natija/taniy olmadik/xato holatlari), egasiz rasm o'chirish (DELETE /api/rasmlar/[id]) va "AI taxmini" belgisi qo'shildi (app/_components/Tahlil.tsx, app/_components/AiBelgisi.tsx, app/tahlil/[rasmId]/page.tsx, app/api/rasmlar/[id]/route.ts, lib/services/rasmlar.ts)
+- 2026-09-20: 6–8-tasklar yopildi — E7 tasdiq/tahrir formasi va rasm bog'lash, jurnal (E9) sana va guruhlar bo'yicha, yozuv tahrirlash/o'chirish/nusxalash (E10) lokal dev'da sinovdan o'tdi (app/_components/Tahlil.tsx, app/_components/YozuvFormasi.tsx, app/jurnal/page.tsx, app/yozuv/[id]/page.tsx, app/_components/YozuvTahriri.tsx, app/api/ovqat-yozuvlari/route.ts, app/api/ovqat-yozuvlari/[id]/route.ts, lib/services/yozuv-forma.ts, lib/services/yozuv-kirish.ts, lib/services/ovqat-yozuvlari.ts, lib/services/yozuv-hisob.ts)
 
 ## Handoff
 
-S1'dan meros: API yo'llari `/api/taomlar`, `/api/taomlar/[id]`, `/api/ovqat-yozuvlari` tayyor; klient komponent
-ishlatadigan sof hisob `lib/services/*-hisob.ts` da turadi — bazaga ulanadigan modulni klientga import qilma.
-S2 ekranlari (E3 kamera, E6 AI tahlil, E7 AI natija tasdiq/tahrir, E9 jurnal,
-E10 yozuv tahriri) uchun dizayn-tz.md va DESIGN.md tayyor, boshlashda shulardan foydalan.
-
-Keyingi: 6-task — Tasdiqlash va tahrirlash ekrani (E7). E7 alohida sahifa emas: Tahlil.tsx ga yangi holat bo'lib qo'shiladi (natija React holatida, uzatish muammosi yo'q). Natija holatidagi tugmalar hozir vaqtinchalik ("Qo'lda qo'shish", "Bekor qilish" — ikkalasi rasmni o'chiradi); 6-taskda "Tasdiqlash va qo'shish" asosiy tugma bo'ladi va tasdiqlanganda rasm O'CHIRILMAYDI, yozuvga bog'lanadi (`rasmlar.ovqat_yozuvi_id`). "Taniy olmadik" holatiga "Baribir tahrirlab kiritish" (-> bo'sh E7) ham 6-taskda qo'shiladi.
-Porsiya o'zgarganda qayta hisob: `skanJami(natija, gramm)` (lib/services/skan-hisob.ts) tayyor. `POST /api/ovqat-yozuvlari` ga `manba: "ai"` va rasm bog'lash qo'shilishi kerak; `GET` javobida `manba` hali yo'q.
-MUHIM holat: 5-task foydalanuvchi so'rovi bilan production'ga push qilindi — 6-taskgacha production'da AI natijasidan jurnalga qo'shib bo'lmaydi (natija faqat ko'rsatiladi).
+Keyingi: 9-task — Mavzu tizimi. 6–8-tasklar lokal dev'da sinovdan o'tdi, production'ga hali push qilinmagan.
+Tekshirilmagan: rasmli yozuvni o'chirishda rasmning R2'dan o'chishi (sinov ruxsati yo'qligi sababli), saqlash xato holatlari (E7, E10) va jurnal xato holati faqat kodda, `next build` ishlatilmadi.
+Bazada sinov yozuvlari ("Osh 200 g · 300 kkal", "Non 80 g · 212 kkal" — ikkalasi AI) va 11 ta egasiz sinov rasmi qoldi — rasmlarni o'chirish hamon foydalanuvchi ruxsatini kutmoqda. "Non" yozuvi ilovadan o'chirilsa, rasmli o'chirish yo'li ham sinaladi.
+Kuzatuv: mavjud bo'lmagan yozuvga birinchi `DELETE` bir marta 500 qaytardi, keyingi 10+ urinishda barqaror 404 — qayta chaqirib bo'lmadi, sababi noma'lum.
+Reja bo'yicha qoldirilgan (foydalanuvchi tasdiqlagan): E7'dagi "tahrir qilingani" bayrog'i (ustun + migratsiya, S6'da); E9'da chapga surib tezkor amallar; o'chirgandan keyingi 5 soniyalik "Bekor qilish" (yumshoq o'chirish kerak) — hozir faqat tasdiq paneli.
+Kod qoidalari: klient komponent ishlatadigan sof hisob `lib/services/*-hisob.ts`, `yozuv-forma.ts`, `yozuv-kirish.ts` da turadi — bazaga ulanadigan modulni klientga import qilma. E7 va E10 bitta `YozuvFormasi` ni ishlatadi. `react-hooks/purity` render ichida `Date.now()` ni taqiqlaydi — "hozir" modul darajasidagi yordamchidan, hodisa ishlovchisida o'qiladi (`YozuvTahriri.tsx`, `kelajakdami`).
 Sinov asbobi xususiyati: Claude brauzer paneli kadr chizmaguncha (skrinshot olinmaguncha) Next.js oqimli sahifasi skelet holatida qoladi va klient komponent ishga tushmaydi — bu ilova nuqsoni emas; matn o'qishdan oldin skrinshot ol.
-`rasmlar` da 12 ta yozuvga bog'lanmagan sinov rasmi bor (oldingi "7 ta" hisobi noto'g'ri edi — 3-taskdagi production sinovlari ham shu jadvalda); o'chirish foydalanuvchi ruxsatini kutmoqda.
 AI aniqligi kuzatuvi: Haiku aralash ovqatni ("ikki dona tuxum va non" -> 250 g, 7,5 g uglevod) bitta 100 g ga keltirishda xato qiladi; imlo xatolari ham bor ("gushti"). Gemini'ga o'tishda 20 taomlik aniqlik testida baholanadi.
 
 ---

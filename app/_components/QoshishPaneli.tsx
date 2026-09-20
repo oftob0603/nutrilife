@@ -2,7 +2,19 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Tugma } from "@/app/_components/Tugma";
 import { rasmniYukla } from "@/lib/services/rasm-yuklash";
+
+const PANELNI_OCH = "qoshish-panelini-och";
+
+/** Bo'sh holatdagi "Ovqat qo'shish" — shu sahifadagi `QoshishPaneli` ni (E2) ochadi. */
+export function QoshishTugmasi() {
+  return (
+    <Tugma onClick={() => window.dispatchEvent(new Event(PANELNI_OCH))}>
+      Ovqat qo&apos;shish
+    </Tugma>
+  );
+}
 
 function Ikona({ nomi }: { nomi: "kamera" | "galereya" | "qolda" }) {
   const yollar = {
@@ -106,6 +118,13 @@ export function QoshishPaneli() {
     setOchiq(false);
     setXato(null);
   }
+
+  // Panelni sahifadagi boshqa tugma ham ochadi (jurnalning bo'sh holati) — `QoshishTugmasi`.
+  useEffect(() => {
+    const och = () => setOchiq(true);
+    window.addEventListener(PANELNI_OCH, och);
+    return () => window.removeEventListener(PANELNI_OCH, och);
+  }, []);
 
   useEffect(() => {
     if (!ochiq) return;

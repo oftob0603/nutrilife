@@ -1,12 +1,16 @@
 import Link from "next/link";
 
-type Korinish = "asosiy" | "ikkilamchi" | "uchinchi";
+type Korinish = "asosiy" | "aksent" | "ikkilamchi" | "uchinchi" | "xavfli";
 
 // DESIGN.md, 6-bo'lim: balandligi 52, radius 999, bosilganda scale(0.98).
 const USLUB: Record<Korinish, string> = {
   asosiy: "bg-siyoh text-fon",
+  // Faqat tasdiq tugmasi uchun — ekranda bitta lime to'ldirilgan element (DESIGN.md, aksent qoidasi).
+  aksent: "bg-aksent text-aksent-matn",
   ikkilamchi: "border border-chegara bg-transparent text-siyoh",
   uchinchi: "bg-transparent text-matn-2",
+  // Qaytarib bo'lmaydigan amal (o'chirish) — to'ldirilmagan, faqat xato rangidagi matn.
+  xavfli: "bg-transparent text-xato",
 };
 
 const ASOS =

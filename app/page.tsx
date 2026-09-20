@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { KunlikDoira } from "@/app/_components/KunlikDoira";
 import { MakroChizigi } from "@/app/_components/MakroChizigi";
 import { YozuvQatori } from "@/app/_components/YozuvQatori";
@@ -93,7 +94,15 @@ export default async function HomeSahifasi() {
               </div>
 
               <section className="flex flex-col gap-2">
-                <h2 className="text-karta-sarlavha">Bugungi ovqatlar</h2>
+                <div className="flex items-center justify-between gap-3">
+                  <h2 className="text-karta-sarlavha">Bugungi ovqatlar</h2>
+                  <Link
+                    href="/jurnal"
+                    className="-mr-2 flex min-h-11 items-center px-2 text-izoh font-medium text-matn-2"
+                  >
+                    Hammasi
+                  </Link>
+                </div>
                 {oxirgilar.length === 0 ? (
                   <BoshHolat />
                 ) : (
