@@ -28,5 +28,30 @@ model Taom {
   porsiyalar    Int[]
   yaratilgan    DateTime @default(now())
 
+  yozuvlar OvqatYozuvi[]
+
   @@map("taomlar")
+}
+
+/// Jurnalga tushgan har bir ovqat (PRD.md, 7-bo'lim). Taom nomi va raqamlari yozuv
+/// ichiga ko'chiriladi — baza yozuvi keyin o'zgarsa ham jurnal o'sha kungi holatini
+/// saqlaydi. S1'da foydalanuvchi tizimi yo'q, shuning uchun `foydalanuvchiId`
+/// qotirilgan sinov qiymatini oladi va S3'da real ID ga almashadi.
+model OvqatYozuvi {
+  id              String   @id @default(uuid())
+  foydalanuvchiId String   @map("foydalanuvchi_id")
+  taomId          String?  @map("taom_id")
+  taomNomi        String   @map("taom_nomi")
+  porsiya         String
+  kaloriya        Float
+  oqsil           Float
+  yog             Float
+  uglevod         Float
+  ovqatTuri       String   @map("ovqat_turi")
+  vaqt            DateTime @default(now())
+
+  taom Taom? @relation(fields: [taomId], references: [id], onDelete: SetNull)
+
+  @@index([foydalanuvchiId, vaqt])
+  @@map("ovqat_yozuvlari")
 }

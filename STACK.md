@@ -12,9 +12,8 @@ qatorda yozilgan. Maqsad: o'ylashni stackka emas, mahsulotga sarflash.
 | **PostgreSQL** | Jiddiy loyihalar uchun standart, bepul, har joyda ishlaydi, ma'lumot yo'qolmaydi |
 | **Prisma** | Ma'lumot modelini bitta faylda ko'rsatadi va SQL yozishdan qutqaradi |
 | **Tailwind CSS** | Dizaynni HTML ichida yozasiz — alohida CSS fayllarni boshqarish yo'q |
-| **Caddy** | HTTPS sertifikatini o'zi oladi va o'zi yangilaydi, sozlash 3 qator |
-| **GitHub Actions** | Push qilgandan keyin serverga chiqarish avtomatik bo'ladi |
-| **Hetzner** | Arzon va barqaror server; soatlik hisob, istagan vaqtda o'chiriladi |
+| **Vercel** | Next.js'ning o'z platformasi: push qilinganda o'zi quradi va chiqaradi, HTTPS tayyor |
+| **Railway** | PostgreSQL boshqariladigan xizmat sifatida; nusxa va zaxira o'zi bajariladi |
 | **Telegram Mini App** | Auditoriya allaqachon Telegramda; alohida ilova yuklatish shart emas (S5) |
 
 ## Nega aynan shu to'plam

@@ -181,6 +181,26 @@ lokal ishlashda ham Railway bazasiga public URL orqali ulaniladi. STACK.md'dagi 
 *Sabab:* Prototipda taomlar ikki xil o'lchanadi (osh grammda, manti va somsa donada); sprintdagi minimal
 tavsif buni ifodalay olmasdi.
 
+**2026-09-20 · Klient komponent ishlatadigan sof hisob bazaga ulanadigan servisdan ajratiladi (`taom-hisob.ts`, `yozuv-hisob.ts` va `taomlar.ts`, `ovqat-yozuvlari.ts`).**
+*Sabab:* `"use client"` komponent `lib/db.ts` ga ulangan modulni import qilsa, Turbopack `pg` ni brauzer
+bandliga tortadi va build `dns`, `fs`, `net` topolmay yiqiladi.
+
+**2026-09-20 · Kun chegarasi UTC+5 (Toshkent) bo'yicha qo'lda hisoblanadi, kutubxonasiz.**
+*Sabab:* Vercel serveri UTC'da ishlaydi; "bugungi kaloriya" server mintaqasiga bog'liq bo'lib qolmasligi kerak.
+O'zbekistonda yozgi vaqt yo'q, shuning uchun qat'iy siljish yetarli va yangi dependency shart emas.
+
+**2026-09-20 · S1'da kunlik norma `lib/norma.ts` da qotirilgan (2,190 kkal · 120 / 70 / 240 g), yozuvlar `s1-sinov` degan qotirilgan foydalanuvchiga yoziladi.**
+*Sabab:* Vertikal kesim uchun onboarding ham, auth ham kerak emas; ikkalasi bitta joyda turadi va
+S3'da rejadan hamda real foydalanuvchi ID'sidan keladi.
+
+**2026-09-20 · E5'dagi "Jurnalga qo'shish" tugmasi `--siyoh` rangida (DESIGN.md'da lime deb yozilgan).**
+*Sabab:* Prototipdagi FoodScreen `primary` tugmani ishlatadi va zid kelganda prototip ustun turadi;
+lime E8'dagi doira va tasdiq belgisida qoladi.
+
+**2026-09-20 · S1 task ro'yxati prototip va dizayn-tz bo'yicha kengaytirildi (7 tadan 11 taga), deploy Hetzner+Caddy o'rniga Vercel+Railway.**
+*Sabab:* Foydalanuvchi qarori: prototipda bor, sprintda yozilmay qolgan narsalar S1'ga qo'shilsin.
+Deploy esa 2026-09-16 dagi qarorga moslandi; STACK.md ham shunga qarab tuzatildi.
+
 ---
 
 ## OCHIQ SAVOLLAR

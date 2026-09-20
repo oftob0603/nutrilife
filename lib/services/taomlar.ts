@@ -1,36 +1,32 @@
 import { db } from "../db.ts";
+import type { Taom } from "./taom-hisob.ts";
 
-export type Taom = {
-  id: string;
-  nomi: string;
-  olchovMiqdori: number;
-  olchovBirligi: string;
-  kaloriya: number;
-  oqsil: number;
-  yog: number;
-  uglevod: number;
-  porsiyalar: number[];
-};
+export type { Taom };
+
+const TAOM_MAYDONLARI = {
+  id: true,
+  nomi: true,
+  olchovMiqdori: true,
+  olchovBirligi: true,
+  kaloriya: true,
+  oqsil: true,
+  yog: true,
+  uglevod: true,
+  porsiyalar: true,
+} as const;
 
 /** Taom bazasi, nomi bo'yicha tartiblangan. */
 export async function taomlarniOl(): Promise<Taom[]> {
   return db.taom.findMany({
     orderBy: { nomi: "asc" },
-    select: {
-      id: true,
-      nomi: true,
-      olchovMiqdori: true,
-      olchovBirligi: true,
-      kaloriya: true,
-      oqsil: true,
-      yog: true,
-      uglevod: true,
-      porsiyalar: true,
-    },
+    select: TAOM_MAYDONLARI,
   });
 }
 
-/** Karta ostidagi izoh: "100 g · 186 kkal" yoki "1 dona · 310 kkal". */
-export function olchovIzohi(taom: Taom): string {
-  return `${taom.olchovMiqdori} ${taom.olchovBirligi} · ${taom.kaloriya} kkal`;
+/** Bitta taom; topilmasa null. */
+export async function taomniOl(id: string): Promise<Taom | null> {
+  return db.taom.findUnique({
+    where: { id },
+    select: TAOM_MAYDONLARI,
+  });
 }

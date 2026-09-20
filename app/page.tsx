@@ -1,18 +1,115 @@
-export default function Home() {
+import { KunlikDoira } from "@/app/_components/KunlikDoira";
+import { MakroChizigi } from "@/app/_components/MakroChizigi";
+import { YozuvQatori } from "@/app/_components/YozuvQatori";
+import { QoshishPaneli } from "@/app/_components/QoshishPaneli";
+import { NORMA } from "@/lib/norma";
+import {
+  bugunSana,
+  sanaMatni,
+  type Jami,
+  type Yozuv,
+} from "@/lib/services/yozuv-hisob";
+import { apiAsos } from "@/lib/api-asos";
+
+// Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
+export const dynamic = "force-dynamic";
+
+type Kun = { yozuvlar: Yozuv[]; jami: Jami };
+
+async function kunniYukla(): Promise<Kun | null> {
+  try {
+    const javob = await fetch(`${apiAsos()}/api/ovqat-yozuvlari`, {
+      cache: "no-store",
+    });
+    if (!javob.ok) return null;
+    return (await javob.json()) as Kun;
+  } catch {
+    return null;
+  }
+}
+
+/** E1 xato holati: doira o'rnida karta, "+" tugmasi faolligicha qoladi. */
+function XatoKartasi() {
   return (
-    <main className="flex flex-1 items-center justify-center p-4">
-      <div className="w-full max-w-sm rounded-3xl bg-karta p-6 text-center">
-        <span className="inline-block rounded-full bg-aksent px-2.5 py-0.5 text-[11px] font-medium text-aksent-matn">
-          Skelet
-        </span>
-        <h1 className="mt-4 font-display text-2xl font-semibold tracking-[-0.02em]">
-          Loyiha tayyor
-        </h1>
-        <p className="mt-2 text-[15px] leading-normal text-matn-2">
-          Next.js, TypeScript, Tailwind va Prisma o&apos;rnatildi. Mahsulot kodi
-          Sprint 1&apos;dan boshlanadi.
-        </p>
-      </div>
-    </main>
+    <div className="flex flex-col items-center gap-3 rounded-karta border border-chegara bg-karta p-4 text-center">
+      <p className="text-karta-sarlavha">Ma&apos;lumotni yuklab bo&apos;lmadi</p>
+      <p className="text-izoh text-matn-2">
+        Hisobot serveriga ulanolmadik. Internetni tekshirib, qayta urinib
+        ko&apos;ring.
+      </p>
+    </div>
+  );
+}
+
+function BoshHolat() {
+  return (
+    <div className="flex flex-col items-center gap-3 rounded-karta border border-chegara bg-karta p-4 text-center">
+      <p className="text-karta-sarlavha">
+        Bugun hali hech narsa qo&apos;shilmadi
+      </p>
+      <p className="text-izoh text-matn-2">
+        Birinchi ovqatni qo&apos;shsangiz, doira to&apos;lishni boshlaydi.
+      </p>
+    </div>
+  );
+}
+
+export default async function HomeSahifasi() {
+  const sana = bugunSana();
+  const kun = await kunniYukla();
+  const oxirgilar = kun ? kun.yozuvlar.slice(-3).reverse() : [];
+
+  return (
+    <>
+      <main className="mx-auto w-full max-w-md px-4 pb-32">
+        <header className="flex flex-col gap-1 py-4">
+          <p className="text-izoh text-matn-2">{sanaMatni(sana)}</p>
+          <h1 className="text-sarlavha">Bugun</h1>
+        </header>
+
+        <div className="flex flex-col gap-6">
+          {kun === null ? (
+            <XatoKartasi />
+          ) : (
+            <>
+              <KunlikDoira qiymat={kun.jami.kaloriya} norma={NORMA.kaloriya} />
+
+              <div className="flex gap-4">
+                <MakroChizigi
+                  nomi="Oqsil"
+                  qiymat={kun.jami.oqsil}
+                  maqsad={NORMA.oqsil}
+                />
+                <MakroChizigi
+                  nomi="Yog'"
+                  qiymat={kun.jami.yog}
+                  maqsad={NORMA.yog}
+                />
+                <MakroChizigi
+                  nomi="Uglevod"
+                  qiymat={kun.jami.uglevod}
+                  maqsad={NORMA.uglevod}
+                />
+              </div>
+
+              <section className="flex flex-col gap-2">
+                <h2 className="text-karta-sarlavha">Bugungi ovqatlar</h2>
+                {oxirgilar.length === 0 ? (
+                  <BoshHolat />
+                ) : (
+                  <ul className="flex flex-col gap-3">
+                    {oxirgilar.map((yozuv) => (
+                      <YozuvQatori key={yozuv.id} yozuv={yozuv} />
+                    ))}
+                  </ul>
+                )}
+              </section>
+            </>
+          )}
+        </div>
+      </main>
+
+      <QoshishPaneli />
+    </>
   );
 }
