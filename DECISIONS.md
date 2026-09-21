@@ -395,6 +395,14 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-21 · `onboarding_tugadi` 9-savolda yoziladi; O11–O13 ko'rsatuv ekranlari, serverga qadam sifatida saqlanmaydi.**
 *Sabab:* O'sha lahzada hamma javob bor va reja yozilgan; yarmida chiqib ketgan foydalanuvchi ma'lumot yo'qotmaydi, faqat natija ekranini qayta ko'rmaydi; server va sxema o'zgarmaydi.
 
+## 2026-09-21 — holatlar zanjiri (S4, 5–6-qadamlar)
+
+**2026-09-21 · `ovqat_yozuvlari` ga `holat` ustuni qo'shildi, lekin unda faqat uch qiymat: `tasdiqlandi`, `tahrirlandi`, `ochirildi`. PRD zanjiridagi `tahlil qilinmoqda` va `tasdiq kutilmoqda` bazaga tushmaydi — klient holatida qoladi. 2026-09-20 dagi "`holat` ustuni qo'shilmadi" qarori shu bilan almashtirildi.**
+*Sabab:* Tasdiqlanmagan AI natijasi jadvalga tushmasligi haqidagi qaror (2026-09-13) kuchda qoladi; ustun esa o'chirilgan yozuvni saqlab qolish uchun kerak — qator o'chsa streak va Nutrition Score tarixi o'zgarib qolardi. O'chirilgan yozuvning rasmi saqlanmaydi (bazadan ham, R2'dan ham o'chadi): foydalanuvchi o'chirgan surat omborda yotmasligi kerak, tarix uchun raqamlar yetarli.
+
+**2026-09-21 · F4 "Obuna" ekrani S4'da to'lovsiz, faqat o'qish uchun qurildi: "Obunani bekor qilish" tugmasi S5'ga qoldirildi; FREE va muddati tugagan hisob F4'ga kirmaydi.**
+*Sabab:* Avtomatik takroriy to'lov yo'q — "bekor qilish" faqat keyingi eslatmani o'chiradi, eslatmalar esa S5'da (bot). Hech narsa qilmaydigan qizil tugma foydalanuvchini chalg'itadi. Prototipda ham F4'ga faqat faol PRO'dan kiriladi.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

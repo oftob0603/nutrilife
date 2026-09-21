@@ -1,6 +1,7 @@
 import { db } from "../db.ts";
 import { ombordanOchir } from "./ombor.ts";
 import { sanaOraligi, type Yozuv } from "./yozuv-hisob.ts";
+import { FAOL_HOLATLAR, keyingiHolat } from "./yozuv-holati.ts";
 
 export type YangiYozuv = {
   taomId: string | null;
@@ -72,12 +73,13 @@ export async function yozuvYaratish(
   return korinishgaOtkaz(yozuv);
 }
 
-/** Bir kunning yozuvlari, vaqti bo'yicha eskidan yangiga. */
+/** Bir kunning yozuvlari, vaqti bo'yicha eskidan yangiga. O'chirilganlar kirmaydi. */
 export async function kunlikYozuvlar(foydalanuvchiId: string, sana: string): Promise<Yozuv[]> {
   const { boshi, oxiri } = sanaOraligi(sana);
   const yozuvlar = await db.ovqatYozuvi.findMany({
     where: {
       foydalanuvchiId,
+      holat: { in: FAOL_HOLATLAR },
       vaqt: { gte: boshi, lt: oxiri },
     },
     orderBy: { vaqt: "asc" },
@@ -86,10 +88,10 @@ export async function kunlikYozuvlar(foydalanuvchiId: string, sana: string): Pro
   return yozuvlar.map(korinishgaOtkaz);
 }
 
-/** Bitta yozuv; topilmasa null. */
+/** Bitta yozuv; topilmasa yoki o'chirilgan bo'lsa null. */
 export async function yozuvniOl(foydalanuvchiId: string, id: string): Promise<Yozuv | null> {
   const yozuv = await db.ovqatYozuvi.findFirst({
-    where: { id, foydalanuvchiId },
+    where: { id, foydalanuvchiId, holat: { in: FAOL_HOLATLAR } },
     select: YOZUV_MAYDONLARI,
   });
   return yozuv ? korinishgaOtkaz(yozuv) : null;
@@ -100,33 +102,51 @@ export type YozuvOzgarishi = Omit<YangiYozuv, "taomId" | "manba" | "rasmId"> & {
   vaqt?: Date;
 };
 
-/** Yozuvni tahrirlaydi (E10); topilmasa null. Manba va rasm o'zgarmaydi. */
+/**
+ * Yozuvni tahrirlaydi (E10) va holatini "tahrirlandi" qiladi; topilmasa yoki o'chirilgan
+ * bo'lsa null. Manba va rasm o'zgarmaydi.
+ */
 export async function yozuvniYangilash(
   foydalanuvchiId: string,
   id: string,
   ozgarish: YozuvOzgarishi,
 ): Promise<Yozuv | null> {
-  const { count } = await db.ovqatYozuvi.updateMany({
+  const joriy = await db.ovqatYozuvi.findFirst({
     where: { id, foydalanuvchiId },
-    data: ozgarish,
+    select: { holat: true },
+  });
+  const holat = joriy && keyingiHolat(joriy.holat, "tahrirlash");
+  if (!holat) return null;
+
+  // Holat shartda ham turadi: o'qish va yozish orasida yozuv o'chirilgan bo'lsa tirilmaydi.
+  const { count } = await db.ovqatYozuvi.updateMany({
+    where: { id, foydalanuvchiId, holat: joriy.holat },
+    data: { ...ozgarish, holat },
   });
   return count === 0 ? null : yozuvniOl(foydalanuvchiId, id);
 }
 
 /**
- * Yozuvni o'chiradi; topilmasa false. Bog'langan rasm ham bazadan va ombordan o'chadi —
- * aks holda u hech qayerda ko'rinmaydigan egasiz fayl bo'lib qoladi.
+ * Yozuvni o'chiradi; topilmasa yoki allaqachon o'chirilgan bo'lsa false. Qator bazada qoladi,
+ * holati "ochirildi" bo'ladi — streak va Score tarixi halol qolsin. Bog'langan rasm esa
+ * bazadan ham, ombordan ham o'chadi: foydalanuvchi o'chirgan ovqat surati saqlanmaydi.
  */
 export async function yozuvniOchirish(foydalanuvchiId: string, id: string): Promise<boolean> {
   const kalitlar = await db.$transaction(async (tx) => {
     const yozuv = await tx.ovqatYozuvi.findFirst({
       where: { id, foydalanuvchiId },
-      select: { rasmlar: { select: { kalit: true } } },
+      select: { holat: true, rasmlar: { select: { kalit: true } } },
     });
-    if (!yozuv) return null;
+    const holat = yozuv && keyingiHolat(yozuv.holat, "ochirish");
+    if (!holat) return null;
+
+    const { count } = await tx.ovqatYozuvi.updateMany({
+      where: { id, foydalanuvchiId, holat: yozuv.holat },
+      data: { holat },
+    });
+    if (count === 0) return null;
 
     await tx.rasm.deleteMany({ where: { ovqatYozuviId: id, foydalanuvchiId } });
-    await tx.ovqatYozuvi.deleteMany({ where: { id, foydalanuvchiId } });
     return yozuv.rasmlar.map((rasm) => rasm.kalit);
   });
   if (!kalitlar) return false;

@@ -59,6 +59,12 @@ function ObunaKartasi({ obuna, tarjimon }: { obuna: Profil["obuna"]; tarjimon: T
           )}
         </p>
       )}
+      {/* FREE va muddati tugagan kartaning tugmasi paywall (W1) bilan birga qo'shiladi. */}
+      {obuna.holat === "pro" && (
+        <TugmaHavola korinish="ikkilamchi" href="/profil/obuna">
+          {t("Obunani boshqarish")}
+        </TugmaHavola>
+      )}
     </section>
   );
 }

@@ -57,7 +57,7 @@ export async function PATCH(sorov: Request, kontekst: Kontekst) {
   return yozuv ? Response.json({ yozuv }) : topilmadi();
 }
 
-/** Yozuvni bog'langan rasmi bilan birga o'chiradi. */
+/** Yozuvni o'chirilgan deb belgilaydi (qator bazada qoladi), bog'langan rasmi esa o'chadi. */
 export async function DELETE(sorov: Request, kontekst: Kontekst) {
   const foydalanuvchiId = await joriyFoydalanuvchiId(sorov);
   if (!foydalanuvchiId) return kirishKerak();

@@ -42,6 +42,8 @@ model Taom {
 /// ichiga ko'chiriladi — baza yozuvi keyin o'zgarsa ham jurnal o'sha kungi holatini
 /// saqlaydi.
 /// Jadvalga faqat tasdiqlangan yozuv tushadi — tasdiqlanmagan AI natijasi saqlanmaydi.
+/// O'chirilgan yozuv qatori qoladi (`holat = "ochirildi"`) — streak va Score tarixi halol
+/// qolsin; ekranlarda va kunlik jamida u ko'rinmaydi.
 model OvqatYozuvi {
   id              String   @id @default(uuid())
   foydalanuvchiId String   @map("foydalanuvchi_id")
@@ -55,10 +57,12 @@ model OvqatYozuvi {
   ovqatTuri       String   @map("ovqat_turi")
   /// "qolda" yoki "ai".
   manba           String   @default("qolda")
+  /// "tasdiqlandi", "tahrirlandi" yoki "ochirildi" (lib/services/yozuv-holati.ts).
+  holat           String   @default("tasdiqlandi")
   vaqt            DateTime @default(now())
 
   foydalanuvchi Foydalanuvchi @relation(fields: [foydalanuvchiId], references: [id], onDelete: Cascade)
-  taom          Taom?         @relation(fields: [taomId], references: [id], onDelete: SetNull)
+  taom         Taom?         @relation(fields: [taomId], references: [id], onDelete: SetNull)
   rasmlar       Rasm[]
 
   @@index([foydalanuvchiId, vaqt])

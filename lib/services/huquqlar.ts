@@ -42,6 +42,27 @@ export function obunaHolati(obunalar: ObunaMuddati[], hozir: Date = new Date()):
   return { holat: "free", tugash: null };
 }
 
+export type ObunaQatori = ObunaMuddati & { tarif: string };
+
+export type FaolMuddat = { tarif: Tarif; boshlanish: Date; tugash: Date };
+
+/**
+ * Faol PRO'ning joriy muddati (F4): tarif va boshlanish — hozir ishlab turgan qatordan,
+ * tugash — ketma-ket ulangan muddatlarning oxiri. PRO faol bo'lmasa null.
+ */
+export function faolMuddat(obunalar: ObunaQatori[], hozir: Date = new Date()): FaolMuddat | null {
+  const obuna = obunaHolati(obunalar, hozir);
+  if (obuna.holat !== "pro") return null;
+
+  const joriy = [...obunalar]
+    .sort((a, b) => a.boshlanish.getTime() - b.boshlanish.getTime())
+    .find(({ boshlanish, tugash }) => boshlanish <= hozir && tugash > hozir);
+  if (!joriy) return null;
+
+  const tarif = (TARIFLAR as readonly string[]).includes(joriy.tarif) ? (joriy.tarif as Tarif) : "qolda";
+  return { tarif, boshlanish: joriy.boshlanish, tugash: obuna.tugash };
+}
+
 export type Huquqlar = {
   /** FREE — umr davomida jami, PRO — kuniga. */
   skanLimiti: { davr: "umr" | "kun"; soni: number };

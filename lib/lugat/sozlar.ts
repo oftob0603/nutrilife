@@ -558,6 +558,27 @@ export const SOZLAR = {
   "Hisobingiz o'chirildi": { ru: "Ваш аккаунт удалён", en: "Your account has been deleted" },
   "Ilovani yopishingiz mumkin.": { ru: "Приложение можно закрыть.", en: "You can close the app." },
 
+  // ── Obuna (F4) ─────────────────────────────────────────────────────────────
+  "Obunani boshqarish": { ru: "Управление подпиской", en: "Manage subscription" },
+  "Obuna": { ru: "Подписка", en: "Subscription" },
+  "Holat": { ru: "Статус", en: "Status" },
+  "Faol": { ru: "Активна", en: "Active" },
+  "Tarif": { ru: "Тариф", en: "Plan" },
+  "Oylik": { ru: "Месячный", en: "Monthly" },
+  "Yarim yillik": { ru: "Полугодовой", en: "Half-yearly" },
+  "Yillik": { ru: "Годовой", en: "Yearly" },
+  "Boshlangan": { ru: "Начало", en: "Started" },
+  "Tugaydi": { ru: "Окончание", en: "Ends" },
+  "Manba": { ru: "Источник", en: "Source" },
+  "Administrator tomonidan berilgan": { ru: "Выдана администратором", en: "Granted by an administrator" },
+  "To'lovlar tarixi": { ru: "История платежей", en: "Payment history" },
+  "Hozircha to'lov yo'q": { ru: "Платежей пока нет", en: "No payments yet" },
+  "Administrator tomonidan berilgan obuna — to'lov yozuvi yo'q.": {
+    ru: "Подписка выдана администратором — записей об оплате нет.",
+    en: "This subscription was granted by an administrator — there are no payment records.",
+  },
+  "Obunani yuklab bo'lmadi": { ru: "Не удалось загрузить подписку", en: "Could not load the subscription" },
+
   // ── Mavzu ──────────────────────────────────────────────────────────────────
   "Mavzu": { ru: "Тема", en: "Theme" },
   "Yorug'": { ru: "Светлая", en: "Light" },
