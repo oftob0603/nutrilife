@@ -8,6 +8,7 @@ import { Tugma } from "@/app/_components/Tugma";
 import { Gildirak, GildirakMaydoni } from "@/app/_components/onboarding/Gildirak";
 import { OnboardingMaydoni } from "@/app/_components/onboarding/OnboardingMaydoni";
 import { QadamSarlavhasi } from "@/app/_components/onboarding/QadamSarlavhasi";
+import { ProTanishtiruv } from "@/app/_components/onboarding/ProTanishtiruv";
 import { RejaNatijasi } from "@/app/_components/onboarding/RejaNatijasi";
 import { SegmentTanlagich, Variantlar } from "@/app/_components/onboarding/Variantlar";
 import { k, type Kalit, type Tarjimon } from "@/lib/lugat/tarjima";
@@ -32,6 +33,7 @@ import {
   MOTIVATSIYALAR,
   OTKAZILADIGAN_QADAMLAR,
   NATIJA_QADAMI,
+  PRO_QADAMI,
   REJA_TAYYORLANMOQDA_QADAMI,
   SAVOLLAR_SONI,
   VAZN,
@@ -408,8 +410,17 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
       <RejaNatijasi
         forma={forma}
         onOrqaga={() => qadamgaOt(SAVOLLAR_SONI)}
-        // Paywall (O13) qo'shilguncha to'g'ri Home'ga.
-        onBoshlash={() => router.replace("/")}
+        onBoshlash={() => qadamgaOt(PRO_QADAMI)}
+      />
+    );
+  }
+
+  if (qadam === PRO_QADAMI) {
+    return (
+      <ProTanishtiruv
+        onOrqaga={() => qadamgaOt(NATIJA_QADAMI)}
+        onPro={() => router.replace("/pro?manba=onboarding")}
+        onHozirEmas={() => router.replace("/")}
       />
     );
   }

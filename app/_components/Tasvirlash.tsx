@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { SkanLimitiQatori } from "@/app/_components/SkanLimitiQatori";
 import { Tahlil } from "@/app/_components/Tahlil";
 import { useTarjima } from "@/app/_components/TilTaminoti";
 import { Tugma } from "@/app/_components/Tugma";
-import { MATN_CHEGARASI } from "@/lib/services/skan-hisob";
+import { useSkanLimiti } from "@/app/_components/useSkanLimiti";
+import { limitKorinishi, MATN_CHEGARASI } from "@/lib/services/skan-hisob";
 
 function ChapStrelka() {
   return (
@@ -28,11 +30,15 @@ function ChapStrelka() {
 /**
  * Matn bilan tasvirlash — E4 "topilmadi" holatidan chiqish yo'li. Yuborilgach rasm oqimi
  * bilan bir xil tahlil ekrani (E6) ochiladi; bekor qilinsa yozilgan matn joyida qoladi.
+ * Matnli tasvir ham AI skan — rasm bilan bitta limit; tugagan bo'lsa tugma o'chadi.
  */
 export function Tasvirlash({ boshlangich }: { boshlangich: string }) {
   const { t } = useTarjima();
   const [matn, setMatn] = useState(boshlangich);
   const [yuborilgan, setYuborilgan] = useState<string | null>(null);
+  // Tahlildan qaytilganda son yangilansin — forma ko'ringan har safar qayta so'raladi.
+  const limit = useSkanLimiti(yuborilgan === null);
+  const skanYopiq = typeof limit === "object" && limit !== null && limitKorinishi(limit).tugagan;
 
   if (yuborilgan) {
     return <Tahlil matn={yuborilgan} onBekor={() => setYuborilgan(null)} />;
@@ -66,9 +72,10 @@ export function Tasvirlash({ boshlangich }: { boshlangich: string }) {
           />
         </label>
 
-        <Tugma onClick={() => setYuborilgan(matn.trim())} disabled={!matn.trim()}>
+        <Tugma onClick={() => setYuborilgan(matn.trim())} disabled={!matn.trim() || skanYopiq}>
           {t("Tahlil qilish")}
         </Tugma>
+        <SkanLimitiQatori limit={limit} />
       </div>
     </main>
   );

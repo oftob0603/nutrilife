@@ -15,7 +15,7 @@ export type ObunaTafsiloti = {
 
 const TARIF_NOMLARI: Record<Exclude<Tarif, "qolda">, Kalit> = {
   oylik: "Oylik",
-  yarim_yillik: "Yarim yillik",
+  yarim_yillik: "6 oylik",
   yillik: "Yillik",
 };
 

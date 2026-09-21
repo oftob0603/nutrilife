@@ -78,7 +78,6 @@ export function RejaNatijasi({
 }) {
   const { t } = useTarjima();
   const [qism, setQism] = useState<1 | 2>(1);
-  const [otilmoqda, setOtilmoqda] = useState(false);
   const norma = normaHisobi(forma);
 
   // Savollar to'liq javob berilmaguncha bu yerga yetib kelinmaydi — baribir bo'sh son ko'rsatilmaydi.
@@ -156,16 +155,7 @@ export function RejaNatijasi({
         <p className="text-izoh text-matn-2">{t("Bu tibbiy tavsiya emas. Qiymatlar taxminiy.")}</p>
       </div>
       <Pastki>
-        <Tugma
-          yuklanmoqda={otilmoqda}
-          onClick={() => {
-            // Tugma Home ochilguncha band turadi.
-            setOtilmoqda(true);
-            onBoshlash();
-          }}
-        >
-          {t("Boshlaymiz")}
-        </Tugma>
+        <Tugma onClick={onBoshlash}>{t("Boshlaymiz")}</Tugma>
       </Pastki>
     </main>
   );

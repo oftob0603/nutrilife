@@ -1,6 +1,9 @@
 // AI skan bilan bog'liq sof qoidalar — bazaga va AI xizmatiga bog'liq emas, shuning
 // uchun klient komponentlar ham shu yerdan import qiladi.
 
+import { k, type Kalit } from "../lugat/tarjima.ts";
+import type { SkanQoldigi } from "./huquqlar.ts";
+
 /** Matn bilan tasvirlashning eng katta uzunligi. */
 export const MATN_CHEGARASI = 500;
 
@@ -96,5 +99,53 @@ export function skanJavobiniTekshir(xom: unknown, vaznGramm: number | null): Ska
       uglevod100,
       vaznFoydalanuvchidan: vaznGramm !== null,
     },
+  };
+}
+
+/** Limit qatori: `t(matn, ...qiymatlar)` bilan chiziladi; `tugagan` — AI skan yo'llari o'chadi. */
+export type LimitKorinishi = {
+  tugagan: boolean;
+  matn: Kalit;
+  qiymatlar: number[];
+  /** Bepul skanlar tugagan — PRO yordam beradi: yonida tariflar ekraniga (W1) yo'l ko'rsatiladi. */
+  paywall: boolean;
+};
+
+/**
+ * Skan limitining ekrandagi ko'rinishi — E2 paneli, F1 kartasi va "Tasvirlash" bittasidan
+ * o'qiydi. Tarif limiti tugagan bo'lsa shu aytiladi; u bor-u, bugungi tanilmagan urinishlar
+ * tugagan bo'lsa — o'sha (skan baribir yopiq).
+ */
+export function limitKorinishi({ davr, soni, qoldi, tanilmaganQoldi }: SkanQoldigi): LimitKorinishi {
+  if (qoldi <= 0) {
+    return davr === "kun"
+      ? {
+          tugagan: true,
+          matn: k("Bugungi {0} ta skan ishlatildi. Ertaga yangilanadi — qo'lda qo'shish cheklovsiz."),
+          qiymatlar: [soni],
+          paywall: false,
+        }
+      : {
+          tugagan: true,
+          matn: k("Bepul skanlar tugadi. Qo'lda qo'shish cheklovsiz."),
+          qiymatlar: [],
+          paywall: true,
+        };
+  }
+  if (tanilmaganQoldi <= 0) {
+    return {
+      tugagan: true,
+      matn: k(
+        "Bugun taom bir necha marta tanilmadi. Ertaga yana urinib ko'ring yoki taomni qo'lda qo'shing",
+      ),
+      qiymatlar: [],
+      paywall: false,
+    };
+  }
+  return {
+    tugagan: false,
+    matn: k("{0} tadan {1} ta skan qoldi"),
+    qiymatlar: [soni, qoldi],
+    paywall: false,
   };
 }

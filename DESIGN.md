@@ -76,6 +76,8 @@ Lime "bitta to'ldirilgan element" qoidasiga kirmaydi: PRO — alohida rang.
 |---|---|---|
 | `--pro-gradient` | `linear-gradient(90deg, #2563EB 0%, #7C3AED 50%, #DB2777 100%)` | PRO belgisi, PRO tugmasi foni |
 | `--pro-fg` | `#FFFFFF` | Gradiyent ustidagi matn |
+| `--pro-ink` | yorug' `#6D28D9` · qorong'i `#C4B5FD` | Karta ustidagi PRO rangidagi matn va belgi (W1: tejash foizi, imkoniyat belgilari) |
+| `--pro-tint` | `--pro-ink` ning och tusi: yorug' `#7C3AED` 12% · qorong'i `#C4B5FD` 16% | Tejash belgisi va imkoniyat belgisi foni |
 
 ## 2. Shriftlar
 

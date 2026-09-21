@@ -123,7 +123,19 @@ export const SOZLAR = {
   "Tayyor rasmni tanlang": { ru: "Выберите готовое фото", en: "Choose an existing photo" },
   "Rasm yuklanmoqda…": { ru: "Фото загружается…", en: "Uploading photo…" },
   "Qo'lda qo'shish": { ru: "Добавить вручную", en: "Add manually" },
-  "Taom bazasidan tanlang": { ru: "Выберите из базы блюд", en: "Pick from the dish database" },
+  "Taom bazasidan tanlang — cheklovsiz": {
+    ru: "Выберите из базы блюд — без ограничений",
+    en: "Pick from the dish database — unlimited",
+  },
+  "{0} tadan {1} ta skan qoldi": { ru: "Осталось сканирований: {1} из {0}", en: "{1} of {0} scans left" },
+  "Bepul skanlar tugadi. Qo'lda qo'shish cheklovsiz.": {
+    ru: "Бесплатные сканирования закончились. Вручную можно добавлять без ограничений.",
+    en: "Your free scans are used up. Adding manually is unlimited.",
+  },
+  "Bugungi {0} ta skan ishlatildi. Ertaga yangilanadi — qo'lda qo'shish cheklovsiz.": {
+    ru: "Сегодняшние сканирования ({0}) использованы. Завтра лимит обновится — вручную можно добавлять без ограничений.",
+    en: "Today's {0} scans are used up. They reset tomorrow — adding manually is unlimited.",
+  },
   "Yuklanmadi": { ru: "Не загружено", en: "Upload failed" },
 
   // ── Kamera (E3) va rasm yuklash ────────────────────────────────────────────
@@ -577,7 +589,7 @@ export const SOZLAR = {
   "Faol": { ru: "Активна", en: "Active" },
   "Tarif": { ru: "Тариф", en: "Plan" },
   "Oylik": { ru: "Месячный", en: "Monthly" },
-  "Yarim yillik": { ru: "Полугодовой", en: "Half-yearly" },
+  "6 oylik": { ru: "6 месяцев", en: "6 months" },
   "Yillik": { ru: "Годовой", en: "Yearly" },
   "Boshlangan": { ru: "Начало", en: "Started" },
   "Tugaydi": { ru: "Окончание", en: "Ends" },
@@ -590,6 +602,66 @@ export const SOZLAR = {
     en: "This subscription was granted by an administrator — there are no payment records.",
   },
   "Obunani yuklab bo'lmadi": { ru: "Не удалось загрузить подписку", en: "Could not load the subscription" },
+
+  // ── Tariflar (W1) va onboarding oxiri (O13) ────────────────────────────────
+  "Nutrilife PRO bilan ko'proq": { ru: "С Nutrilife PRO — больше", en: "Get more with Nutrilife PRO" },
+  "Nutrilife PRO": { ru: "Nutrilife PRO", en: "Nutrilife PRO" },
+  "Bepul skanlar tugadi": { ru: "Бесплатные сканирования закончились", en: "Your free scans are used up" },
+  "PRO ni tiklash": { ru: "Восстановить PRO", en: "Restore PRO" },
+  "Kuniga 20 tagacha AI skan": { ru: "До 20 ИИ-сканирований в день", en: "Up to 20 AI scans a day" },
+  "Retseptlarni to'liq ko'rish": { ru: "Полные тексты рецептов", en: "Full recipe text" },
+  "Nutrition Score": { ru: "Nutrition Score", en: "Nutrition Score" },
+  "Qolgan kaloriyaga mos taom takliflari": {
+    ru: "Подборка блюд под оставшиеся калории",
+    en: "Dish ideas that fit your remaining calories",
+  },
+  "Oqsil, yog' va uglevodlarni kuzatish": {
+    ru: "Учёт белков, жиров и углеводов",
+    en: "Protein, fat and carb tracking",
+  },
+  "Aqlli porsiya tavsiyalari": { ru: "Умные советы по размеру порции", en: "Smart portion advice" },
+  "Batafsil ovqatlanish statistikasi": { ru: "Подробная статистика питания", en: "Detailed nutrition statistics" },
+  "Sevimli retseptlar": { ru: "Избранные рецепты", en: "Favourite recipes" },
+  "Haftalik ovqatlanish hisoboti": { ru: "Еженедельный отчёт о питании", en: "Weekly nutrition report" },
+  "PRO imkoniyatlari": { ru: "Возможности PRO", en: "PRO features" },
+  "Tarif tanlang": { ru: "Выберите тариф", en: "Choose a plan" },
+  "Tavsiya etiladi": { ru: "Рекомендуем", en: "Recommended" },
+  "{0} so'm": { ru: "{0} сум", en: "{0} UZS" },
+  "{0} so'm / oy": { ru: "{0} сум / мес.", en: "{0} UZS / mo" },
+  "≈{0} so'm / oy": { ru: "≈{0} сум / мес.", en: "≈{0} UZS / mo" },
+  "{0}% tejash": { ru: "экономия {0}%", en: "save {0}%" },
+  "Avtomatik yechish yo'q. Muddat tugagach o'zingiz uzaytirasiz.": {
+    ru: "Автосписаний нет. Когда срок закончится, вы продлеваете сами.",
+    en: "No automatic charges. When the term ends, you renew it yourself.",
+  },
+  "Foydalanish shartlari": { ru: "Условия использования", en: "Terms of Use" },
+  "Maxfiylik siyosati": { ru: "Политика конфиденциальности", en: "Privacy Policy" },
+  "Hozir emas": { ru: "Не сейчас", en: "Not now" },
+  "Tariflarni yuklab bo'lmadi": { ru: "Не удалось загрузить тарифы", en: "Could not load the plans" },
+  "To'lov tez orada": { ru: "Оплата скоро появится", en: "Payments are coming soon" },
+  "To'lov tez orada ishga tushadi. Hozircha ilovadan bepul foydalanishingiz mumkin.": {
+    ru: "Оплата скоро заработает. Пока приложением можно пользоваться бесплатно.",
+    en: "Payments will be available soon. For now you can keep using the app for free.",
+  },
+  "Tushunarli": { ru: "Понятно", en: "Got it" },
+  "Hujjat tayyorlanmoqda": { ru: "Документ готовится", en: "This document is being prepared" },
+  "Hujjat matni tez orada shu yerda paydo bo'ladi.": {
+    ru: "Текст документа скоро появится здесь.",
+    en: "The document will appear here soon.",
+  },
+  "PRO": { ru: "PRO", en: "PRO" },
+  "Ovqatlanishingizni chuqurroq kuzatib, aniqroq natijaga erishing.": {
+    ru: "Следите за питанием глубже и приходите к более точному результату.",
+    en: "Track your eating in more depth and get to a more precise result.",
+  },
+  "FREE bilan ham ishlaydi": { ru: "Работает и с FREE", en: "Works on FREE too" },
+  "3 ta bepul AI skan · cheksiz qo'lda kiritish · kunlik doira": {
+    ru: "3 бесплатных ИИ-сканирования · ручной ввод без ограничений · дневной круг",
+    en: "3 free AI scans · unlimited manual entry · the daily ring",
+  },
+  "PRO ni ochish": { ru: "Открыть PRO", en: "Unlock PRO" },
+  "PRO haqida": { ru: "О PRO", en: "About PRO" },
+  "Yangilash": { ru: "Продлить", en: "Renew" },
 
   // ── Mavzu ──────────────────────────────────────────────────────────────────
   "Mavzu": { ru: "Тема", en: "Theme" },

@@ -3,9 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { SkanLimitiQatori } from "@/app/_components/SkanLimitiQatori";
 import { useTarjima } from "@/app/_components/TilTaminoti";
 import { Tugma } from "@/app/_components/Tugma";
+import { useSkanLimiti } from "@/app/_components/useSkanLimiti";
 import { rasmniYukla } from "@/lib/services/rasm-yuklash";
+import { limitKorinishi } from "@/lib/services/skan-hisob";
 
 const PANELNI_OCH = "qoshish-panelini-och";
 
@@ -65,18 +68,21 @@ function Qator({
   izoh,
   ochiq,
   onClick,
+  onYopiq,
 }: {
   ikona: "kamera" | "galereya" | "qolda";
   nomi: string;
   izoh: string;
   ochiq: boolean;
   onClick?: () => void;
+  /** Berilsa, o'chiq ko'rinishdagi qator ham bosiladi — limit tugaganda tariflar ekranini ochadi. */
+  onYopiq?: () => void;
 }) {
   return (
     <button
       type="button"
-      disabled={!ochiq}
-      onClick={onClick}
+      disabled={!ochiq && !onYopiq}
+      onClick={ochiq ? onClick : onYopiq}
       className={`flex min-h-16 w-full items-center gap-3 rounded-karta border border-chegara p-4 text-left ${
         ochiq ? "bg-karta text-siyoh" : "bg-transparent text-matn-3"
       }`}
@@ -153,6 +159,7 @@ function Bolim({
  * jurnal panelda emas — Home'dagi "Hammasi" orqali ochiladi) va "+" ochadigan
  * E2 — ovqat qo'shish manbasini tanlash paneli. Kamera E3 ekranini ochadi; galereya tizim
  * rasm tanlagichini ochadi va tanlangan rasm yuklangach tahlil sahifasiga o'tadi.
+ * Ostida skan hisoblagichi; limit tugaganda Kamera va Galereya o'chadi, qo'lda qo'shish ochiq.
  * Faqat E1 va E9 da chiziladi — oqim ichidagi ekranlarda panel yo'q.
  */
 export function QoshishPaneli({ faol }: { faol: "asosiy" | "profil" }) {
@@ -164,6 +171,13 @@ export function QoshishPaneli({ faol }: { faol: "asosiy" | "profil" }) {
   const tanlagich = useRef<HTMLInputElement>(null);
   // Xatodan keyin "Qayta urinish" rasmni qayta tanlatmasdan yuboradi.
   const oxirgiRasm = useRef<Blob | null>(null);
+  const limit = useSkanLimiti(ochiq);
+  // Limit hali kelmagan yoki olib bo'lmagan bo'lsa yo'llar ochiq — limitni baribir server ushlaydi.
+  const korinish = typeof limit === "object" && limit !== null ? limitKorinishi(limit) : null;
+  const skanYopiq = korinish?.tugagan ?? false;
+  // Bepul skanlar tugagan: o'chiq qator bosilsa tariflar ekrani ochiladi (paywall-tz.md, 1-bo'lim).
+  const tariflargaOt =
+    korinish?.paywall && !yuklanmoqda ? () => router.push("/pro?manba=limit") : undefined;
 
   async function yubor(rasm: Blob) {
     oxirgiRasm.current = rasm;
@@ -268,15 +282,17 @@ export function QoshishPaneli({ faol }: { faol: "asosiy" | "profil" }) {
                 ikona="kamera"
                 nomi={t("Kamera")}
                 izoh={t("Ovqatni rasmga oling")}
-                ochiq={!yuklanmoqda}
+                ochiq={!yuklanmoqda && !skanYopiq}
                 onClick={() => router.push("/kamera")}
+                onYopiq={tariflargaOt}
               />
               <Qator
                 ikona="galereya"
                 nomi={t("Galereya")}
                 izoh={yuklanmoqda ? t("Rasm yuklanmoqda…") : t("Tayyor rasmni tanlang")}
-                ochiq={!yuklanmoqda}
+                ochiq={!yuklanmoqda && !skanYopiq}
                 onClick={() => tanlagich.current?.click()}
+                onYopiq={tariflargaOt}
               />
               <input
                 ref={tanlagich}
@@ -293,10 +309,12 @@ export function QoshishPaneli({ faol }: { faol: "asosiy" | "profil" }) {
               <Qator
                 ikona="qolda"
                 nomi={t("Qo'lda qo'shish")}
-                izoh={t("Taom bazasidan tanlang")}
+                izoh={t("Taom bazasidan tanlang — cheklovsiz")}
                 ochiq={!yuklanmoqda}
                 onClick={() => router.push("/taomlar")}
               />
+
+              <SkanLimitiQatori limit={limit} />
 
               {xato && (
                 <div role="alert" className="flex items-center justify-between gap-3 px-1">

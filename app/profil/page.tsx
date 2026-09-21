@@ -4,6 +4,7 @@ import { QoshishPaneli } from "@/app/_components/QoshishPaneli";
 import { TugmaHavola } from "@/app/_components/Tugma";
 import { serverTarjimoni } from "@/lib/lugat/server";
 import type { Tarjimon } from "@/lib/lugat/tarjima";
+import type { SkanQoldigi } from "@/lib/services/huquqlar";
 import {
   maqsadNomi,
   obunaSarlavhasi,
@@ -11,7 +12,7 @@ import {
   type Profil,
 } from "@/lib/services/profil-hisob";
 import { raqam } from "@/lib/services/taom-hisob";
-import { profilniYukla } from "./yukla";
+import { profilniYukla, skanLimitiniYukla } from "./yukla";
 
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
 export const dynamic = "force-dynamic";
@@ -45,13 +46,26 @@ function ProBelgisi() {
 }
 
 /** Obuna kartasi: FREE, faol PRO yoki muddati tugagan PRO (profil-tz.md, F1). */
-function ObunaKartasi({ obuna, tarjimon }: { obuna: Profil["obuna"]; tarjimon: Tarjimon }) {
+function ObunaKartasi({
+  obuna,
+  skan,
+  tarjimon,
+}: {
+  obuna: Profil["obuna"];
+  skan: SkanQoldigi | null;
+  tarjimon: Tarjimon;
+}) {
   const { t } = tarjimon;
 
   return (
     <section className="flex flex-col items-start gap-3 rounded-karta border border-karta-chegara bg-karta p-4">
       {obuna.holat !== "free" && <ProBelgisi />}
       <p className="text-karta-sarlavha">{obunaSarlavhasi(obuna, tarjimon)}</p>
+      {skan && (
+        <p className="text-izoh text-matn-2 tabular-nums">
+          {t("{0} tadan {1} ta skan qoldi", skan.soni, skan.qoldi)}
+        </p>
+      )}
       {obuna.holat === "tugagan" && (
         <p className="text-izoh text-matn-2">
           {t(
@@ -59,10 +73,13 @@ function ObunaKartasi({ obuna, tarjimon }: { obuna: Profil["obuna"]; tarjimon: T
           )}
         </p>
       )}
-      {/* FREE va muddati tugagan kartaning tugmasi paywall (W1) bilan birga qo'shiladi. */}
-      {obuna.holat === "pro" && (
+      {obuna.holat === "pro" ? (
         <TugmaHavola korinish="ikkilamchi" href="/profil/obuna">
           {t("Obunani boshqarish")}
+        </TugmaHavola>
+      ) : (
+        <TugmaHavola korinish="pro" href="/pro?manba=profil">
+          {obuna.holat === "tugagan" ? t("Yangilash") : t("PRO haqida")}
         </TugmaHavola>
       )}
     </section>
@@ -82,7 +99,8 @@ function Qator({ nomi, qiymat }: { nomi: string; qiymat: string }) {
 export default async function ProfilSahifasi() {
   const tarjimon = await serverTarjimoni();
   const { t } = tarjimon;
-  const profil = await profilniYukla();
+  // Parallel: skan hisoblagichi profil ochilishini sekinlashtirmasin.
+  const [profil, skan] = await Promise.all([profilniYukla(), skanLimitiniYukla()]);
   // Sessiyasiz ochilgan havola: sahifa kirish pardasi ostida bo'sh turadi, kirgach
   // `KirishDarvozasi` uni sessiya bilan qayta so'raydi.
   if (profil === "sessiyasiz") return null;
@@ -110,7 +128,7 @@ export default async function ProfilSahifasi() {
               </div>
             </div>
 
-            <ObunaKartasi obuna={profil.obuna} tarjimon={tarjimon} />
+            <ObunaKartasi obuna={profil.obuna} skan={skan} tarjimon={tarjimon} />
 
             {(maqsad || profil.joriyVazn !== null) && (
               <section className="flex flex-col gap-2">

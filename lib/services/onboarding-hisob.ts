@@ -20,6 +20,8 @@ export const SAVOLLAR_SONI = 9;
 export const QADAMLAR_SONI = 12;
 export const REJA_TAYYORLANMOQDA_QADAMI = 10;
 export const NATIJA_QADAMI = 11;
+/** PRO bilan tanishtiruv (prototip O13) — oxirgi qadam; serverga qadam sifatida yozilmaydi. */
+export const PRO_QADAMI = 12;
 export const MAQSAD_QADAMI = 3;
 export const OLCHOV_QADAMI = 5;
 /** Shu qadamlarni javobsiz o'tkazib yuborish mumkin — ular normaga ta'sir qilmaydi. */

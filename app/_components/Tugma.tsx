@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-type Korinish = "asosiy" | "aksent" | "ikkilamchi" | "uchinchi" | "xavfli";
+type Korinish = "asosiy" | "aksent" | "ikkilamchi" | "uchinchi" | "xavfli" | "pro";
 
 // DESIGN.md, 6-bo'lim: balandligi 52, radius 999, bosilganda scale(0.98).
 const USLUB: Record<Korinish, string> = {
@@ -11,6 +11,8 @@ const USLUB: Record<Korinish, string> = {
   uchinchi: "bg-transparent text-matn-2",
   // Qaytarib bo'lmaydigan amal (o'chirish) — to'ldirilmagan, faqat xato rangidagi matn.
   xavfli: "bg-transparent text-xato",
+  // PRO'ga chaqiruvchi tugma — o'z gradiyentida (DESIGN.md, "PRO ranglari").
+  pro: "bg-(image:--pro-gradient) text-(--pro-fg)",
 };
 
 const ASOS =

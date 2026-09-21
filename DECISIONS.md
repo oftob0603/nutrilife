@@ -406,6 +406,12 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-21 · Skan limitidan faqat tanilgan taom yeyiladi; "tanib bo'lmadi" urinishi qaytariladi, lekin `skan_hisobi.tanilmagan` da sanaladi va kuniga cheklanadi: FREE 5 ta, PRO 20 ta. Kamera, galereya va matnli "Tasvirlash" — bitta limit. S2'dagi "tanib bo'lmadi ham hisobga kiradi" qoidasi shu bilan almashtirildi.**
 *Sabab:* Foydalanuvchi AI taniy olmagan rasm uchun umrbod 3 ta skanidan birini yo'qotmasligi kerak; lekin qaytarish cheksiz bo'lsa, tanib bo'lmaydigan rasmlarni ketma-ket yuborib AI xarajatini cheksiz oshirish mumkin edi — kunlik chegara shuni yopadi. Matnli tasvir ham AI chaqiradi, shuning uchun alohida limit berilmadi. Limit tekshiruvi hisob bo'yicha qulf ostida bitta tranzaksiyada: parallel so'rovlar limitdan o'tib ham ketmaydi, oxirgi skanni nohaq rad ham etmaydi.
 
+**2026-09-21 · W1 va O13 dagi PRO imkoniyatlari ro'yxati prototipdagi 9 ta (paywall-tz va PRD'dagi 4 ta emas), bitta faylda — `lib/pro-imkoniyatlar.ts`. Shartlar va maxfiylik havolalari ham prototipdagidek turadi.**
+*Sabab:* Foydalanuvchi qarori: "prototipdagidek bo'ladi" — prototip ekran mazmuni bo'yicha ham ustun. Ro'yxat bitta joyda tursa, W1 va O13 hech qachon ikki xil gapirmaydi. Ochiq qoladi: 9 tadan 5 tasi ilovada hali PRO sifatida yopilmagan — har biri o'z qadamida hal qilinadi.
+
+**2026-09-21 · Tarif narxlari S6'gacha `lib/tariflar.ts` da, lekin ekran ularni `GET /api/tariflar` orqali oladi; oylik qiymat va tejash foizi narxdan hisoblanadi. W2 yo'qligi uchun "Davom etish" vaqtincha "To'lov tez orada" varag'ini ochadi.**
+*Sabab:* paywall-tz narxlar admin panelidan kelishini talab qiladi (A12, S6) — API qatlami hozirdan tursa, S6'da faqat manba almashadi, ekran o'zgarmaydi. To'lov integratsiyasi S4'ga kirmaydi; o'chiq yoki hech narsa qilmaydigan tugma o'rniga foydalanuvchiga holat ochiq aytiladi, "Hozir emas" esa doim ishlaydi.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |
