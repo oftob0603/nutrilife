@@ -76,8 +76,10 @@ model Foydalanuvchi {
   til           String    @default("uz")
   /// "yorug", "qorongi" yoki "tizim".
   mavzu         String    @default("tizim")
-  /// "metrik" (kg, sm) yoki "imperial" (lb, ft).
-  birliklar     String    @default("metrik")
+  /// "kg" yoki "lb". Faqat ko'rsatish — bazada vazn doim kilogrammda.
+  vaznBirligi   String    @default("kg") @map("vazn_birligi")
+  /// "sm" yoki "ft". Faqat ko'rsatish — bazada bo'y doim santimetrda.
+  boyBirligi    String    @default("sm") @map("boy_birligi")
   /// "foydalanuvchi" yoki "admin". FREE/PRO bu yerda emas — `obunalar` dan hisoblanadi
   /// (lib/services/huquqlar.ts).
   rol           String    @default("foydalanuvchi")

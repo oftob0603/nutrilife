@@ -367,6 +367,17 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-21 · Interfeys lug'ati kaliti — o'zbekcha matnning o'zi (prototip i18n.js qolipi), TypeScript turi bilan tekshiriladi; til cookie (`nl_til`) — bazadagi `foydalanuvchilar.til` ning nusxasi; jurnal yozuvidagi taom nomi qo'shilgan paytdagi tilda saqlanadi, AI skan nomni interfeys tilida qaytaradi.**
 *Sabab:* Kalit sifatida o'zbekcha matn ishlatish kod ichida o'qishni osonlashtiradi va `tsc` yetishmagan tarjimani ushlaydi; cookie serverda tez o'qish uchun, haqiqiy manba baribir baza; taom nomini saqlash tilida qoldirish tarixiy yozuvni o'zgartirmaydi.
 
+## 2026-09-21 — sozlamalar (10-task)
+
+**2026-09-21 · kJ energiya birligi qo'shilmaydi — O'zbekistonda kkal standart.**
+*Sabab:* profil-tz ochiq savol 2 yopildi; Profilda "Energiya birligi" qatori yo'q.
+
+**2026-09-21 · Birliklar ikki alohida sozlama: `foydalanuvchilar.vazn_birligi` (kg/lb) va `boy_birligi` (sm/ft), eski `birliklar` ustuni olib tashlandi.**
+*Sabab:* Prototipdagi ikki alohida qatorga mos.
+
+**2026-09-21 · Hisobni o'chirish darhol va qaytarib bo'lmaydigan — 30 kunlik qaytarish oynasi yo'q.**
+*Sabab:* profil-tz ochiq savol 1; huquqiy tekshiruvda qayta ko'riladi.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

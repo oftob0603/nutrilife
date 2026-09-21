@@ -2,7 +2,8 @@
 
 import type { Kalit, Tarjimon, Til } from "../lugat/tarjima.ts";
 import type { ObunaHolati, Rol } from "./huquqlar.ts";
-import { kgdanLb, MAQSADLAR } from "./onboarding-hisob.ts";
+import { kgdanLb, MAQSADLAR, type OvqatlanishOdati } from "./onboarding-hisob.ts";
+import type { Sozlamalar } from "./sozlamalar-hisob.ts";
 import { kunOyMatni, toshkentSanasi } from "./yozuv-hisob.ts";
 
 /** `GET /api/profil` javobi. JSON'da sana matn bo'lib keladi, shuning uchun `tugash` — ISO matn. */
@@ -16,7 +17,14 @@ export type Profil = {
   /** Kilogrammda; ko'rsatishda `birliklar` bo'yicha o'giriladi. */
   joriyVazn: number | null;
   maqsadVazn: number | null;
-  birliklar: string;
+  sozlamalar: Sozlamalar;
+  /** Shaxsiy ma'lumot (F3) — onboarding javoblari; bo'y santimetrda. */
+  jins: string | null;
+  yosh: number | null;
+  boyi: number | null;
+  faollik: string | null;
+  ovqatAfzalliklari: string[];
+  ovqatlanishOdati: OvqatlanishOdati | null;
 };
 
 const KUN_MS = 24 * 60 * 60 * 1000;
@@ -34,8 +42,12 @@ export function maqsadNomi(maqsad: string | null): Kalit | null {
 }
 
 /** "84,5 kg" yoki "186 lb" — onboardingdagi bilan bir xil yaxlitlash. Inglizchada kasr nuqta bilan. */
-export function vaznMatni(kg: number, birliklar: string, { til, t }: Tarjimon): string {
-  if (birliklar === "imperial") return `${kgdanLb(kg)} lb`;
+export function vaznMatni(
+  kg: number,
+  birlik: Sozlamalar["vaznBirligi"],
+  { til, t }: Tarjimon,
+): string {
+  if (birlik === "lb") return `${kgdanLb(kg)} lb`;
   const son = (Math.round(kg * 10) / 10).toString();
   return `${til === "en" ? son : son.replace(".", ",")} ${t("kg")}`;
 }

@@ -120,6 +120,15 @@ export async function joriyFoydalanuvchiId(sorov: Request): Promise<string | nul
 }
 
 /**
+ * Faqat haqiqiy sessiya egasi — lokal "birinchi hisob" zaxirasisiz. Qaytarib bo'lmaydigan
+ * amallar (hisobni o'chirish) shundan foydalanadi: dev rejimida sessiyasiz so'rov birinchi
+ * admin hisobini o'chirib yubormasin.
+ */
+export function sessiyaEgasiId(sorov: Request): string | null {
+  return begonaManba(sorov) ? null : sessiyadagiId(sorov);
+}
+
+/**
  * So'rov egasi admin bo'lsa uning ID'si, aks holda null. Rol har so'rovda bazadan o'qiladi —
  * tokenda saqlanmaydi, shuning uchun olib qo'yilgan rol darhol kuchdan qoladi.
  */

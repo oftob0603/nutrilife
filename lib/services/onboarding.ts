@@ -2,6 +2,7 @@ import { db } from "../db.ts";
 import { SHARTLAR_VERSIYASI } from "../shartlar.ts";
 import {
   QADAMLAR_SONI,
+  odatniOqi,
   type Javoblar,
   type OnboardingHolati,
   type OvqatlanishOdati,
@@ -12,18 +13,12 @@ import {
 // har so'rov ~0,4 s, saqlash tranzaksiyasi esa 4–6 ta so'rovdan iborat.
 const TRANZAKSIYA_VAQTI = { maxWait: 10_000, timeout: 20_000 };
 
-function odatniOqi(qiymat: unknown): OvqatlanishOdati | null {
-  if (typeof qiymat !== "object" || qiymat === null) return null;
-  const { mahal, joy } = qiymat as Record<string, unknown>;
-  return typeof mahal === "string" && typeof joy === "string" ? { mahal, joy } : null;
-}
-
 /** Foydalanuvchi qaysi qadamda to'xtagan va nima javob bergan; hisob topilmasa null. */
 export async function onboardingHolati(foydalanuvchiId: string): Promise<OnboardingHolati | null> {
   const foydalanuvchi = await db.foydalanuvchi.findUnique({
     where: { id: foydalanuvchiId },
     select: {
-      birliklar: true,
+      vaznBirligi: true,
       profil: true,
       // Onboardingdagi vazn — eng birinchi yozuv (progress grafigining boshlang'ich nuqtasi).
       vaznYozuvlari: { orderBy: { vaqt: "asc" }, take: 1, select: { vazn: true, maqsad: true } },
@@ -34,7 +29,9 @@ export async function onboardingHolati(foydalanuvchiId: string): Promise<Onboard
   const { profil } = foydalanuvchi;
   const vaznYozuvi = foydalanuvchi.vaznYozuvlari[0] ?? null;
   const javoblar: Javoblar = {
-    birliklar: foydalanuvchi.birliklar,
+    // Onboardingda birliklar bitta almashtirgich (kg · sm / lb · ft); alohida-alohida
+    // tanlash keyin Profil sahifasidagi qatorlarda.
+    birliklar: foydalanuvchi.vaznBirligi === "lb" ? "imperial" : "metrik",
     ism: profil?.ism ?? null,
     maqsad: profil?.maqsad ?? null,
     jins: profil?.jins ?? null,
@@ -115,7 +112,10 @@ export async function qadamniSaqlash(foydalanuvchiId: string, javob: QadamJavobi
         profil.boyi = javob.boyi;
         await tx.foydalanuvchi.update({
           where: { id: foydalanuvchiId },
-          data: { birliklar: javob.birliklar },
+          data:
+            javob.birliklar === "imperial"
+              ? { vaznBirligi: "lb", boyBirligi: "ft" }
+              : { vaznBirligi: "kg", boyBirligi: "sm" },
         });
         // Orqaga qaytib o'zgartirilsa o'sha birinchi yozuv yangilanadi — grafikda soxta nuqta paydo bo'lmasin.
         const birinchi = await tx.vaznYozuvi.findFirst({

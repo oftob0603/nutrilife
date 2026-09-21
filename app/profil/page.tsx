@@ -1,7 +1,7 @@
 import { Avatar } from "@/app/_components/Avatar";
+import { Sozlamalar } from "@/app/_components/profil/Sozlamalar";
 import { QoshishPaneli } from "@/app/_components/QoshishPaneli";
 import { TugmaHavola } from "@/app/_components/Tugma";
-import { serverdanApi } from "@/lib/api-asos";
 import { serverTarjimoni } from "@/lib/lugat/server";
 import type { Tarjimon } from "@/lib/lugat/tarjima";
 import {
@@ -10,22 +10,12 @@ import {
   vaznMatni,
   type Profil,
 } from "@/lib/services/profil-hisob";
+import { profilniYukla } from "./yukla";
 
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
 export const dynamic = "force-dynamic";
 
 export const metadata = { title: "Profil — Nutrilife" };
-
-async function profilniYukla(): Promise<Profil | "sessiyasiz" | null> {
-  try {
-    const javob = await serverdanApi("/api/profil");
-    if (javob.status === 401) return "sessiyasiz";
-    if (!javob.ok) return null;
-    return ((await javob.json()) as { profil: Profil }).profil;
-  } catch {
-    return null;
-  }
-}
 
 function YuklanmadiKartasi({ t }: Pick<Tarjimon, "t">) {
   return (
@@ -81,7 +71,7 @@ function Qator({ nomi, qiymat }: { nomi: string; qiymat: string }) {
   );
 }
 
-/** F1 — profil bosh ekrani. Sozlama qatorlari shu sahifaga 10-taskda qo'shiladi. */
+/** F1 — profil bosh ekrani; sozlama qatorlari ham shu yerda (alohida sozlamalar sahifasi yo'q). */
 export default async function ProfilSahifasi() {
   const tarjimon = await serverTarjimoni();
   const { t } = tarjimon;
@@ -123,18 +113,20 @@ export default async function ProfilSahifasi() {
                   {profil.joriyVazn !== null && (
                     <Qator
                       nomi={t("Joriy vazn")}
-                      qiymat={vaznMatni(profil.joriyVazn, profil.birliklar, tarjimon)}
+                      qiymat={vaznMatni(profil.joriyVazn, profil.sozlamalar.vaznBirligi, tarjimon)}
                     />
                   )}
                   {profil.maqsadVazn !== null && (
                     <Qator
                       nomi={t("Maqsad vazn")}
-                      qiymat={vaznMatni(profil.maqsadVazn, profil.birliklar, tarjimon)}
+                      qiymat={vaznMatni(profil.maqsadVazn, profil.sozlamalar.vaznBirligi, tarjimon)}
                     />
                   )}
                 </dl>
               </section>
             )}
+
+            <Sozlamalar boshlangich={profil.sozlamalar} />
           </div>
         )}
       </main>

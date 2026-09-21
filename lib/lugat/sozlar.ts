@@ -439,6 +439,76 @@ export const SOZLAR = {
     en: "Your journal, history and progress stay readable. Only new AI scans and full recipe text are locked.",
   },
 
+  // ── Sozlama qatorlari (Profil sahifasida) ──────────────────────────────────
+  "Til": { ru: "Язык", en: "Language" },
+  "Vazn birligi": { ru: "Единица веса", en: "Weight unit" },
+  "Bo'y birligi": { ru: "Единица роста", en: "Height unit" },
+  "lb": { ru: "фунт", en: "lb" },
+  "ft": { ru: "фут", en: "ft" },
+  "Shaxsiy ma'lumot": { ru: "Личные данные", en: "Personal details" },
+  "Hisobni o'chirish": { ru: "Удалить аккаунт", en: "Delete account" },
+  "saqlanmoqda…": { ru: "сохраняется…", en: "saving…" },
+  "Saqlanmadi. Qayta urinish": { ru: "Не сохранено. Повторить", en: "Not saved. Try again" },
+  "Internet yo'q. Sozlamalar o'qish uchun ochiq, o'zgartirish vaqtincha bloklangan.": {
+    ru: "Нет интернета. Настройки можно просматривать, но изменить пока нельзя.",
+    en: "You are offline. Settings stay readable, but changes are blocked for now.",
+  },
+  "Birlik faqat ko'rsatish uchun — baza doim kg va sm da saqlaydi.": {
+    ru: "Единицы влияют только на отображение — данные всегда хранятся в кг и см.",
+    en: "Units only change what you see — data is always stored in kg and cm.",
+  },
+
+  // ── Shaxsiy ma'lumot (F3) ──────────────────────────────────────────────────
+  "Aytmayman": { ru: "Не указывать", en: "Rather not say" },
+  "Maqsad": { ru: "Цель", en: "Goal" },
+  "Ovqat afzalliklari va odatlari": { ru: "Предпочтения и привычки в еде", en: "Food preferences and habits" },
+  "Afzalliklar": { ru: "Предпочтения", en: "Preferences" },
+  "Odatlar": { ru: "Привычки", en: "Habits" },
+  "Tayyor": { ru: "Готово", en: "Done" },
+  "Bu javoblar hozircha taom takliflari uchun saqlanadi.": {
+    ru: "Эти ответы пока сохраняются для подбора блюд.",
+    en: "For now these answers are kept for dish suggestions.",
+  },
+  "Joriy vazn bu yerda o'zgartirilmaydi — u tarix yozuvi.": {
+    ru: "Текущий вес здесь не меняется — это запись в истории.",
+    en: "Current weight is not edited here — it is a history record.",
+  },
+  "Yosh {0}–{1} oralig'ida bo'lsin": { ru: "Возраст должен быть от {0} до {1}", en: "Age must be between {0} and {1}" },
+  "Bo'y {0}–{1} {2} oralig'ida bo'lsin": {
+    ru: "Рост должен быть от {0} до {1} {2}",
+    en: "Height must be between {0} and {1} {2}",
+  },
+  "Maqsad vazn {0}–{1} {2} oralig'ida bo'lsin": {
+    ru: "Целевой вес должен быть от {0} до {1} {2}",
+    en: "Goal weight must be between {0} and {1} {2}",
+  },
+
+  // ── Hisobni o'chirish (F5) ─────────────────────────────────────────────────
+  "Quyidagilar butunlay o'chadi:": { ru: "Будет удалено безвозвратно:", en: "The following will be deleted for good:" },
+  "Profil va shaxsiy ma'lumot": { ru: "Профиль и личные данные", en: "Profile and personal details" },
+  "Butun ovqat jurnali": { ru: "Весь журнал питания", en: "Your entire food journal" },
+  "Barcha rasmlar": { ru: "Все фотографии", en: "All photos" },
+  "Vazn tarixi": { ru: "История веса", en: "Weight history" },
+  "Bu amalni qaytarib bo'lmaydi": { ru: "Это действие нельзя отменить", en: "This cannot be undone" },
+  "PRO obunangiz tugaydi, pul qaytarilmaydi.": {
+    ru: "Ваша подписка PRO прекратится, деньги не возвращаются.",
+    en: "Your PRO subscription ends and is not refunded.",
+  },
+  "O'chirilgan ma'lumotni tiklash imkoni yo'q.": {
+    ru: "Удалённые данные восстановить невозможно.",
+    en: "Deleted data cannot be restored.",
+  },
+  "Tasdiqlash": { ru: "Подтверждение", en: "Confirm" },
+  "Tasdiqlash uchun «{0}» deb yozing": { ru: "Для подтверждения введите «{0}»", en: "Type “{0}” to confirm" },
+  "O'CHIRISH": { ru: "УДАЛИТЬ", en: "DELETE" },
+  "Hisob darhol o'chadi. Ilovani qayta ochsangiz, yangi hisob yaratiladi.": {
+    ru: "Аккаунт удаляется сразу. Если открыть приложение снова, будет создан новый аккаунт.",
+    en: "The account is deleted right away. Opening the app again creates a new account.",
+  },
+  "O'chirib bo'lmadi. Qayta urinib ko'ring": { ru: "Не удалось удалить. Попробуйте ещё раз", en: "Could not delete. Try again" },
+  "Hisobingiz o'chirildi": { ru: "Ваш аккаунт удалён", en: "Your account has been deleted" },
+  "Ilovani yopishingiz mumkin.": { ru: "Приложение можно закрыть.", en: "You can close the app." },
+
   // ── Mavzu ──────────────────────────────────────────────────────────────────
   "Mavzu": { ru: "Тема", en: "Theme" },
   "Yorug'": { ru: "Светлая", en: "Light" },

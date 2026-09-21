@@ -9,12 +9,15 @@ import {
   type Rol,
 } from "./huquqlar.ts";
 import type { Til } from "../lugat/tarjima.ts";
+import { ombordanOchir } from "./ombor.ts";
+import type { Sozlamalar } from "./sozlamalar-hisob.ts";
 
 const FOYDALANUVCHI_MAYDONLARI = {
   id: true,
   til: true,
   mavzu: true,
-  birliklar: true,
+  vaznBirligi: true,
+  boyBirligi: true,
   avatarUrl: true,
   rol: true,
   obunalar: { select: { boshlanish: true, tugash: true } },
@@ -25,7 +28,8 @@ export type Foydalanuvchi = {
   id: string;
   til: string;
   mavzu: string;
-  birliklar: string;
+  vaznBirligi: string;
+  boyBirligi: string;
   avatarUrl: string | null;
   rol: Rol;
   /** FREE, faol PRO yoki muddati tugagan PRO — obuna qatorlaridan hisoblanadi. */
@@ -107,4 +111,28 @@ export async function telegramBoyichaTopYokiYarat(
     });
     return { foydalanuvchi: korinishgaOtkaz(foydalanuvchi), yangi: false };
   }
+}
+
+/** Sozlama qatorlaridagi o'zgarish (til, mavzu, birliklar); hisob topilmasa false. */
+export async function sozlamalarniSaqlash(
+  id: string,
+  ozgarish: Partial<Sozlamalar>,
+): Promise<boolean> {
+  const { count } = await db.foydalanuvchi.updateMany({ where: { id }, data: ozgarish });
+  return count > 0;
+}
+
+/**
+ * Hisobni butunlay o'chiradi (profil-tz.md, F5): qator o'chganda profil, jurnal, vazn tarixi,
+ * rejalar, skan hisobi va obunalar kaskad bilan ketadi. Rasm fayllari omborda turadi —
+ * ular bazadan keyin o'chiriladi: ombor o'chira olmasa fayl egasiz qoladi, lekin hisob
+ * yarim o'chgan holatda qolmaydi.
+ */
+export async function hisobniOchirish(id: string): Promise<boolean> {
+  const rasmlar = await db.rasm.findMany({ where: { foydalanuvchiId: id }, select: { kalit: true } });
+  const { count } = await db.foydalanuvchi.deleteMany({ where: { id } });
+  if (count === 0) return false;
+
+  await Promise.allSettled(rasmlar.map((rasm) => ombordanOchir(rasm.kalit)));
+  return true;
 }

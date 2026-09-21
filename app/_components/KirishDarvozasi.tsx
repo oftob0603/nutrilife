@@ -8,6 +8,7 @@ import {
   SESSIYA_TUGADI_HODISASI,
 } from "@/lib/services/api-klient";
 import { tilniOqi, type Til } from "@/lib/lugat/tarjima";
+import { MAVZULAR, mavzuniOqi, mavzuniTanla, type Mavzu } from "@/lib/mavzu";
 import { useTarjima, useTilniOrnat } from "./TilTaminoti";
 import { Tugma } from "./Tugma";
 
@@ -15,15 +16,19 @@ type Holat = "kirilmoqda" | "tayyor" | "xato" | "qayta_oching" | "telegram_emas"
 
 /** true — sahifa shu hisob sessiyasi bilan chizilgan, qayta yuklash shart emas. */
 type KirishNatijasi =
-  | { holat: "tayyor"; sessiyaBorEdi: boolean; onboardingTugadi: boolean; til: Til }
+  | { holat: "tayyor"; sessiyaBorEdi: boolean; onboardingTugadi: boolean; til: Til; mavzu: Mavzu }
   | { holat: "xato" | "qayta_oching" | "telegram_emas" };
 
 type KirishJavobi = {
-  foydalanuvchi: { onboardingTugadi: boolean; til: string };
+  foydalanuvchi: { onboardingTugadi: boolean; til: string; mavzu: string };
   sessiyaBorEdi?: boolean;
 };
 
 const ONBOARDING_MANZILI = "/onboarding";
+
+function mavzuniAniqla(qiymat: string): Mavzu {
+  return MAVZULAR.find((mavzu) => mavzu === qiymat) ?? "tizim";
+}
 
 async function kirish(): Promise<KirishNatijasi> {
   const initData = initDataniOl();
@@ -37,6 +42,7 @@ async function kirish(): Promise<KirishNatijasi> {
           sessiyaBorEdi: sessiyaBorEdi === true,
           onboardingTugadi: foydalanuvchi.onboardingTugadi,
           til: tilniOqi(foydalanuvchi.til),
+          mavzu: mavzuniAniqla(foydalanuvchi.mavzu),
         };
       }
       if (javob.status !== 401) return { holat: "xato" };
@@ -51,6 +57,7 @@ async function kirish(): Promise<KirishNatijasi> {
         sessiyaBorEdi: true,
         onboardingTugadi: foydalanuvchi.onboardingTugadi,
         til: tilniOqi(foydalanuvchi.til),
+        mavzu: mavzuniAniqla(foydalanuvchi.mavzu),
       };
     }
     if (sessiya.status !== 401) return { holat: "xato" };
@@ -88,6 +95,10 @@ export function KirishDarvozasi({ children }: { children: React.ReactNode }) {
         // o'zgargan): klient matnlari darhol, server matnlari yangilangach almashadi.
         const tilBoshqa = natija.til !== tilniOqi(document.documentElement.lang);
         if (tilBoshqa) tilniOrnat(natija.til);
+
+        // Mavzu manbai — baza; brauzer xotirasi faqat tez ochilish uchun kesh (lib/mavzu.ts).
+        // Yangi qurilmada yoki boshqa qurilmada o'zgartirilgan tanlov shu yerda tenglashadi.
+        if (natija.mavzu !== mavzuniOqi()) mavzuniTanla(natija.mavzu);
 
         // Onboarding tugamaguncha Home ochilmaydi (onboarding-tz.md, 1-bo'lim). Yangi
         // manzilga o'tish sahifani sessiya bilan qayta so'raydi; ildiz qolip (<html lang>)

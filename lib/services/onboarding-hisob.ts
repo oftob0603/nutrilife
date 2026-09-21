@@ -82,6 +82,13 @@ export type Faollik = (typeof FAOLLIKLAR)[number]["qiymat"];
 export type Birliklar = (typeof BIRLIKLAR)[number];
 export type OvqatlanishOdati = { mahal: string; joy: string };
 
+/** Bazadagi JSON ustuni -> odat; tuzilishi mos kelmasa null. */
+export function odatniOqi(qiymat: unknown): OvqatlanishOdati | null {
+  if (typeof qiymat !== "object" || qiymat === null) return null;
+  const { mahal, joy } = qiymat as Record<string, unknown>;
+  return typeof mahal === "string" && typeof joy === "string" ? { mahal, joy } : null;
+}
+
 export const ISM_CHEGARASI = 40;
 export const YOSH = { min: 18, max: 100 };
 export const BOY = { min: 120, max: 230 };
@@ -241,7 +248,7 @@ function variantmi<T extends string>(
   return royxat.some((variant) => variant.qiymat === qiymat);
 }
 
-function oraliqdami(qiymat: unknown, { min, max }: { min: number; max: number }): qiymat is number {
+export function oraliqdami(qiymat: unknown, { min, max }: { min: number; max: number }): qiymat is number {
   return typeof qiymat === "number" && Number.isFinite(qiymat) && qiymat >= min && qiymat <= max;
 }
 
