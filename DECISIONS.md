@@ -412,6 +412,9 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-21 · Tarif narxlari S6'gacha `lib/tariflar.ts` da, lekin ekran ularni `GET /api/tariflar` orqali oladi; oylik qiymat va tejash foizi narxdan hisoblanadi. W2 yo'qligi uchun "Davom etish" vaqtincha "To'lov tez orada" varag'ini ochadi.**
 *Sabab:* paywall-tz narxlar admin panelidan kelishini talab qiladi (A12, S6) — API qatlami hozirdan tursa, S6'da faqat manba almashadi, ekran o'zgarmaydi. To'lov integratsiyasi S4'ga kirmaydi; o'chiq yoki hech narsa qilmaydigan tugma o'rniga foydalanuvchiga holat ochiq aytiladi, "Hozir emas" esa doim ishlaydi.
 
+**2026-09-21 · AI ishonch bahosi (0–100) 60 dan past bo'lsa natija ko'rsatilmaydi — "taniy olmadik". Qaror kodda (`ISHONCH_CHEGARASI`), AI'da emas.**
+*Sabab:* Foydalanuvchi qarori — natija baribir tasdiqdan o'tadi, qattiqroq chegara bekorga qo'lda kiritishga majbur qiladi. Baho aniq o'lchov emas, chegara logdagi jonli qiymatlarga qarab suriladi.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

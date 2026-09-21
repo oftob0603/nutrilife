@@ -257,6 +257,7 @@ export const SOZLAR = {
   "Boshqa rasm olish": { ru: "Сделать другое фото", en: "Take another photo" },
   "Qayta yozish": { ru: "Написать заново", en: "Rewrite" },
   "Baribir tahrirlab kiritish": { ru: "Всё равно ввести вручную", en: "Enter manually anyway" },
+  "Tahlil": { ru: "Анализ", en: "Analysis" },
   "Tahlil qilib bo'lmadi": { ru: "Не удалось проанализировать", en: "Analysis failed" },
 
   // ── Yozuv formasi (E7, E10) ────────────────────────────────────────────────

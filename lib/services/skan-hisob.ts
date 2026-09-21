@@ -11,6 +11,12 @@ export const MATN_CHEGARASI = 500;
 export const VAZN_CHEGARASI = 5000;
 
 /**
+ * AI o'z javobiga qo'ygan ishonch bahosi (0–100) shundan past bo'lsa, natija ko'rsatilmaydi —
+ * "taniy olmadik". Baho aniq o'lchov emas: chegara logdagi jonli qiymatlarga qarab suriladi.
+ */
+export const ISHONCH_CHEGARASI = 60;
+
+/**
  * AI taxmini. Qiymatlar 100 g uchun turadi, jami esa `skanJami` bilan koddan
  * hisoblanadi — porsiya o'zgarganda AI qayta chaqirilmaydi.
  */
@@ -67,6 +73,10 @@ export function skanJavobiniTekshir(xom: unknown, vaznGramm: number | null): Ska
 
   const j = xom as Record<string, unknown>;
   if (j.tanildi !== true) return TANILMADI;
+
+  // Qaror kodda: model "tanidim" desa ham, ishonchi past yoki aytilmagan bo'lsa natija yo'q.
+  const ishonch = musbatSon(j.ishonch, 100);
+  if (ishonch === null || ishonch < ISHONCH_CHEGARASI) return TANILMADI;
 
   const taomNomi = typeof j.taomNomi === "string" ? j.taomNomi.trim().slice(0, 80) : "";
   const gramm = vaznGramm ?? musbatSon(j.porsiyaGramm, VAZN_CHEGARASI);

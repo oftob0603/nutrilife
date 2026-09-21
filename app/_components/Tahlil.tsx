@@ -4,8 +4,10 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AiBelgisi } from "@/app/_components/AiBelgisi";
+import { OrqagaSarlavha } from "@/app/_components/profil/OrqagaSarlavha";
 import { useTarjima } from "@/app/_components/TilTaminoti";
 import { Tugma } from "@/app/_components/Tugma";
+import { XatoKartasi } from "@/app/_components/XatoKartasi";
 import { YozuvFormasi } from "@/app/_components/YozuvFormasi";
 import { k } from "@/lib/lugat/tarjima";
 import { apiSorov } from "@/lib/services/api-klient";
@@ -239,17 +241,6 @@ function Tasdiq({
   );
 }
 
-function Xabar({ sarlavha, izoh }: { sarlavha: string; izoh: string }) {
-  return (
-    <div className="flex flex-1 flex-col items-center justify-center gap-2 text-center">
-      <h1 className="text-sarlavha">{sarlavha}</h1>
-      <p role="alert" className="max-w-xs text-asosiy text-matn-2">
-        {izoh}
-      </p>
-    </div>
-  );
-}
-
 /**
  * E6 — AI tahlil, javob kelgach E7 (tasdiqlash). Natija faqat shu komponent holatida turadi:
  * sahifadan chiqilsa hech narsa saqlanmaydi, yozuv esa tasdiqdan keyingina yaratiladi (dizayn-tz).
@@ -295,11 +286,6 @@ export function Tahlil({
   }
 
   const bekorQil = onBekor ?? (() => ket("/"));
-  const qolda = (
-    <Tugma korinish="ikkilamchi" onClick={() => ket("/taomlar")}>
-      {t("Qo'lda qo'shish")}
-    </Tugma>
-  );
 
   if (javob?.holat === "tayyor") {
     return <Tasdiq natija={javob.natija} rasmId={rasmId} onBekor={bekorQil} />;
@@ -308,61 +294,68 @@ export function Tahlil({
     return <Tasdiq natija={null} rasmId={rasmId} onBekor={bekorQil} />;
   }
 
-  let mazmun: React.ReactNode;
-  let tugmalar: React.ReactNode;
-
   if (!javob) {
-    mazmun = <Kutish key={urinish} rasmId={rasmId} matn={matn} />;
-    tugmalar = (
-      <Tugma korinish="uchinchi" onClick={bekorQil}>
-        {t("Bekor qilish")}
-      </Tugma>
-    );
-  } else if (javob.holat === "tanib_bolmadi") {
-    mazmun = (
-      <Xabar
-        sarlavha={t("Taomni aniq taniy olmadik")}
-        izoh={
-          rasmId
-            ? t(
-                "Rasmda bir nechta taom bor yoki yorug'lik yetmagan bo'lishi mumkin. Qiymatni o'zimiz uydirmaymiz.",
-              )
-            : t("Tasvir yetarli emas yoki bu ovqat emas. Qiymatni o'zimiz uydirmaymiz.")
-        }
-      />
-    );
-    tugmalar = (
-      <>
-        {rasmId ? (
-          <Tugma onClick={() => ket("/kamera")}>{t("Boshqa rasm olish")}</Tugma>
-        ) : (
-          <Tugma onClick={bekorQil}>{t("Qayta yozish")}</Tugma>
-        )}
-        {qolda}
-        <Tugma korinish="uchinchi" onClick={() => setQoldaKiritish(true)}>
-          {t("Baribir tahrirlab kiritish")}
-        </Tugma>
-      </>
-    );
-  } else {
-    mazmun = <Xabar sarlavha={t("Tahlil qilib bo'lmadi")} izoh={erkin(javob.xabar)} />;
-    tugmalar = (
-      <>
-        {javob.qaytaUrinsa && (
-          <Tugma onClick={() => setUrinish((u) => u + 1)}>{t("Qayta urinish")}</Tugma>
-        )}
-        {qolda}
-        <Tugma korinish="uchinchi" onClick={bekorQil}>
-          {t("Bekor qilish")}
-        </Tugma>
-      </>
+    return (
+      <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col px-4">
+        <Kutish key={urinish} rasmId={rasmId} matn={matn} />
+        <div className="flex flex-col gap-2 pb-8 pt-6">
+          <Tugma korinish="uchinchi" onClick={bekorQil}>
+            {t("Bekor qilish")}
+          </Tugma>
+        </div>
+      </main>
     );
   }
 
+  // Karta ichida birinchi yo'l "ikkilamchi", qolgani "uchinchi" (prototip `ErrorState`).
+  const qolda = (korinish: "ikkilamchi" | "uchinchi") => (
+    <Tugma korinish={korinish} onClick={() => ket("/taomlar")}>
+      {t("Qo'lda qo'shish")}
+    </Tugma>
+  );
+
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col px-4">
-      {mazmun}
-      <div className="flex flex-col gap-2 pb-8 pt-6">{tugmalar}</div>
+    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col px-4 pb-8">
+      <OrqagaSarlavha sarlavha={t("Tahlil")} orqagaNomi={t("Orqaga")} onOrqaga={bekorQil} />
+      {javob.holat === "tanib_bolmadi" ? (
+        <>
+          <XatoKartasi
+            sarlavha={t("Taomni aniq taniy olmadik")}
+            izoh={
+              rasmId
+                ? t(
+                    "Rasmda bir nechta taom bor yoki yorug'lik yetmagan bo'lishi mumkin. Qiymatni o'zimiz uydirmaymiz.",
+                  )
+                : t("Tasvir yetarli emas yoki bu ovqat emas. Qiymatni o'zimiz uydirmaymiz.")
+            }
+          >
+            {rasmId ? (
+              <Tugma korinish="ikkilamchi" onClick={() => ket("/kamera")}>
+                {t("Boshqa rasm olish")}
+              </Tugma>
+            ) : (
+              <Tugma korinish="ikkilamchi" onClick={bekorQil}>
+                {t("Qayta yozish")}
+              </Tugma>
+            )}
+            {qolda("uchinchi")}
+          </XatoKartasi>
+          <div className="mt-3">
+            <Tugma korinish="uchinchi" onClick={() => setQoldaKiritish(true)}>
+              {t("Baribir tahrirlab kiritish")}
+            </Tugma>
+          </div>
+        </>
+      ) : (
+        <XatoKartasi sarlavha={t("Tahlil qilib bo'lmadi")} izoh={erkin(javob.xabar)}>
+          {javob.qaytaUrinsa && (
+            <Tugma korinish="ikkilamchi" onClick={() => setUrinish((u) => u + 1)}>
+              {t("Qayta urinish")}
+            </Tugma>
+          )}
+          {qolda(javob.qaytaUrinsa ? "uchinchi" : "ikkilamchi")}
+        </XatoKartasi>
+      )}
     </main>
   );
 }
