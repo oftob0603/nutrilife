@@ -148,6 +148,11 @@ export function Sozlamalar({ boshlangich }: { boshlangich: SozlamalarTuri }) {
         </p>
       </section>
 
+      {/* Prototipdagi ikkinchi karta; Yordam, shartlar va maxfiylik qatorlari S5'da shu yerga qo'shiladi. */}
+      <div className="overflow-hidden rounded-karta border border-karta-chegara bg-karta">
+        <SozlamaQatori nomi={t("Rasm mualliflari")} href="/profil/mualliflar" />
+      </div>
+
       <TugmaHavola korinish="xavfli" href="/profil/ochirish">
         {t("Hisobni o'chirish")}
       </TugmaHavola>

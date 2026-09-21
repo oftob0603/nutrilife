@@ -447,6 +447,12 @@ export const SOZLAR = {
   "ft": { ru: "фут", en: "ft" },
   "Shaxsiy ma'lumot": { ru: "Личные данные", en: "Personal details" },
   "Hisobni o'chirish": { ru: "Удалить аккаунт", en: "Delete account" },
+  "Rasm mualliflari": { ru: "Авторы фотографий", en: "Photo credits" },
+  "Taom rasmlari Wikimedia Commons'dan olingan. Har biri kesilgan va WebP formatiga o'girilgan — boshqa o'zgarish kiritilmagan.": {
+    ru: "Фотографии блюд взяты с Wikimedia Commons. Каждая обрезана и преобразована в формат WebP — других изменений нет.",
+    en: "Dish photos come from Wikimedia Commons. Each one was cropped and converted to WebP — no other changes were made.",
+  },
+  "Muallif: {0}": { ru: "Автор: {0}", en: "Author: {0}" },
   "saqlanmoqda…": { ru: "сохраняется…", en: "saving…" },
   "Saqlanmadi. Qayta urinish": { ru: "Не сохранено. Повторить", en: "Not saved. Try again" },
   "Internet yo'q. Sozlamalar o'qish uchun ochiq, o'zgartirish vaqtincha bloklangan.": {

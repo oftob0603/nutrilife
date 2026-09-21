@@ -6,7 +6,7 @@
 |--------|-------|------------------------|
 | **S1 — kesim** ✅ 2026-09-20 | Ishlaydimi? | Home ekranida kunlik doira ko'rinadi; qo'lda matn bilan ovqat qo'shilganda doira to'ladi; yozuv PostgreSQL'ga tushadi; mahsulot o'z domenida jonli |
 | **S2 — xotira** ✅ 2026-09-20 | Eslab qoladimi? | To'liq ma'lumot modeli; taom bazasi o'zbek taomlari bilan; rasm yuklash va ombor; AI skan oqimi — rasm -> tahlil -> tasdiq -> jurnal; jurnal ro'yxati filtr bilan |
-| **S3 — auth** | Kim kirdi? | Telegram initData orqali kirish; FREE, PRO va admin rollari; har foydalanuvchi faqat o'z jurnalini ko'radi; himoyalangan API yo'llari |
+| **S3 — auth** ✅ 2026-09-21 | Kim kirdi? | Telegram initData orqali kirish; FREE, PRO va admin rollari; har foydalanuvchi faqat o'z jurnalini ko'radi; himoyalangan API yo'llari |
 | **S4 — chuqurlik** | Haqiqiy hayotda chidaydimi? | Mifflin-St Jeor normasi; Nutrition Score formulasi; skan limitlari (FREE 3, PRO kuniga 20); holatlar zanjiri; AI ishonchi past bo'lgan holat; chegaraviy holatlar |
 | **S5 — telegram** | Qo'lda turadimi? | Mini App sifatida to'liq ishlashi; bot kirish nuqtasi va til tanlash; ovqat eslatmalari; fon vazifalari — obuna muddati va kunlik limit yangilanishi |
 | **S6 — admin** | Boshqarib bo'ladimi? | Admin paneli; taom takliflari navbati; retsept kiritish; obunani qo'lda berish; statistika; foydalanuvchini bloklash |
