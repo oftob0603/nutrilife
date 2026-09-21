@@ -53,7 +53,7 @@ Magistraldan chiqadigan ishlar. Har biri qovurdoq javobidan kelib chiqadi.
 
 - **Analitika va north star metrikasi**
   *Sabab:* Blok 1 — DAU, PRO obunachilar va 7-kun retention kuzatiladi.
-  *Qachon:* S3'da qo'yiladi (foydalanuvchi ID'si paydo bo'lgach), keyin to'ldiriladi. S1'da qo'yilmadi — kesimda foydalanuvchi yo'q edi.
+  *Qachon:* S3'da qo'yiladi (foydalanuvchi ID'si paydo bo'lgach), keyin to'ldiriladi. S1'da qo'yilmadi — kesimda foydalanuvchi yo'q edi. S3'da qo'yildi: `hodisalar` jadvali, north star — 7-kun retention; ko'rsatkichlar ekrani S6 admin panelida.
 
 ## 3. Kelajak (v2+)
 

@@ -378,11 +378,17 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-21 · Hisobni o'chirish darhol va qaytarib bo'lmaydigan — 30 kunlik qaytarish oynasi yo'q.**
 *Sabab:* profil-tz ochiq savol 1; huquqiy tekshiruvda qayta ko'riladi.
 
+**2026-09-21 · North star metrika — 7-kun retention: ro'yxatdan o'tganlarning necha foizi 7-kuni ilovani qayta ochadi. DAU va PRO obunachilar yordamchi metrika.**
+*Sabab:* Ishga tushish bosqichida asosiy savol — mahsulot odamni ushlab qolyaptimi; DAU kichik bazada sun'iy o'sadi, PRO esa to'lov (S5) kelguncha nol turadi. Ochiq savol 1 yopildi.
+
+**2026-09-21 · Analitika tashqi xizmatsiz, o'z bazamizdagi `hodisalar` jadvalida: `royxat`, `onboarding_tugadi`, `birinchi_skan` (hisobga bir marta) va `kunlik_faollik` (kuniga bitta qator, ilova ochilganda).**
+*Sabab:* To'rt hodisa uchun yangi dependency va uchinchi tomonga ma'lumot uzatish kerak emas. Hisob o'chirilsa qator qoladi, egasi bo'shaydi (`ON DELETE SET NULL`) — sonlar saqlanadi, shaxs bilan bog'lanish uziladi.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |
 |---|-------|--------------------|
-| 1 | North star metrika qaysi biri — DAU, PRO obunachilar yoki 7-kun retention | S3, analitika o'rnatilayotganda (S1'da qo'yilmadi) |
+| 1 | North star metrika qaysi biri — DAU, PRO obunachilar yoki 7-kun retention | Hal qilindi 2026-09-21: 7-kun retention |
 | 2 | Bitta AI skan tannarxi qancha va 39,000 so'mlik obuna kuniga 20 ta skanni qoplaydimi | S2, AI provayderi tanlanganda — birinchi o'lchov: matnli skan ≈ $0,001 (Haiku 4.5, ~716 kirish + ~70 chiqish token), rasmli hali o'lchanmagan |
 | 3 | V2 tarkibi va muddati — haftalik hisobot, eksport, avtomatik to'lov qachon qaytadi | V1 ishga tushgach |
 | 4 | Retseptlarning boshlang'ich soni — nechta retsept bilan ishga tushamiz | S6, kontent kiritilganda |

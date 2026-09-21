@@ -151,7 +151,7 @@ Respublikasi.
 
 | # | Savol | Qachon hal qilamiz |
 |---|-------|--------------------|
-| 1 | North star metrika tanlanmagan — DAU, PRO obunachilar va 7-kun retention uchalasi ham tanlandi, bittasi asosiy bo'lishi kerak | S1, analitika o'rnatilayotganda |
+| 1 | North star metrika tanlanmagan — DAU, PRO obunachilar va 7-kun retention uchalasi ham tanlandi, bittasi asosiy bo'lishi kerak | Hal qilindi 2026-09-21: 7-kun retention asosiy, DAU va PRO obunachilar yordamchi |
 | 2 | Birlik iqtisodiyoti: bitta AI skan tannarxi qancha va 39,000 so'mlik obuna kuniga 20 ta skanni qoplaydimi | S1, AI provayderi tanlanganda |
 | 3 | V2 tarkibi va muddati — haftalik hisobot, eksport, avtomatik to'lov, o'tgan kunlarga yozuv qachon qaytadi | V1 ishga tushgach, birinchi ma'lumotlar asosida |
 | 4 | Retseptlarning boshlang'ich soni — admin qo'lda nechta retsept bilan ishga tushadi | Kontent sprintida |

@@ -1,7 +1,9 @@
+import { after } from "next/server";
 import {
   foydalanuvchiniOl,
   telegramBoyichaTopYokiYarat,
 } from "@/lib/services/foydalanuvchilar";
+import { hodisaYoz } from "@/lib/services/hodisalar";
 import {
   joriyFoydalanuvchiId,
   kirishKerak,
@@ -22,6 +24,8 @@ export async function GET(sorov: Request) {
   const foydalanuvchiId = await joriyFoydalanuvchiId(sorov);
   const foydalanuvchi = foydalanuvchiId ? await foydalanuvchiniOl(foydalanuvchiId) : null;
   if (!foydalanuvchi) return kirishKerak();
+  // Ilova ochildi — javobdan keyin yoziladi, foydalanuvchi kutmaydi.
+  after(() => hodisaYoz(foydalanuvchi.id, "kunlik_faollik"));
   return Response.json(
     { foydalanuvchi },
     { headers: { "Set-Cookie": tilCookie(foydalanuvchi.til) } },
@@ -71,6 +75,11 @@ export async function POST(sorov: Request) {
     console.error(xato.message);
     return ishlamayapti();
   }
+
+  after(async () => {
+    if (yangi) await hodisaYoz(foydalanuvchi.id, "royxat");
+    await hodisaYoz(foydalanuvchi.id, "kunlik_faollik");
+  });
 
   // Sahifa shu hisob sessiyasi bilan chizilgan bo'lsa, klient uni qayta yuklamaydi.
   const sessiyaBorEdi = sessiyadagiId(sorov) === foydalanuvchi.id;

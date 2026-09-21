@@ -99,6 +99,7 @@ model Foydalanuvchi {
   kunlikXulosalar KunlikXulosa[]
   skanHisoblari   SkanHisobi[]
   obunalar        Obuna[]
+  hodisalar       Hodisa[]
 
   @@map("foydalanuvchilar")
 }
@@ -232,4 +233,22 @@ model Obuna {
 
   @@index([foydalanuvchiId, tugash])
   @@map("obunalar")
+}
+
+/// Analitika hodisalari (lib/services/hodisalar.ts): "royxat", "onboarding_tugadi",
+/// "birinchi_skan" — hisobga bir marta, "kunlik_faollik" — kuniga bitta qator. Hisob o'chsa
+/// qator qoladi, faqat egasi bo'shaydi — sonlar yo'qolmaydi, shaxs bilan bog'lanish uziladi.
+model Hodisa {
+  id              String   @id @default(uuid())
+  foydalanuvchiId String?  @map("foydalanuvchi_id")
+  tur             String
+  /// Toshkent vaqti bo'yicha kun.
+  sana            DateTime @db.Date
+  vaqt            DateTime @default(now())
+
+  foydalanuvchi Foydalanuvchi? @relation(fields: [foydalanuvchiId], references: [id], onDelete: SetNull)
+
+  @@unique([foydalanuvchiId, tur, sana])
+  @@index([tur, sana])
+  @@map("hodisalar")
 }

@@ -1,4 +1,6 @@
+import { after } from "next/server";
 import { AiXatosi } from "@/lib/services/ai";
+import { hodisaYoz } from "@/lib/services/hodisalar";
 import { joriyFoydalanuvchiId, kirishKerak } from "@/lib/services/sessiya";
 import { skanQil } from "@/lib/services/skan";
 import { MATN_CHEGARASI, VAZN_CHEGARASI } from "@/lib/services/skan-hisob";
@@ -69,6 +71,8 @@ export async function POST(sorov: Request) {
         { status: 429 },
       );
     }
+    // "Tanib bo'lmadi" ham skan — AI chaqirildi. Takroriy skanlarda hodisa qayta yozilmaydi.
+    after(() => hodisaYoz(foydalanuvchiId, "birinchi_skan"));
     return Response.json(javob);
   } catch (xato) {
     console.error("Skan bajarilmadi:", xato instanceof Error ? xato.message : xato);

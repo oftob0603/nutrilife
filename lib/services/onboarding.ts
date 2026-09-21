@@ -1,5 +1,6 @@
 import { db } from "../db.ts";
 import { SHARTLAR_VERSIYASI } from "../shartlar.ts";
+import { hodisaQatori } from "./hodisalar.ts";
 import {
   QADAMLAR_SONI,
   odatniOqi,
@@ -152,5 +153,13 @@ export async function qadamniSaqlash(foydalanuvchiId: string, javob: QadamJavobi
       create: { foydalanuvchiId, ...profil, ...tugadi, onboardingQadami },
       update: { ...profil, ...tugadi, onboardingQadami },
     });
+
+    // Yakun vaqti bilan bir tranzaksiyada — biri yozilib, ikkinchisi qolib ketmaydi.
+    if ("onboardingTugadi" in tugadi) {
+      await tx.hodisa.createMany({
+        data: [hodisaQatori(foydalanuvchiId, "onboarding_tugadi")],
+        skipDuplicates: true,
+      });
+    }
   }, TRANZAKSIYA_VAQTI);
 }
