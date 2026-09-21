@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useTarjima } from "@/app/_components/TilTaminoti";
 import { raqam } from "@/lib/services/taom-hisob";
 
 const OLCHAM = 224;
@@ -22,6 +23,7 @@ export function KunlikDoira({
   norma: number;
   boshlangich?: number;
 }) {
+  const { t } = useTarjima();
   const [korinadigan, setKorinadigan] = useState(boshlangich ?? qiymat);
   const oldingi = useRef(boshlangich ?? qiymat);
 
@@ -88,7 +90,7 @@ export function KunlikDoira({
             {raqam(korinadigan)}
           </span>
           <span className="text-izoh text-matn-2 tabular-nums">
-            {raqam(norma)} dan
+            {t("{0} dan", raqam(norma))}
           </span>
         </div>
       </div>
@@ -96,8 +98,8 @@ export function KunlikDoira({
         className={`text-izoh tabular-nums ${oshdi ? "text-xato" : "text-matn-2"}`}
       >
         {oshdi
-          ? `Normadan oshdi — ${raqam(korinadigan - norma)} kkal`
-          : `qoldi: ${raqam(qoldi)} kkal`}
+          ? t("Normadan oshdi — {0} kkal", raqam(korinadigan - norma))
+          : t("qoldi: {0} kkal", raqam(qoldi))}
       </span>
     </div>
   );

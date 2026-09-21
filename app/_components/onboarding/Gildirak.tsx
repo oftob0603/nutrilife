@@ -1,6 +1,7 @@
 "use client";
 
 import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useTarjima } from "@/app/_components/TilTaminoti";
 
 type Yonalish = "tik" | "yotiq";
 
@@ -66,6 +67,7 @@ export function Gildirak({
   yonalish: Yonalish;
   onTanla: (indeks: number) => void;
 }) {
+  const { t } = useTarjima();
   const olcham = OLCHAM[yonalish];
   const korinadigan = tanlangan >= 0 ? tanlangan : boshlangich;
 
@@ -150,7 +152,7 @@ export function Gildirak({
         aria-valuemin={Number(qiymatlar[0])}
         aria-valuemax={Number(qiymatlar[qiymatlar.length - 1])}
         aria-valuenow={Number(qiymatlar[markaz])}
-        aria-valuetext={belgilangan ? qiymatlar[markaz] : "Tanlanmagan"}
+        aria-valuetext={belgilangan ? qiymatlar[markaz] : t("Tanlanmagan")}
         onScroll={aylandi}
         onKeyDown={tugmaBosildi}
         className={`relative h-full outline-none [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${

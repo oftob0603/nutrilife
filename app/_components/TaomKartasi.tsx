@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { TaomRasmi } from "@/app/_components/TaomRasmi";
-import { olchovIzohi, type Taom } from "@/lib/services/taom-hisob";
+import { useTarjima } from "@/app/_components/TilTaminoti";
+import { olchovIzohi, taomNomi, type Taom } from "@/lib/services/taom-hisob";
 
 function OngStrelka() {
   return (
@@ -22,6 +25,8 @@ function OngStrelka() {
 }
 
 export function TaomKartasi({ taom }: { taom: Taom }) {
+  const tarjimon = useTarjima();
+
   return (
     <li>
       <Link
@@ -30,8 +35,8 @@ export function TaomKartasi({ taom }: { taom: Taom }) {
       >
         <TaomRasmi rasm={taom.rasm} />
         <div className="min-w-0 flex-1">
-          <p className="truncate text-karta-sarlavha">{taom.nomi}</p>
-          <p className="mt-1 text-izoh text-matn-2 tabular-nums">{olchovIzohi(taom)}</p>
+          <p className="truncate text-karta-sarlavha">{taomNomi(taom, tarjimon.til)}</p>
+          <p className="mt-1 text-izoh text-matn-2 tabular-nums">{olchovIzohi(taom, tarjimon)}</p>
         </div>
         <OngStrelka />
       </Link>

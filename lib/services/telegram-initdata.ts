@@ -1,4 +1,5 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
+import { tilniOqi, type Til } from "../lugat/tarjima.ts";
 
 /** initData shu muddatdan eski bo'lsa qabul qilinmaydi — o'g'irlangan qator abadiy ishlamasin. */
 const YAROQLILIK_SONIYA = 24 * 60 * 60;
@@ -6,10 +7,6 @@ const YAROQLILIK_SONIYA = 24 * 60 * 60;
 const SOAT_FARQI_SONIYA = 5 * 60;
 
 const HASH_QOLIPI = /^[0-9a-f]{64}$/;
-const TILLAR = ["uz", "ru", "en"] as const;
-
-export type Til = (typeof TILLAR)[number];
-
 export type InitDataNatijasi =
   /**
    * `ism` — Telegram profilidagi `first_name`; onboardingda ism maydonini oldindan to'ldiradi.
@@ -56,7 +53,7 @@ export function initDataniTekshir(
     return { xato: "format" };
   }
 
-  const til = TILLAR.find((t) => t === user.language_code) ?? "uz";
+  const til = tilniOqi(user.language_code);
   const ism =
     typeof user.first_name === "string" ? user.first_name.trim().slice(0, 40) || null : null;
   return { telegramId: BigInt(user.id), til, ism, avatarUrl: avatarManzili(user.photo_url) };

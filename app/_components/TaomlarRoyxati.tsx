@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { TaomKartasi } from "@/app/_components/TaomKartasi";
+import { useTarjima } from "@/app/_components/TilTaminoti";
 import { TugmaHavola } from "@/app/_components/Tugma";
-import { taomMosmi, type Taom } from "@/lib/services/taom-hisob";
+import { nomBoyichaTartibla, taomMosmi, type Taom } from "@/lib/services/taom-hisob";
 
 function QidiruvIkonasi() {
   return (
@@ -27,20 +28,21 @@ function QidiruvIkonasi() {
 
 /** E4 — taom qidiruvi. Baza kichik, shuning uchun filtr klientda ishlaydi. */
 export function TaomlarRoyxati({ taomlar }: { taomlar: Taom[] }) {
+  const { t, til } = useTarjima();
   const [sorov, setSorov] = useState("");
 
-  const natijalar = taomlar.filter((taom) => taomMosmi(taom, sorov));
+  const natijalar = nomBoyichaTartibla(taomlar, til).filter((taom) => taomMosmi(taom, sorov));
 
   return (
     <div className="flex flex-col gap-4">
       <label className="flex min-h-11 items-center gap-2 rounded-karta border border-chegara bg-karta px-4">
         <QidiruvIkonasi />
-        <span className="sr-only">Taom qidirish</span>
+        <span className="sr-only">{t("Taom qidirish")}</span>
         <input
           type="search"
           value={sorov}
           onChange={(hodisa) => setSorov(hodisa.target.value)}
-          placeholder="Taom qidirish"
+          placeholder={t("Taom qidirish")}
           className="w-full min-w-0 bg-transparent py-2 text-asosiy outline-none placeholder:text-matn-3"
         />
         {sorov && (
@@ -49,26 +51,26 @@ export function TaomlarRoyxati({ taomlar }: { taomlar: Taom[] }) {
             onClick={() => setSorov("")}
             className="shrink-0 text-izoh text-matn-2"
           >
-            Tozalash
+            {t("Tozalash")}
           </button>
         )}
       </label>
 
       {natijalar.length === 0 ? (
         <div className="flex flex-col items-center gap-3 rounded-karta border border-karta-chegara bg-karta p-4 text-center">
-          <p className="text-karta-sarlavha">«{sorov.trim()}» topilmadi</p>
+          <p className="text-karta-sarlavha">{t("«{0}» topilmadi", sorov.trim())}</p>
           <p className="text-izoh text-matn-2">
-            Boshqa nom bilan qidirib ko&apos;ring yoki taomni AI yordamida qo&apos;shing.
+            {t("Boshqa nom bilan qidirib ko'ring yoki taomni AI yordamida qo'shing.")}
           </p>
           <div className="flex w-full flex-col gap-2">
             <TugmaHavola
               korinish="ikkilamchi"
               href={`/tasvirlash?matn=${encodeURIComponent(sorov.trim())}`}
             >
-              Matn bilan tasvirlash
+              {t("Matn bilan tasvirlash")}
             </TugmaHavola>
             <TugmaHavola korinish="ikkilamchi" href="/kamera">
-              Rasmga olish
+              {t("Rasmga olish")}
             </TugmaHavola>
           </div>
         </div>

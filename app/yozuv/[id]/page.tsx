@@ -4,6 +4,7 @@ import { AiBelgisi } from "@/app/_components/AiBelgisi";
 import { TaomRasmi } from "@/app/_components/TaomRasmi";
 import { YozuvTahriri } from "@/app/_components/YozuvTahriri";
 import { serverdanApi } from "@/lib/api-asos";
+import { serverTarjimoni } from "@/lib/lugat/server";
 import type { Yozuv } from "@/lib/services/yozuv-hisob";
 
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
@@ -32,6 +33,7 @@ export default async function YozuvSahifasi({
   params,
   searchParams,
 }: PageProps<"/yozuv/[id]">) {
+  const { t } = await serverTarjimoni();
   const { id } = await params;
   const { qaytish: berilgan } = await searchParams;
   const qaytish = qaytishManzili(berilgan);
@@ -47,7 +49,7 @@ export default async function YozuvSahifasi({
       <header className="flex items-center gap-2 py-4">
         <Link
           href={qaytish}
-          aria-label="Orqaga"
+          aria-label={t("Orqaga")}
           className="-ml-3 flex size-11 items-center justify-center rounded-chip text-siyoh"
         >
           <svg
@@ -64,7 +66,7 @@ export default async function YozuvSahifasi({
             <path d="m15 18-6-6 6-6" />
           </svg>
         </Link>
-        <h1 className="min-w-0 flex-1 truncate text-sarlavha">Yozuv tahriri</h1>
+        <h1 className="min-w-0 flex-1 truncate text-sarlavha">{t("Yozuv tahriri")}</h1>
         {yozuv.manba === "ai" && <AiBelgisi />}
       </header>
 

@@ -1,3 +1,4 @@
+import type { Til } from "../lugat/tarjima.ts";
 import { aiTahlil } from "./ai.ts";
 import { rasmMazmuni } from "./rasmlar.ts";
 import { skanJavobiniTekshir, type SkanJavobi } from "./skan-hisob.ts";
@@ -7,6 +8,8 @@ export type SkanKirish = {
   rasmId?: string;
   matn?: string;
   vaznGramm?: number | null;
+  /** Taom nomi shu tilda qaytadi. */
+  til?: Til;
 };
 
 export type SkanNatijasi = SkanJavobi | { holat: "rasm_yoq" } | { holat: "limit" };
@@ -18,7 +21,7 @@ export type SkanNatijasi = SkanJavobi | { holat: "rasm_yoq" } | { holat: "limit"
  */
 export async function skanQil(
   foydalanuvchiId: string,
-  { rasmId, matn, vaznGramm = null }: SkanKirish,
+  { rasmId, matn, vaznGramm = null, til }: SkanKirish,
 ): Promise<SkanNatijasi> {
   let rasm;
   if (rasmId) {
@@ -29,7 +32,7 @@ export async function skanQil(
   if (!(await skanBandQil(foydalanuvchiId))) return { holat: "limit" };
 
   try {
-    const xom = await aiTahlil({ rasm, matn, vaznGramm });
+    const xom = await aiTahlil({ rasm, matn, vaznGramm, til });
     // "Tanib bo'lmadi" ham hisobga kiradi — AI chaqirildi va xarajat bo'ldi.
     return skanJavobiniTekshir(xom, vaznGramm);
   } catch (xato) {

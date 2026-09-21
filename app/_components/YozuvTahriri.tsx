@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useTarjima } from "@/app/_components/TilTaminoti";
 import { Tugma } from "@/app/_components/Tugma";
 import { Maydon, YozuvFormasi } from "@/app/_components/YozuvFormasi";
 import { apiSorov } from "@/lib/services/api-klient";
@@ -40,6 +41,8 @@ function OchirishTasdigi({
   onTasdiq: () => void;
   onBekor: () => void;
 }) {
+  const { t } = useTarjima();
+
   useEffect(() => {
     const bosildi = (hodisa: KeyboardEvent) => {
       if (hodisa.key === "Escape") onBekor();
@@ -58,7 +61,7 @@ function OchirishTasdigi({
     >
       <button
         type="button"
-        aria-label="Yopish"
+        aria-label={t("Yopish")}
         onClick={onBekor}
         className="absolute inset-0 bg-parda"
       />
@@ -66,19 +69,21 @@ function OchirishTasdigi({
         <div className="mx-auto h-1 w-10 rounded-full bg-chegara" />
         <div className="flex flex-col gap-1 text-center">
           <h2 id="ochirish-sarlavha" className="text-karta-sarlavha">
-            Yozuv o&apos;chirilsinmi?
+            {t("Yozuv o'chirilsinmi?")}
           </h2>
           <p id="ochirish-izoh" className="text-izoh text-matn-2">
-            «{taomNomi}» jurnaldan o&apos;chadi va kunlik hisobdan ayiriladi. Buni qaytarib
-            bo&apos;lmaydi.
+            {t(
+              "«{0}» jurnaldan o'chadi va kunlik hisobdan ayiriladi. Buni qaytarib bo'lmaydi.",
+              taomNomi,
+            )}
           </p>
         </div>
         <div className="flex flex-col gap-2">
           <Tugma korinish="xavfli" yuklanmoqda={bajarilmoqda} onClick={onTasdiq}>
-            O&apos;chirish
+            {t("O'chirish")}
           </Tugma>
           <Tugma korinish="uchinchi" disabled={bajarilmoqda} onClick={onBekor}>
-            Bekor qilish
+            {t("Bekor qilish")}
           </Tugma>
         </div>
       </div>
@@ -92,6 +97,7 @@ function OchirishTasdigi({
  */
 export function YozuvTahriri({ yozuv, qaytish }: { yozuv: Yozuv; qaytish: string }) {
   const router = useRouter();
+  const { t } = useTarjima();
   const { miqdor, birlik } = porsiyaniAjrat(yozuv.porsiya);
   const [forma, setForma] = useState<Forma>(() =>
     formaTuz({
@@ -113,9 +119,9 @@ export function YozuvTahriri({ yozuv, qaytish }: { yozuv: Yozuv; qaytish: string
   const yangiVaqt = vaqt === asliVaqt ? undefined : vaqtniAlmashtir(yozuv.vaqt, vaqt);
   const vaqtXatosi =
     yangiVaqt === null
-      ? "Vaqtni kiriting"
+      ? t("Vaqtni kiriting")
       : kelajakda
-        ? "Vaqt hozirgidan keyin bo'lmaydi"
+        ? t("Vaqt hozirgidan keyin bo'lmaydi")
         : undefined;
   const yaroqsiz = Object.keys(xatolar).length > 0 || vaqtXatosi !== undefined;
   const band = amal !== null;
@@ -200,7 +206,7 @@ export function YozuvTahriri({ yozuv, qaytish }: { yozuv: Yozuv; qaytish: string
       />
 
       <Maydon
-        nomi="Vaqt"
+        nomi={t("Vaqt")}
         turi="vaqt"
         qiymat={vaqt}
         xato={vaqtXatosi}
@@ -214,7 +220,7 @@ export function YozuvTahriri({ yozuv, qaytish }: { yozuv: Yozuv; qaytish: string
       <div className="flex flex-col gap-2 pt-2">
         {xato && (
           <p role="alert" className="text-center text-asosiy text-xato">
-            O&apos;zgarish saqlanmadi. Qayta urinib ko&apos;ring
+            {t("O'zgarish saqlanmadi. Qayta urinib ko'ring")}
           </p>
         )}
         <Tugma
@@ -222,7 +228,7 @@ export function YozuvTahriri({ yozuv, qaytish }: { yozuv: Yozuv; qaytish: string
           disabled={yaroqsiz || band}
           onClick={saqla}
         >
-          Saqlash
+          {t("Saqlash")}
         </Tugma>
         <Tugma
           korinish="ikkilamchi"
@@ -230,10 +236,10 @@ export function YozuvTahriri({ yozuv, qaytish }: { yozuv: Yozuv; qaytish: string
           disabled={band}
           onClick={nusxala}
         >
-          Nusxalash
+          {t("Nusxalash")}
         </Tugma>
         <Tugma korinish="xavfli" disabled={band} onClick={() => setTasdiqOchiq(true)}>
-          O&apos;chirish
+          {t("O'chirish")}
         </Tugma>
       </div>
 

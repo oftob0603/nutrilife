@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useTarjima } from "@/app/_components/TilTaminoti";
 import { rasmniYukla } from "@/lib/services/rasm-yuklash";
 
 type Holat = "yuklanmoqda" | "jonli" | "korish" | "xato";
@@ -56,6 +57,7 @@ const TUGMA =
  */
 export function Kamera() {
   const router = useRouter();
+  const { t, erkin } = useTarjima();
   const video = useRef<HTMLVideoElement>(null);
   const tanlagich = useRef<HTMLInputElement>(null);
   const [holat, setHolat] = useState<Holat>("yuklanmoqda");
@@ -136,7 +138,8 @@ export function Kamera() {
     try {
       router.push(`/tahlil/${await rasmniYukla(surat.rasm)}`);
     } catch (sabab) {
-      setXato(sabab instanceof Error ? sabab.message : "Yuklanmadi");
+      // Xabar — lug'at kaliti yoki serverdan kelgan matn (rasm-yuklash.ts).
+      setXato(sabab instanceof Error ? erkin(sabab.message) : t("Yuklanmadi"));
       setYuborilmoqda(false);
     }
   }
@@ -153,7 +156,7 @@ export function Kamera() {
       {holat === "korish" && surat && (
         <Image
           src={surat.manzil}
-          alt="Olingan rasm"
+          alt={t("Olingan rasm")}
           fill
           unoptimized
           className="object-contain"
@@ -163,7 +166,7 @@ export function Kamera() {
       <header className="relative flex items-center p-2">
         <Link
           href="/"
-          aria-label="Orqaga"
+          aria-label={t("Orqaga")}
           className="flex size-11 items-center justify-center rounded-full bg-black/40"
         >
           <Ikona nomi="orqaga" />
@@ -177,17 +180,16 @@ export function Kamera() {
           <>
             <div className="aspect-square w-full max-w-xs rounded-panel border-2 border-white/50" />
             <p className="rounded-full bg-black/40 px-3 py-1 text-izoh">
-              Taomni tepadan, to&apos;liq ko&apos;rinishda oling
+              {t("Taomni tepadan, to'liq ko'rinishda oling")}
             </p>
           </>
         )}
 
         {holat === "xato" && (
           <>
-            <p className="text-karta-sarlavha">Kamerani ocholmadik</p>
+            <p className="text-karta-sarlavha">{t("Kamerani ocholmadik")}</p>
             <p className="text-izoh text-white/70">
-              Brauzer sozlamalarida kameraga ruxsat bering yoki tayyor rasmni
-              tanlang.
+              {t("Brauzer sozlamalarida kameraga ruxsat bering yoki tayyor rasmni tanlang.")}
             </p>
           </>
         )}
@@ -205,7 +207,7 @@ export function Kamera() {
             <button
               type="button"
               onClick={() => tanlagich.current?.click()}
-              aria-label="Galereyadan tanlash"
+              aria-label={t("Galereyadan tanlash")}
               className="flex size-11 items-center justify-center justify-self-start rounded-full bg-black/40"
             >
               <Ikona nomi="galereya" />
@@ -213,7 +215,7 @@ export function Kamera() {
             <button
               type="button"
               onClick={suratgaOl}
-              aria-label="Rasmga olish"
+              aria-label={t("Rasmga olish")}
               className="size-18 justify-self-center rounded-full border-4 border-white/50 bg-white bg-clip-padding transition-transform active:scale-[0.98]"
             />
           </div>
@@ -227,7 +229,7 @@ export function Kamera() {
               disabled={yuborilmoqda}
               className={`${TUGMA} border border-white/40 text-white`}
             >
-              Qayta olish
+              {t("Qayta olish")}
             </button>
             <button
               type="button"
@@ -241,7 +243,7 @@ export function Kamera() {
                   className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent"
                 />
               )}
-              {yuborilmoqda ? "Yuklanmoqda…" : xato ? "Qayta urinish" : "Tahlil qilish"}
+              {yuborilmoqda ? t("Yuklanmoqda…") : xato ? t("Qayta urinish") : t("Tahlil qilish")}
             </button>
           </div>
         )}
@@ -256,14 +258,14 @@ export function Kamera() {
               }}
               className={`${TUGMA} bg-white text-black`}
             >
-              Qayta urinish
+              {t("Qayta urinish")}
             </button>
             <button
               type="button"
               onClick={() => tanlagich.current?.click()}
               className={`${TUGMA} border border-white/40 text-white`}
             >
-              Galereyadan tanlash
+              {t("Galereyadan tanlash")}
             </button>
           </div>
         )}

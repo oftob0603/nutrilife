@@ -1,8 +1,9 @@
 // Profil ekrani (F1, profil-tz.md) uchun sof hisob — bazaga bog'lanmagan.
 
+import type { Kalit, Tarjimon, Til } from "../lugat/tarjima.ts";
 import type { ObunaHolati, Rol } from "./huquqlar.ts";
 import { kgdanLb, MAQSADLAR } from "./onboarding-hisob.ts";
-import { toshkentSanasi } from "./yozuv-hisob.ts";
+import { kunOyMatni, toshkentSanasi } from "./yozuv-hisob.ts";
 
 /** `GET /api/profil` javobi. JSON'da sana matn bo'lib keladi, shuning uchun `tugash` — ISO matn. */
 export type Profil = {
@@ -27,33 +28,31 @@ export function ilovadaKun(yaratilgan: Date, hozir: Date = new Date()): number {
   return Math.max(1, Math.round((bugun - boshi) / KUN_MS) + 1);
 }
 
-export function maqsadNomi(maqsad: string | null): string | null {
+/** Maqsadning lug'atdagi nomi (o'zbekcha kalit) — ekranda `t()` bilan ko'rsatiladi. */
+export function maqsadNomi(maqsad: string | null): Kalit | null {
   return MAQSADLAR.find((variant) => variant.qiymat === maqsad)?.nomi ?? null;
 }
 
-/** "84,5 kg" yoki "186 lb" — onboardingdagi bilan bir xil yaxlitlash. */
-export function vaznMatni(kg: number, birliklar: string): string {
+/** "84,5 kg" yoki "186 lb" — onboardingdagi bilan bir xil yaxlitlash. Inglizchada kasr nuqta bilan. */
+export function vaznMatni(kg: number, birliklar: string, { til, t }: Tarjimon): string {
   if (birliklar === "imperial") return `${kgdanLb(kg)} lb`;
-  return `${(Math.round(kg * 10) / 10).toString().replace(".", ",")} kg`;
+  const son = (Math.round(kg * 10) / 10).toString();
+  return `${til === "en" ? son : son.replace(".", ",")} ${t("kg")}`;
 }
-
-const OYLAR = [
-  "yanvar", "fevral", "mart", "aprel", "may", "iyun",
-  "iyul", "avgust", "sentabr", "oktabr", "noyabr", "dekabr",
-];
 
 /**
  * Obuna tugaydigan kun: "21-oktabr". Tugash lahzasi aynan yarim tunga to'g'ri kelsa, oxirgi
  * to'liq kun ko'rsatiladi — "21-oktabrgacha faol" deyilgan kuni PRO hali ishlab turishi kerak.
  */
-export function tugashKuni(tugash: string): string {
-  const sana = toshkentSanasi(new Date(Date.parse(tugash) - 1));
-  return `${Number(sana.slice(8))}-${OYLAR[Number(sana.slice(5, 7)) - 1]}`;
+export function tugashKuni(tugash: string, til: Til = "uz"): string {
+  return kunOyMatni(toshkentSanasi(new Date(Date.parse(tugash) - 1)), til);
 }
 
 /** Obuna kartasidagi sarlavha (profil-tz.md, F1). */
-export function obunaSarlavhasi(obuna: Profil["obuna"]): string {
-  if (obuna.holat === "pro" && obuna.tugash) return `PRO · ${tugashKuni(obuna.tugash)}gacha faol`;
-  if (obuna.holat === "tugagan") return "PRO muddati tugadi · tarix ochiq qoladi";
-  return "Bepul reja";
+export function obunaSarlavhasi(obuna: Profil["obuna"], { til, t }: Tarjimon): string {
+  if (obuna.holat === "pro" && obuna.tugash) {
+    return t("PRO · {0}gacha faol", tugashKuni(obuna.tugash, til));
+  }
+  if (obuna.holat === "tugagan") return t("PRO muddati tugadi · tarix ochiq qoladi");
+  return t("Bepul reja");
 }

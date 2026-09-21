@@ -1,6 +1,7 @@
 // Yozuvni tasdiqlash (E7) va tahrirlash (E10) formasining sof qoidalari — bazaga bog'liq
 // emas, shuning uchun klient komponentlar ham shu yerdan import qiladi.
 
+import type { Kalit } from "../lugat/tarjima.ts";
 import { OVQAT_TURLARI, type OvqatTuri } from "./yozuv-hisob.ts";
 
 export const QIYMAT_MAYDONLARI = ["kaloriya", "oqsil", "yog", "uglevod"] as const;
@@ -24,7 +25,8 @@ export type Forma = {
   asos: Record<QiymatMaydoni, number | null>;
 };
 
-export type FormaXatolari = Partial<Record<"taomNomi" | "miqdor" | QiymatMaydoni, string>>;
+/** Qiymatlar — lug'at kalitlari; ekranda `t()` bilan tarjima qilinadi. */
+export type FormaXatolari = Partial<Record<"taomNomi" | "miqdor" | QiymatMaydoni, Kalit>>;
 
 export type FormaQiymatlari = {
   taomNomi: string;

@@ -1,6 +1,7 @@
 // Rasmni brauzerda siqish va serverga yuborish. Faqat klient komponentlar ishlatadi —
 // bazaga ham, omborga ham tegmaydi, hammasi POST /api/rasmlar orqali o'tadi.
 
+import { k } from "../lugat/tarjima.ts";
 import { apiSorov } from "./api-klient.ts";
 import { RASM_CHEGARASI } from "./rasm-hisob.ts";
 
@@ -26,7 +27,7 @@ export async function rasmniSiq(manba: Blob): Promise<Blob> {
   try {
     tasvir = await createImageBitmap(manba, { imageOrientation: "from-image" });
   } catch {
-    throw new Error("Bu rasmni o'qib bo'lmadi. Boshqa rasm tanlang");
+    throw new Error(k("Bu rasmni o'qib bo'lmadi. Boshqa rasm tanlang"));
   }
 
   const nisbat = Math.min(1, ENG_KATTA_TOMON / Math.max(tasvir.width, tasvir.height));
@@ -40,17 +41,18 @@ export async function rasmniSiq(manba: Blob): Promise<Blob> {
     const natija = await jpegga(tuval, sifat);
     if (natija && natija.size <= RASM_CHEGARASI) return natija;
   }
-  throw new Error("Rasm juda katta. Boshqa rasm tanlang");
+  throw new Error(k("Rasm juda katta. Boshqa rasm tanlang"));
 }
 
 /**
  * Rasmni siqib serverga yuboradi va `rasmlar` dagi ID ni qaytaradi. Xato bo'lsa
- * foydalanuvchiga ko'rsatiladigan o'zbekcha matn bilan Error tashlaydi. Rasm navbatga
+ * foydalanuvchiga ko'rsatiladigan o'zbekcha matn (lug'at kaliti) bilan Error tashlaydi — ekran
+ * uni `erkin()` orqali tarjima qiladi. Rasm navbatga
  * olinmaydi: yuborilmasa, foydalanuvchi o'zi qayta urinadi (PRD.md, 8-bo'lim).
  */
 export async function rasmniYukla(manba: Blob): Promise<string> {
   if (!navigator.onLine) {
-    throw new Error("Internet yo'q. Ulanishni tekshiring");
+    throw new Error(k("Internet yo'q. Ulanishni tekshiring"));
   }
 
   const siqilgan = await rasmniSiq(manba);
@@ -61,14 +63,14 @@ export async function rasmniYukla(manba: Blob): Promise<string> {
   try {
     javob = await apiSorov("/api/rasmlar", { method: "POST", body: shakl });
   } catch {
-    throw new Error("Yuklanmadi. Internetni tekshirib, qayta urinib ko'ring");
+    throw new Error(k("Yuklanmadi. Internetni tekshirib, qayta urinib ko'ring"));
   }
 
   const tana = (await javob.json().catch(() => null)) as
     | { rasm?: { id: string }; xato?: string }
     | null;
   if (!javob.ok || !tana?.rasm) {
-    throw new Error(tana?.xato ?? "Yuklanmadi. Qayta urinib ko'ring");
+    throw new Error(tana?.xato ?? k("Yuklanmadi. Qayta urinib ko'ring"));
   }
   return tana.rasm.id;
 }

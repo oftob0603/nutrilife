@@ -4,8 +4,10 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AiBelgisi } from "@/app/_components/AiBelgisi";
+import { useTarjima } from "@/app/_components/TilTaminoti";
 import { Tugma } from "@/app/_components/Tugma";
 import { YozuvFormasi } from "@/app/_components/YozuvFormasi";
+import { k } from "@/lib/lugat/tarjima";
 import { apiSorov } from "@/lib/services/api-klient";
 import { skanJami, type SkanJavobi, type SkanNatija } from "@/lib/services/skan-hisob";
 import {
@@ -17,9 +19,14 @@ import {
   type FormaXatolari,
 } from "@/lib/services/yozuv-forma";
 
+/** `xabar` — lug'at kaliti yoki server matni; ekranda `erkin()` bilan tarjima qilinadi. */
 type Javob = SkanJavobi | { holat: "xato"; xabar: string; qaytaUrinsa: boolean };
 
-const QADAMLAR = ["Taom aniqlanmoqda", "Porsiya baholanmoqda", "Kaloriya hisoblanmoqda"];
+const QADAMLAR = [
+  k("Taom aniqlanmoqda"),
+  k("Porsiya baholanmoqda"),
+  k("Kaloriya hisoblanmoqda"),
+];
 const QADAM_MS = 1500;
 const UZOQ_KUTISH_MS = 10_000;
 
@@ -42,11 +49,11 @@ async function yubor(tana: { rasmId?: string; matn?: string }): Promise<Javob> {
     }
     return {
       holat: "xato",
-      xabar: "AI javob bermadi. Qayta urinib ko'ring yoki taomni qo'lda qo'shing.",
+      xabar: k("AI javob bermadi. Qayta urinib ko'ring yoki taomni qo'lda qo'shing."),
       qaytaUrinsa: true,
     };
   } catch {
-    return { holat: "xato", xabar: "Internet bilan aloqa yo'q", qaytaUrinsa: true };
+    return { holat: "xato", xabar: k("Internet bilan aloqa yo'q"), qaytaUrinsa: true };
   }
 }
 
@@ -60,6 +67,7 @@ function skanSorovi(kalit: string, tana: { rasmId?: string; matn?: string }) {
 }
 
 function Manba({ rasmId, matn, kichik = false }: { rasmId?: string; matn?: string; kichik?: boolean }) {
+  const { t } = useTarjima();
   const olcham = kichik ? "max-w-[120px]" : "max-w-[260px]";
   return (
     <div
@@ -68,7 +76,7 @@ function Manba({ rasmId, matn, kichik = false }: { rasmId?: string; matn?: strin
       {rasmId ? (
         <Image
           src={`/api/rasmlar/${rasmId}`}
-          alt="Yuklangan ovqat rasmi"
+          alt={t("Yuklangan ovqat rasmi")}
           fill
           unoptimized
           priority
@@ -85,6 +93,7 @@ function Manba({ rasmId, matn, kichik = false }: { rasmId?: string; matn?: strin
 
 /** Kutish holati: skaner chizig'i, almashinuvchi qadamlar, uzoq kutish qatori. */
 function Kutish({ rasmId, matn }: { rasmId?: string; matn?: string }) {
+  const { t } = useTarjima();
   const [qadam, setQadam] = useState(0);
   const [uzoq, setUzoq] = useState(false);
 
@@ -110,10 +119,10 @@ function Kutish({ rasmId, matn }: { rasmId?: string; matn?: string }) {
           className="absolute inset-x-0 top-0 h-[10%] bg-gradient-to-b from-transparent via-aksent to-transparent opacity-90 motion-safe:animate-[skaner_1400ms_cubic-bezier(0.2,0,0,1)_infinite] motion-reduce:hidden"
         />
       </div>
-      <h1 className="text-center text-sarlavha">Ovqatingiz tahlil qilinmoqda…</h1>
+      <h1 className="text-center text-sarlavha">{t("Ovqatingiz tahlil qilinmoqda…")}</h1>
       <div role="status" className="flex flex-col items-center gap-1">
-        <p className="text-asosiy text-matn-2">{QADAMLAR[qadam]}</p>
-        {uzoq && <p className="text-izoh text-matn-2">Biroz cho&apos;zilmoqda, kutamiz…</p>}
+        <p className="text-asosiy text-matn-2">{t(QADAMLAR[qadam])}</p>
+        {uzoq && <p className="text-izoh text-matn-2">{t("Biroz cho'zilmoqda, kutamiz…")}</p>}
       </div>
     </div>
   );
@@ -134,6 +143,7 @@ function Tasdiq({
   onBekor: () => void;
 }) {
   const router = useRouter();
+  const { t } = useTarjima();
   const [forma, setForma] = useState<Forma>(() =>
     natija
       ? formaTuz({
@@ -186,7 +196,7 @@ function Tasdiq({
   return (
     <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col gap-4 px-4 pb-8 pt-6">
       <h1 className="text-sarlavha">
-        {natija ? "Natija" : "Ma'lumotni o'zingiz kiriting"}
+        {natija ? t("Natija") : t("Ma'lumotni o'zingiz kiriting")}
       </h1>
 
       <div className="flex items-center gap-4">
@@ -194,7 +204,7 @@ function Tasdiq({
         {natija && (
           <div className="flex min-w-0 flex-col items-start gap-2">
             <AiBelgisi />
-            <p className="text-izoh text-matn-2">Raqamlar taxminiy, tahrirlash mumkin</p>
+            <p className="text-izoh text-matn-2">{t("Raqamlar taxminiy, tahrirlash mumkin")}</p>
           </div>
         )}
       </div>
@@ -210,7 +220,7 @@ function Tasdiq({
       <div className="mt-auto flex flex-col gap-2 pt-2">
         {saqlanmadi && (
           <p role="alert" className="text-center text-asosiy text-xato">
-            Yozuv saqlanmadi. Qayta urinib ko&apos;ring
+            {t("Yozuv saqlanmadi. Qayta urinib ko'ring")}
           </p>
         )}
         <Tugma
@@ -219,10 +229,10 @@ function Tasdiq({
           disabled={yaroqsiz}
           onClick={tasdiqla}
         >
-          {saqlanmadi ? "Qayta urinish" : "Tasdiqlash va qo'shish"}
+          {saqlanmadi ? t("Qayta urinish") : t("Tasdiqlash va qo'shish")}
         </Tugma>
         <Tugma korinish="uchinchi" disabled={saqlanmoqda} onClick={onBekor}>
-          Bekor qilish
+          {t("Bekor qilish")}
         </Tugma>
       </div>
     </main>
@@ -255,6 +265,7 @@ export function Tahlil({
   onBekor?: () => void;
 }) {
   const router = useRouter();
+  const { t, erkin } = useTarjima();
   const [urinish, setUrinish] = useState(0);
   const [kelgan, setKelgan] = useState<{ urinish: number; javob: Javob } | null>(null);
   const [qoldaKiritish, setQoldaKiritish] = useState(false);
@@ -286,7 +297,7 @@ export function Tahlil({
   const bekorQil = onBekor ?? (() => ket("/"));
   const qolda = (
     <Tugma korinish="ikkilamchi" onClick={() => ket("/taomlar")}>
-      Qo&apos;lda qo&apos;shish
+      {t("Qo'lda qo'shish")}
     </Tugma>
   );
 
@@ -304,43 +315,45 @@ export function Tahlil({
     mazmun = <Kutish key={urinish} rasmId={rasmId} matn={matn} />;
     tugmalar = (
       <Tugma korinish="uchinchi" onClick={bekorQil}>
-        Bekor qilish
+        {t("Bekor qilish")}
       </Tugma>
     );
   } else if (javob.holat === "tanib_bolmadi") {
     mazmun = (
       <Xabar
-        sarlavha="Taomni aniq taniy olmadik"
+        sarlavha={t("Taomni aniq taniy olmadik")}
         izoh={
           rasmId
-            ? "Rasmda bir nechta taom bor yoki yorug'lik yetmagan bo'lishi mumkin. Qiymatni o'zimiz uydirmaymiz."
-            : "Tasvir yetarli emas yoki bu ovqat emas. Qiymatni o'zimiz uydirmaymiz."
+            ? t(
+                "Rasmda bir nechta taom bor yoki yorug'lik yetmagan bo'lishi mumkin. Qiymatni o'zimiz uydirmaymiz.",
+              )
+            : t("Tasvir yetarli emas yoki bu ovqat emas. Qiymatni o'zimiz uydirmaymiz.")
         }
       />
     );
     tugmalar = (
       <>
         {rasmId ? (
-          <Tugma onClick={() => ket("/kamera")}>Boshqa rasm olish</Tugma>
+          <Tugma onClick={() => ket("/kamera")}>{t("Boshqa rasm olish")}</Tugma>
         ) : (
-          <Tugma onClick={bekorQil}>Qayta yozish</Tugma>
+          <Tugma onClick={bekorQil}>{t("Qayta yozish")}</Tugma>
         )}
         {qolda}
         <Tugma korinish="uchinchi" onClick={() => setQoldaKiritish(true)}>
-          Baribir tahrirlab kiritish
+          {t("Baribir tahrirlab kiritish")}
         </Tugma>
       </>
     );
   } else {
-    mazmun = <Xabar sarlavha="Tahlil qilib bo'lmadi" izoh={javob.xabar} />;
+    mazmun = <Xabar sarlavha={t("Tahlil qilib bo'lmadi")} izoh={erkin(javob.xabar)} />;
     tugmalar = (
       <>
         {javob.qaytaUrinsa && (
-          <Tugma onClick={() => setUrinish((u) => u + 1)}>Qayta urinish</Tugma>
+          <Tugma onClick={() => setUrinish((u) => u + 1)}>{t("Qayta urinish")}</Tugma>
         )}
         {qolda}
         <Tugma korinish="uchinchi" onClick={bekorQil}>
-          Bekor qilish
+          {t("Bekor qilish")}
         </Tugma>
       </>
     );

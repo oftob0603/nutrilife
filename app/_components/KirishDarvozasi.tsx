@@ -7,16 +7,21 @@ import {
   initDataniOl,
   SESSIYA_TUGADI_HODISASI,
 } from "@/lib/services/api-klient";
+import { tilniOqi, type Til } from "@/lib/lugat/tarjima";
+import { useTarjima, useTilniOrnat } from "./TilTaminoti";
 import { Tugma } from "./Tugma";
 
 type Holat = "kirilmoqda" | "tayyor" | "xato" | "qayta_oching" | "telegram_emas";
 
 /** true — sahifa shu hisob sessiyasi bilan chizilgan, qayta yuklash shart emas. */
 type KirishNatijasi =
-  | { holat: "tayyor"; sessiyaBorEdi: boolean; onboardingTugadi: boolean }
+  | { holat: "tayyor"; sessiyaBorEdi: boolean; onboardingTugadi: boolean; til: Til }
   | { holat: "xato" | "qayta_oching" | "telegram_emas" };
 
-type KirishJavobi = { foydalanuvchi: { onboardingTugadi: boolean }; sessiyaBorEdi?: boolean };
+type KirishJavobi = {
+  foydalanuvchi: { onboardingTugadi: boolean; til: string };
+  sessiyaBorEdi?: boolean;
+};
 
 const ONBOARDING_MANZILI = "/onboarding";
 
@@ -31,6 +36,7 @@ async function kirish(): Promise<KirishNatijasi> {
           holat: "tayyor",
           sessiyaBorEdi: sessiyaBorEdi === true,
           onboardingTugadi: foydalanuvchi.onboardingTugadi,
+          til: tilniOqi(foydalanuvchi.til),
         };
       }
       if (javob.status !== 401) return { holat: "xato" };
@@ -44,6 +50,7 @@ async function kirish(): Promise<KirishNatijasi> {
         holat: "tayyor",
         sessiyaBorEdi: true,
         onboardingTugadi: foydalanuvchi.onboardingTugadi,
+        til: tilniOqi(foydalanuvchi.til),
       };
     }
     if (sessiya.status !== 401) return { holat: "xato" };
@@ -69,23 +76,34 @@ function Parda({ children }: { children: React.ReactNode }) {
  */
 export function KirishDarvozasi({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const { t } = useTarjima();
+  const tilniOrnat = useTilniOrnat();
   const [holat, setHolat] = useState<Holat>("kirilmoqda");
   const [yangilanmoqda, yangila] = useTransition();
 
   const natijaniQolla = useCallback(
     (natija: KirishNatijasi) => {
       if (natija.holat === "tayyor") {
+        // Sahifa boshqa tilda chizilgan (birinchi ochilish yoki til boshqa qurilmada
+        // o'zgargan): klient matnlari darhol, server matnlari yangilangach almashadi.
+        const tilBoshqa = natija.til !== tilniOqi(document.documentElement.lang);
+        if (tilBoshqa) tilniOrnat(natija.til);
+
         // Onboarding tugamaguncha Home ochilmaydi (onboarding-tz.md, 1-bo'lim). Yangi
-        // manzilga o'tish sahifani sessiya bilan qayta so'raydi, alohida yangilash kerak emas.
-        if (!natija.onboardingTugadi && window.location.pathname !== ONBOARDING_MANZILI) {
-          yangila(() => router.replace(ONBOARDING_MANZILI));
-        } else if (!natija.sessiyaBorEdi) {
-          yangila(() => router.refresh());
+        // manzilga o'tish sahifani sessiya bilan qayta so'raydi; ildiz qolip (<html lang>)
+        // esa faqat `refresh` bilan qayta chiziladi.
+        const onboardingga =
+          !natija.onboardingTugadi && window.location.pathname !== ONBOARDING_MANZILI;
+        if (onboardingga || !natija.sessiyaBorEdi || tilBoshqa) {
+          yangila(() => {
+            if (onboardingga) router.replace(ONBOARDING_MANZILI);
+            if (!onboardingga || tilBoshqa) router.refresh();
+          });
         }
       }
       setHolat(natija.holat);
     },
-    [router],
+    [router, tilniOrnat],
   );
 
   useEffect(() => {
@@ -118,9 +136,9 @@ export function KirishDarvozasi({ children }: { children: React.ReactNode }) {
           {holat === "xato" ? (
             <>
               <div className="flex flex-col gap-2">
-                <h1 className="text-sarlavha">Kirib bo&apos;lmadi</h1>
+                <h1 className="text-sarlavha">{t("Kirib bo'lmadi")}</h1>
                 <p className="text-asosiy text-matn-2">
-                  Internetni tekshirib, qayta urinib ko&apos;ring.
+                  {t("Internetni tekshirib, qayta urinib ko'ring.")}
                 </p>
               </div>
               <div className="w-full max-w-xs">
@@ -130,23 +148,24 @@ export function KirishDarvozasi({ children }: { children: React.ReactNode }) {
                     void kirish().then(natijaniQolla);
                   }}
                 >
-                  Qayta urinish
+                  {t("Qayta urinish")}
                 </Tugma>
               </div>
             </>
           ) : holat === "qayta_oching" ? (
             <div className="flex flex-col gap-2">
-              <h1 className="text-sarlavha">Ilovani qayta oching</h1>
+              <h1 className="text-sarlavha">{t("Ilovani qayta oching")}</h1>
               <p className="text-asosiy text-matn-2">
-                Kirish muddati tugadi. Ilovani yopib, Telegram&apos;dan qaytadan oching.
+                {t("Kirish muddati tugadi. Ilovani yopib, Telegram'dan qaytadan oching.")}
               </p>
             </div>
           ) : holat === "telegram_emas" ? (
             <div className="flex flex-col gap-2">
-              <h1 className="text-sarlavha">Ilovani Telegram orqali oching</h1>
+              <h1 className="text-sarlavha">{t("Ilovani Telegram orqali oching")}</h1>
               <p className="text-asosiy text-matn-2">
-                Nutrilife faqat Telegram ichida ishlaydi. Botni ochib, ilovani o&apos;sha
-                yerdan ishga tushiring.
+                {t(
+                  "Nutrilife faqat Telegram ichida ishlaydi. Botni ochib, ilovani o'sha yerdan ishga tushiring.",
+                )}
               </p>
             </div>
           ) : (
@@ -154,7 +173,7 @@ export function KirishDarvozasi({ children }: { children: React.ReactNode }) {
               <p className="font-display text-sarlavha">Nutrilife</p>
               <span
                 role="status"
-                aria-label="Kirilmoqda"
+                aria-label={t("Kirilmoqda")}
                 className="size-6 animate-spin rounded-full border-2 border-matn-3 border-t-transparent"
               />
             </>

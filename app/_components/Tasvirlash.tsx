@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Tahlil } from "@/app/_components/Tahlil";
+import { useTarjima } from "@/app/_components/TilTaminoti";
 import { Tugma } from "@/app/_components/Tugma";
 import { MATN_CHEGARASI } from "@/lib/services/skan-hisob";
 
@@ -29,6 +30,7 @@ function ChapStrelka() {
  * bilan bir xil tahlil ekrani (E6) ochiladi; bekor qilinsa yozilgan matn joyida qoladi.
  */
 export function Tasvirlash({ boshlangich }: { boshlangich: string }) {
+  const { t } = useTarjima();
   const [matn, setMatn] = useState(boshlangich);
   const [yuborilgan, setYuborilgan] = useState<string | null>(null);
 
@@ -41,31 +43,31 @@ export function Tasvirlash({ boshlangich }: { boshlangich: string }) {
       <header className="flex items-center gap-2 py-4">
         <Link
           href="/taomlar"
-          aria-label="Orqaga"
+          aria-label={t("Orqaga")}
           className="-ml-3 flex size-11 items-center justify-center rounded-chip text-siyoh"
         >
           <ChapStrelka />
         </Link>
-        <h1 className="min-w-0 truncate text-sarlavha">Matn bilan tasvirlash</h1>
+        <h1 className="min-w-0 truncate text-sarlavha">{t("Matn bilan tasvirlash")}</h1>
       </header>
 
       <div className="flex flex-col gap-4">
         <label className="flex flex-col gap-2">
           <span className="text-izoh text-matn-2">
-            Nima yedingiz? Taom nomi va taxminiy miqdorini yozing.
+            {t("Nima yedingiz? Taom nomi va taxminiy miqdorini yozing.")}
           </span>
           <textarea
             value={matn}
             onChange={(hodisa) => setMatn(hodisa.target.value)}
             maxLength={MATN_CHEGARASI}
             rows={4}
-            placeholder="Masalan: bir kosa mastava va yarimta non"
+            placeholder={t("Masalan: bir kosa mastava va yarimta non")}
             className="w-full resize-none rounded-karta border border-chegara bg-karta p-4 text-asosiy outline-none placeholder:text-matn-3"
           />
         </label>
 
         <Tugma onClick={() => setYuborilgan(matn.trim())} disabled={!matn.trim()}>
-          Tahlil qilish
+          {t("Tahlil qilish")}
         </Tugma>
       </div>
     </main>

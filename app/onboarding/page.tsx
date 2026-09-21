@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { OnboardingOqimi } from "@/app/_components/onboarding/OnboardingOqimi";
 import { serverdanApi } from "@/lib/api-asos";
+import { serverTarjimoni } from "@/lib/lugat/server";
 import type { OnboardingHolati } from "@/lib/services/onboarding-hisob";
 
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
@@ -25,11 +26,12 @@ export default async function OnboardingSahifasi() {
 
   // Sessiyasiz birinchi ochilishda holat bo'lmaydi — kirish darvozasi kirgach sahifani qayta so'raydi.
   if (!holat) {
+    const { t } = await serverTarjimoni();
     return (
       <main className="mx-auto flex w-full max-w-md flex-1 flex-col items-center justify-center gap-2 px-4 text-center">
-        <p className="text-karta-sarlavha">Ma&apos;lumotni yuklab bo&apos;lmadi</p>
+        <p className="text-karta-sarlavha">{t("Ma'lumotni yuklab bo'lmadi")}</p>
         <p className="text-izoh text-matn-2">
-          Internetni tekshirib, ilovani qayta ochib ko&apos;ring.
+          {t("Internetni tekshirib, ilovani qayta ochib ko'ring.")}
         </p>
       </main>
     );

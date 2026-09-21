@@ -1,5 +1,6 @@
 "use client";
 
+import { useTarjima } from "@/app/_components/TilTaminoti";
 import { OVQAT_TURLARI, type OvqatTuri } from "@/lib/services/yozuv-hisob";
 
 /** Prototipdagi SegmentedControl: fon ustida, tanlangani karta rangida. */
@@ -10,10 +11,12 @@ export function OvqatTuriTanlagich({
   qiymat: OvqatTuri;
   onChange: (turi: OvqatTuri) => void;
 }) {
+  const { t } = useTarjima();
+
   return (
     <div
       role="tablist"
-      aria-label="Ovqat turi"
+      aria-label={t("Ovqat turi")}
       className="flex gap-1 rounded-chip border border-chegara bg-fon p-1"
     >
       {OVQAT_TURLARI.map((turi) => {
@@ -31,7 +34,7 @@ export function OvqatTuriTanlagich({
                 : "text-matn-2"
             }`}
           >
-            {turi}
+            {t(turi)}
           </button>
         );
       })}

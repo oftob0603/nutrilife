@@ -1,9 +1,11 @@
 // Taom bilan bog'liq sof hisob — bazaga bog'liq emas, shuning uchun klient
 // komponentlar ham shu yerdan import qiladi (lib/services/taomlar.ts baza ochadi).
 
+import type { Tarjimon, Til } from "../lugat/tarjima.ts";
+
 export type Taom = {
   id: string;
-  /** O'zbekcha nom — interfeysda shu ko'rinadi; ru/en nomlar qidiruv uchun. */
+  /** O'zbekcha nom. Ekranda `taomNomi(taom, til)` ko'rsatiladi; qidiruv uch tilda ishlaydi. */
   nomi: string;
   nomiRu: string;
   nomiEn: string;
@@ -18,9 +20,22 @@ export type Taom = {
   porsiyalar: number[];
 };
 
+/** Taomning foydalanuvchi tilidagi nomi; tarjimasi bo'sh bo'lsa — o'zbekchasi. */
+export function taomNomi(taom: Taom, til: Til): string {
+  if (til === "ru") return taom.nomiRu || taom.nomi;
+  if (til === "en") return taom.nomiEn || taom.nomi;
+  return taom.nomi;
+}
+
+/** Ro'yxat tanlangan tildagi nom bo'yicha alifbo tartibida (baza o'zbekcha nom bo'yicha beradi). */
+export function nomBoyichaTartibla(taomlar: Taom[], til: Til): Taom[] {
+  if (til === "uz") return taomlar;
+  return [...taomlar].sort((a, b) => taomNomi(a, til).localeCompare(taomNomi(b, til), til));
+}
+
 /** Karta ostidagi izoh: "100 g · 186 kkal" yoki "1 dona · 310 kkal". */
-export function olchovIzohi(taom: Taom): string {
-  return `${taom.olchovMiqdori} ${taom.olchovBirligi} · ${taom.kaloriya} kkal`;
+export function olchovIzohi(taom: Taom, { t, miqdor }: Tarjimon): string {
+  return t("{0} · {1} kkal", miqdor(taom.olchovMiqdori, taom.olchovBirligi), taom.kaloriya);
 }
 
 /**
@@ -41,6 +56,7 @@ export function taomMosmi(taom: Taom, sorov: string): boolean {
 }
 
 export type PorsiyaHisobi = {
+  /** Bazaga yoziladigan til-betaraf porsiya matni: "350 g", "2 bo'lak". */
   belgisi: string;
   kaloriya: number;
   oqsil: number;

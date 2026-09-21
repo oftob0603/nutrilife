@@ -1,20 +1,25 @@
+import { tarjimon, type Kalit, type Til } from "@/lib/lugat/tarjima";
+
 /** Bitta makro: nomi, hozirgi / maqsad va to'lish chizig'i (DESIGN.md, 6-bo'lim). */
 export function MakroChizigi({
+  til,
   nomi,
   qiymat,
   maqsad,
 }: {
-  nomi: string;
+  til: Til;
+  nomi: Kalit;
   qiymat: number;
   maqsad: number;
 }) {
+  const { t } = tarjimon(til);
   const ulush = maqsad > 0 ? Math.min(100, (qiymat / maqsad) * 100) : 0;
 
   return (
     <div className="flex min-w-0 flex-1 flex-col gap-1">
-      <span className="truncate text-izoh text-matn-2">{nomi}</span>
+      <span className="truncate text-izoh text-matn-2">{t(nomi)}</span>
       <span className="text-izoh tabular-nums">
-        {Math.round(qiymat)} / {maqsad} g
+        {t("{0} / {1} g", Math.round(qiymat), maqsad)}
       </span>
       <div className="h-1 overflow-hidden rounded-full bg-chegara">
         <div

@@ -2,6 +2,7 @@
 
 import { useId } from "react";
 import { OvqatTuriTanlagich } from "@/app/_components/OvqatTuriTanlagich";
+import { useTarjima } from "@/app/_components/TilTaminoti";
 import {
   miqdorOzgardi,
   qiymatOzgardi,
@@ -79,31 +80,33 @@ export function YozuvFormasi({
   bloklangan?: boolean;
   onChange: (forma: Forma) => void;
 }) {
+  const { t, erkin } = useTarjima();
+
   return (
     <div className="flex flex-col gap-4">
       <Maydon
-        nomi="Taom nomi"
+        nomi={t("Taom nomi")}
         turi="matn"
         qiymat={forma.taomNomi}
-        xato={xatolar.taomNomi}
+        xato={xatolar.taomNomi && t(xatolar.taomNomi)}
         bloklangan={bloklangan}
         onChange={(taomNomi) => onChange({ ...forma, taomNomi })}
       />
 
       <div className="grid grid-cols-2 gap-3">
         <Maydon
-          nomi="Porsiya"
-          birlik={birlik}
+          nomi={t("Porsiya")}
+          birlik={erkin(birlik)}
           qiymat={forma.miqdor}
-          xato={xatolar.miqdor}
+          xato={xatolar.miqdor && t(xatolar.miqdor)}
           bloklangan={bloklangan}
           onChange={(matn) => onChange(miqdorOzgardi(forma, matn))}
         />
         <Maydon
-          nomi="Kaloriya"
-          birlik="kkal"
+          nomi={t("Kaloriya")}
+          birlik={t("kkal")}
           qiymat={forma.kaloriya}
-          xato={xatolar.kaloriya}
+          xato={xatolar.kaloriya && t(xatolar.kaloriya)}
           bloklangan={bloklangan}
           onChange={(matn) => onChange(qiymatOzgardi(forma, "kaloriya", matn))}
         />
@@ -111,33 +114,33 @@ export function YozuvFormasi({
 
       <div className="grid grid-cols-3 gap-3">
         <Maydon
-          nomi="Oqsil"
-          birlik="g"
+          nomi={t("Oqsil")}
+          birlik={t("g")}
           qiymat={forma.oqsil}
-          xato={xatolar.oqsil}
+          xato={xatolar.oqsil && t(xatolar.oqsil)}
           bloklangan={bloklangan}
           onChange={(matn) => onChange(qiymatOzgardi(forma, "oqsil", matn))}
         />
         <Maydon
-          nomi="Yog'"
-          birlik="g"
+          nomi={t("Yog'")}
+          birlik={t("g")}
           qiymat={forma.yog}
-          xato={xatolar.yog}
+          xato={xatolar.yog && t(xatolar.yog)}
           bloklangan={bloklangan}
           onChange={(matn) => onChange(qiymatOzgardi(forma, "yog", matn))}
         />
         <Maydon
-          nomi="Uglevod"
-          birlik="g"
+          nomi={t("Uglevod")}
+          birlik={t("g")}
           qiymat={forma.uglevod}
-          xato={xatolar.uglevod}
+          xato={xatolar.uglevod && t(xatolar.uglevod)}
           bloklangan={bloklangan}
           onChange={(matn) => onChange(qiymatOzgardi(forma, "uglevod", matn))}
         />
       </div>
 
       <section className="flex flex-col gap-2">
-        <h2 className="text-izoh text-matn-2">Ovqat turi</h2>
+        <h2 className="text-izoh text-matn-2">{t("Ovqat turi")}</h2>
         <OvqatTuriTanlagich
           qiymat={forma.ovqatTuri}
           onChange={(ovqatTuri) => {

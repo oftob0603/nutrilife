@@ -2,8 +2,9 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { PorsiyaTanlagich } from "@/app/_components/PorsiyaTanlagich";
 import { TaomRasmi } from "@/app/_components/TaomRasmi";
-import type { Taom } from "@/lib/services/taom-hisob";
+import { taomNomi, type Taom } from "@/lib/services/taom-hisob";
 import { apiAsos } from "@/lib/api-asos";
+import { serverTarjimoni } from "@/lib/lugat/server";
 
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
 export const dynamic = "force-dynamic";
@@ -37,6 +38,7 @@ function ChapStrelka() {
 export default async function TaomSahifasi({
   params,
 }: PageProps<"/taomlar/[id]">) {
+  const { t, til } = await serverTarjimoni();
   const { id } = await params;
   const taom = await taomniYukla(id);
 
@@ -47,12 +49,12 @@ export default async function TaomSahifasi({
       <header className="flex items-center gap-2 py-4">
         <Link
           href="/taomlar"
-          aria-label="Orqaga"
+          aria-label={t("Orqaga")}
           className="-ml-3 flex size-11 items-center justify-center rounded-chip text-siyoh"
         >
           <ChapStrelka />
         </Link>
-        <h1 className="min-w-0 truncate text-sarlavha">{taom.nomi}</h1>
+        <h1 className="min-w-0 truncate text-sarlavha">{taomNomi(taom, til)}</h1>
       </header>
 
       <div className="flex flex-col gap-6">

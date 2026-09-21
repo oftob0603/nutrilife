@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { AiBelgisi } from "@/app/_components/AiBelgisi";
 import { TaomRasmi } from "@/app/_components/TaomRasmi";
+import { tarjimon, type Til } from "@/lib/lugat/tarjima";
 import { raqam } from "@/lib/services/taom-hisob";
 import { vaqtMatni, type Yozuv } from "@/lib/services/yozuv-hisob";
 
@@ -11,13 +12,18 @@ import { vaqtMatni, type Yozuv } from "@/lib/services/yozuv-hisob";
  */
 export function YozuvQatori({
   yozuv,
+  til,
   batafsil = false,
   qaytish = "/",
 }: {
   yozuv: Yozuv;
+  til: Til;
   batafsil?: boolean;
   qaytish?: string;
 }) {
+  const { t, porsiya } = tarjimon(til);
+  const makrolar = [Math.round(yozuv.oqsil), Math.round(yozuv.yog), Math.round(yozuv.uglevod)];
+
   return (
     <li>
       <Link
@@ -31,21 +37,20 @@ export function YozuvQatori({
             {batafsil && yozuv.manba === "ai" && <AiBelgisi />}
           </div>
           <p className="mt-1 text-izoh text-matn-2 tabular-nums">
-            {yozuv.porsiya} · {vaqtMatni(yozuv.vaqt)}
+            {porsiya(yozuv.porsiya)} · {vaqtMatni(yozuv.vaqt)}
           </p>
           {batafsil && (
             <p
               className="mt-1 truncate text-izoh text-matn-2 tabular-nums"
-              aria-label={`Oqsil ${Math.round(yozuv.oqsil)} g, yog' ${Math.round(yozuv.yog)} g, uglevod ${Math.round(yozuv.uglevod)} g`}
+              aria-label={t("Oqsil {0} g, yog' {1} g, uglevod {2} g", ...makrolar)}
             >
-              O {Math.round(yozuv.oqsil)} g · Y {Math.round(yozuv.yog)} g · U{" "}
-              {Math.round(yozuv.uglevod)} g
+              {t("O {0} g · Y {1} g · U {2} g", ...makrolar)}
             </p>
           )}
         </div>
         <p className="shrink-0 text-karta-sarlavha tabular-nums">
           {raqam(yozuv.kaloriya)}
-          <span className="text-izoh font-normal text-matn-2"> kkal</span>
+          <span className="text-izoh font-normal text-matn-2"> {t("kkal")}</span>
         </p>
       </Link>
     </li>

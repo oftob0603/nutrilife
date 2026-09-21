@@ -1,6 +1,7 @@
 // Onboarding formasi: ekrandagi holat <-> API'ga yuboriladigan javob.
 // Sof modul — klient komponent ishlatadi, bazaga bog'liq emas.
 
+import type { Kalit } from "../lugat/tarjima.ts";
 import {
   CHEKLOV_YOQ,
   ISM_CHEGARASI,
@@ -67,8 +68,9 @@ const IZOHSIZ: OlchovIzohlari = { yonalish: null, vazn: null, maqsadVazn: null, 
 export type QadamTekshiruvi = {
   /** Yuborishga tayyor tana; javob hali to'liq yoki to'g'ri bo'lmasa null. */
   tana: Record<string, unknown> | null;
-  ismXatosi?: string;
-  yoshXatosi?: string;
+  /** Ism `ISM_CHEGARASI` dan uzun — matnini ekran o'zi tuzadi (ichida son bor). */
+  ismUzun?: true;
+  yoshXatosi?: Kalit;
   /** O'lchovlar ekrani izohlari — har biri o'z maydoni ostida. */
   olchov: OlchovIzohlari;
 };
@@ -84,7 +86,7 @@ export function qadamniTayyorla(qadam: number, forma: Forma): QadamTekshiruvi {
 
     case 2: {
       const ism = forma.ism.trim();
-      if (ism.length > ISM_CHEGARASI) natija.ismXatosi = `${ISM_CHEGARASI} belgidan oshmasin`;
+      if (ism.length > ISM_CHEGARASI) natija.ismUzun = true;
       else if (ism) natija.tana = { qadam, ism };
       break;
     }

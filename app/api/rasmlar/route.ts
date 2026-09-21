@@ -5,8 +5,10 @@ import {
   rasmTuri,
 } from "@/lib/services/rasm-hisob";
 import { joriyFoydalanuvchiId, kirishKerak } from "@/lib/services/sessiya";
+import { k } from "@/lib/lugat/tarjima";
 
-const KATTA = `Rasm ${RASM_CHEGARASI_MB} MB dan katta`;
+// Ekranda ko'rinadigan xabarlar — lug'at kalitlari: klient ularni `erkin()` bilan tarjima qiladi.
+const KATTA = k(`Rasm ${RASM_CHEGARASI_MB} MB dan katta` as const);
 
 /** Ovqat rasmini qabul qiladi: multipart, `rasm` maydoni. Faqat rasm, hajmi chegaralangan. */
 export async function POST(sorov: Request) {
@@ -37,7 +39,7 @@ export async function POST(sorov: Request) {
   const tur = rasmTuri(baytlar);
   if (!tur) {
     return Response.json(
-      { xato: "Faqat rasm yuklash mumkin: JPEG, PNG yoki WebP" },
+      { xato: k("Faqat rasm yuklash mumkin: JPEG, PNG yoki WebP") },
       { status: 415 },
     );
   }
@@ -48,7 +50,7 @@ export async function POST(sorov: Request) {
   } catch (xato) {
     console.error("Rasm saqlanmadi:", xato instanceof Error ? xato.message : xato);
     return Response.json(
-      { xato: "Rasmni saqlab bo'lmadi. Qayta urinib ko'ring" },
+      { xato: k("Rasmni saqlab bo'lmadi. Qayta urinib ko'ring") },
       { status: 502 },
     );
   }

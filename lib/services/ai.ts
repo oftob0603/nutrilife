@@ -1,3 +1,4 @@
+import type { Til } from "../lugat/tarjima.ts";
 import type { RasmTuri } from "./rasm-hisob.ts";
 
 // AI xizmatiga yagona kirish nuqtasi. Hozircha Claude API; asosiy provayder Gemini
@@ -15,6 +16,8 @@ export type AiKirish = {
   rasm?: { baytlar: Uint8Array; mime: RasmTuri };
   /** Foydalanuvchi kiritgan vazn — AI porsiyani taxmin qilmaydi, shuni ishlatadi. */
   vaznGramm?: number | null;
+  /** Taom nomi shu tilda qaytadi — foydalanuvchi interfeysi tili. */
+  til?: Til;
 };
 
 export type AiXatoTuri = "sozlanmagan" | "vaqt_tugadi" | "xizmat";
@@ -29,12 +32,19 @@ export class AiXatosi extends Error {
   }
 }
 
-const TIZIM = `You are the food recognition engine of a calorie tracking app used in Uzbekistan.
+// Taom nomi foydalanuvchi tilida yoziladi: jurnalga shu nom tushadi.
+const NOM_QOIDASI: Record<Til, string> = {
+  uz: `the dish name in Uzbek, Latin script, short (for example "Osh", "Tovuq sho'rva"). If several foods are on the plate, name the main one and mention the rest briefly ("Osh, achichuk bilan").`,
+  ru: `the dish name in Russian, Cyrillic script, short (for example "Плов", "Куриный суп"). Use the name the dish is known by in Russian in Uzbekistan ("Манты", "Лагман", "Самса"). If several foods are on the plate, name the main one and mention the rest briefly ("Плов, с ачичуком").`,
+  en: `the dish name in English, short (for example "Plov", "Chicken soup"). Keep the common transliterated name for Uzbek dishes ("Manti", "Lagman", "Samsa"). If several foods are on the plate, name the main one and mention the rest briefly ("Plov with achichuk salad").`,
+};
+
+const tizim = (til: Til) => `You are the food recognition engine of a calorie tracking app used in Uzbekistan.
 You receive a photo of a meal, a short text description of a meal, or both. Identify the dish and estimate its nutrition.
 
 Rules:
 - Know Uzbek and Central Asian dishes well (osh/palov, manti, somsa, lag'mon, norin, dimlama, mastava, shurpa, chuchvara, qozonkabob, non, shavla, achichuk and others). Descriptions may come in Uzbek (Latin or Cyrillic), Russian or English.
-- "taomNomi": the dish name in Uzbek, Latin script, short (for example "Osh", "Tovuq sho'rva"). If several foods are on the plate, name the main one and mention the rest briefly ("Osh, achichuk bilan").
+- "taomNomi": ${NOM_QOIDASI[til]}
 - "porsiyaGramm": estimated weight in grams of the whole portion shown or described. If the user states a weight, use exactly that.
 - "kaloriya100", "oqsil100", "yog100", "uglevod100": kcal and grams of protein, fat and carbohydrate per 100 g of the dish as prepared.
 - Never invent values. If the input is not food, the photo is too unclear, or you cannot identify the dish with reasonable confidence, set "tanildi" to false, "taomNomi" to "" and every number to 0.
@@ -112,7 +122,7 @@ export async function aiTahlil(kirish: AiKirish): Promise<unknown> {
       body: JSON.stringify({
         model,
         max_tokens: 4096,
-        system: TIZIM,
+        system: tizim(kirish.til ?? "uz"),
         messages: [{ role: "user", content: mazmun }],
         output_config: { format: { type: "json_schema", schema: SXEMA } },
       }),

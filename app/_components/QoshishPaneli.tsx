@@ -3,15 +3,19 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useTarjima } from "@/app/_components/TilTaminoti";
 import { Tugma } from "@/app/_components/Tugma";
 import { rasmniYukla } from "@/lib/services/rasm-yuklash";
 
 const PANELNI_OCH = "qoshish-panelini-och";
 
 /** Bo'sh holatdagi tugma — shu sahifadagi `QoshishPaneli` ni (E2) ochadi. */
-export function QoshishTugmasi({ children = "Ovqat qo'shish" }: { children?: React.ReactNode }) {
+export function QoshishTugmasi({ children }: { children?: React.ReactNode }) {
+  const { t } = useTarjima();
   return (
-    <Tugma onClick={() => window.dispatchEvent(new Event(PANELNI_OCH))}>{children}</Tugma>
+    <Tugma onClick={() => window.dispatchEvent(new Event(PANELNI_OCH))}>
+      {children ?? t("Ovqat qo'shish")}
+    </Tugma>
   );
 }
 
@@ -117,7 +121,10 @@ function Bolim({
       >
         {children}
       </svg>
-      <span className={`max-w-full truncate text-[11px] leading-none ${faol ? "font-medium" : ""}`}>
+      {/* Eng uzun yorliq — ruscha "Статистика": 360 px ekranda ham qirqilmasin. */}
+      <span
+        className={`max-w-full truncate text-[11px] leading-none tracking-tight ${faol ? "font-medium" : ""}`}
+      >
         {nomi}
       </span>
     </>
@@ -150,6 +157,7 @@ function Bolim({
  */
 export function QoshishPaneli({ faol }: { faol: "asosiy" | "profil" }) {
   const router = useRouter();
+  const { t, erkin } = useTarjima();
   const [ochiq, setOchiq] = useState(false);
   const [yuklanmoqda, setYuklanmoqda] = useState(false);
   const [xato, setXato] = useState<string | null>(null);
@@ -164,7 +172,8 @@ export function QoshishPaneli({ faol }: { faol: "asosiy" | "profil" }) {
     try {
       router.push(`/tahlil/${await rasmniYukla(rasm)}`);
     } catch (sabab) {
-      setXato(sabab instanceof Error ? sabab.message : "Yuklanmadi");
+      // Xabar — lug'at kaliti yoki serverdan kelgan matn (rasm-yuklash.ts).
+      setXato(sabab instanceof Error ? erkin(sabab.message) : t("Yuklanmadi"));
       setYuklanmoqda(false);
     }
   }
@@ -196,22 +205,22 @@ export function QoshishPaneli({ faol }: { faol: "asosiy" | "profil" }) {
       {/* E2 ochiq bo'lganda panel yashiriladi — foydalanuvchi oqimdan tasodifan chiqib ketmasin. */}
       {!ochiq && (
         <nav
-          aria-label="Asosiy navigatsiya"
-          className="fixed inset-x-4 bottom-[max(1.5rem,env(safe-area-inset-bottom))] mx-auto flex max-w-sm items-center gap-2 rounded-full border border-chegara bg-karta px-3 py-1 shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
+          aria-label={t("Asosiy navigatsiya")}
+          className="fixed inset-x-4 bottom-[max(1.5rem,env(safe-area-inset-bottom))] mx-auto flex max-w-sm items-center gap-1 rounded-full border border-chegara bg-karta px-2 py-1 shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
         >
-          <Bolim href="/" nomi="Asosiy" faol={faol === "asosiy"}>
+          <Bolim href="/" nomi={t("Asosiy")} faol={faol === "asosiy"}>
             <path d="M15.6 2.7a10 10 0 1 0 5.7 5.7" />
             <circle cx="12" cy="12" r="2" />
             <path d="M13.4 10.6 19 5" />
           </Bolim>
-          <Bolim nomi="Retseptlar">
+          <Bolim nomi={t("Retseptlar")}>
             <path d="M12 7v14" />
             <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
           </Bolim>
           <button
             type="button"
             onClick={() => setOchiq(true)}
-            aria-label="Ovqat qo'shish"
+            aria-label={t("Ovqat qo'shish")}
             className="flex size-14 shrink-0 items-center justify-center rounded-full bg-siyoh text-fon shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-transform active:scale-[0.98]"
           >
             <svg
@@ -227,11 +236,11 @@ export function QoshishPaneli({ faol }: { faol: "asosiy" | "profil" }) {
               <path d="M12 5v14M5 12h14" />
             </svg>
           </button>
-          <Bolim nomi="Statistika">
+          <Bolim nomi={t("Statistika")}>
             <path d="M16 7h6v6" />
             <path d="m22 7-8.5 8.5-5-5L2 17" />
           </Bolim>
-          <Bolim href="/profil" nomi="Profil" faol={faol === "profil"}>
+          <Bolim href="/profil" nomi={t("Profil")} faol={faol === "profil"}>
             <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
             <circle cx="12" cy="7" r="4" />
           </Bolim>
@@ -242,12 +251,12 @@ export function QoshishPaneli({ faol }: { faol: "asosiy" | "profil" }) {
         <div
           role="dialog"
           aria-modal="true"
-          aria-label="Ovqat qo'shish"
+          aria-label={t("Ovqat qo'shish")}
           className="fixed inset-0 z-10 flex flex-col justify-end"
         >
           <button
             type="button"
-            aria-label="Yopish"
+            aria-label={t("Yopish")}
             onClick={yop}
             className="absolute inset-0 bg-parda"
           />
@@ -257,15 +266,15 @@ export function QoshishPaneli({ faol }: { faol: "asosiy" | "profil" }) {
             <div className="flex flex-col gap-3">
               <Qator
                 ikona="kamera"
-                nomi="Kamera"
-                izoh="Ovqatni rasmga oling"
+                nomi={t("Kamera")}
+                izoh={t("Ovqatni rasmga oling")}
                 ochiq={!yuklanmoqda}
                 onClick={() => router.push("/kamera")}
               />
               <Qator
                 ikona="galereya"
-                nomi="Galereya"
-                izoh={yuklanmoqda ? "Rasm yuklanmoqda…" : "Tayyor rasmni tanlang"}
+                nomi={t("Galereya")}
+                izoh={yuklanmoqda ? t("Rasm yuklanmoqda…") : t("Tayyor rasmni tanlang")}
                 ochiq={!yuklanmoqda}
                 onClick={() => tanlagich.current?.click()}
               />
@@ -283,8 +292,8 @@ export function QoshishPaneli({ faol }: { faol: "asosiy" | "profil" }) {
               />
               <Qator
                 ikona="qolda"
-                nomi="Qo'lda qo'shish"
-                izoh="Taom bazasidan tanlang"
+                nomi={t("Qo'lda qo'shish")}
+                izoh={t("Taom bazasidan tanlang")}
                 ochiq={!yuklanmoqda}
                 onClick={() => router.push("/taomlar")}
               />
@@ -297,7 +306,7 @@ export function QoshishPaneli({ faol }: { faol: "asosiy" | "profil" }) {
                     onClick={() => oxirgiRasm.current && void yubor(oxirgiRasm.current)}
                     className="min-h-11 shrink-0 text-izoh font-medium text-siyoh"
                   >
-                    Qayta urinish
+                    {t("Qayta urinish")}
                   </button>
                 </div>
               )}
@@ -308,7 +317,7 @@ export function QoshishPaneli({ faol }: { faol: "asosiy" | "profil" }) {
                 disabled={yuklanmoqda}
                 className="min-h-11 text-asosiy text-matn-2 disabled:opacity-40"
               >
-                Bekor qilish
+                {t("Bekor qilish")}
               </button>
             </div>
           </div>

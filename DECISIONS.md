@@ -362,6 +362,11 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-21 · UMUMIY QOIDA: ko'rinishda prototip DESIGN.md yoki TZ bilan zid kelsa — prototipdagisi tanlanadi, so'ralmaydi; prototipda bor, DESIGN.md'da yo'q token DESIGN.md va globals.css ga qo'shiladi.**
 *Sabab:* Foydalanuvchi PRO belgisi lime rangda chizilganini tuzatdi — "ikkita tanlash kelsa prototipdagini tanlaysan".
 
+## 2026-09-21 — interfeys lug'ati (9-task)
+
+**2026-09-21 · Interfeys lug'ati kaliti — o'zbekcha matnning o'zi (prototip i18n.js qolipi), TypeScript turi bilan tekshiriladi; til cookie (`nl_til`) — bazadagi `foydalanuvchilar.til` ning nusxasi; jurnal yozuvidagi taom nomi qo'shilgan paytdagi tilda saqlanadi, AI skan nomni interfeys tilida qaytaradi.**
+*Sabab:* Kalit sifatida o'zbekcha matn ishlatish kod ichida o'qishni osonlashtiradi va `tsc` yetishmagan tarjimani ushlaydi; cookie serverda tez o'qish uchun, haqiqiy manba baribir baza; taom nomini saqlash tilida qoldirish tarixiy yozuvni o'zgartirmaydi.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

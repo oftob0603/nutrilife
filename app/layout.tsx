@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Inter_Tight } from "next/font/google";
 import { KirishDarvozasi } from "@/app/_components/KirishDarvozasi";
+import { TilTaminoti } from "@/app/_components/TilTaminoti";
+import { serverTili } from "@/lib/lugat/server";
 import { MAVZU_SKRIPTI } from "@/lib/mavzu";
 import "./globals.css";
 
@@ -21,10 +23,12 @@ export const metadata: Metadata = {
   description: "Ovqatingiz qancha kaloriya — rasmga oling, bilib oling",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const til = await serverTili();
+
   return (
     <html
-      lang="uz"
+      lang={til}
       className={`${inter.variable} ${interTight.variable} h-full antialiased`}
       // Skript gidratsiyadan oldin data-mavzu ni qo'yadi — React DOM'dagi qiymatni qabul qilsin.
       suppressHydrationWarning
@@ -34,7 +38,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <script dangerouslySetInnerHTML={{ __html: MAVZU_SKRIPTI }} />
       </head>
       <body className="flex min-h-full flex-col font-sans">
-        <KirishDarvozasi>{children}</KirishDarvozasi>
+        <TilTaminoti til={til}>
+          <KirishDarvozasi>{children}</KirishDarvozasi>
+        </TilTaminoti>
       </body>
     </html>
   );

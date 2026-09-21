@@ -2,6 +2,8 @@ import { AiXatosi } from "@/lib/services/ai";
 import { joriyFoydalanuvchiId, kirishKerak } from "@/lib/services/sessiya";
 import { skanQil } from "@/lib/services/skan";
 import { MATN_CHEGARASI, VAZN_CHEGARASI } from "@/lib/services/skan-hisob";
+import { sorovTili } from "@/lib/lugat/server";
+import { k } from "@/lib/lugat/tarjima";
 
 // AI javobi 30 soniyagacha kutiladi — funksiya undan oldin uzilmasin.
 export const maxDuration = 60;
@@ -48,14 +50,20 @@ export async function POST(sorov: Request) {
   }
 
   try {
-    const javob = await skanQil(foydalanuvchiId, { rasmId, matn: matn || undefined, vaznGramm });
+    const javob = await skanQil(foydalanuvchiId, {
+      rasmId,
+      matn: matn || undefined,
+      vaznGramm,
+      til: sorovTili(sorov),
+    });
     if (javob.holat === "rasm_yoq") {
       return Response.json({ xato: "Rasm topilmadi" }, { status: 404 });
     }
     if (javob.holat === "limit") {
       return Response.json(
         {
-          xato: "Bugungi AI skanlar tugadi. Taomni qo'lda qo'shish cheklovsiz",
+          // Ekranda ko'rinadi — klient lug'at orqali tarjima qiladi.
+          xato: k("Bugungi AI skanlar tugadi. Taomni qo'lda qo'shish cheklovsiz"),
           kod: "limit",
         },
         { status: 429 },

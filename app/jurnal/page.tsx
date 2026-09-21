@@ -4,6 +4,8 @@ import { QoshishPaneli, QoshishTugmasi } from "@/app/_components/QoshishPaneli";
 import { TugmaHavola } from "@/app/_components/Tugma";
 import { YozuvQatori } from "@/app/_components/YozuvQatori";
 import { serverdanApi } from "@/lib/api-asos";
+import { serverTarjimoni } from "@/lib/lugat/server";
+import type { Tarjimon } from "@/lib/lugat/tarjima";
 import { NORMA } from "@/lib/norma";
 import { raqam } from "@/lib/services/taom-hisob";
 import {
@@ -58,19 +60,27 @@ function Strelka({ yonalish }: { yonalish: "chap" | "ong" }) {
 const STRELKA_QOLIPI = "flex size-11 items-center justify-center rounded-chip";
 
 /** Sana tanlagich: bir kun orqaga / oldinga; bugundan nariga o'tilmaydi. */
-function SanaTanlagich({ sana, bugun }: { sana: string; bugun: string }) {
+function SanaTanlagich({
+  sana,
+  bugun,
+  tarjimon: { t, til },
+}: {
+  sana: string;
+  bugun: string;
+  tarjimon: Tarjimon;
+}) {
   return (
-    <nav aria-label="Sana" className="flex items-center justify-between gap-2">
+    <nav aria-label={t("Sana")} className="flex items-center justify-between gap-2">
       <Link
         href={jurnalManzili(qoshniSana(sana, -1), bugun)}
-        aria-label="Oldingi kun"
+        aria-label={t("Oldingi kun")}
         className={`${STRELKA_QOLIPI} text-siyoh`}
       >
         <Strelka yonalish="chap" />
       </Link>
       <p className="flex min-w-0 flex-col items-center text-center">
-        <span className="text-karta-sarlavha">{sana === bugun ? "Bugun" : sanaMatni(sana)}</span>
-        {sana === bugun && <span className="text-izoh text-matn-2">{sanaMatni(sana)}</span>}
+        <span className="text-karta-sarlavha">{sana === bugun ? t("Bugun") : sanaMatni(sana, til)}</span>
+        {sana === bugun && <span className="text-izoh text-matn-2">{sanaMatni(sana, til)}</span>}
       </p>
       {sana === bugun ? (
         <span aria-hidden="true" className={`${STRELKA_QOLIPI} text-matn-3`}>
@@ -79,7 +89,7 @@ function SanaTanlagich({ sana, bugun }: { sana: string; bugun: string }) {
       ) : (
         <Link
           href={jurnalManzili(qoshniSana(sana, 1), bugun)}
-          aria-label="Keyingi kun"
+          aria-label={t("Keyingi kun")}
           className={`${STRELKA_QOLIPI} text-siyoh`}
         >
           <Strelka yonalish="ong" />
@@ -89,29 +99,29 @@ function SanaTanlagich({ sana, bugun }: { sana: string; bugun: string }) {
   );
 }
 
-function KunlikJami({ jami }: { jami: Jami }) {
+function KunlikJami({ jami, tarjimon: { t, til } }: { jami: Jami; tarjimon: Tarjimon }) {
   return (
     <section
-      aria-label="Kunlik jami"
+      aria-label={t("Kunlik jami")}
       className="flex flex-col gap-4 rounded-karta border border-karta-chegara bg-karta p-4"
     >
       <p className="flex items-baseline gap-2">
         <span className="font-display text-raqam tabular-nums">{raqam(jami.kaloriya)}</span>
         <span className="text-izoh text-matn-2 tabular-nums">
-          / {raqam(NORMA.kaloriya)} kkal
+          {t("/ {0} kkal", raqam(NORMA.kaloriya))}
         </span>
       </p>
       <div className="flex gap-4">
-        <MakroChizigi nomi="Oqsil" qiymat={jami.oqsil} maqsad={NORMA.oqsil} />
-        <MakroChizigi nomi="Yog'" qiymat={jami.yog} maqsad={NORMA.yog} />
-        <MakroChizigi nomi="Uglevod" qiymat={jami.uglevod} maqsad={NORMA.uglevod} />
+        <MakroChizigi til={til} nomi="Oqsil" qiymat={jami.oqsil} maqsad={NORMA.oqsil} />
+        <MakroChizigi til={til} nomi="Yog'" qiymat={jami.yog} maqsad={NORMA.yog} />
+        <MakroChizigi til={til} nomi="Uglevod" qiymat={jami.uglevod} maqsad={NORMA.uglevod} />
       </div>
     </section>
   );
 }
 
 /** Bo'sh holat: nima yo'q, nega yo'q va (faqat bugun uchun) bitta harakat (dizayn-tz E9). */
-function BoshKun({ bugunmi }: { bugunmi: boolean }) {
+function BoshKun({ bugunmi, t }: { bugunmi: boolean } & Pick<Tarjimon, "t">) {
   return (
     <div className="flex flex-col items-center gap-3 rounded-karta border border-karta-chegara bg-karta p-6 text-center">
       <svg
@@ -128,29 +138,29 @@ function BoshKun({ bugunmi }: { bugunmi: boolean }) {
         <circle cx="12" cy="12" r="9" />
         <circle cx="12" cy="12" r="4.5" />
       </svg>
-      <p className="text-karta-sarlavha">Bu kunda yozuv yo&apos;q</p>
+      <p className="text-karta-sarlavha">{t("Bu kunda yozuv yo'q")}</p>
       <p className="text-izoh text-matn-2">
         {bugunmi
-          ? "Bugun hali hech narsa qo'shilmadi. Birinchi ovqatni qo'shing."
-          : "Bu kuni jurnalga ovqat qo'shilmagan."}
+          ? t("Bugun hali hech narsa qo'shilmadi. Birinchi ovqatni qo'shing.")
+          : t("Bu kuni jurnalga ovqat qo'shilmagan.")}
       </p>
       {bugunmi && <QoshishTugmasi />}
     </div>
   );
 }
 
-function YuklanmadiKartasi({ manzil }: { manzil: string }) {
+function YuklanmadiKartasi({ manzil, t }: { manzil: string } & Pick<Tarjimon, "t">) {
   return (
     <div
       role="alert"
       className="flex flex-col items-center gap-3 rounded-karta border border-karta-chegara bg-karta p-6 text-center"
     >
-      <p className="text-karta-sarlavha">Jurnalni yuklab bo&apos;lmadi</p>
+      <p className="text-karta-sarlavha">{t("Jurnalni yuklab bo'lmadi")}</p>
       <p className="text-izoh text-matn-2">
-        Serverga ulanolmadik. Internetni tekshirib, qayta urinib ko&apos;ring.
+        {t("Serverga ulanolmadik. Internetni tekshirib, qayta urinib ko'ring.")}
       </p>
       <TugmaHavola korinish="ikkilamchi" href={manzil}>
-        Qayta urinish
+        {t("Qayta urinish")}
       </TugmaHavola>
     </div>
   );
@@ -158,6 +168,8 @@ function YuklanmadiKartasi({ manzil }: { manzil: string }) {
 
 /** E9 — jurnal: bir kunning yozuvlari ovqat turi bo'yicha, tepada kunlik jami. */
 export default async function JurnalSahifasi({ searchParams }: PageProps<"/jurnal">) {
+  const tarjimon = await serverTarjimoni();
+  const { t, erkin, til } = tarjimon;
   const bugun = bugunSana();
   const { sana: berilgan } = await searchParams;
   // Noto'g'ri yoki kelajakdagi sana — bugun ("YYYY-MM-DD" matnlari alifbo tartibida solishtiriladi).
@@ -174,32 +186,32 @@ export default async function JurnalSahifasi({ searchParams }: PageProps<"/jurna
         <header className="flex items-center gap-2 py-4">
           <Link
             href="/"
-            aria-label="Orqaga"
+            aria-label={t("Orqaga")}
             className={`-ml-3 ${STRELKA_QOLIPI} text-siyoh`}
           >
             <Strelka yonalish="chap" />
           </Link>
-          <h1 className="text-sarlavha">Jurnal</h1>
+          <h1 className="text-sarlavha">{t("Jurnal")}</h1>
         </header>
 
         <div className="flex flex-col gap-6">
-          <SanaTanlagich sana={sana} bugun={bugun} />
+          <SanaTanlagich sana={sana} bugun={bugun} tarjimon={tarjimon} />
 
           {kun === null ? (
-            <YuklanmadiKartasi manzil={jurnalManzili(sana, bugun)} />
+            <YuklanmadiKartasi manzil={jurnalManzili(sana, bugun)} t={t} />
           ) : (
             <>
-              <KunlikJami jami={kun.jami} />
+              <KunlikJami jami={kun.jami} tarjimon={tarjimon} />
 
               {kun.yozuvlar.length === 0 ? (
-                <BoshKun bugunmi={sana === bugun} />
+                <BoshKun bugunmi={sana === bugun} t={t} />
               ) : (
                 turBoyichaGuruh(kun.yozuvlar).map((guruh) => (
                   <section key={guruh.turi} className="flex flex-col gap-2">
                     <div className="flex items-baseline justify-between gap-3">
-                      <h2 className="text-karta-sarlavha">{guruh.turi}</h2>
+                      <h2 className="text-karta-sarlavha">{erkin(guruh.turi)}</h2>
                       <p className="text-izoh text-matn-2 tabular-nums">
-                        {raqam(guruh.kaloriya)} kkal
+                        {t("{0} kkal", raqam(guruh.kaloriya))}
                       </p>
                     </div>
                     <ul className="flex flex-col gap-3">
@@ -207,6 +219,7 @@ export default async function JurnalSahifasi({ searchParams }: PageProps<"/jurna
                         <YozuvQatori
                           key={yozuv.id}
                           yozuv={yozuv}
+                          til={til}
                           batafsil
                           qaytish={jurnalManzili(sana, bugun)}
                         />

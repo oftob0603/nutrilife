@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { tarjimon, type Til } from "@/lib/lugat/tarjima";
 import { haftaKunlari } from "@/lib/services/yozuv-hisob";
 
 const KATAK =
@@ -9,10 +10,12 @@ const KATAK =
  * hafta, Du–Ya. Tanlangan kun to'ldirilgan, bugun chegara bilan ajratilgan, kelajak kunlar
  * bosilmaydi. Kataklar havola — tanlangan kun `?sana=` orqali yuklanadi.
  */
-export function KunTanlagich({ sana, bugun }: { sana: string; bugun: string }) {
+export function KunTanlagich({ sana, bugun, til }: { sana: string; bugun: string; til: Til }) {
+  const { t } = tarjimon(til);
+
   return (
-    <nav aria-label="Hafta kunlari" className="flex gap-2">
-      {haftaKunlari(sana).map((kun) => {
+    <nav aria-label={t("Hafta kunlari")} className="flex gap-2">
+      {haftaKunlari(sana, til).map((kun) => {
         const mazmun = (
           <>
             <span className="text-[11px] leading-none">{kun.nomi}</span>
@@ -45,7 +48,11 @@ export function KunTanlagich({ sana, bugun }: { sana: string; bugun: string }) {
             key={kun.sana}
             href={kun.sana === bugun ? "/" : `/?sana=${kun.sana}`}
             aria-current={tanlangan ? "date" : undefined}
-            aria-label={`${kun.nomi}, ${kun.kun}${kun.sana === bugun ? " (bugun)" : ""}`}
+            aria-label={
+              kun.sana === bugun
+                ? t("{0}, {1} (bugun)", kun.nomi, kun.kun)
+                : `${kun.nomi}, ${kun.kun}`
+            }
             className={`${KATAK} ${rang}`}
           >
             {mazmun}

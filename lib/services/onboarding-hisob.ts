@@ -1,6 +1,9 @@
 // Onboarding qoidalari (onboarding-tz.md; ko'rinish va O5 matnlari — prototip/ui_kits/onboarding):
 // variantlar, chegaralar, tekshiruv va o'girish.
 // Sof modul — bazaga bog'liq emas, klient ham, server ham ishlatadi.
+// Matnlar o'zbekcha — lug'at kalitlari (lib/lugat); ekranda `t()` bilan tarjima qilinadi.
+
+import { k, type Kalit } from "../lugat/tarjima.ts";
 
 /**
  * 1 Intro · 2 Ism · 3 Maqsad · 4 Jins va yosh · 5 O'lchovlar · 6 Faollik · 7 Afzalliklar ·
@@ -13,18 +16,21 @@ export const OLCHOV_QADAMI = 5;
 /** Shu qadamlarni javobsiz o'tkazib yuborish mumkin — ular normaga ta'sir qilmaydi. */
 export const OTKAZILADIGAN_QADAMLAR: readonly number[] = [7, 8, 9];
 
+/** `nomi` va `tavsif` lug'atda bo'lishi shart — yo'q matn `tsc` xatosini beradi. */
+type Variant = { qiymat: string; nomi: Kalit; tavsif?: Kalit };
+
 export const MAQSADLAR = [
   { qiymat: "vazn_tashlash", nomi: "Vazn tashlash", tavsif: "Ortiqcha vazndan xalos bo'ling" },
   { qiymat: "vazn_saqlash", nomi: "Vaznni saqlash", tavsif: "Hozirgi vazningizni ushlab turing" },
   { qiymat: "vazn_ortdirish", nomi: "Vazn ortdirish", tavsif: "Sog'lom yo'l bilan vazn qo'shing" },
   { qiymat: "mushak_yigish", nomi: "Mushak yig'ish", tavsif: "Mushak massasini oshiring" },
-] as const;
+] as const satisfies readonly Variant[];
 
 export const JINSLAR = [
   { qiymat: "erkak", nomi: "Erkak" },
   { qiymat: "ayol", nomi: "Ayol" },
   { qiymat: "aytilmagan", nomi: "Aytishni xohlamayman" },
-] as const;
+] as const satisfies readonly Variant[];
 
 export const FAOLLIKLAR = [
   { qiymat: "kam", nomi: "Kam harakat", tavsif: "Asosan o'tirib ishlayman" },
@@ -35,7 +41,7 @@ export const FAOLLIKLAR = [
     nomi: "Juda faol",
     tavsif: "Haftada 6–7 kun mashq yoki og'ir jismoniy ish",
   },
-] as const;
+] as const satisfies readonly Variant[];
 
 export const CHEKLOV_YOQ = "cheklov_yoq";
 
@@ -46,19 +52,19 @@ export const AFZALLIKLAR = [
   { qiymat: "laktoza_yoq", nomi: "Laktoza yo'q" },
   { qiymat: "glyuten_yoq", nomi: "Glyuten yo'q" },
   { qiymat: "shakar_cheklov", nomi: "Shakarni cheklayman" },
-] as const;
+] as const satisfies readonly Variant[];
 
 export const MAHALLAR = [
   { qiymat: "2", nomi: "2" },
   { qiymat: "3", nomi: "3" },
-  { qiymat: "4+", nomi: "4 va undan ko'p" },
+  { qiymat: "4+", nomi: k("4 va undan ko'p") },
 ] as const;
 
 export const JOYLAR = [
   { qiymat: "uyda", nomi: "Uyda" },
   { qiymat: "tashqarida", nomi: "Ishda yoki tashqarida" },
   { qiymat: "aralash", nomi: "Aralash" },
-] as const;
+] as const satisfies readonly Variant[];
 
 export const MOTIVATSIYALAR = [
   { qiymat: "soglik", nomi: "Sog'lig'im" },
@@ -66,7 +72,7 @@ export const MOTIVATSIYALAR = [
   { qiymat: "energiya", nomi: "Ko'proq energiya" },
   { qiymat: "shifokor", nomi: "Shifokor tavsiyasi" },
   { qiymat: "sport", nomi: "Sport natijasi" },
-] as const;
+] as const satisfies readonly Variant[];
 
 export const BIRLIKLAR = ["metrik", "imperial"] as const;
 
@@ -146,23 +152,23 @@ export function yonalishXatosi(
   maqsad: string | null,
   vazn: number,
   maqsadVazn: number,
-): string | null {
+): Kalit | null {
   if (maqsad === "vazn_tashlash" && maqsadVazn > vazn) {
-    return "Vazn tashlashni tanlagansiz, lekin maqsad vazn joriysidan katta";
+    return k("Vazn tashlashni tanlagansiz, lekin maqsad vazn joriysidan katta");
   }
   if (ORTDIRISH.includes(maqsad) && maqsadVazn < vazn) {
-    return "Vazn ortdirishni tanlagansiz, lekin maqsad vazn joriysidan kichik";
+    return k("Vazn ortdirishni tanlagansiz, lekin maqsad vazn joriysidan kichik");
   }
   return null;
 }
 
 export type OlchovIzohlari = {
   /** To'sadi — maqsad vazn ostida, ikki chiqish yo'li bilan. */
-  yonalish: string | null;
+  yonalish: Kalit | null;
   /** To'smaydi — joriy vazn ostida ("Vaznni saqlash"da bo'yga nisbatan eslatma). */
-  vazn: string | null;
+  vazn: Kalit | null;
   /** To'smaydi — maqsad vazn ostida. */
-  maqsadVazn: string | null;
+  maqsadVazn: Kalit | null;
   /** `maqsadVazn` izohi "joriy vaznga juda yaqin" — ostida maqsadni o'zgartirish havolasi turadi. */
   yaqin: boolean;
 };
@@ -239,9 +245,9 @@ function oraliqdami(qiymat: unknown, { min, max }: { min: number; max: number })
   return typeof qiymat === "number" && Number.isFinite(qiymat) && qiymat >= min && qiymat <= max;
 }
 
-const NOTOGRI = { xato: "Javob noto'g'ri" } as const;
+const NOTOGRI = { xato: k("Javob noto'g'ri") } as const;
 
-export const YOSH_XATOSI = "Ilovadan 18 yoshdan katta foydalanuvchilar foydalanishi mumkin";
+export const YOSH_XATOSI = k("Ilovadan 18 yoshdan katta foydalanuvchilar foydalanishi mumkin");
 
 /**
  * `PATCH /api/onboarding` tanasini tekshiradi. `maqsad` — bazadagi 3-qadam javobi:

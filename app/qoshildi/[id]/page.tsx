@@ -7,6 +7,7 @@ import { NORMA } from "@/lib/norma";
 import { raqam } from "@/lib/services/taom-hisob";
 import type { Jami, Yozuv } from "@/lib/services/yozuv-hisob";
 import { serverdanApi } from "@/lib/api-asos";
+import { serverTarjimoni } from "@/lib/lugat/server";
 
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
 export const dynamic = "force-dynamic";
@@ -47,6 +48,7 @@ function Belgi() {
 export default async function QoshildiSahifasi({
   params,
 }: PageProps<"/qoshildi/[id]">) {
+  const { t, porsiya } = await serverTarjimoni();
   const { id } = await params;
   const kun = await kunniYukla();
   // Sessiyasiz ochilgan havola: sahifa kirish pardasi ostida bo'sh turadi, kirgach
@@ -65,7 +67,7 @@ export default async function QoshildiSahifasi({
 
       <div className="flex items-center gap-2">
         <Belgi />
-        <p className="text-karta-sarlavha">Jurnalga qo&apos;shildi</p>
+        <p className="text-karta-sarlavha">{t("Jurnalga qo'shildi")}</p>
       </div>
 
       <KunlikDoira
@@ -79,15 +81,15 @@ export default async function QoshildiSahifasi({
         <div className="min-w-0 flex-1">
           <p className="truncate text-karta-sarlavha">{yozuv.taomNomi}</p>
           <p className="mt-1 text-izoh text-matn-2 tabular-nums">
-            {yozuv.porsiya} · {raqam(yozuv.kaloriya)} kkal
+            {t("{0} · {1} kkal", porsiya(yozuv.porsiya), raqam(yozuv.kaloriya))}
           </p>
         </div>
       </div>
 
       <div className="flex w-full flex-col gap-2">
-        <TugmaHavola href="/">Asosiyga qaytish</TugmaHavola>
+        <TugmaHavola href="/">{t("Asosiyga qaytish")}</TugmaHavola>
         <TugmaHavola korinish="uchinchi" href="/taomlar">
-          Yana qo&apos;shish
+          {t("Yana qo'shish")}
         </TugmaHavola>
       </div>
     </main>

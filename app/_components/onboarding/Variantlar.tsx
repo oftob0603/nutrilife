@@ -1,5 +1,8 @@
 "use client";
 
+import { useTarjima } from "@/app/_components/TilTaminoti";
+
+/** `nomi` va `tavsif` — lug'at kalitlari yoki tarjimasiz qiymat ("2", "lb · ft"). */
 type Variant = { qiymat: string; nomi: string; tavsif?: string };
 
 function Belgi() {
@@ -39,6 +42,8 @@ export function Variantlar({
   kop?: boolean;
   onTanla: (qiymat: string) => void;
 }) {
+  const { erkin } = useTarjima();
+
   return (
     <div role={kop ? "group" : "radiogroup"} aria-label={nomi} className="flex flex-col gap-3">
       {variantlar.map((variant) => {
@@ -55,10 +60,10 @@ export function Variantlar({
             }`}
           >
             <span className="flex min-w-0 flex-1 flex-col gap-1">
-              <span className="text-karta-sarlavha">{variant.nomi}</span>
+              <span className="text-karta-sarlavha">{erkin(variant.nomi)}</span>
               {variant.tavsif && (
                 <span className={`text-izoh ${faol ? "opacity-70" : "text-matn-2"}`}>
-                  {variant.tavsif}
+                  {erkin(variant.tavsif)}
                 </span>
               )}
             </span>
@@ -82,6 +87,8 @@ export function SegmentTanlagich({
   tanlangan: string | null;
   onTanla: (qiymat: string) => void;
 }) {
+  const { erkin } = useTarjima();
+
   return (
     <div
       role="radiogroup"
@@ -103,7 +110,7 @@ export function SegmentTanlagich({
                 : "text-matn-2"
             }`}
           >
-            {variant.nomi}
+            {erkin(variant.nomi)}
           </button>
         );
       })}

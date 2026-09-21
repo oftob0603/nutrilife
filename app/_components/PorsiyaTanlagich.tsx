@@ -6,11 +6,14 @@ import {
   birlamchiPorsiya,
   porsiyaHisobi,
   raqam,
+  taomNomi,
   type Taom,
 } from "@/lib/services/taom-hisob";
 import { OVQAT_TURLARI, type OvqatTuri } from "@/lib/services/yozuv-hisob";
+import type { Kalit } from "@/lib/lugat/tarjima";
 import { apiSorov } from "@/lib/services/api-klient";
 import { OvqatTuriTanlagich } from "@/app/_components/OvqatTuriTanlagich";
+import { useTarjima } from "@/app/_components/TilTaminoti";
 import { Tugma } from "@/app/_components/Tugma";
 
 function Chip({
@@ -38,17 +41,19 @@ function Chip({
   );
 }
 
-function Makro({ nomi, qiymat }: { nomi: string; qiymat: number }) {
+function Makro({ nomi, qiymat }: { nomi: Kalit; qiymat: number }) {
+  const { t } = useTarjima();
   return (
     <div className="flex min-w-0 flex-1 flex-col gap-1">
-      <span className="text-izoh text-matn-2">{nomi}</span>
-      <span className="text-asosiy tabular-nums">{qiymat} g</span>
+      <span className="text-izoh text-matn-2">{t(nomi)}</span>
+      <span className="text-asosiy tabular-nums">{t("{0} g", qiymat)}</span>
     </div>
   );
 }
 
 export function PorsiyaTanlagich({ taom }: { taom: Taom }) {
   const router = useRouter();
+  const { t, til, erkin, miqdor: miqdorMatni } = useTarjima();
   const [porsiya, setPorsiya] = useState(() => birlamchiPorsiya(taom));
   const [boshqa, setBoshqa] = useState("");
   const [ovqatTuri, setOvqatTuri] = useState<OvqatTuri>(OVQAT_TURLARI[1]);
@@ -58,6 +63,7 @@ export function PorsiyaTanlagich({ taom }: { taom: Taom }) {
   // Tekshiruv yo'q (S1): kiritilgan matn songa aylantiriladi, bo'lmasa nol.
   const miqdor = boshqa ? Number(boshqa) || 0 : porsiya;
   const hisob = porsiyaHisobi(taom, miqdor);
+  const birlik = erkin(taom.olchovBirligi);
 
   async function jurnalgaQosh() {
     setSaqlanmoqda(true);
@@ -68,7 +74,8 @@ export function PorsiyaTanlagich({ taom }: { taom: Taom }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           taomId: taom.id,
-          taomNomi: taom.nomi,
+          // Yozuv foydalanuvchi ko'rib turgan nom bilan saqlanadi — AI skan ham shu tilda yozadi.
+          taomNomi: taomNomi(taom, til),
           porsiya: hisob.belgisi,
           kaloriya: hisob.kaloriya,
           oqsil: hisob.oqsil,
@@ -94,7 +101,7 @@ export function PorsiyaTanlagich({ taom }: { taom: Taom }) {
           {raqam(hisob.kaloriya)}
         </span>
         <span className="text-izoh text-matn-2 tabular-nums">
-          kkal · {hisob.belgisi}
+          {t("kkal · {0}", miqdorMatni(miqdor, taom.olchovBirligi))}
         </span>
       </div>
 
@@ -105,7 +112,7 @@ export function PorsiyaTanlagich({ taom }: { taom: Taom }) {
       </div>
 
       <section className="flex flex-col gap-2">
-        <h2 className="text-karta-sarlavha">Porsiya</h2>
+        <h2 className="text-karta-sarlavha">{t("Porsiya")}</h2>
         <div className="flex flex-wrap gap-2">
           {taom.porsiyalar.map((variant) => (
             <Chip
@@ -116,33 +123,38 @@ export function PorsiyaTanlagich({ taom }: { taom: Taom }) {
                 setPorsiya(variant);
               }}
             >
-              {variant} {taom.olchovBirligi}
+              {miqdorMatni(variant, taom.olchovBirligi)}
             </Chip>
           ))}
-          <label className="flex min-h-11 w-32 items-center gap-2 rounded-chip border border-chegara bg-karta px-4">
-            <span className="sr-only">Boshqa miqdor</span>
+          {/* Uzun birlik ("шампур", "skewer") yonida "Boshqa" yozuvi qirqilmasin. */}
+          <label
+            className={`flex min-h-11 items-center gap-2 rounded-chip border border-chegara bg-karta px-4 ${
+              birlik.length > 3 ? "w-44" : "w-32"
+            }`}
+          >
+            <span className="sr-only">{t("Boshqa miqdor")}</span>
             <input
               type="number"
               inputMode="numeric"
               value={boshqa}
               onChange={(hodisa) => setBoshqa(hodisa.target.value)}
-              placeholder="Boshqa"
+              placeholder={t("Boshqa")}
               className="w-full min-w-0 bg-transparent text-asosiy tabular-nums outline-none placeholder:text-matn-3"
             />
             <span className="shrink-0 text-izoh text-matn-2">
-              {taom.olchovBirligi}
+              {birlik}
             </span>
           </label>
         </div>
       </section>
 
       <section className="flex flex-col gap-2">
-        <h2 className="text-karta-sarlavha">Ovqat turi</h2>
+        <h2 className="text-karta-sarlavha">{t("Ovqat turi")}</h2>
         <OvqatTuriTanlagich qiymat={ovqatTuri} onChange={setOvqatTuri} />
       </section>
 
       <Tugma yuklanmoqda={saqlanmoqda} onClick={jurnalgaQosh}>
-        Jurnalga qo&apos;shish
+        {t("Jurnalga qo'shish")}
       </Tugma>
 
       {xato && (
@@ -151,14 +163,14 @@ export function PorsiyaTanlagich({ taom }: { taom: Taom }) {
           className="flex items-center gap-3 rounded-karta border border-xato p-4"
         >
           <p className="flex-1 text-asosiy text-xato">
-            Saqlanmadi. Qayta urinib ko&apos;ring
+            {t("Saqlanmadi. Qayta urinib ko'ring")}
           </p>
           <button
             type="button"
             onClick={jurnalgaQosh}
             className="min-h-11 rounded-chip px-4 text-asosiy font-medium text-siyoh"
           >
-            Qayta urinish
+            {t("Qayta urinish")}
           </button>
         </div>
       )}

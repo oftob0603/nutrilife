@@ -11,6 +11,7 @@ import {
   SessiyaSiriYoq,
 } from "@/lib/services/sessiya";
 import { initDataniTekshir } from "@/lib/services/telegram-initdata";
+import { tilCookie } from "@/lib/lugat/server";
 
 function ishlamayapti() {
   return Response.json({ xato: "Kirish vaqtincha ishlamayapti" }, { status: 500 });
@@ -20,7 +21,11 @@ function ishlamayapti() {
 export async function GET(sorov: Request) {
   const foydalanuvchiId = await joriyFoydalanuvchiId(sorov);
   const foydalanuvchi = foydalanuvchiId ? await foydalanuvchiniOl(foydalanuvchiId) : null;
-  return foydalanuvchi ? Response.json({ foydalanuvchi }) : kirishKerak();
+  if (!foydalanuvchi) return kirishKerak();
+  return Response.json(
+    { foydalanuvchi },
+    { headers: { "Set-Cookie": tilCookie(foydalanuvchi.til) } },
+  );
 }
 
 /**
@@ -69,10 +74,11 @@ export async function POST(sorov: Request) {
 
   // Sahifa shu hisob sessiyasi bilan chizilgan bo'lsa, klient uni qayta yuklamaydi.
   const sessiyaBorEdi = sessiyadagiId(sorov) === foydalanuvchi.id;
-  return Response.json(
-    { foydalanuvchi, yangi, sessiyaBorEdi },
-    { headers: { "Set-Cookie": cookie } },
-  );
+  const sarlavhalar = new Headers();
+  sarlavhalar.append("Set-Cookie", cookie);
+  // Til cookie'si har kirishda bazadagi tanlovga tenglashadi — sahifalar tilni shundan o'qiydi.
+  sarlavhalar.append("Set-Cookie", tilCookie(foydalanuvchi.til));
+  return Response.json({ foydalanuvchi, yangi, sessiyaBorEdi }, { headers: sarlavhalar });
 }
 
 /** Chiqish: sessiya cookie'si o'chiriladi. */

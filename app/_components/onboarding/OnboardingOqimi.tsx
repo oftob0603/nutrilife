@@ -3,10 +3,12 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useTarjima } from "@/app/_components/TilTaminoti";
 import { Tugma } from "@/app/_components/Tugma";
 import { Gildirak, GildirakMaydoni } from "@/app/_components/onboarding/Gildirak";
 import { OnboardingMaydoni } from "@/app/_components/onboarding/OnboardingMaydoni";
 import { SegmentTanlagich, Variantlar } from "@/app/_components/onboarding/Variantlar";
+import { k, type Kalit, type Tarjimon } from "@/lib/lugat/tarjima";
 import { apiSorov } from "@/lib/services/api-klient";
 import {
   afzallikBosildi,
@@ -19,6 +21,7 @@ import {
   AFZALLIKLAR,
   BOY,
   FAOLLIKLAR,
+  ISM_CHEGARASI,
   JINSLAR,
   JOYLAR,
   MAHALLAR,
@@ -37,7 +40,7 @@ import {
   type OnboardingHolati,
 } from "@/lib/services/onboarding-hisob";
 
-const SAVOLLAR: Record<number, { savol: string; izoh?: string }> = {
+const SAVOLLAR: Record<number, { savol: Kalit; izoh?: Kalit }> = {
   2: { savol: "Sizni qanday chaqiraylik?" },
   3: { savol: "Nimaga erishmoqchisiz?" },
   4: { savol: "Hisob to'g'ri chiqishi uchun bir-ikki raqam kerak" },
@@ -55,7 +58,7 @@ const SAVOLLAR: Record<number, { savol: string; izoh?: string }> = {
 };
 
 const BIRLIK_VARIANTLARI: { qiymat: Birliklar; nomi: string }[] = [
-  { qiymat: "metrik", nomi: "kg · sm" },
+  { qiymat: "metrik", nomi: k("kg · sm") },
   { qiymat: "imperial", nomi: "lb · ft" },
 ];
 
@@ -63,14 +66,15 @@ type Saqlash =
   | { holat: "tinch" | "saqlanmoqda" | "xato" | "oflayn" }
   | { holat: "rad"; matn: string };
 
-function saqlashMatni(saqlash: Saqlash): string | null {
+function saqlashMatni(saqlash: Saqlash, { t, erkin }: Tarjimon): string | null {
   switch (saqlash.holat) {
     case "oflayn":
-      return "Internet yo'q. Ulanishni tekshiring";
+      return t("Internet yo'q. Ulanishni tekshiring");
     case "rad":
-      return saqlash.matn;
+      // Server xabari — lug'at kaliti bo'lsa tarjima qilinadi (onboarding-hisob.ts).
+      return erkin(saqlash.matn);
     case "xato":
-      return "Saqlanmadi. Qayta urinib ko'ring";
+      return t("Saqlanmadi. Qayta urinib ko'ring");
     default:
       return null;
   }
@@ -135,13 +139,15 @@ function QadamSarlavhasi({
   onOrqaga: () => void;
   onOtkazish?: () => void;
 }) {
+  const { t } = useTarjima();
+
   return (
     <header className="flex flex-col gap-2 px-4 pb-3 pt-2">
       <div className="flex items-center gap-2">
         <button
           type="button"
           onClick={onOrqaga}
-          aria-label="Orqaga"
+          aria-label={t("Orqaga")}
           className="-ml-3 flex size-11 shrink-0 items-center justify-center text-siyoh active:scale-[0.98]"
         >
           <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -149,7 +155,7 @@ function QadamSarlavhasi({
           </svg>
         </button>
         <span className="flex-1 text-izoh tabular-nums text-matn-2">
-          {QADAMLAR_SONI} dan {qadam}
+          {t("{0} dan {1}", QADAMLAR_SONI, qadam)}
         </span>
         {onOtkazish && (
           <button
@@ -157,7 +163,7 @@ function QadamSarlavhasi({
             onClick={onOtkazish}
             className="-mr-2 min-h-11 px-2 text-izoh text-matn-2 active:scale-[0.98]"
           >
-            O&apos;tkazib yuborish
+            {t("O'tkazib yuborish")}
           </button>
         )}
       </div>
@@ -166,7 +172,7 @@ function QadamSarlavhasi({
         aria-valuemin={1}
         aria-valuemax={QADAMLAR_SONI}
         aria-valuenow={qadam}
-        aria-label="Onboarding bosqichi"
+        aria-label={t("Onboarding bosqichi")}
         className="h-1 overflow-hidden rounded-full bg-chegara"
       >
         <div
@@ -192,11 +198,13 @@ function Intro({
   xato: string | null;
   onBoshlash: () => void;
 }) {
+  const { t } = useTarjima();
+
   return (
     <main className="relative mx-auto flex w-full max-w-md flex-1 flex-col overflow-hidden bg-o1-fon">
       <Image
         src="/onboarding/intro.png"
-        alt="Ozish, vazn olish, sog'lom turmush tarzi va vaznni saqlash"
+        alt={t("Ozish, vazn olish, sog'lom turmush tarzi va vaznni saqlash")}
         fill
         priority
         sizes="(max-width: 448px) 100vw, 448px"
@@ -206,7 +214,7 @@ function Intro({
         <div className="flex flex-col gap-2">
           <span className="font-display text-karta-sarlavha text-o1-matn-2">NutriLife</span>
           <h1 className="font-display text-sarlavha">
-            Taomingiz haqida ko&apos;proq bilishni xohlaysizmi?
+            {t("Taomingiz haqida ko'proq bilishni xohlaysizmi?")}
           </h1>
         </div>
         {xato && (
@@ -215,11 +223,11 @@ function Intro({
           </p>
         )}
         <p className="text-center text-izoh text-o1-matn-2">
-          «Boshlash»ni bosish orqali Ommaviy oferta shartlarini qabul qilasiz.
+          {t("«Boshlash»ni bosish orqali Ommaviy oferta shartlarini qabul qilasiz.")}
         </p>
         <div className="rounded-full shadow-[0_1px_2px_rgba(21,128,61,0.18),0_4px_12px_rgba(21,128,61,0.16)]">
           <Tugma korinish="aksent" yuklanmoqda={band} onClick={onBoshlash}>
-            Boshlash
+            {t("Boshlash")}
           </Tugma>
         </div>
       </div>
@@ -239,6 +247,7 @@ function Olchovlar({
   onChange: (forma: Forma) => void;
   onMaqsadgaQaytish: () => void;
 }) {
+  const { t } = useTarjima();
   const { birliklar } = forma;
   const metrik = birliklar === "metrik";
   const oraliq = ORALIQLAR[birliklar];
@@ -253,23 +262,23 @@ function Olchovlar({
   const vaznIndeksi = (kg: number | null) =>
     indeks(kg === null ? null : vaznKorinishi(kg), oraliq.vazn);
 
-  const vaznBirligi = metrik ? "kg" : "lb";
+  const vaznBirligi = metrik ? t("kg") : "lb";
   const havola = "min-h-11 text-izoh font-medium text-siyoh underline underline-offset-4";
 
   return (
     <>
       <SegmentTanlagich
-        nomi="O'lchov birliklari"
+        nomi={t("O'lchov birliklari")}
         variantlar={BIRLIK_VARIANTLARI}
         tanlangan={birliklar}
         onTanla={(qiymat) => onChange({ ...forma, birliklar: qiymat as Birliklar })}
       />
 
       {/* `key`: birlik almashganda qiymatlar ro'yxati butunlay boshqa — g'ildirak qaytadan joylashadi. */}
-      <GildirakMaydoni nomi="Bo'y" birlik={metrik ? "sm" : "ft"}>
+      <GildirakMaydoni nomi={t("Bo'y")} birlik={metrik ? t("sm") : "ft"}>
         <Gildirak
           key={birliklar}
-          nomi="Bo'y"
+          nomi={t("Bo'y")}
           yonalish="yotiq"
           qiymatlar={royxat.boy}
           tanlangan={indeks(forma.boyi === null ? null : boyKorinishi(forma.boyi), oraliq.boy)}
@@ -278,10 +287,14 @@ function Olchovlar({
         />
       </GildirakMaydoni>
 
-      <GildirakMaydoni nomi="Joriy vazn" birlik={vaznBirligi} ogohlantirish={olchov.vazn}>
+      <GildirakMaydoni
+        nomi={t("Joriy vazn")}
+        birlik={vaznBirligi}
+        ogohlantirish={olchov.vazn && t(olchov.vazn)}
+      >
         <Gildirak
           key={birliklar}
-          nomi="Joriy vazn"
+          nomi={t("Joriy vazn")}
           yonalish="yotiq"
           qiymatlar={royxat.vazn}
           tanlangan={vaznIndeksi(forma.vazn)}
@@ -292,10 +305,10 @@ function Olchovlar({
 
       {maqsadVaznKerakmi(forma.maqsad) && (
         <GildirakMaydoni
-          nomi="Maqsad vazn"
+          nomi={t("Maqsad vazn")}
           birlik={vaznBirligi}
-          xato={olchov.yonalish}
-          ogohlantirish={olchov.maqsadVazn}
+          xato={olchov.yonalish && t(olchov.yonalish)}
+          ogohlantirish={olchov.maqsadVazn && t(olchov.maqsadVazn)}
           amallar={
             (olchov.yonalish || olchov.yaqin) && (
               <div className="flex flex-wrap gap-x-4">
@@ -305,11 +318,11 @@ function Olchovlar({
                     onClick={() => onChange({ ...forma, maqsadVazn: null })}
                     className={havola}
                   >
-                    Raqamni to&apos;g&apos;rilash
+                    {t("Raqamni to'g'rilash")}
                   </button>
                 )}
                 <button type="button" onClick={onMaqsadgaQaytish} className={havola}>
-                  Maqsadni o&apos;zgartirish
+                  {t("Maqsadni o'zgartirish")}
                 </button>
               </div>
             )
@@ -317,7 +330,7 @@ function Olchovlar({
         >
           <Gildirak
             key={birliklar}
-            nomi="Maqsad vazn"
+            nomi={t("Maqsad vazn")}
             yonalish="yotiq"
             qiymatlar={royxat.vazn}
             tanlangan={vaznIndeksi(forma.maqsadVazn)}
@@ -337,6 +350,8 @@ function Olchovlar({
  */
 export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati }) {
   const router = useRouter();
+  const tarjimon = useTarjima();
+  const { t } = tarjimon;
   const [qadam, setQadam] = useState(boshlangich.qadam);
   const [forma, setForma] = useState(() => formaYarat(boshlangich.javoblar));
   const [saqlash, setSaqlash] = useState<Saqlash>({ holat: "tinch" });
@@ -344,7 +359,7 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
   const tekshiruv = qadamniTayyorla(qadam, forma);
   const otkazsaBoladi = OTKAZILADIGAN_QADAMLAR.includes(qadam);
   const band = saqlash.holat === "saqlanmoqda";
-  const xatoMatni = saqlashMatni(saqlash);
+  const xatoMatni = saqlashMatni(saqlash, tarjimon);
 
   function formaOzgardi(yangi: Forma) {
     setForma(yangi);
@@ -372,7 +387,7 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
       });
       if (javob.status === 400) {
         const { xato } = (await javob.json()) as { xato?: string };
-        setSaqlash({ holat: "rad", matn: xato ?? "Javob qabul qilinmadi" });
+        setSaqlash({ holat: "rad", matn: xato ?? k("Javob qabul qilinmadi") });
         return;
       }
       if (!javob.ok) {
@@ -406,26 +421,26 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
 
       <div className="flex flex-1 flex-col gap-6 px-4 pb-6 pt-2">
         <div className="flex flex-col gap-2">
-          <h1 className="font-display text-sarlavha">{savol.savol}</h1>
-          {savol.izoh && <p className="text-asosiy text-matn-2">{savol.izoh}</p>}
+          <h1 className="font-display text-sarlavha">{t(savol.savol)}</h1>
+          {savol.izoh && <p className="text-asosiy text-matn-2">{t(savol.izoh)}</p>}
         </div>
 
         {qadam === 2 && (
           <>
             <OnboardingMaydoni
-              nomi="Ism"
+              nomi={t("Ism")}
               turi="matn"
               qiymat={forma.ism}
-              xato={tekshiruv.ismXatosi}
+              xato={tekshiruv.ismUzun && t("{0} belgidan oshmasin", ISM_CHEGARASI)}
               onChange={(ism) => formaOzgardi({ ...forma, ism })}
             />
-            <p className="text-izoh text-matn-2">Bu faqat salomlashish uchun</p>
+            <p className="text-izoh text-matn-2">{t("Bu faqat salomlashish uchun")}</p>
           </>
         )}
 
         {qadam === 3 && (
           <Variantlar
-            nomi="Asosiy maqsad"
+            nomi={t("Asosiy maqsad")}
             variantlar={MAQSADLAR}
             tanlangan={forma.maqsad ? [forma.maqsad] : []}
             onTanla={(maqsad) => formaOzgardi({ ...forma, maqsad })}
@@ -434,17 +449,20 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
 
         {qadam === 4 && (
           <>
-            <Guruh sarlavha="Jins">
+            <Guruh sarlavha={t("Jins")}>
               <Variantlar
-                nomi="Jins"
+                nomi={t("Jins")}
                 variantlar={JINSLAR}
                 tanlangan={forma.jins ? [forma.jins] : []}
                 onTanla={(jins) => formaOzgardi({ ...forma, jins })}
               />
             </Guruh>
-            <GildirakMaydoni nomi="Yosh" xato={tekshiruv.yoshXatosi}>
+            <GildirakMaydoni
+              nomi={t("Yosh")}
+              xato={tekshiruv.yoshXatosi && t(tekshiruv.yoshXatosi)}
+            >
               <Gildirak
-                nomi="Yosh"
+                nomi={t("Yosh")}
                 yonalish="tik"
                 qiymatlar={YOSHLAR}
                 tanlangan={indeks(forma.yosh, YOSH_ORALIGI)}
@@ -453,7 +471,7 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
               />
             </GildirakMaydoni>
             <p className="text-izoh text-matn-2">
-              Jins va yosh faqat kaloriya formulasi uchun ishlatiladi
+              {t("Jins va yosh faqat kaloriya formulasi uchun ishlatiladi")}
             </p>
           </>
         )}
@@ -469,7 +487,7 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
 
         {qadam === 6 && (
           <Variantlar
-            nomi="Faollik darajasi"
+            nomi={t("Faollik darajasi")}
             variantlar={FAOLLIKLAR}
             tanlangan={forma.faollik ? [forma.faollik] : []}
             onTanla={(faollik) => formaOzgardi({ ...forma, faollik })}
@@ -478,7 +496,7 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
 
         {qadam === 7 && (
           <Variantlar
-            nomi="Ovqat afzalliklari"
+            nomi={t("Ovqat afzalliklari")}
             kop
             variantlar={AFZALLIKLAR}
             tanlangan={forma.ovqatAfzalliklari}
@@ -493,17 +511,17 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
 
         {qadam === 8 && (
           <>
-            <Guruh sarlavha="Kuniga necha mahal">
+            <Guruh sarlavha={t("Kuniga necha mahal")}>
               <SegmentTanlagich
-                nomi="Kuniga necha mahal"
+                nomi={t("Kuniga necha mahal")}
                 variantlar={MAHALLAR}
                 tanlangan={forma.mahal}
                 onTanla={(mahal) => formaOzgardi({ ...forma, mahal })}
               />
             </Guruh>
-            <Guruh sarlavha="Asosan qayerda">
+            <Guruh sarlavha={t("Asosan qayerda")}>
               <Variantlar
-                nomi="Asosan qayerda"
+                nomi={t("Asosan qayerda")}
                 variantlar={JOYLAR}
                 tanlangan={forma.joy ? [forma.joy] : []}
                 onTanla={(joy) => formaOzgardi({ ...forma, joy })}
@@ -514,7 +532,7 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
 
         {qadam === 9 && (
           <Variantlar
-            nomi="Motivatsiya"
+            nomi={t("Motivatsiya")}
             variantlar={MOTIVATSIYALAR}
             tanlangan={forma.motivatsiya ? [forma.motivatsiya] : []}
             onTanla={(motivatsiya) => formaOzgardi({ ...forma, motivatsiya })}
@@ -534,7 +552,7 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
             disabled={!tekshiruv.tana}
             onClick={() => tekshiruv.tana && void yubor(tekshiruv.tana)}
           >
-            {qadam === QADAMLAR_SONI ? "Tugatish" : "Davom etish"}
+            {qadam === QADAMLAR_SONI ? t("Tugatish") : t("Davom etish")}
           </Tugma>
         </div>
       </footer>

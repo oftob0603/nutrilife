@@ -1,6 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import { useTarjima } from "@/app/_components/TilTaminoti";
 import {
   MAVZU_NOMLARI,
   MAVZULAR,
@@ -19,12 +20,13 @@ const serverdagiMavzu = (): Mavzu => "tizim";
  * S2'da hech bir ekranga qo'yilmagan — S3'da Sozlamalar (F2) sahifasiga ulanadi.
  */
 export function MavzuTanlagich() {
+  const { t } = useTarjima();
   const tanlangan = useSyncExternalStore(mavzugaObuna, mavzuniOqi, serverdagiMavzu);
 
   return (
     <div
       role="radiogroup"
-      aria-label="Mavzu"
+      aria-label={t("Mavzu")}
       className="flex gap-1 rounded-chip border border-chegara bg-fon p-1"
     >
       {MAVZULAR.map((mavzu) => {
@@ -42,7 +44,7 @@ export function MavzuTanlagich() {
                 : "text-matn-2"
             }`}
           >
-            {MAVZU_NOMLARI[mavzu]}
+            {t(MAVZU_NOMLARI[mavzu])}
           </button>
         );
       })}

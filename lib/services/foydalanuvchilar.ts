@@ -8,7 +8,7 @@ import {
   type ObunaMuddati,
   type Rol,
 } from "./huquqlar.ts";
-import type { Til } from "./telegram-initdata.ts";
+import type { Til } from "../lugat/tarjima.ts";
 
 const FOYDALANUVCHI_MAYDONLARI = {
   id: true,

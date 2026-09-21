@@ -2,11 +2,14 @@
 // bilan bir xil — S3'da tanlov bazaga ham yoziladi, brauzer xotirasi esa tez ochilish
 // uchun kesh bo'lib qoladi. Ranglarning o'zi app/globals.css da, <html data-mavzu> bo'yicha.
 
+import type { Kalit } from "./lugat/tarjima.ts";
+
 export const MAVZULAR = ["yorug", "qorongi", "tizim"] as const;
 
 export type Mavzu = (typeof MAVZULAR)[number];
 
-export const MAVZU_NOMLARI: Record<Mavzu, string> = {
+/** Lug'at kalitlari — ekranda `t()` bilan tarjima qilinadi. */
+export const MAVZU_NOMLARI: Record<Mavzu, Kalit> = {
   yorug: "Yorug'",
   qorongi: "Qorong'i",
   tizim: "Tizim",
