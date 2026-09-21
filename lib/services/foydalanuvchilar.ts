@@ -1,4 +1,13 @@
 import { db } from "../db.ts";
+import {
+  huquqlar,
+  obunaHolati,
+  rolniOqi,
+  type Huquqlar,
+  type ObunaHolati,
+  type ObunaMuddati,
+  type Rol,
+} from "./huquqlar.ts";
 import type { Til } from "./telegram-initdata.ts";
 
 const FOYDALANUVCHI_MAYDONLARI = {
@@ -6,6 +15,8 @@ const FOYDALANUVCHI_MAYDONLARI = {
   til: true,
   mavzu: true,
   birliklar: true,
+  rol: true,
+  obunalar: { select: { boshlanish: true, tugash: true } },
   profil: { select: { onboardingTugadi: true } },
 } as const;
 
@@ -14,16 +25,26 @@ export type Foydalanuvchi = {
   til: string;
   mavzu: string;
   birliklar: string;
+  rol: Rol;
+  /** FREE, faol PRO yoki muddati tugagan PRO — obuna qatorlaridan hisoblanadi. */
+  obuna: ObunaHolati;
   /** Yolg'on bo'lsa ilova Home o'rniga onboardingni ochadi. */
   onboardingTugadi: boolean;
 };
 
-type BazaFoydalanuvchisi = Omit<Foydalanuvchi, "onboardingTugadi"> & {
+type BazaFoydalanuvchisi = Omit<Foydalanuvchi, "rol" | "obuna" | "onboardingTugadi"> & {
+  rol: string;
+  obunalar: ObunaMuddati[];
   profil: { onboardingTugadi: Date | null } | null;
 };
 
-function korinishgaOtkaz({ profil, ...foydalanuvchi }: BazaFoydalanuvchisi): Foydalanuvchi {
-  return { ...foydalanuvchi, onboardingTugadi: Boolean(profil?.onboardingTugadi) };
+function korinishgaOtkaz({ profil, rol, obunalar, ...foydalanuvchi }: BazaFoydalanuvchisi): Foydalanuvchi {
+  return {
+    ...foydalanuvchi,
+    rol: rolniOqi(rol),
+    obuna: obunaHolati(obunalar),
+    onboardingTugadi: Boolean(profil?.onboardingTugadi),
+  };
 }
 
 /** Prisma'ning "unique constraint" xatosi — parallel so'rov yozuvni bizdan oldin yaratgan. */
@@ -38,6 +59,12 @@ export async function foydalanuvchiniOl(id: string): Promise<Foydalanuvchi | nul
     select: FOYDALANUVCHI_MAYDONLARI,
   });
   return foydalanuvchi ? korinishgaOtkaz(foydalanuvchi) : null;
+}
+
+/** Hisobning roli va obunasidan kelib chiqqan huquqlari; hisob topilmasa null. */
+export async function foydalanuvchiHuquqlari(id: string): Promise<Huquqlar | null> {
+  const foydalanuvchi = await foydalanuvchiniOl(id);
+  return foydalanuvchi ? huquqlar(foydalanuvchi.rol, foydalanuvchi.obuna) : null;
 }
 
 /**

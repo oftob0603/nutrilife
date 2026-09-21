@@ -119,6 +119,25 @@ export async function joriyFoydalanuvchiId(sorov: Request): Promise<string | nul
   return null;
 }
 
+/**
+ * So'rov egasi admin bo'lsa uning ID'si, aks holda null. Rol har so'rovda bazadan o'qiladi —
+ * tokenda saqlanmaydi, shuning uchun olib qo'yilgan rol darhol kuchdan qoladi.
+ */
+export async function joriyAdminId(sorov: Request): Promise<string | null> {
+  const foydalanuvchiId = await joriyFoydalanuvchiId(sorov);
+  if (!foydalanuvchiId) return null;
+  const admin = await db.foydalanuvchi.findFirst({
+    where: { id: foydalanuvchiId, rol: "admin" },
+    select: { id: true },
+  });
+  return admin?.id ?? null;
+}
+
+/** Egasi aniq, lekin bu amalga huquqi yo'q so'rovga javob. */
+export function ruxsatYoq(): Response {
+  return Response.json({ xato: "Ruxsat yo'q" }, { status: 403 });
+}
+
 /** Egasi aniqlanmagan so'rovga javob. */
 export function kirishKerak(): Response {
   return Response.json({ xato: "Kirish talab qilinadi" }, { status: 401 });

@@ -329,6 +329,17 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-20 · `shartlar_qabul`, `shartlar_versiyasi` va `tasdiq_18plus` faqat birinchi marta yoziladi — qayta saqlashda o'zgarmaydi.**
 *Sabab:* Yuridik dalil — dastlabki rozilik vaqti muhim.
 
+## 2026-09-21 — rollar va obunalar (6-task)
+
+**2026-09-21 · FREE/PRO bazada rol sifatida saqlanmaydi, `obunalar` jadvalidan hisoblanadi; bazada faqat `rol` = foydalanuvchi | admin.**
+*Sabab:* PRO muddatli — saqlangan holatni cron qaytarishi kerak bo'lardi, cron ishlamasa PRO cheksiz qoladi; `tugash > hozir` sharti o'zi to'g'ri ishlaydi; profil kartasiga (8-task) tugash sanasi baribir kerak. Shuning uchun `obunalar` jadvali S5'ni kutmasdan S3'da ochildi.
+
+**2026-09-21 · Admin roli PRO huquqlarini bermaydi — egasi PRO imkoniyatlarini sinash uchun o'ziga qo'lda obuna beradi.**
+*Sabab:* Foydalanuvchi qarori — rollar aralashmaydi, admin oddiy foydalanuvchi ko'rganini ko'radi.
+
+**2026-09-21 · To'liq tarix FREE'ga ham ochiq — tarix bo'yicha FREE/PRO farqi yo'q.**
+*Sabab:* PRD'da PRO uchun "to'liq tarixni ko'rish" yozilgan edi, lekin FREE chegarasi hech qayerda aniqlanmagan; foydalanuvchi FREE ham PRO'dek to'liq tarixni ko'rsin dedi. PRD 4-bo'lim jadvali shunga moslandi.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

@@ -75,6 +75,9 @@ model Foydalanuvchi {
   mavzu         String    @default("tizim")
   /// "metrik" (kg, sm) yoki "imperial" (lb, ft).
   birliklar     String    @default("metrik")
+  /// "foydalanuvchi" yoki "admin". FREE/PRO bu yerda emas — `obunalar` dan hisoblanadi
+  /// (lib/services/huquqlar.ts).
+  rol           String    @default("foydalanuvchi")
   /// Onboardingda "Boshlash" bosilgan sana va vaqt — Ommaviy oferta shu bilan qabul qilinadi.
   shartlarQabul DateTime? @map("shartlar_qabul")
   /// Qabul qilingan hujjat versiyasi (lib/shartlar.ts).
@@ -90,6 +93,7 @@ model Foydalanuvchi {
   rasmlar         Rasm[]
   kunlikXulosalar KunlikXulosa[]
   skanHisoblari   SkanHisobi[]
+  obunalar        Obuna[]
 
   @@map("foydalanuvchilar")
 }
@@ -205,4 +209,22 @@ model SkanHisobi {
 
   @@unique([foydalanuvchiId, sana])
   @@map("skan_hisobi")
+}
+
+/// PRO obunalari (PRD.md, 7-bo'lim). Har to'lov yoki admin qo'lda bergan muddat — alohida
+/// qator. PRO holati saqlanmaydi: `boshlanish <= hozir < tugash` bo'lgan qator bor bo'lsa
+/// foydalanuvchi PRO. To'lov ustunlari S5'da to'lov bilan birga qo'shiladi.
+model Obuna {
+  id              String   @id @default(uuid())
+  foydalanuvchiId String   @map("foydalanuvchi_id")
+  /// "oylik", "yarim_yillik", "yillik" yoki "qolda" (admin bergan).
+  tarif           String
+  boshlanish      DateTime @default(now())
+  tugash          DateTime
+  yaratilgan      DateTime @default(now())
+
+  foydalanuvchi Foydalanuvchi @relation(fields: [foydalanuvchiId], references: [id], onDelete: Cascade)
+
+  @@index([foydalanuvchiId, tugash])
+  @@map("obunalar")
 }

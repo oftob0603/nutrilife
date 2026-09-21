@@ -38,8 +38,8 @@ maqsad emas. Butun mahsulot shu doira atrofida quriladi.
 
 | Rol | Ko'radi | Qila oladi |
 |-----|---------|------------|
-| **FREE foydalanuvchi** | O'z Home doirasi, o'z jurnali, o'z progressi, retsept sarlavhalari | Umr davomida jami 3 ta AI skan; qo'lda matn bilan cheklovsiz ovqat qo'shish; o'z yozuvini tahrirlash va o'chirish; profil va sozlamalarni o'zgartirish |
-| **PRO foydalanuvchi** | Yuqoridagilar + retseptlarning to'liq matni + Nutrition Score + qolgan kaloriyaga mos taom takliflari | Kuniga 20 tagacha AI skan; to'liq tarixni ko'rish; obunani bekor qilish |
+| **FREE foydalanuvchi** | O'z Home doirasi, o'z jurnali, o'z progressi, retsept sarlavhalari | Umr davomida jami 3 ta AI skan; to'liq tarixni ko'rish; qo'lda matn bilan cheklovsiz ovqat qo'shish; o'z yozuvini tahrirlash va o'chirish; profil va sozlamalarni o'zgartirish |
+| **PRO foydalanuvchi** | Yuqoridagilar + retseptlarning to'liq matni + Nutrition Score + qolgan kaloriyaga mos taom takliflari | Kuniga 20 tagacha AI skan; obunani bekor qilish |
 | **Admin** | Umumiy statistika, foydalanuvchilar ro'yxati, obunalar, taom takliflari navbati, shikoyatlar | Obunani qo'lda berish va olib qo'yish; taom va retsept bazasini tahrirlash; AI xato tanigan natijalarni tuzatish; foydalanuvchini bloklash va ma'lumotini o'chirish; narxlarni o'zgartirish |
 
 Kirish: Telegram initData orqali avtomatik. Telefon, email, parol so'ralmaydi.
