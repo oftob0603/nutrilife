@@ -24,6 +24,9 @@
   --o1-chegara: #dcfce7;
   --o1-matn: #0f1c14;
   --o1-matn-2: #3f5347;
+  /* PRO belgisi va tugmasi — DESIGN.md, "PRO ranglari". Mavzuga qarab o'zgarmaydi. */
+  --pro-gradient: linear-gradient(90deg, #2563eb 0%, #7c3aed 50%, #db2777 100%);
+  --pro-fg: #ffffff;
   /* Brauzerning o'z elementlari (vaqt maydoni, scroll chizig'i) ham mavzuga ergashsin. */
   color-scheme: light;
 }

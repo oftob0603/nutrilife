@@ -345,6 +345,23 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-21 · Begona yozuv/rasmga murojaat 403 emas, 404 qaytaradi; klient 401 da bir marta jimgina qayta kiradi.**
 *Sabab:* 404 yozuv mavjudligini oshkor qilmaydi; qayta kirish — initData 24 soat yaroqli, foydalanuvchi ish o'rtasida "Saqlanmadi" ko'rmasin.
 
+## 2026-09-21 — profil sahifasi (8-task)
+
+**2026-09-21 · Sozlamalar alohida sahifa emas — prototipdagidek Profil sahifasidagi qatorlar, pastdan chiqadigan panelda ochiladi (10-taskda quriladi).**
+*Sabab:* profil-tz F2 rejasidan chekinish — prototip shunday ko'rsatadi, umumiy qoida (pastda) bo'yicha prototip ustun turadi.
+
+**2026-09-21 · Pastki panel prototipdagidek to'rt bo'lim: Asosiy, Retseptlar, Statistika, Profil. Sahifasi hali yo'q ikkitasi (Retseptlar, Statistika) ko'rinadi, lekin o'chiq; Jurnal panelda emas.**
+*Sabab:* dizayn-tz'dagi "S2–S4 vaqtinchalik tarkib" jadvali o'rniga foydalanuvchi qarori.
+
+**2026-09-21 · Avatar — Telegram profil rasmi avtomatik (initData `photo_url`), yo'q bo'lsa ismning bosh harfi. Rasm bizda saqlanmaydi, to'g'ridan-to'g'ri Telegram serveridan ko'rsatiladi.**
+*Sabab:* Qo'shimcha saqlash xarajati va maxfiylik yuki shart emas — Telegram o'zi manba.
+
+**2026-09-21 · Hali qurilmagan ekranlarga olib boradigan tugma/havolalar ("PRO haqida", "Obunani boshqarish", Yordam, Foydalanish shartlari, Maxfiylik siyosati, skan hisoblagichi, "Kunlik norma") hozircha chizilmaydi — har biri o'z ekrani qurilgan taskda qo'shiladi.**
+*Sabab:* Ishlamaydigan tugma ko'rsatish o'rniga, ekran tayyor bo'lganda birga qo'shiladi.
+
+**2026-09-21 · UMUMIY QOIDA: ko'rinishda prototip DESIGN.md yoki TZ bilan zid kelsa — prototipdagisi tanlanadi, so'ralmaydi; prototipda bor, DESIGN.md'da yo'q token DESIGN.md va globals.css ga qo'shiladi.**
+*Sabab:* Foydalanuvchi PRO belgisi lime rangda chizilganini tuzatdi — "ikkita tanlash kelsa prototipdagini tanlaysan".
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

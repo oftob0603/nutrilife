@@ -66,6 +66,17 @@ Shu ekranning o'zida: asosiy tugma lime (`--aksent`), panel burchagi 32px, panel
 yumshoq soya bor (5-bo'limdagi "soya ishlatilmaydi" qoidasidan istisno). Boshqa ekranlarga
 ko'chirilmaydi.
 
+### PRO ranglari
+
+PRO belgisi va PRO'ga chaqiruvchi tugma o'z gradiyentida turadi (prototip/tokens/colors.css) —
+PRO belgi bo'lsa ham, tugma bo'lsa ham bir xil o'qiladi. Gradiyent mavzuga qarab o'zgarmaydi.
+Lime "bitta to'ldirilgan element" qoidasiga kirmaydi: PRO — alohida rang.
+
+| Token | Qiymat | Qayerda |
+|---|---|---|
+| `--pro-gradient` | `linear-gradient(90deg, #2563EB 0%, #7C3AED 50%, #DB2777 100%)` | PRO belgisi, PRO tugmasi foni |
+| `--pro-fg` | `#FFFFFF` | Gradiyent ustidagi matn |
+
 ## 2. Shriftlar
 
 **Inter Tight** — sarlavha va raqam · **Inter** — matn. Ikkalasi kirill va lotinni

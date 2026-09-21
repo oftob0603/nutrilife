@@ -220,7 +220,8 @@ export default async function JurnalSahifasi({ searchParams }: PageProps<"/jurna
         </div>
       </main>
 
-      <QoshishPaneli faol="jurnal" />
+      {/* Jurnal panelda alohida bo'lim emas — u Asosiy ichidan ochiladi (prototip). */}
+      <QoshishPaneli faol="asosiy" />
     </>
   );
 }

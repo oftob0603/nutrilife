@@ -5,6 +5,7 @@ import { MakroChizigi } from "@/app/_components/MakroChizigi";
 import { YozuvQatori } from "@/app/_components/YozuvQatori";
 import { QoshishPaneli, QoshishTugmasi } from "@/app/_components/QoshishPaneli";
 import { NORMA } from "@/lib/norma";
+import type { Profil } from "@/lib/services/profil-hisob";
 import {
   bugunSana,
   qoshniSana,
@@ -25,6 +26,17 @@ async function kunniYukla(sana: string): Promise<Kun | null> {
     const javob = await serverdanApi(`/api/ovqat-yozuvlari?sana=${sana}`);
     if (!javob.ok) return null;
     return (await javob.json()) as Kun;
+  } catch {
+    return null;
+  }
+}
+
+/** Salom uchun ism. Yuklanmasa sarlavha ismsiz chiqadi — Home shu sababli buzilmaydi. */
+async function ismniYukla(): Promise<string | null> {
+  try {
+    const javob = await serverdanApi("/api/profil");
+    if (!javob.ok) return null;
+    return ((await javob.json()) as { profil: Pick<Profil, "ism"> }).profil.ism;
   } catch {
     return null;
   }
@@ -72,7 +84,7 @@ export default async function HomeSahifasi({ searchParams }: PageProps<"/">) {
   const bugunmi = sana === bugun;
   const manzilQoshimchasi = bugunmi ? "" : `?sana=${sana}`;
 
-  const kun = await kunniYukla(sana);
+  const [kun, ism] = await Promise.all([kunniYukla(sana), bugunmi ? ismniYukla() : null]);
   const oxirgilar = kun ? kun.yozuvlar.slice(-3).reverse() : [];
 
   return (
@@ -81,7 +93,13 @@ export default async function HomeSahifasi({ searchParams }: PageProps<"/">) {
         <header className="flex flex-col gap-1 py-4">
           <p className="text-izoh text-matn-2">{sanaMatni(sana)}</p>
           <h1 className="text-sarlavha">
-            {bugunmi ? "Bugun" : sana === qoshniSana(bugun, -1) ? "Kecha" : "O'tgan kun"}
+            {bugunmi
+              ? ism
+                ? `Xush kelibsiz, ${ism}`
+                : "Xush kelibsiz"
+              : sana === qoshniSana(bugun, -1)
+                ? "Kecha"
+                : "O'tgan kun"}
           </h1>
         </header>
 

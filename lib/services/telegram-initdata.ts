@@ -11,8 +11,11 @@ const TILLAR = ["uz", "ru", "en"] as const;
 export type Til = (typeof TILLAR)[number];
 
 export type InitDataNatijasi =
-  /** `ism` — Telegram profilidagi `first_name`; onboardingda ism maydonini oldindan to'ldiradi. */
-  | { telegramId: bigint; til: Til; ism: string | null }
+  /**
+   * `ism` — Telegram profilidagi `first_name`; onboardingda ism maydonini oldindan to'ldiradi.
+   * `avatarUrl` — `photo_url`; foydalanuvchi rasmini yashirgan bo'lsa Telegram uni bermaydi.
+   */
+  | { telegramId: bigint; til: Til; ism: string | null; avatarUrl: string | null }
   | { xato: "format" | "imzo" | "eskirgan" };
 
 /**
@@ -43,7 +46,7 @@ export function initDataniTekshir(
   const yoshi = Math.floor(hozir.getTime() / 1000) - authDate;
   if (yoshi > YAROQLILIK_SONIYA || yoshi < -SOAT_FARQI_SONIYA) return { xato: "eskirgan" };
 
-  let user: { id?: unknown; language_code?: unknown; first_name?: unknown };
+  let user: { id?: unknown; language_code?: unknown; first_name?: unknown; photo_url?: unknown };
   try {
     user = JSON.parse(maydonlar.get("user") ?? "");
   } catch {
@@ -56,5 +59,15 @@ export function initDataniTekshir(
   const til = TILLAR.find((t) => t === user.language_code) ?? "uz";
   const ism =
     typeof user.first_name === "string" ? user.first_name.trim().slice(0, 40) || null : null;
-  return { telegramId: BigInt(user.id), til, ism };
+  return { telegramId: BigInt(user.id), til, ism, avatarUrl: avatarManzili(user.photo_url) };
+}
+
+/** Faqat `https` manzil — qiymat sahifada `<img src>` ga tushadi. */
+function avatarManzili(qiymat: unknown): string | null {
+  if (typeof qiymat !== "string" || qiymat.length > 500) return null;
+  try {
+    return new URL(qiymat).protocol === "https:" ? qiymat : null;
+  } catch {
+    return null;
+  }
 }

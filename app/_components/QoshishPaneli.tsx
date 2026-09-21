@@ -86,26 +86,24 @@ function Qator({
   );
 }
 
-/** Pastki paneldagi bitta bo'lim: nishon va ostida yozuv. Faol bo'lim ostida --fon rangli joy. */
+/**
+ * Pastki paneldagi bitta bo'lim: nishon va ostida yozuv. Faol bo'lim ostida --fon rangli joy.
+ * `href` berilmasa bo'lim o'chiq — sahifasi hali qurilmagan (Retseptlar — S6, Statistika — S4).
+ */
 function Bolim({
   href,
   nomi,
-  faol,
+  faol = false,
   children,
 }: {
-  href: string;
+  href?: string;
   nomi: string;
-  faol: boolean;
+  faol?: boolean;
   children: React.ReactNode;
 }) {
-  return (
-    <Link
-      href={href}
-      aria-current={faol ? "page" : undefined}
-      className={`flex min-h-11 min-w-0 flex-1 flex-col items-center gap-0.5 rounded-full py-2 ${
-        faol ? "bg-fon text-siyoh" : "text-matn-2"
-      }`}
-    >
+  const ASOS = "flex min-h-11 min-w-0 flex-1 flex-col items-center gap-0.5 rounded-full py-2";
+  const ichi = (
+    <>
       <svg
         viewBox="0 0 24 24"
         width="20"
@@ -119,18 +117,38 @@ function Bolim({
       >
         {children}
       </svg>
-      <span className={`text-[11px] leading-none ${faol ? "font-medium" : ""}`}>{nomi}</span>
+      <span className={`max-w-full truncate text-[11px] leading-none ${faol ? "font-medium" : ""}`}>
+        {nomi}
+      </span>
+    </>
+  );
+
+  if (!href) {
+    return (
+      <span aria-disabled="true" className={`${ASOS} text-matn-3`}>
+        {ichi}
+      </span>
+    );
+  }
+  return (
+    <Link
+      href={href}
+      aria-current={faol ? "page" : undefined}
+      className={`${ASOS} ${faol ? "bg-fon text-siyoh" : "text-matn-2"}`}
+    >
+      {ichi}
     </Link>
   );
 }
 
 /**
- * Suzuvchi pastki panel (dizayn-tz 2-bo'lim; S2'da Asosiy · [+] · Jurnal) va "+" ochadigan
+ * Suzuvchi pastki panel (prototip `BottomBar`: Asosiy · Retseptlar · [+] · Statistika · Profil;
+ * jurnal panelda emas — Home'dagi "Hammasi" orqali ochiladi) va "+" ochadigan
  * E2 — ovqat qo'shish manbasini tanlash paneli. Kamera E3 ekranini ochadi; galereya tizim
  * rasm tanlagichini ochadi va tanlangan rasm yuklangach tahlil sahifasiga o'tadi.
  * Faqat E1 va E9 da chiziladi — oqim ichidagi ekranlarda panel yo'q.
  */
-export function QoshishPaneli({ faol }: { faol: "asosiy" | "jurnal" }) {
+export function QoshishPaneli({ faol }: { faol: "asosiy" | "profil" }) {
   const router = useRouter();
   const [ochiq, setOchiq] = useState(false);
   const [yuklanmoqda, setYuklanmoqda] = useState(false);
@@ -179,12 +197,16 @@ export function QoshishPaneli({ faol }: { faol: "asosiy" | "jurnal" }) {
       {!ochiq && (
         <nav
           aria-label="Asosiy navigatsiya"
-          className="fixed inset-x-4 bottom-[max(1.5rem,env(safe-area-inset-bottom))] mx-auto flex max-w-xs items-center gap-2 rounded-full border border-chegara bg-karta px-3 py-1 shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
+          className="fixed inset-x-4 bottom-[max(1.5rem,env(safe-area-inset-bottom))] mx-auto flex max-w-sm items-center gap-2 rounded-full border border-chegara bg-karta px-3 py-1 shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
         >
           <Bolim href="/" nomi="Asosiy" faol={faol === "asosiy"}>
             <path d="M15.6 2.7a10 10 0 1 0 5.7 5.7" />
             <circle cx="12" cy="12" r="2" />
             <path d="M13.4 10.6 19 5" />
+          </Bolim>
+          <Bolim nomi="Retseptlar">
+            <path d="M12 7v14" />
+            <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
           </Bolim>
           <button
             type="button"
@@ -205,8 +227,13 @@ export function QoshishPaneli({ faol }: { faol: "asosiy" | "jurnal" }) {
               <path d="M12 5v14M5 12h14" />
             </svg>
           </button>
-          <Bolim href="/jurnal" nomi="Jurnal" faol={faol === "jurnal"}>
-            <path d="M3 6h.01M3 12h.01M3 18h.01M8 6h13M8 12h13M8 18h13" />
+          <Bolim nomi="Statistika">
+            <path d="M16 7h6v6" />
+            <path d="m22 7-8.5 8.5-5-5L2 17" />
+          </Bolim>
+          <Bolim href="/profil" nomi="Profil" faol={faol === "profil"}>
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
           </Bolim>
         </nav>
       )}

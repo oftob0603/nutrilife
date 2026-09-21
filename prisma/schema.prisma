@@ -70,6 +70,9 @@ model OvqatYozuvi {
 model Foydalanuvchi {
   id            String    @id @default(uuid())
   telegramId    BigInt?   @unique @map("telegram_id")
+  /// Telegram profil rasmi (initData `photo_url`); har kirishda yangilanadi. Rasm yashirilgan
+  /// yoki yo'q bo'lsa bo'sh — ekranda ismning bosh harfi turadi.
+  avatarUrl     String?   @map("avatar_url")
   til           String    @default("uz")
   /// "yorug", "qorongi" yoki "tizim".
   mavzu         String    @default("tizim")

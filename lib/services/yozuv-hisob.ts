@@ -99,9 +99,14 @@ export function haftaKunlari(sana: string): HaftaKuni[] {
 // qat'i nazar "bugun" bir xil hisoblansin uchun siljish qo'lda qo'shiladi.
 const SILJISH_MS = 5 * 60 * 60 * 1000;
 
+/** Lahzaning Toshkent vaqti bo'yicha sanasi: "YYYY-MM-DD". */
+export function toshkentSanasi(vaqt: Date): string {
+  return new Date(vaqt.getTime() + SILJISH_MS).toISOString().slice(0, 10);
+}
+
 /** Bugungi sana "YYYY-MM-DD" ko'rinishida (Toshkent vaqti bo'yicha). */
 export function bugunSana(): string {
-  return new Date(Date.now() + SILJISH_MS).toISOString().slice(0, 10);
+  return toshkentSanasi(new Date());
 }
 
 /** Sana matnidan shu kunning boshi va oxiri (UTC lahzalari sifatida). */
