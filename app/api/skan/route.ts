@@ -3,6 +3,7 @@ import { AiXatosi } from "@/lib/services/ai";
 import { hodisaYoz } from "@/lib/services/hodisalar";
 import { joriyFoydalanuvchiId, kirishKerak } from "@/lib/services/sessiya";
 import { skanQil } from "@/lib/services/skan";
+import { skanLimitiHolati, type LimitSababi } from "@/lib/services/skan-hisobi";
 import { MATN_CHEGARASI, VAZN_CHEGARASI } from "@/lib/services/skan-hisob";
 import { sorovTili } from "@/lib/lugat/server";
 import { k } from "@/lib/lugat/tarjima";
@@ -10,11 +11,29 @@ import { k } from "@/lib/lugat/tarjima";
 // AI javobi 30 soniyagacha kutiladi — funksiya undan oldin uzilmasin.
 export const maxDuration = 60;
 
+// Ekranda ko'rinadi — klient lug'at orqali tarjima qiladi.
+const LIMIT_XABARLARI: Record<LimitSababi | "kun", string> = {
+  skan: k("Bepul skanlar tugadi. Taomni qo'lda qo'shish cheklovsiz"),
+  kun: k("Bugungi skanlar ishlatildi. Ertaga yangilanadi — qo'lda qo'shish cheklovsiz"),
+  tanilmagan: k(
+    "Bugun taom bir necha marta tanilmadi. Ertaga yana urinib ko'ring yoki taomni qo'lda qo'shing",
+  ),
+  texnik: k("Bugungi AI skanlar tugadi. Taomni qo'lda qo'shish cheklovsiz"),
+};
+
 const UUID_QOLIPI = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/** Skan limiti va undan qolgani — E2 hisoblagichi va F1 obuna kartasi uchun. */
+export async function GET(sorov: Request) {
+  const foydalanuvchiId = await joriyFoydalanuvchiId(sorov);
+  const limit = foydalanuvchiId ? await skanLimitiHolati(foydalanuvchiId) : null;
+  return limit ? Response.json({ limit }) : kirishKerak();
+}
 
 /**
  * AI skan: `{ rasmId }` yoki `{ matn }` (ikkalasi birga ham bo'ladi — matn rasmga izoh),
- * ixtiyoriy `vaznGramm`. Javob: `{ holat: "tayyor", natija }` yoki `{ holat: "tanib_bolmadi" }`.
+ * ixtiyoriy `vaznGramm`. Javob: `{ holat: "tayyor", natija }` yoki `{ holat: "tanib_bolmadi" }`;
+ * limit tugagan bo'lsa 429 va `{ xato, kod: "limit", sabab, limit }`.
  */
 export async function POST(sorov: Request) {
   const foydalanuvchiId = await joriyFoydalanuvchiId(sorov);
@@ -61,17 +80,16 @@ export async function POST(sorov: Request) {
     if (javob.holat === "rasm_yoq") {
       return Response.json({ xato: "Rasm topilmadi" }, { status: 404 });
     }
+    if (javob.holat === "hisob_yoq") return kirishKerak();
     if (javob.holat === "limit") {
+      const { sabab, limit } = javob;
+      const xabar = sabab === "skan" && limit.davr === "kun" ? "kun" : sabab;
       return Response.json(
-        {
-          // Ekranda ko'rinadi — klient lug'at orqali tarjima qiladi.
-          xato: k("Bugungi AI skanlar tugadi. Taomni qo'lda qo'shish cheklovsiz"),
-          kod: "limit",
-        },
+        { xato: LIMIT_XABARLARI[xabar], kod: "limit", sabab, limit },
         { status: 429 },
       );
     }
-    // "Tanib bo'lmadi" ham skan — AI chaqirildi. Takroriy skanlarda hodisa qayta yozilmaydi.
+    // "Tanib bo'lmadi" ham urinish — AI chaqirildi. Takroriy skanlarda hodisa qayta yozilmaydi.
     after(() => hodisaYoz(foydalanuvchiId, "birinchi_skan"));
     return Response.json(javob);
   } catch (xato) {

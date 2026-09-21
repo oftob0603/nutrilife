@@ -207,13 +207,16 @@ model KunlikXulosa {
 }
 
 /// AI skan sarfi: har foydalanuvchining bir kundagi skanlari soni (PRD.md, 7-bo'lim).
-/// S4'da FREE/PRO limitlari shu jadvalga tayanadi.
+/// FREE/PRO limitlari shu jadvalga tayanadi (lib/services/skan-hisobi.ts).
 model SkanHisobi {
   id              String   @id @default(uuid())
   foydalanuvchiId String   @map("foydalanuvchi_id")
   /// Toshkent vaqti bo'yicha kun.
   sana            DateTime @db.Date
+  /// Limitdan yeyilgan skanlar: AI taomni tanigan yoki hozir tahlil qilayotgan.
   soni            Int      @default(0)
+  /// AI taomni taniy olmagan urinishlar — limitdan yeyilmaydi, lekin kunlik soni cheklangan.
+  tanilmagan      Int      @default(0)
 
   foydalanuvchi Foydalanuvchi @relation(fields: [foydalanuvchiId], references: [id], onDelete: Cascade)
 

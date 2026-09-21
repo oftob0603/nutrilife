@@ -63,9 +63,13 @@ export function faolMuddat(obunalar: ObunaQatori[], hozir: Date = new Date()): F
   return { tarif, boshlanish: joriy.boshlanish, tugash: obuna.tugash };
 }
 
+export type SkanLimiti = { davr: "umr" | "kun"; soni: number };
+
 export type Huquqlar = {
   /** FREE — umr davomida jami, PRO — kuniga. */
-  skanLimiti: { davr: "umr" | "kun"; soni: number };
+  skanLimiti: SkanLimiti;
+  /** AI taomni taniy olmagan urinishlar — kuniga shuncha; limitdan yeyilmaydi. */
+  tanilmaganLimiti: number;
   retseptToliqMatni: boolean;
   nutritionScore: boolean;
   taomTakliflari: boolean;
@@ -74,6 +78,9 @@ export type Huquqlar = {
 
 export const FREE_SKAN_LIMITI = 3;
 export const PRO_SKAN_LIMITI = 20;
+/** Tanilmagan urinish limitdan yeyilmaydi, lekin kuniga shuncha marta (foydalanuvchi qarori). */
+export const FREE_TANILMAGAN_LIMITI = 5;
+export const PRO_TANILMAGAN_LIMITI = 20;
 
 /**
  * Admin roli PRO bermaydi (foydalanuvchi qarori): admin PRO imkoniyatlarini o'ziga qo'lda
@@ -86,9 +93,34 @@ export function huquqlar(rol: Rol, obuna: ObunaHolati): Huquqlar {
     skanLimiti: pro
       ? { davr: "kun", soni: PRO_SKAN_LIMITI }
       : { davr: "umr", soni: FREE_SKAN_LIMITI },
+    tanilmaganLimiti: pro ? PRO_TANILMAGAN_LIMITI : FREE_TANILMAGAN_LIMITI,
     retseptToliqMatni: pro,
     nutritionScore: pro,
     taomTakliflari: pro,
     adminPaneli: rol === "admin",
+  };
+}
+
+/** Hisobdagi skanlar: bugungi kun va butun umr bo'yicha (`skan_hisobi`). */
+export type SkanSarfi = { bugun: number; jami: number; bugunTanilmagan: number };
+
+export type SkanQoldigi = SkanLimiti & {
+  ishlatilgan: number;
+  qoldi: number;
+  /** Bugun yana necha marta tanilmagan urinish mumkin. */
+  tanilmaganQoldi: number;
+};
+
+/** Limitdan qancha qolgani: "kun" davrida bugungi skanlar, "umr" davrida hammasi sanaladi. */
+export function skanQoldigi(
+  { skanLimiti, tanilmaganLimiti }: Pick<Huquqlar, "skanLimiti" | "tanilmaganLimiti">,
+  sarf: SkanSarfi,
+): SkanQoldigi {
+  const ishlatilgan = Math.max(0, skanLimiti.davr === "kun" ? sarf.bugun : sarf.jami);
+  return {
+    ...skanLimiti,
+    ishlatilgan,
+    qoldi: Math.max(0, skanLimiti.soni - ishlatilgan),
+    tanilmaganQoldi: Math.max(0, tanilmaganLimiti - sarf.bugunTanilmagan),
   };
 }

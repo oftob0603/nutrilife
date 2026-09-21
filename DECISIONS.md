@@ -403,6 +403,9 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-21 · F4 "Obuna" ekrani S4'da to'lovsiz, faqat o'qish uchun qurildi: "Obunani bekor qilish" tugmasi S5'ga qoldirildi; FREE va muddati tugagan hisob F4'ga kirmaydi.**
 *Sabab:* Avtomatik takroriy to'lov yo'q — "bekor qilish" faqat keyingi eslatmani o'chiradi, eslatmalar esa S5'da (bot). Hech narsa qilmaydigan qizil tugma foydalanuvchini chalg'itadi. Prototipda ham F4'ga faqat faol PRO'dan kiriladi.
 
+**2026-09-21 · Skan limitidan faqat tanilgan taom yeyiladi; "tanib bo'lmadi" urinishi qaytariladi, lekin `skan_hisobi.tanilmagan` da sanaladi va kuniga cheklanadi: FREE 5 ta, PRO 20 ta. Kamera, galereya va matnli "Tasvirlash" — bitta limit. S2'dagi "tanib bo'lmadi ham hisobga kiradi" qoidasi shu bilan almashtirildi.**
+*Sabab:* Foydalanuvchi AI taniy olmagan rasm uchun umrbod 3 ta skanidan birini yo'qotmasligi kerak; lekin qaytarish cheksiz bo'lsa, tanib bo'lmaydigan rasmlarni ketma-ket yuborib AI xarajatini cheksiz oshirish mumkin edi — kunlik chegara shuni yopadi. Matnli tasvir ham AI chaqiradi, shuning uchun alohida limit berilmadi. Limit tekshiruvi hisob bo'yicha qulf ostida bitta tranzaksiyada: parallel so'rovlar limitdan o'tib ham ketmaydi, oxirgi skanni nohaq rad ham etmaydi.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

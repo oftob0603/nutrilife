@@ -210,6 +210,18 @@ export const SOZLAR = {
     ru: "ИИ-сканирования на сегодня закончились. Добавлять блюда вручную можно без ограничений",
     en: "Today's AI scans are used up. Adding dishes manually is unlimited",
   },
+  "Bepul skanlar tugadi. Taomni qo'lda qo'shish cheklovsiz": {
+    ru: "Бесплатные сканирования закончились. Добавлять блюда вручную можно без ограничений",
+    en: "Your free scans are used up. Adding dishes manually is unlimited",
+  },
+  "Bugungi skanlar ishlatildi. Ertaga yangilanadi — qo'lda qo'shish cheklovsiz": {
+    ru: "Сканирования на сегодня использованы. Завтра лимит обновится — вручную можно добавлять без ограничений",
+    en: "Today's scans are used up. They reset tomorrow — adding manually is unlimited",
+  },
+  "Bugun taom bir necha marta tanilmadi. Ertaga yana urinib ko'ring yoki taomni qo'lda qo'shing": {
+    ru: "Сегодня блюдо не удалось распознать несколько раз. Попробуйте завтра или добавьте блюдо вручную",
+    en: "The dish could not be recognised several times today. Try again tomorrow or add it manually",
+  },
   "Natija": { ru: "Результат", en: "Result" },
   "Ma'lumotni o'zingiz kiriting": { ru: "Введите данные сами", en: "Enter the details yourself" },
   "Raqamlar taxminiy, tahrirlash mumkin": {
