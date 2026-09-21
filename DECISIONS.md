@@ -340,6 +340,11 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-21 · To'liq tarix FREE'ga ham ochiq — tarix bo'yicha FREE/PRO farqi yo'q.**
 *Sabab:* PRD'da PRO uchun "to'liq tarixni ko'rish" yozilgan edi, lekin FREE chegarasi hech qayerda aniqlanmagan; foydalanuvchi FREE ham PRO'dek to'liq tarixni ko'rsin dedi. PRD 4-bo'lim jadvali shunga moslandi.
 
+## 2026-09-21 — himoyalangan API yo'llari (7-task)
+
+**2026-09-21 · Begona yozuv/rasmga murojaat 403 emas, 404 qaytaradi; klient 401 da bir marta jimgina qayta kiradi.**
+*Sabab:* 404 yozuv mavjudligini oshkor qilmaydi; qayta kirish — initData 24 soat yaroqli, foydalanuvchi ish o'rtasida "Saqlanmadi" ko'rmasin.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

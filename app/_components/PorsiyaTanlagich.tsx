@@ -9,6 +9,7 @@ import {
   type Taom,
 } from "@/lib/services/taom-hisob";
 import { OVQAT_TURLARI, type OvqatTuri } from "@/lib/services/yozuv-hisob";
+import { apiSorov } from "@/lib/services/api-klient";
 import { OvqatTuriTanlagich } from "@/app/_components/OvqatTuriTanlagich";
 import { Tugma } from "@/app/_components/Tugma";
 
@@ -62,7 +63,7 @@ export function PorsiyaTanlagich({ taom }: { taom: Taom }) {
     setSaqlanmoqda(true);
     setXato(false);
     try {
-      const javob = await fetch("/api/ovqat-yozuvlari", {
+      const javob = await apiSorov("/api/ovqat-yozuvlari", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

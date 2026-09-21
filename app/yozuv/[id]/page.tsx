@@ -11,8 +11,9 @@ export const dynamic = "force-dynamic";
 
 export const metadata = { title: "Yozuv tahriri — Nutrilife" };
 
-async function yozuvniYukla(id: string): Promise<Yozuv | null> {
+async function yozuvniYukla(id: string): Promise<Yozuv | "sessiyasiz" | null> {
   const javob = await serverdanApi(`/api/ovqat-yozuvlari/${id}`);
+  if (javob.status === 401) return "sessiyasiz";
   if (javob.status === 404) return null;
   if (!javob.ok) throw new Error("Yozuvni yuklab bo'lmadi");
   const { yozuv } = (await javob.json()) as { yozuv: Yozuv };
@@ -36,6 +37,9 @@ export default async function YozuvSahifasi({
   const qaytish = qaytishManzili(berilgan);
 
   const yozuv = await yozuvniYukla(id);
+  // Sessiyasiz ochilgan havola: sahifa kirish pardasi ostida bo'sh turadi, kirgach
+  // `KirishDarvozasi` uni sessiya bilan qayta so'raydi.
+  if (yozuv === "sessiyasiz") return null;
   if (!yozuv) notFound();
 
   return (

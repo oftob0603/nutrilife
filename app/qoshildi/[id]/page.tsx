@@ -13,9 +13,10 @@ export const dynamic = "force-dynamic";
 
 type Kun = { yozuvlar: Yozuv[]; jami: Jami };
 
-async function kunniYukla(): Promise<Kun | null> {
+async function kunniYukla(): Promise<Kun | "sessiyasiz" | null> {
   try {
     const javob = await serverdanApi("/api/ovqat-yozuvlari");
+    if (javob.status === 401) return "sessiyasiz";
     if (!javob.ok) return null;
     return (await javob.json()) as Kun;
   } catch {
@@ -48,6 +49,9 @@ export default async function QoshildiSahifasi({
 }: PageProps<"/qoshildi/[id]">) {
   const { id } = await params;
   const kun = await kunniYukla();
+  // Sessiyasiz ochilgan havola: sahifa kirish pardasi ostida bo'sh turadi, kirgach
+  // `KirishDarvozasi` uni sessiya bilan qayta so'raydi.
+  if (kun === "sessiyasiz") return null;
   const yozuv = kun?.yozuvlar.find((qator) => qator.id === id);
 
   if (!kun || !yozuv) notFound();

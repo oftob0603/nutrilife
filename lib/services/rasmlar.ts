@@ -75,7 +75,9 @@ export async function rasmOchirish(
   if (rasm.ovqatYozuviId) return "boglangan";
 
   // Shart qayta tekshiriladi: o'qish va o'chirish orasida rasm yozuvga bog'lanib qolishi mumkin.
-  const { count } = await db.rasm.deleteMany({ where: { id, ovqatYozuviId: null } });
+  const { count } = await db.rasm.deleteMany({
+    where: { id, foydalanuvchiId, ovqatYozuviId: null },
+  });
   if (count === 0) return "boglangan";
 
   // Ombor o'chira olmasa fayl qolib ketadi, lekin baza toza — davriy tozalash yig'ib oladi.

@@ -2,30 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState, useTransition } from "react";
+import {
+  initDataBilanKirish,
+  initDataniOl,
+  SESSIYA_TUGADI_HODISASI,
+} from "@/lib/services/api-klient";
 import { Tugma } from "./Tugma";
 
-const SAQLASH_KALITI = "nutrilife-initdata";
-
 type Holat = "kirilmoqda" | "tayyor" | "xato" | "qayta_oching" | "telegram_emas";
-
-/**
- * Telegram Mini App'ni ochganda initData'ni URL hash'iga qo'yadi (`#tgWebAppData=...`).
- * Ilova ichida yurganda hash yo'qoladi, shuning uchun qiymat shu ochilish davomida
- * saqlab turiladi — Telegram'ning o'z SDK'si ham shunday qiladi (to'liq SDK S5'da ulanadi).
- */
-function initDataniOl(): string | null {
-  const hashdagi = new URLSearchParams(window.location.hash.slice(1)).get("tgWebAppData");
-  try {
-    if (hashdagi) {
-      window.sessionStorage.setItem(SAQLASH_KALITI, hashdagi);
-      return hashdagi;
-    }
-    return window.sessionStorage.getItem(SAQLASH_KALITI);
-  } catch {
-    // Xotira yopiq bo'lishi mumkin — hash'dagi qiymatning o'zi yetadi.
-    return hashdagi;
-  }
-}
 
 /** true — sahifa shu hisob sessiyasi bilan chizilgan, qayta yuklash shart emas. */
 type KirishNatijasi =
@@ -40,11 +24,7 @@ async function kirish(): Promise<KirishNatijasi> {
   const initData = initDataniOl();
   try {
     if (initData) {
-      const javob = await fetch("/api/auth/telegram", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ initData }),
-      });
+      const javob = await initDataBilanKirish(initData);
       if (javob.ok) {
         const { foydalanuvchi, sessiyaBorEdi } = (await javob.json()) as KirishJavobi;
         return {
@@ -117,6 +97,13 @@ export function KirishDarvozasi({ children }: { children: React.ReactNode }) {
       bekor = true;
     };
   }, [natijaniQolla]);
+
+  // Ish o'rtasida sessiya tugab, jimgina qayta kirish ham o'tmadi (`apiSorov`).
+  useEffect(() => {
+    const sessiyaTugadi = () => setHolat("qayta_oching");
+    window.addEventListener(SESSIYA_TUGADI_HODISASI, sessiyaTugadi);
+    return () => window.removeEventListener(SESSIYA_TUGADI_HODISASI, sessiyaTugadi);
+  }, []);
 
   const ochiq = holat === "tayyor" && !yangilanmoqda;
 

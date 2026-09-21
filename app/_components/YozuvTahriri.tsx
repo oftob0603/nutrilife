@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Tugma } from "@/app/_components/Tugma";
 import { Maydon, YozuvFormasi } from "@/app/_components/YozuvFormasi";
+import { apiSorov } from "@/lib/services/api-klient";
 import {
   formaQiymatlari,
   formaTuz,
@@ -143,7 +144,7 @@ export function YozuvTahriri({ yozuv, qaytish }: { yozuv: Yozuv; qaytish: string
   const saqlaSorovi = () =>
     bajar("saqlash", async () => {
       const { miqdor: yangiMiqdor, ...qiymatlar } = formaQiymatlari(forma);
-      const javob = await fetch(`/api/ovqat-yozuvlari/${yozuv.id}`, {
+      const javob = await apiSorov(`/api/ovqat-yozuvlari/${yozuv.id}`, {
         method: "PATCH",
         headers: SARLAVHA,
         body: JSON.stringify({
@@ -160,7 +161,7 @@ export function YozuvTahriri({ yozuv, qaytish }: { yozuv: Yozuv; qaytish: string
   // rasm bitta yozuvga tegishli.
   const nusxala = () =>
     bajar("nusxalash", async () => {
-      const javob = await fetch("/api/ovqat-yozuvlari", {
+      const javob = await apiSorov("/api/ovqat-yozuvlari", {
         method: "POST",
         headers: SARLAVHA,
         body: JSON.stringify({
@@ -182,7 +183,7 @@ export function YozuvTahriri({ yozuv, qaytish }: { yozuv: Yozuv; qaytish: string
 
   const ochir = () =>
     bajar("ochirish", async () => {
-      const javob = await fetch(`/api/ovqat-yozuvlari/${yozuv.id}`, { method: "DELETE" });
+      const javob = await apiSorov(`/api/ovqat-yozuvlari/${yozuv.id}`, { method: "DELETE" });
       // 404 — yozuv allaqachon o'chgan: foydalanuvchi uchun natija bir xil.
       if (!javob.ok && javob.status !== 404) throw new Error("O'chirilmadi");
       return qaytish;

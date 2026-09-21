@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { AiBelgisi } from "@/app/_components/AiBelgisi";
 import { Tugma } from "@/app/_components/Tugma";
 import { YozuvFormasi } from "@/app/_components/YozuvFormasi";
+import { apiSorov } from "@/lib/services/api-klient";
 import { skanJami, type SkanJavobi, type SkanNatija } from "@/lib/services/skan-hisob";
 import {
   boshForma,
@@ -28,7 +29,7 @@ const sorovlar = new Map<string, Promise<Javob>>();
 
 async function yubor(tana: { rasmId?: string; matn?: string }): Promise<Javob> {
   try {
-    const sorov = await fetch("/api/skan", {
+    const sorov = await apiSorov("/api/skan", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(tana),
@@ -161,7 +162,7 @@ function Tasdiq({
     setSaqlanmadi(false);
     const { miqdor, ...qiymatlar } = formaQiymatlari(forma);
     try {
-      const javob = await fetch("/api/ovqat-yozuvlari", {
+      const javob = await apiSorov("/api/ovqat-yozuvlari", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({

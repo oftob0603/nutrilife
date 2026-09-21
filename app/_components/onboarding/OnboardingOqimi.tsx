@@ -7,6 +7,7 @@ import { Tugma } from "@/app/_components/Tugma";
 import { Gildirak, GildirakMaydoni } from "@/app/_components/onboarding/Gildirak";
 import { OnboardingMaydoni } from "@/app/_components/onboarding/OnboardingMaydoni";
 import { SegmentTanlagich, Variantlar } from "@/app/_components/onboarding/Variantlar";
+import { apiSorov } from "@/lib/services/api-klient";
 import {
   afzallikBosildi,
   formaYarat,
@@ -364,7 +365,7 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
     }
     setSaqlash({ holat: "saqlanmoqda" });
     try {
-      const javob = await fetch("/api/onboarding", {
+      const javob = await apiSorov("/api/onboarding", {
         method: "PATCH",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(tana),

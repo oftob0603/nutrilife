@@ -1,6 +1,7 @@
 // Rasmni brauzerda siqish va serverga yuborish. Faqat klient komponentlar ishlatadi —
 // bazaga ham, omborga ham tegmaydi, hammasi POST /api/rasmlar orqali o'tadi.
 
+import { apiSorov } from "./api-klient.ts";
 import { RASM_CHEGARASI } from "./rasm-hisob.ts";
 
 /**
@@ -58,7 +59,7 @@ export async function rasmniYukla(manba: Blob): Promise<string> {
 
   let javob: Response;
   try {
-    javob = await fetch("/api/rasmlar", { method: "POST", body: shakl });
+    javob = await apiSorov("/api/rasmlar", { method: "POST", body: shakl });
   } catch {
     throw new Error("Yuklanmadi. Internetni tekshirib, qayta urinib ko'ring");
   }

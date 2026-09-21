@@ -125,8 +125,8 @@ export async function yozuvniOchirish(foydalanuvchiId: string, id: string): Prom
     });
     if (!yozuv) return null;
 
-    await tx.rasm.deleteMany({ where: { ovqatYozuviId: id } });
-    await tx.ovqatYozuvi.delete({ where: { id } });
+    await tx.rasm.deleteMany({ where: { ovqatYozuviId: id, foydalanuvchiId } });
+    await tx.ovqatYozuvi.deleteMany({ where: { id, foydalanuvchiId } });
     return yozuv.rasmlar.map((rasm) => rasm.kalit);
   });
   if (!kalitlar) return false;

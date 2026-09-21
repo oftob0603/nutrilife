@@ -9,8 +9,8 @@
     },
     {
       "name": "nutrilife-prod",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "start", "--", "-p", "3100"],
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "set APP_URL=http://localhost:3100&& npm run start -- -p 3100"],
       "port": 3100
     }
   ]
