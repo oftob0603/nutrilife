@@ -1,8 +1,11 @@
 import { Avatar } from "@/app/_components/Avatar";
+import { OflaynChizigi } from "@/app/_components/OflaynChizigi";
 import { ProBelgisi } from "@/app/_components/ProBelgisi";
+import { QaytaUrinish } from "@/app/_components/QaytaUrinish";
 import { Sozlamalar } from "@/app/_components/profil/Sozlamalar";
 import { QoshishPaneli } from "@/app/_components/QoshishPaneli";
 import { TugmaHavola } from "@/app/_components/Tugma";
+import { XatoKartasi } from "@/app/_components/XatoKartasi";
 import { serverTarjimoni } from "@/lib/lugat/server";
 import type { Tarjimon } from "@/lib/lugat/tarjima";
 import type { SkanQoldigi } from "@/lib/services/huquqlar";
@@ -19,23 +22,6 @@ import { profilniYukla, skanLimitiniYukla } from "./yukla";
 export const dynamic = "force-dynamic";
 
 export const metadata = { title: "Profil — Nutrilife" };
-
-function YuklanmadiKartasi({ t }: Pick<Tarjimon, "t">) {
-  return (
-    <div
-      role="alert"
-      className="flex flex-col items-center gap-3 rounded-karta border border-karta-chegara bg-karta p-6 text-center"
-    >
-      <p className="text-karta-sarlavha">{t("Profilni yuklab bo'lmadi")}</p>
-      <p className="text-izoh text-matn-2">
-        {t("Serverga ulanolmadik. Internetni tekshirib, qayta urinib ko'ring.")}
-      </p>
-      <TugmaHavola korinish="ikkilamchi" href="/profil">
-        {t("Qayta urinish")}
-      </TugmaHavola>
-    </div>
-  );
-}
 
 /** Obuna kartasi: FREE, faol PRO yoki muddati tugagan PRO (profil-tz.md, F1). */
 function ObunaKartasi({
@@ -101,13 +87,19 @@ export default async function ProfilSahifasi() {
 
   return (
     <>
+      <OflaynChizigi />
       <main className="mx-auto w-full max-w-md px-4 pb-32">
         <header className="py-4">
           <h1 className="text-sarlavha">{t("Profil")}</h1>
         </header>
 
         {profil === null ? (
-          <YuklanmadiKartasi t={t} />
+          <XatoKartasi
+            sarlavha={t("Profilni yuklab bo'lmadi")}
+            izoh={t("Serverga ulanolmadik. Internetni tekshirib, qayta urinib ko'ring.")}
+          >
+            <QaytaUrinish />
+          </XatoKartasi>
         ) : (
           <div className="flex flex-col gap-6">
             <div className="flex items-center gap-4">

@@ -15,8 +15,11 @@ const USLUB: Record<Korinish, string> = {
   pro: "bg-(image:--pro-gradient) text-(--pro-fg)",
 };
 
-const ASOS =
-  "flex h-13 w-full items-center justify-center gap-2 rounded-full text-asosiy font-medium transition-transform active:scale-[0.98] disabled:opacity-40";
+const UMUMIY =
+  "flex items-center justify-center gap-2 rounded-full text-asosiy font-medium transition-transform active:scale-[0.98] disabled:opacity-40";
+const ASOS = `${UMUMIY} h-13 w-full`;
+// Karta ichidagi yonma-yon tugmalar uchun (prototip `size="sm"`): balandligi 44, eni matnga qarab.
+const KICHIK = `${UMUMIY} h-11 px-4`;
 
 function Aylanma() {
   return (
@@ -29,12 +32,14 @@ function Aylanma() {
 
 export function Tugma({
   korinish = "asosiy",
+  kichik = false,
   yuklanmoqda = false,
   disabled = false,
   onClick,
   children,
 }: {
   korinish?: Korinish;
+  kichik?: boolean;
   yuklanmoqda?: boolean;
   disabled?: boolean;
   onClick?: () => void;
@@ -45,7 +50,7 @@ export function Tugma({
       type="button"
       onClick={onClick}
       disabled={disabled || yuklanmoqda}
-      className={`${ASOS} ${USLUB[korinish]}`}
+      className={`${kichik ? KICHIK : ASOS} ${USLUB[korinish]}`}
     >
       {yuklanmoqda && <Aylanma />}
       {children}

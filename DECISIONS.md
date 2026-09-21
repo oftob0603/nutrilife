@@ -421,6 +421,14 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-21 · Bitta ovqat yozuvi chegaralari: 5000 kkal, har makro 500 g, porsiya 5000 g/ml yoki 50 dona. Klient va server bitta moduldan o'qiydi.**
 *Sabab:* Foydalanuvchi qarori — maqsad xato terishdan himoya ("2500" o'rniga "25000"), oddiy ovqat bu chegaralarga yetmaydi.
 
+## 2026-09-21 — progress sahifasi asoslari (S4, 16-qadam)
+
+**2026-09-21 · Vaqt mintaqasi `Asia/Tashkent` ga qotirildi — Sozlamalarga qo'shilmaydi.**
+*Sabab:* progress-tz ochiq savol 1 yopildi; O'zbekistonda yozgi vaqt yo'q, qat'iy siljish yetarli (2026-09-20 dagi UTC+5 qaroriga mos).
+
+**2026-09-21 · Streak faqat ovqat yozuvidan hisoblanadi — vazn kiritish kunni "kuzatilgan" qilmaydi.**
+*Sabab:* progress-tz ochiq savol 2 yopildi; "kuzatilgan kun" ta'rifi `kunlik_xulosa` (faol ovqat yozuvi bor kun) bilan bir xil turadi, ikki xil mezon chalkashtirmaydi.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

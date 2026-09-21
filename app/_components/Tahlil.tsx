@@ -37,6 +37,10 @@ const UZOQ_KUTISH_MS = 10_000;
 const sorovlar = new Map<string, Promise<Javob>>();
 
 async function yubor(tana: { rasmId?: string; matn?: string }): Promise<Javob> {
+  // Oflaynda so'rov baribir yetmaydi — brauzer kutishini kutmasdan darhol aytamiz.
+  if (!navigator.onLine) {
+    return { holat: "xato", xabar: k("Internet bilan aloqa yo'q"), qaytaUrinsa: true };
+  }
   try {
     const sorov = await apiSorov("/api/skan", {
       method: "POST",

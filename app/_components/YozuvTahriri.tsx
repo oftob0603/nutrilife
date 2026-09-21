@@ -29,14 +29,15 @@ function kelajakdami(iso: string): boolean {
   return Date.parse(iso) > Date.now();
 }
 
-/** O'chirishdan oldingi tasdiq — pastdan chiqadigan panel (E2 paneli bilan bir xil qolip). */
+/**
+ * O'chirishdan oldingi tasdiq — "O'chirish" tugmasi o'rnida ochiladigan karta (prototip
+ * `EditScreen`): ekran almashmaydi, forma ko'rinib turadi.
+ */
 function OchirishTasdigi({
-  taomNomi,
   bajarilmoqda,
   onTasdiq,
   onBekor,
 }: {
-  taomNomi: string;
   bajarilmoqda: boolean;
   onTasdiq: () => void;
   onBekor: () => void;
@@ -54,38 +55,19 @@ function OchirishTasdigi({
   return (
     <div
       role="alertdialog"
-      aria-modal="true"
-      aria-labelledby="ochirish-sarlavha"
       aria-describedby="ochirish-izoh"
-      className="fixed inset-0 z-10 flex flex-col justify-end"
+      className="flex flex-col gap-3 rounded-karta border border-xato bg-karta p-4"
     >
-      <button
-        type="button"
-        aria-label={t("Yopish")}
-        onClick={onBekor}
-        className="absolute inset-0 bg-parda"
-      />
-      <div className="relative mx-auto flex w-full max-w-md flex-col gap-4 rounded-t-panel border border-karta-chegara bg-karta p-4 pb-8 motion-safe:animate-[panel_250ms_cubic-bezier(0.2,0,0,1)]">
-        <div className="mx-auto h-1 w-10 rounded-full bg-chegara" />
-        <div className="flex flex-col gap-1 text-center">
-          <h2 id="ochirish-sarlavha" className="text-karta-sarlavha">
-            {t("Yozuv o'chirilsinmi?")}
-          </h2>
-          <p id="ochirish-izoh" className="text-izoh text-matn-2">
-            {t(
-              "«{0}» jurnaldan o'chadi va kunlik hisobdan ayiriladi. Buni qaytarib bo'lmaydi.",
-              taomNomi,
-            )}
-          </p>
-        </div>
-        <div className="flex flex-col gap-2">
-          <Tugma korinish="xavfli" yuklanmoqda={bajarilmoqda} onClick={onTasdiq}>
-            {t("O'chirish")}
-          </Tugma>
-          <Tugma korinish="uchinchi" disabled={bajarilmoqda} onClick={onBekor}>
-            {t("Bekor qilish")}
-          </Tugma>
-        </div>
+      <p id="ochirish-izoh" className="text-asosiy">
+        {t("Bu yozuvni o'chiramizmi? Doira shu qiymatga kamayadi.")}
+      </p>
+      <div className="flex gap-2">
+        <Tugma korinish="xavfli" kichik yuklanmoqda={bajarilmoqda} onClick={onTasdiq}>
+          {t("O'chirish")}
+        </Tugma>
+        <Tugma korinish="uchinchi" kichik disabled={bajarilmoqda} onClick={onBekor}>
+          {t("Bekor qilish")}
+        </Tugma>
       </div>
     </div>
   );
@@ -238,21 +220,20 @@ export function YozuvTahriri({ yozuv, qaytish }: { yozuv: Yozuv; qaytish: string
         >
           {t("Nusxalash")}
         </Tugma>
-        <Tugma korinish="xavfli" disabled={band} onClick={() => setTasdiqOchiq(true)}>
-          {t("O'chirish")}
-        </Tugma>
+        {tasdiqOchiq ? (
+          <OchirishTasdigi
+            bajarilmoqda={amal === "ochirish"}
+            onTasdiq={ochir}
+            onBekor={() => {
+              if (amal === null) setTasdiqOchiq(false);
+            }}
+          />
+        ) : (
+          <Tugma korinish="xavfli" disabled={band} onClick={() => setTasdiqOchiq(true)}>
+            {t("O'chirish")}
+          </Tugma>
+        )}
       </div>
-
-      {tasdiqOchiq && (
-        <OchirishTasdigi
-          taomNomi={yozuv.taomNomi}
-          bajarilmoqda={amal === "ochirish"}
-          onTasdiq={ochir}
-          onBekor={() => {
-            if (amal === null) setTasdiqOchiq(false);
-          }}
-        />
-      )}
     </>
   );
 }

@@ -1,8 +1,12 @@
 import Link from "next/link";
+import { BoshHolat } from "@/app/_components/BoshHolat";
 import { KunlikDoira } from "@/app/_components/KunlikDoira";
 import { KunTanlagich } from "@/app/_components/KunTanlagich";
 import { MakroChizigi } from "@/app/_components/MakroChizigi";
+import { OflaynChizigi } from "@/app/_components/OflaynChizigi";
+import { QaytaUrinish } from "@/app/_components/QaytaUrinish";
 import { ScoreKartasi } from "@/app/_components/ScoreKartasi";
+import { XatoKartasi } from "@/app/_components/XatoKartasi";
 import { YozuvQatori } from "@/app/_components/YozuvQatori";
 import { QoshishPaneli, QoshishTugmasi } from "@/app/_components/QoshishPaneli";
 import type { Reja } from "@/lib/services/norma-hisob";
@@ -50,31 +54,22 @@ async function ismniYukla(): Promise<string | null> {
   }
 }
 
-/** E1 xato holati: doira o'rnida karta, "+" tugmasi faolligicha qoladi. */
-function XatoKartasi({ t }: Pick<Tarjimon, "t">) {
-  return (
-    <div className="flex flex-col items-center gap-3 rounded-karta border border-karta-chegara bg-karta p-4 text-center">
-      <p className="text-karta-sarlavha">{t("Ma'lumotni yuklab bo'lmadi")}</p>
-      <p className="text-izoh text-matn-2">
-        {t("Hisobot serveriga ulanolmadik. Internetni tekshirib, qayta urinib ko'ring.")}
-      </p>
-    </div>
-  );
-}
-
 /** E1 bo'sh holati. Yangi yozuv doim bugunga tushadi, shuning uchun tugma faqat bugun chiqadi. */
-function BoshHolat({ bugunmi, t }: { bugunmi: boolean } & Pick<Tarjimon, "t">) {
+function BoshKun({ bugunmi, t }: { bugunmi: boolean } & Pick<Tarjimon, "t">) {
   return (
-    <div className="flex flex-col items-center gap-3 rounded-karta border border-karta-chegara bg-karta p-4 text-center">
-      <p className="text-karta-sarlavha">
-        {bugunmi ? t("Bugun hali hech narsa qo'shilmadi") : t("Bu kunda yozuv yo'q")}
-      </p>
-      <p className="text-izoh text-matn-2">
-        {bugunmi
-          ? t("Birinchi ovqatni qo'shsangiz, doira to'lishni boshlaydi.")
-          : t("Bu kuni jurnalga ovqat qo'shilmagan.")}
-      </p>
-      {bugunmi && <QoshishTugmasi>{t("Birinchi ovqatni qo'shish")}</QoshishTugmasi>}
+    <div className="rounded-karta border border-karta-chegara bg-karta p-4">
+      <BoshHolat
+        zich
+        ikona="taom"
+        sarlavha={bugunmi ? t("Bugun hali hech narsa qo'shilmadi") : t("Bu kunda yozuv yo'q")}
+        izoh={
+          bugunmi
+            ? t("Birinchi ovqatni qo'shsangiz, doira to'lishni boshlaydi.")
+            : t("Bu kuni jurnalga ovqat qo'shilmagan.")
+        }
+      >
+        {bugunmi && <QoshishTugmasi>{t("Birinchi ovqatni qo'shish")}</QoshishTugmasi>}
+      </BoshHolat>
     </div>
   );
 }
@@ -97,6 +92,7 @@ export default async function HomeSahifasi({ searchParams }: PageProps<"/">) {
 
   return (
     <>
+      <OflaynChizigi />
       <main className="mx-auto w-full max-w-md px-4 pb-32">
         <header className="flex flex-col gap-1 py-4">
           <p className="text-izoh text-matn-2">{sanaMatni(sana, til)}</p>
@@ -115,7 +111,13 @@ export default async function HomeSahifasi({ searchParams }: PageProps<"/">) {
           <KunTanlagich sana={sana} bugun={bugun} til={til} />
 
           {kun === null ? (
-            <XatoKartasi t={t} />
+            // E1 xato holati: doira o'rnida karta, "+" tugmasi faolligicha qoladi.
+            <XatoKartasi
+              sarlavha={t("Ma'lumotni yuklab bo'lmadi")}
+              izoh={t("Hisobot serveriga ulanolmadik. Internetni tekshirib, qayta urinib ko'ring.")}
+            >
+              <QaytaUrinish />
+            </XatoKartasi>
           ) : (
             <>
               <KunlikDoira qiymat={kun.jami.kaloriya} norma={kun.reja.kaloriya} />
@@ -163,7 +165,7 @@ export default async function HomeSahifasi({ searchParams }: PageProps<"/">) {
                   </Link>
                 </div>
                 {oxirgilar.length === 0 ? (
-                  <BoshHolat bugunmi={bugunmi} t={t} />
+                  <BoshKun bugunmi={bugunmi} t={t} />
                 ) : (
                   <ul className="flex flex-col gap-3">
                     {oxirgilar.map((yozuv) => (

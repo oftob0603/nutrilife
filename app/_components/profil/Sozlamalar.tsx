@@ -6,6 +6,7 @@ import { Variantlar } from "@/app/_components/onboarding/Variantlar";
 import { PastkiVaraq } from "@/app/_components/PastkiVaraq";
 import { useTarjima, useTilniOrnat } from "@/app/_components/TilTaminoti";
 import { TugmaHavola } from "@/app/_components/Tugma";
+import { useOnlayn } from "@/app/_components/useOnlayn";
 import type { Kalit } from "@/lib/lugat/tarjima";
 import { MAVZU_NOMLARI, mavzuniTanla } from "@/lib/mavzu";
 import { apiSorov } from "@/lib/services/api-klient";
@@ -39,15 +40,6 @@ function tizimgaObuna(xabar: () => void) {
   return () => sorov.removeEventListener("change", xabar);
 }
 
-function tarmoqqaObuna(xabar: () => void) {
-  window.addEventListener("online", xabar);
-  window.addEventListener("offline", xabar);
-  return () => {
-    window.removeEventListener("online", xabar);
-    window.removeEventListener("offline", xabar);
-  };
-}
-
 /**
  * Sozlama qatorlari — alohida sahifa emas, Profil sahifasining o'zida (prototip): qator
  * bosilganda variantlar pastki panelda ochiladi, tanlov darhol saqlanadi. Har qator o'zi
@@ -68,11 +60,7 @@ export function Sozlamalar({ boshlangich }: { boshlangich: SozlamalarTuri }) {
     () => window.matchMedia(QORONGI_SOROVI).matches,
     () => false,
   );
-  const onlayn = useSyncExternalStore(
-    tarmoqqaObuna,
-    () => navigator.onLine,
-    () => true,
-  );
+  const onlayn = useOnlayn();
 
   function qiymatMatni(kalit: SozlamaKaliti): string {
     const nomi = erkin(variantNomi(kalit, sozlamalar[kalit]));

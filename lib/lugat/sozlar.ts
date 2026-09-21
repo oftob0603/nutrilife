@@ -166,6 +166,10 @@ export const SOZLAR = {
     ru: "Нет интернета. Проверьте подключение",
     en: "No internet. Check your connection",
   },
+  "Internet yo'q — oxirgi ma'lumot ko'rsatilmoqda": {
+    ru: "Нет интернета — показаны последние данные",
+    en: "You're offline — showing the last loaded data",
+  },
   "Yuklanmadi. Internetni tekshirib, qayta urinib ko'ring": {
     ru: "Не загружено. Проверьте интернет и попробуйте ещё раз",
     en: "Upload failed. Check your connection and try again",
@@ -275,10 +279,9 @@ export const SOZLAR = {
     ru: "Изменение не сохранено. Попробуйте ещё раз",
     en: "The change was not saved. Try again",
   },
-  "Yozuv o'chirilsinmi?": { ru: "Удалить запись?", en: "Delete this entry?" },
-  "«{0}» jurnaldan o'chadi va kunlik hisobdan ayiriladi. Buni qaytarib bo'lmaydi.": {
-    ru: "«{0}» будет удалено из журнала и вычтено из дневного итога. Это нельзя отменить.",
-    en: "“{0}” is removed from the journal and subtracted from the daily total. This cannot be undone.",
+  "Bu yozuvni o'chiramizmi? Doira shu qiymatga kamayadi.": {
+    ru: "Удалить эту запись? Круг уменьшится на это значение.",
+    en: "Delete this entry? The ring will drop by this amount.",
   },
 
   // ── Qo'shildi (E8) va jurnal (E9) ──────────────────────────────────────────
@@ -289,9 +292,9 @@ export const SOZLAR = {
   "Oldingi kun": { ru: "Предыдущий день", en: "Previous day" },
   "Keyingi kun": { ru: "Следующий день", en: "Next day" },
   "Kunlik jami": { ru: "Итог за день", en: "Daily total" },
-  "Bugun hali hech narsa qo'shilmadi. Birinchi ovqatni qo'shing.": {
-    ru: "Сегодня пока ничего не добавлено. Добавьте первый приём пищи.",
-    en: "Nothing added today yet. Add your first meal.",
+  "Ovqat qo'shsangiz, u shu yerda ovqat turi bo'yicha guruhlanadi.": {
+    ru: "Добавьте еду — она появится здесь, сгруппированная по приёмам пищи.",
+    en: "Add a meal and it will show up here, grouped by meal type.",
   },
   "Jurnalni yuklab bo'lmadi": { ru: "Не удалось загрузить журнал", en: "Could not load the journal" },
   "Serverga ulanolmadik. Internetni tekshirib, qayta urinib ko'ring.": {

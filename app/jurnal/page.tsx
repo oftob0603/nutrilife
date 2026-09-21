@@ -1,7 +1,9 @@
 import Link from "next/link";
+import { BoshHolat } from "@/app/_components/BoshHolat";
 import { MakroChizigi } from "@/app/_components/MakroChizigi";
 import { QoshishPaneli, QoshishTugmasi } from "@/app/_components/QoshishPaneli";
-import { TugmaHavola } from "@/app/_components/Tugma";
+import { QaytaUrinish } from "@/app/_components/QaytaUrinish";
+import { XatoKartasi } from "@/app/_components/XatoKartasi";
 import { YozuvQatori } from "@/app/_components/YozuvQatori";
 import { serverdanApi } from "@/lib/api-asos";
 import { serverTarjimoni } from "@/lib/lugat/server";
@@ -133,46 +135,17 @@ function KunlikJami({
 /** Bo'sh holat: nima yo'q, nega yo'q va (faqat bugun uchun) bitta harakat (dizayn-tz E9). */
 function BoshKun({ bugunmi, t }: { bugunmi: boolean } & Pick<Tarjimon, "t">) {
   return (
-    <div className="flex flex-col items-center gap-3 rounded-karta border border-karta-chegara bg-karta p-6 text-center">
-      <svg
-        viewBox="0 0 24 24"
-        width="32"
-        height="32"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        aria-hidden="true"
-        className="text-matn-3"
-      >
-        <circle cx="12" cy="12" r="9" />
-        <circle cx="12" cy="12" r="4.5" />
-      </svg>
-      <p className="text-karta-sarlavha">{t("Bu kunda yozuv yo'q")}</p>
-      <p className="text-izoh text-matn-2">
-        {bugunmi
-          ? t("Bugun hali hech narsa qo'shilmadi. Birinchi ovqatni qo'shing.")
-          : t("Bu kuni jurnalga ovqat qo'shilmagan.")}
-      </p>
-      {bugunmi && <QoshishTugmasi />}
-    </div>
-  );
-}
-
-function YuklanmadiKartasi({ manzil, t }: { manzil: string } & Pick<Tarjimon, "t">) {
-  return (
-    <div
-      role="alert"
-      className="flex flex-col items-center gap-3 rounded-karta border border-karta-chegara bg-karta p-6 text-center"
+    <BoshHolat
+      ikona="daftar"
+      sarlavha={t("Bu kunda yozuv yo'q")}
+      izoh={
+        bugunmi
+          ? t("Ovqat qo'shsangiz, u shu yerda ovqat turi bo'yicha guruhlanadi.")
+          : t("Bu kuni jurnalga ovqat qo'shilmagan.")
+      }
     >
-      <p className="text-karta-sarlavha">{t("Jurnalni yuklab bo'lmadi")}</p>
-      <p className="text-izoh text-matn-2">
-        {t("Serverga ulanolmadik. Internetni tekshirib, qayta urinib ko'ring.")}
-      </p>
-      <TugmaHavola korinish="ikkilamchi" href={manzil}>
-        {t("Qayta urinish")}
-      </TugmaHavola>
-    </div>
+      {bugunmi && <QoshishTugmasi />}
+    </BoshHolat>
   );
 }
 
@@ -208,7 +181,12 @@ export default async function JurnalSahifasi({ searchParams }: PageProps<"/jurna
           <SanaTanlagich sana={sana} bugun={bugun} tarjimon={tarjimon} />
 
           {kun === null ? (
-            <YuklanmadiKartasi manzil={jurnalManzili(sana, bugun)} t={t} />
+            <XatoKartasi
+              sarlavha={t("Jurnalni yuklab bo'lmadi")}
+              izoh={t("Serverga ulanolmadik. Internetni tekshirib, qayta urinib ko'ring.")}
+            >
+              <QaytaUrinish />
+            </XatoKartasi>
           ) : (
             <>
               <KunlikJami jami={kun.jami} reja={kun.reja} tarjimon={tarjimon} />
