@@ -8,6 +8,7 @@ import {
   qiymatOzgardi,
   type Forma,
   type FormaXatolari,
+  type FormaXatosi,
 } from "@/lib/services/yozuv-forma";
 
 /** Bitta kiritish maydoni: yorliq, (bo'lsa) birlik va ostida tekshiruv xatosi. */
@@ -81,6 +82,7 @@ export function YozuvFormasi({
   onChange: (forma: Forma) => void;
 }) {
   const { t, erkin } = useTarjima();
+  const matn = (xato?: FormaXatosi) => xato && t(xato.matn, ...xato.qiymatlar);
 
   return (
     <div className="flex flex-col gap-4">
@@ -88,7 +90,7 @@ export function YozuvFormasi({
         nomi={t("Taom nomi")}
         turi="matn"
         qiymat={forma.taomNomi}
-        xato={xatolar.taomNomi && t(xatolar.taomNomi)}
+        xato={matn(xatolar.taomNomi)}
         bloklangan={bloklangan}
         onChange={(taomNomi) => onChange({ ...forma, taomNomi })}
       />
@@ -98,7 +100,7 @@ export function YozuvFormasi({
           nomi={t("Porsiya")}
           birlik={erkin(birlik)}
           qiymat={forma.miqdor}
-          xato={xatolar.miqdor && t(xatolar.miqdor)}
+          xato={matn(xatolar.miqdor)}
           bloklangan={bloklangan}
           onChange={(matn) => onChange(miqdorOzgardi(forma, matn))}
         />
@@ -106,7 +108,7 @@ export function YozuvFormasi({
           nomi={t("Kaloriya")}
           birlik={t("kkal")}
           qiymat={forma.kaloriya}
-          xato={xatolar.kaloriya && t(xatolar.kaloriya)}
+          xato={matn(xatolar.kaloriya)}
           bloklangan={bloklangan}
           onChange={(matn) => onChange(qiymatOzgardi(forma, "kaloriya", matn))}
         />
@@ -117,7 +119,7 @@ export function YozuvFormasi({
           nomi={t("Oqsil")}
           birlik={t("g")}
           qiymat={forma.oqsil}
-          xato={xatolar.oqsil && t(xatolar.oqsil)}
+          xato={matn(xatolar.oqsil)}
           bloklangan={bloklangan}
           onChange={(matn) => onChange(qiymatOzgardi(forma, "oqsil", matn))}
         />
@@ -125,7 +127,7 @@ export function YozuvFormasi({
           nomi={t("Yog'")}
           birlik={t("g")}
           qiymat={forma.yog}
-          xato={xatolar.yog && t(xatolar.yog)}
+          xato={matn(xatolar.yog)}
           bloklangan={bloklangan}
           onChange={(matn) => onChange(qiymatOzgardi(forma, "yog", matn))}
         />
@@ -133,7 +135,7 @@ export function YozuvFormasi({
           nomi={t("Uglevod")}
           birlik={t("g")}
           qiymat={forma.uglevod}
-          xato={xatolar.uglevod && t(xatolar.uglevod)}
+          xato={matn(xatolar.uglevod)}
           bloklangan={bloklangan}
           onChange={(matn) => onChange(qiymatOzgardi(forma, "uglevod", matn))}
         />

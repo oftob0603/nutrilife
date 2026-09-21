@@ -1,7 +1,8 @@
 // Yozuvni tasdiqlash (E7) va tahrirlash (E10) formasining sof qoidalari — bazaga bog'liq
 // emas, shuning uchun klient komponentlar ham shu yerdan import qiladi.
 
-import type { Kalit } from "../lugat/tarjima.ts";
+import { k, type Kalit } from "../lugat/tarjima.ts";
+import { KALORIYA_CHEGARASI, MAKRO_CHEGARASI, miqdorChegarasi } from "./yozuv-chegaralari.ts";
 import { OVQAT_TURLARI, type OvqatTuri } from "./yozuv-hisob.ts";
 
 export const QIYMAT_MAYDONLARI = ["kaloriya", "oqsil", "yog", "uglevod"] as const;
@@ -25,8 +26,14 @@ export type Forma = {
   asos: Record<QiymatMaydoni, number | null>;
 };
 
-/** Qiymatlar — lug'at kalitlari; ekranda `t()` bilan tarjima qilinadi. */
-export type FormaXatolari = Partial<Record<"taomNomi" | "miqdor" | QiymatMaydoni, Kalit>>;
+/** Lug'at kaliti va (bo'lsa) undagi `{0}` o'rniga qo'yiladigan son; ekranda `t(matn, ...qiymatlar)`. */
+export type FormaXatosi = { matn: Kalit; qiymatlar: number[] };
+
+export type FormaXatolari = Partial<Record<"taomNomi" | "miqdor" | QiymatMaydoni, FormaXatosi>>;
+
+function xato(matn: Kalit, ...qiymatlar: number[]): FormaXatosi {
+  return { matn, qiymatlar };
+}
 
 export type FormaQiymatlari = {
   taomNomi: string;
@@ -111,23 +118,35 @@ export function qiymatOzgardi(forma: Forma, maydon: QiymatMaydoni, matn: string)
   };
 }
 
-/** Tekshiruv: xato bo'lsa maydon ostida ko'rsatiladi va tasdiq tugmasi o'chadi (dizayn-tz E7). */
-export function formaXatolari(forma: Forma): FormaXatolari {
+/**
+ * Tekshiruv: xato bo'lsa maydon ostida ko'rsatiladi va tasdiq tugmasi o'chadi (dizayn-tz E7).
+ * Chegaralar server bilan bir manbadan (`yozuv-chegaralari.ts`); `birlik` — porsiya birligi.
+ */
+export function formaXatolari(forma: Forma, birlik = "g"): FormaXatolari {
   const xatolar: FormaXatolari = {};
-  if (!forma.taomNomi.trim()) xatolar.taomNomi = "Taom nomini kiriting";
+  if (!forma.taomNomi.trim()) xatolar.taomNomi = xato(k("Taom nomini kiriting"));
 
   const miqdor = sonOqi(forma.miqdor);
-  if (miqdor === null || miqdor <= 0) xatolar.miqdor = "Porsiyani kiriting";
+  if (miqdor === null || miqdor <= 0) xatolar.miqdor = xato(k("Porsiyani kiriting"));
+  else if (miqdor > miqdorChegarasi(birlik)) {
+    xatolar.miqdor = xato(k("{0} dan oshmasin"), miqdorChegarasi(birlik));
+  }
 
   const kaloriya = sonOqi(forma.kaloriya);
-  if (kaloriya === null) xatolar.kaloriya = "Kaloriyani kiriting";
-  else if (kaloriya < 0) xatolar.kaloriya = "Kaloriya 0 dan kichik bo'lmaydi";
+  if (kaloriya === null) xatolar.kaloriya = xato(k("Kaloriyani kiriting"));
+  else if (kaloriya < 0) xatolar.kaloriya = xato(k("Kaloriya 0 dan kichik bo'lmaydi"));
+  else if (kaloriya > KALORIYA_CHEGARASI) {
+    xatolar.kaloriya = xato(k("{0} dan oshmasin"), KALORIYA_CHEGARASI);
+  }
 
   // Makro bo'sh qolsa 0 deb olinadi; yozilgan bo'lsa to'g'ri son bo'lishi kerak.
   for (const maydon of ["oqsil", "yog", "uglevod"] as const) {
     const matn = forma[maydon].trim();
     const son = sonOqi(matn);
-    if (matn && (son === null || son < 0)) xatolar[maydon] = "Qiymat noto'g'ri";
+    if (matn && (son === null || son < 0)) xatolar[maydon] = xato(k("Qiymat noto'g'ri"));
+    else if (son !== null && son > MAKRO_CHEGARASI) {
+      xatolar[maydon] = xato(k("{0} dan oshmasin"), MAKRO_CHEGARASI);
+    }
   }
   return xatolar;
 }

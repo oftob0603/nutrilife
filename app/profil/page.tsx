@@ -1,4 +1,5 @@
 import { Avatar } from "@/app/_components/Avatar";
+import { ProBelgisi } from "@/app/_components/ProBelgisi";
 import { Sozlamalar } from "@/app/_components/profil/Sozlamalar";
 import { QoshishPaneli } from "@/app/_components/QoshishPaneli";
 import { TugmaHavola } from "@/app/_components/Tugma";
@@ -33,15 +34,6 @@ function YuklanmadiKartasi({ t }: Pick<Tarjimon, "t">) {
         {t("Qayta urinish")}
       </TugmaHavola>
     </div>
-  );
-}
-
-/** PRO belgisi — prototipdagi `Badge tone="pro"`: PRO gradiyenti (DESIGN.md, "PRO ranglari"). */
-function ProBelgisi() {
-  return (
-    <span className="inline-flex shrink-0 items-center whitespace-nowrap rounded-full bg-(image:--pro-gradient) px-2 py-[3px] text-[11px] font-medium leading-none text-(--pro-fg)">
-      PRO
-    </span>
   );
 }
 

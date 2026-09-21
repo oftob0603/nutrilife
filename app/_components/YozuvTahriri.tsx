@@ -114,7 +114,7 @@ export function YozuvTahriri({ yozuv, qaytish }: { yozuv: Yozuv; qaytish: string
   // Kelajakdagi vaqt saqlash bosilganda tekshiriladi va vaqt o'zgarganda tozalanadi.
   const [kelajakda, setKelajakda] = useState(false);
 
-  const xatolar = formaXatolari(forma);
+  const xatolar = formaXatolari(forma, birlik);
   // Vaqt o'zgarmagan bo'lsa yuborilmaydi — yozuvning soniyalari va tartibi saqlansin.
   const yangiVaqt = vaqt === asliVaqt ? undefined : vaqtniAlmashtir(yozuv.vaqt, vaqt);
   const vaqtXatosi =

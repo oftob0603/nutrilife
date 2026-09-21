@@ -61,19 +61,25 @@ async function qulfOstidaYangilash(
  * Berilgan kun uchun amaldagi reja: shu kun oxirigacha hisoblangan eng so'nggi qator.
  * Birinchi rejadan oldingi kunlar eng birinchi reja bilan ko'rsatiladi. Hisobda umuman
  * reja bo'lmasa (S4'gacha ro'yxatdan o'tganlar) shu yerda hisoblab yoziladi.
+ * `klient` — chaqiruvchining tranzaksiyasi (bo'lsa, o'qish ham yozish ham shuning ichida).
  */
-export async function kunRejasi(foydalanuvchiId: string, sana: string): Promise<Reja | null> {
+export async function kunRejasi(
+  foydalanuvchiId: string,
+  sana: string,
+  klient?: Prisma.TransactionClient,
+): Promise<Reja | null> {
+  const baza = klient ?? db;
   const { oxiri } = sanaOraligi(sana);
   const reja =
-    (await db.reja.findFirst({
+    (await baza.reja.findFirst({
       where: { foydalanuvchiId, hisoblangan: { lt: oxiri } },
       orderBy: { hisoblangan: "desc" },
       select: REJA_MAYDONLARI,
     })) ??
-    (await db.reja.findFirst({
+    (await baza.reja.findFirst({
       where: { foydalanuvchiId },
       orderBy: { hisoblangan: "asc" },
       select: REJA_MAYDONLARI,
     }));
-  return reja ?? rejaniYangilash(foydalanuvchiId);
+  return reja ?? rejaniYangilash(foydalanuvchiId, klient);
 }

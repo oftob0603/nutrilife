@@ -1,6 +1,7 @@
 import { db } from "../db.ts";
+import { xulosaniYangilash } from "./kunlik-xulosa.ts";
 import { ombordanOchir } from "./ombor.ts";
-import { sanaOraligi, type Yozuv } from "./yozuv-hisob.ts";
+import { sanaOraligi, toshkentSanasi, type Yozuv } from "./yozuv-hisob.ts";
 import { FAOL_HOLATLAR, keyingiHolat } from "./yozuv-holati.ts";
 
 export type YangiYozuv = {
@@ -17,8 +18,19 @@ export type YangiYozuv = {
   rasmId: string | null;
 };
 
+// Uzoqdagi bazaga har so'rov ~0,4 s — standart chegara (2 s kutish, 5 s ish) yetmaydi.
+const TRANZAKSIYA_VAQTI = { maxWait: 10_000, timeout: 20_000 };
+
 /** Rasm topilmadi yoki allaqachon boshqa yozuvga tegishli — yozuv yaratilmaydi. */
 export class RasmBoglanmadi extends Error {}
+
+/** `taomId` bazada yo'q (o'chirilgan yoki uydirilgan) — yozuv yaratilmaydi. */
+export class TaomTopilmadi extends Error {}
+
+/** Prisma: tashqi kalit buzildi. Bu yerda yagona tashqi kalit kirishdan keladi — `taomId`. */
+function tashqiKalitXatosi(xato: unknown): boolean {
+  return typeof xato === "object" && xato !== null && (xato as { code?: unknown }).code === "P2003";
+}
 
 const YOZUV_MAYDONLARI = {
   id: true,
@@ -50,17 +62,19 @@ function korinishgaOtkaz({ taom, rasmlar, ...yozuv }: BazaYozuvi): Yozuv {
 
 /**
  * Jurnalga bitta yozuv qo'shadi. Rasm berilsa shu tranzaksiyada yozuvga bog'lanadi —
- * bog'lanmasa (`RasmBoglanmadi`) yozuv ham yaratilmaydi.
+ * bog'lanmasa (`RasmBoglanmadi`) yozuv ham yaratilmaydi. Shu kunning xulosasi (jami va
+ * Nutrition Score) ham shu tranzaksiyada yangilanadi.
  */
 export async function yozuvYaratish(
   foydalanuvchiId: string,
   { rasmId, ...kirish }: YangiYozuv,
 ): Promise<Yozuv> {
   const yozuv = await db.$transaction(async (tx) => {
-    const { id } = await tx.ovqatYozuvi.create({
-      data: { ...kirish, foydalanuvchiId },
-      select: { id: true },
-    });
+    const { id, vaqt } = await tx.ovqatYozuvi
+      .create({ data: { ...kirish, foydalanuvchiId }, select: { id: true, vaqt: true } })
+      .catch((xato: unknown) => {
+        throw tashqiKalitXatosi(xato) ? new TaomTopilmadi() : xato;
+      });
     if (rasmId) {
       const { count } = await tx.rasm.updateMany({
         where: { id: rasmId, foydalanuvchiId, ovqatYozuviId: null },
@@ -68,8 +82,9 @@ export async function yozuvYaratish(
       });
       if (count === 0) throw new RasmBoglanmadi();
     }
+    await xulosaniYangilash(tx, foydalanuvchiId, toshkentSanasi(vaqt));
     return tx.ovqatYozuvi.findUniqueOrThrow({ where: { id }, select: YOZUV_MAYDONLARI });
-  });
+  }, TRANZAKSIYA_VAQTI);
   return korinishgaOtkaz(yozuv);
 }
 
@@ -111,19 +126,28 @@ export async function yozuvniYangilash(
   id: string,
   ozgarish: YozuvOzgarishi,
 ): Promise<Yozuv | null> {
-  const joriy = await db.ovqatYozuvi.findFirst({
-    where: { id, foydalanuvchiId },
-    select: { holat: true },
-  });
-  const holat = joriy && keyingiHolat(joriy.holat, "tahrirlash");
-  if (!holat) return null;
+  const yangilandi = await db.$transaction(async (tx) => {
+    const joriy = await tx.ovqatYozuvi.findFirst({
+      where: { id, foydalanuvchiId },
+      select: { holat: true, vaqt: true },
+    });
+    const holat = joriy && keyingiHolat(joriy.holat, "tahrirlash");
+    if (!holat) return false;
 
-  // Holat shartda ham turadi: o'qish va yozish orasida yozuv o'chirilgan bo'lsa tirilmaydi.
-  const { count } = await db.ovqatYozuvi.updateMany({
-    where: { id, foydalanuvchiId, holat: joriy.holat },
-    data: { ...ozgarish, holat },
-  });
-  return count === 0 ? null : yozuvniOl(foydalanuvchiId, id);
+    // Holat shartda ham turadi: o'qish va yozish orasida yozuv o'chirilgan bo'lsa tirilmaydi.
+    const { count } = await tx.ovqatYozuvi.updateMany({
+      where: { id, foydalanuvchiId, holat: joriy.holat },
+      data: { ...ozgarish, holat },
+    });
+    if (count === 0) return false;
+
+    // Vaqt boshqa kunga surilgan bo'lsa ikkala kunning xulosasi o'zgaradi. Kunlar tartibda —
+    // parallel tahrirlar qulflarni bir xil ketma-ketlikda olsin.
+    const kunlar = new Set([toshkentSanasi(joriy.vaqt), toshkentSanasi(ozgarish.vaqt ?? joriy.vaqt)]);
+    for (const sana of [...kunlar].sort()) await xulosaniYangilash(tx, foydalanuvchiId, sana);
+    return true;
+  }, TRANZAKSIYA_VAQTI);
+  return yangilandi ? yozuvniOl(foydalanuvchiId, id) : null;
 }
 
 /**
@@ -135,7 +159,7 @@ export async function yozuvniOchirish(foydalanuvchiId: string, id: string): Prom
   const kalitlar = await db.$transaction(async (tx) => {
     const yozuv = await tx.ovqatYozuvi.findFirst({
       where: { id, foydalanuvchiId },
-      select: { holat: true, rasmlar: { select: { kalit: true } } },
+      select: { holat: true, vaqt: true, rasmlar: { select: { kalit: true } } },
     });
     const holat = yozuv && keyingiHolat(yozuv.holat, "ochirish");
     if (!holat) return null;
@@ -147,8 +171,9 @@ export async function yozuvniOchirish(foydalanuvchiId: string, id: string): Prom
     if (count === 0) return null;
 
     await tx.rasm.deleteMany({ where: { ovqatYozuviId: id, foydalanuvchiId } });
+    await xulosaniYangilash(tx, foydalanuvchiId, toshkentSanasi(yozuv.vaqt));
     return yozuv.rasmlar.map((rasm) => rasm.kalit);
-  });
+  }, TRANZAKSIYA_VAQTI);
   if (!kalitlar) return false;
 
   // Ombor o'chira olmasa fayl qolib ketadi, lekin baza toza — davriy tozalash yig'ib oladi.

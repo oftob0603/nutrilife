@@ -415,6 +415,12 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-21 · AI ishonch bahosi (0–100) 60 dan past bo'lsa natija ko'rsatilmaydi — "taniy olmadik". Qaror kodda (`ISHONCH_CHEGARASI`), AI'da emas.**
 *Sabab:* Foydalanuvchi qarori — natija baribir tasdiqdan o'tadi, qattiqroq chegara bekorga qo'lda kiritishga majbur qiladi. Baho aniq o'lchov emas, chegara logdagi jonli qiymatlarga qarab suriladi.
 
+**2026-09-21 · PRO muddati tugasa Nutrition Score ham qulflanadi. Ball esa har doim (FREE'da ham) `kunlik_xulosa` ga yoziladi.**
+*Sabab:* Foydalanuvchi qarori — "muddati tugagan PRO — FREE huquqlari" qoidasi bitta bo'lsin; tarix saqlangani uchun PRO tiklanganda ball tarixi joyida turadi.
+
+**2026-09-21 · Bitta ovqat yozuvi chegaralari: 5000 kkal, har makro 500 g, porsiya 5000 g/ml yoki 50 dona. Klient va server bitta moduldan o'qiydi.**
+*Sabab:* Foydalanuvchi qarori — maqsad xato terishdan himoya ("2500" o'rniga "25000"), oddiy ovqat bu chegaralarga yetmaydi.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

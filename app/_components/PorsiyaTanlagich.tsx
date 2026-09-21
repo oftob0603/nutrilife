@@ -9,6 +9,13 @@ import {
   taomNomi,
   type Taom,
 } from "@/lib/services/taom-hisob";
+import {
+  KALORIYA_CHEGARASI,
+  MAKRO_CHEGARASI,
+  miqdorChegarasi,
+  miqdorYaroqli,
+} from "@/lib/services/yozuv-chegaralari";
+import { sonOqi } from "@/lib/services/yozuv-forma";
 import { OVQAT_TURLARI, type OvqatTuri } from "@/lib/services/yozuv-hisob";
 import type { Kalit } from "@/lib/lugat/tarjima";
 import { apiSorov } from "@/lib/services/api-klient";
@@ -60,9 +67,22 @@ export function PorsiyaTanlagich({ taom }: { taom: Taom }) {
   const [saqlanmoqda, setSaqlanmoqda] = useState(false);
   const [xato, setXato] = useState(false);
 
-  // Tekshiruv yo'q (S1): kiritilgan matn songa aylantiriladi, bo'lmasa nol.
-  const miqdor = boshqa ? Number(boshqa) || 0 : porsiya;
-  const hisob = porsiyaHisobi(taom, miqdor);
+  // "Boshqa" to'ldirilgan bo'lsa chip emas, shu son olinadi; chegaralar server bilan bir manbadan.
+  const kiritilgan = boshqa.trim() ? sonOqi(boshqa) : null;
+  const miqdor = boshqa.trim() ? (kiritilgan ?? 0) : porsiya;
+  const miqdorYaroqsiz = !miqdorYaroqli(miqdor, taom.olchovBirligi);
+  const hisob = porsiyaHisobi(taom, miqdorYaroqsiz ? 0 : miqdor);
+  // Miqdor joyida bo'lsa ham, kaloriyali taomning katta porsiyasi yozuv chegarasidan oshishi mumkin.
+  const miqdorXatosi = miqdorYaroqsiz
+    ? miqdor > miqdorChegarasi(taom.olchovBirligi)
+      ? t("{0} dan oshmasin", miqdorChegarasi(taom.olchovBirligi))
+      : t("Miqdor 0 dan katta bo'lishi kerak")
+    : hisob.kaloriya > KALORIYA_CHEGARASI
+      ? t("Bitta yozuv {0} kkal dan oshmasin", raqam(KALORIYA_CHEGARASI))
+      : Math.max(hisob.oqsil, hisob.yog, hisob.uglevod) > MAKRO_CHEGARASI
+        ? t("Oqsil, yog' yoki uglevod {0} g dan oshmasin", MAKRO_CHEGARASI)
+        : null;
+  const yaroqsiz = miqdorXatosi !== null;
   const birlik = erkin(taom.olchovBirligi);
 
   async function jurnalgaQosh() {
@@ -98,10 +118,10 @@ export function PorsiyaTanlagich({ taom }: { taom: Taom }) {
     <div className="flex flex-col gap-6">
       <div className="flex flex-col items-center gap-1">
         <span className="font-display text-raqam tabular-nums">
-          {raqam(hisob.kaloriya)}
+          {miqdorYaroqsiz ? "—" : raqam(hisob.kaloriya)}
         </span>
         <span className="text-izoh text-matn-2 tabular-nums">
-          {t("kkal · {0}", miqdorMatni(miqdor, taom.olchovBirligi))}
+          {miqdorYaroqsiz ? t("kkal") : t("kkal · {0}", miqdorMatni(miqdor, taom.olchovBirligi))}
         </span>
       </div>
 
@@ -128,15 +148,18 @@ export function PorsiyaTanlagich({ taom }: { taom: Taom }) {
           ))}
           {/* Uzun birlik ("шампур", "skewer") yonida "Boshqa" yozuvi qirqilmasin. */}
           <label
-            className={`flex min-h-11 items-center gap-2 rounded-chip border border-chegara bg-karta px-4 ${
-              birlik.length > 3 ? "w-44" : "w-32"
-            }`}
+            className={`flex min-h-11 items-center gap-2 rounded-chip border bg-karta px-4 ${
+              miqdorXatosi ? "border-xato" : "border-chegara"
+            } ${birlik.length > 3 ? "w-44" : "w-32"}`}
           >
             <span className="sr-only">{t("Boshqa miqdor")}</span>
             <input
               type="number"
-              inputMode="numeric"
+              inputMode="decimal"
+              min="0"
               value={boshqa}
+              aria-invalid={miqdorXatosi ? true : undefined}
+              aria-describedby={miqdorXatosi ? "boshqa-xato" : undefined}
               onChange={(hodisa) => setBoshqa(hodisa.target.value)}
               placeholder={t("Boshqa")}
               className="w-full min-w-0 bg-transparent text-asosiy tabular-nums outline-none placeholder:text-matn-3"
@@ -146,6 +169,11 @@ export function PorsiyaTanlagich({ taom }: { taom: Taom }) {
             </span>
           </label>
         </div>
+        {miqdorXatosi && (
+          <p id="boshqa-xato" role="alert" className="text-izoh text-xato">
+            {miqdorXatosi}
+          </p>
+        )}
       </section>
 
       <section className="flex flex-col gap-2">
@@ -153,7 +181,7 @@ export function PorsiyaTanlagich({ taom }: { taom: Taom }) {
         <OvqatTuriTanlagich qiymat={ovqatTuri} onChange={setOvqatTuri} />
       </section>
 
-      <Tugma yuklanmoqda={saqlanmoqda} onClick={jurnalgaQosh}>
+      <Tugma yuklanmoqda={saqlanmoqda} disabled={yaroqsiz} onClick={jurnalgaQosh}>
         {t("Jurnalga qo'shish")}
       </Tugma>
 

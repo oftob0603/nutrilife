@@ -2,10 +2,12 @@ import Link from "next/link";
 import { KunlikDoira } from "@/app/_components/KunlikDoira";
 import { KunTanlagich } from "@/app/_components/KunTanlagich";
 import { MakroChizigi } from "@/app/_components/MakroChizigi";
+import { ScoreKartasi } from "@/app/_components/ScoreKartasi";
 import { YozuvQatori } from "@/app/_components/YozuvQatori";
 import { QoshishPaneli, QoshishTugmasi } from "@/app/_components/QoshishPaneli";
 import type { Reja } from "@/lib/services/norma-hisob";
 import type { Profil } from "@/lib/services/profil-hisob";
+import type { ScoreJavobi } from "@/lib/services/score-hisob";
 import {
   bugunSana,
   qoshniSana,
@@ -21,7 +23,9 @@ import type { Tarjimon } from "@/lib/lugat/tarjima";
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
 export const dynamic = "force-dynamic";
 
-type Kun = { yozuvlar: Yozuv[]; jami: Jami; reja: Reja };
+// `score` eski API javobida bo'lmaydi (frontend va backend alohida deploy bo'ladi) — bo'lim
+// shunda chiqmaydi, Home esa buzilmaydi.
+type Kun = { yozuvlar: Yozuv[]; jami: Jami; reja: Reja; score?: ScoreJavobi };
 
 async function kunniYukla(sana: string): Promise<Kun | null> {
   try {
@@ -136,6 +140,15 @@ export default async function HomeSahifasi({ searchParams }: PageProps<"/">) {
                   maqsad={kun.reja.uglevod}
                 />
               </div>
+
+              {kun.score && (
+                <ScoreKartasi
+                  til={til}
+                  score={kun.score}
+                  bugunmi={bugunmi}
+                  yozuvBor={kun.yozuvlar.length > 0}
+                />
+              )}
 
               <section className="flex flex-col gap-2">
                 <div className="flex items-center justify-between gap-3">

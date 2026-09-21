@@ -26,7 +26,7 @@ export function boshlangichTarif(tariflar: TarifNarxi[]): TarifNarxi["id"] | nul
 }
 
 /** Paywall qayerdan ochilgani — sarlavha va "Hozir emas" qaytadigan joy shunga bog'liq. */
-export const PAYWALL_MANBALARI = ["onboarding", "profil", "limit"] as const;
+export const PAYWALL_MANBALARI = ["onboarding", "profil", "limit", "imkoniyat"] as const;
 export type PaywallManbai = (typeof PAYWALL_MANBALARI)[number];
 
 /** So'rovdagi noma'lum qiymat — profil (foydalanuvchi o'zi kelgan). */
@@ -38,6 +38,8 @@ const SARLAVHALAR: Record<PaywallManbai, Kalit> = {
   onboarding: k("Nutrilife PRO bilan ko'proq"),
   profil: k("Nutrilife PRO"),
   limit: k("Bepul skanlar tugadi"),
+  // Home'dagi yopiq PRO kartasidan (Nutrition Score, taom taklifi).
+  imkoniyat: k("Nutrilife PRO"),
 };
 
 /** W1 sarlavhasi; muddati tugagan PRO'da manbadan qat'i nazar "PRO ni tiklash". */

@@ -664,6 +664,49 @@ export const SOZLAR = {
   "PRO haqida": { ru: "О PRO", en: "About PRO" },
   "Yangilash": { ru: "Продлить", en: "Renew" },
 
+  // ── Qiymat chegaralari (E5, E7, E10) ───────────────────────────────────────
+  "{0} dan oshmasin": { ru: "Не больше {0}", en: "No more than {0}" },
+  "Bitta yozuv {0} kkal dan oshmasin": {
+    ru: "Одна запись — не больше {0} ккал",
+    en: "One entry can be at most {0} kcal",
+  },
+  "Oqsil, yog' yoki uglevod {0} g dan oshmasin": {
+    ru: "Белки, жиры или углеводы — не больше {0} г",
+    en: "Protein, fat or carbs can be at most {0} g",
+  },
+  "Miqdor 0 dan katta bo'lishi kerak": {
+    ru: "Количество должно быть больше 0",
+    en: "The amount must be greater than 0",
+  },
+
+  // ── Nutrition Score (E1) ───────────────────────────────────────────────────
+  "Yaxshi": { ru: "Хорошо", en: "Good" },
+  "O'rtacha": { ru: "Средне", en: "Average" },
+  "Past": { ru: "Низко", en: "Low" },
+  "Oqsil ulushi": { ru: "Доля белков", en: "Protein share" },
+  "Yog' ulushi": { ru: "Доля жиров", en: "Fat share" },
+  "Uglevod ulushi": { ru: "Доля углеводов", en: "Carb share" },
+  "Norma ichida": { ru: "В пределах нормы", en: "Within target" },
+  "{0} / {1}": { ru: "{0} / {1}", en: "{0} / {1}" },
+  "/ 100 · {0}": { ru: "/ 100 · {0}", en: "/ 100 · {0}" },
+  "Eng past ko'rsatkich — {0}.": { ru: "Самый низкий показатель — {0}.", en: "Lowest score — {0}." },
+  "Ball axborot uchun — tibbiy baho emas.": {
+    ru: "Балл носит справочный характер — это не медицинская оценка.",
+    en: "The score is for information only — it is not a medical assessment.",
+  },
+  "Ball bugungi yozuvlardan hisoblanadi — birinchi ovqatni qo'shsangiz chiqadi.": {
+    ru: "Балл считается по записям за сегодня — появится после первого приёма пищи.",
+    en: "The score is computed from today’s entries — it appears once you add your first meal.",
+  },
+  "Ball makrolardan hisoblanadi — bu kungi yozuvlarda oqsil, yog' va uglevod kiritilmagan.": {
+    ru: "Балл считается по БЖУ — в записях за этот день белки, жиры и углеводы не указаны.",
+    en: "The score is computed from macros — this day’s entries have no protein, fat or carbs.",
+  },
+  "Kunlik ovqatlanish muvozanatini 0–100 ball bilan ko'rsatadi.": {
+    ru: "Показывает баланс питания за день по шкале 0–100.",
+    en: "Shows your daily nutrition balance on a 0–100 scale.",
+  },
+
   // ── Mavzu ──────────────────────────────────────────────────────────────────
   "Mavzu": { ru: "Тема", en: "Theme" },
   "Yorug'": { ru: "Светлая", en: "Light" },
