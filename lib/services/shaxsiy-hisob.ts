@@ -3,6 +3,7 @@
 // Sof modul — bazaga bog'liq emas, klient ham, server ham ishlatadi.
 
 import { k, type Kalit } from "../lugat/tarjima.ts";
+import { normaHisobi } from "./norma-hisob.ts";
 import {
   BOY,
   ISM_CHEGARASI,
@@ -164,6 +165,11 @@ export type MaydonXatosi = { kalit: Kalit; qiymatlar: (string | number)[] };
 export type ShaxsiyTekshiruvi = {
   /** Yuborishga tayyor tana; forma to'liq yoki to'g'ri bo'lmasa null. */
   tana: Record<string, unknown> | null;
+  /**
+   * Shu javoblar bilan chiqadigan kunlik norma, kkal — server ham aynan shu formuladan
+   * hisoblaydi (`rejaniYangilash`). Forma tayyor bo'lmasa yoki vazn yo'q bo'lsa null.
+   */
+  yangiNorma: number | null;
   ismUzun: boolean;
   yosh: MaydonXatosi | null;
   boyi: MaydonXatosi | null;
@@ -176,6 +182,7 @@ export function shaxsiyniTayyorla(forma: ShaxsiyForma, profil: Profil): ShaxsiyT
   const asl = shaxsiyFormaYarat(profil);
   const natija: ShaxsiyTekshiruvi = {
     tana: null,
+    yangiNorma: null,
     ismUzun: forma.ism.trim().length > ISM_CHEGARASI,
     yosh: null,
     boyi: null,
@@ -249,6 +256,15 @@ export function shaxsiyniTayyorla(forma: ShaxsiyForma, profil: Profil): ShaxsiyT
       mahal: forma.mahal && forma.joy ? forma.mahal : null,
       joy: forma.mahal && forma.joy ? forma.joy : null,
     };
+    natija.yangiNorma =
+      normaHisobi({
+        jins: forma.jins,
+        yosh,
+        boyi,
+        vazn: profil.joriyVazn,
+        faollik: forma.faollik,
+        maqsad: forma.maqsad,
+      })?.kaloriya ?? null;
   }
   return natija;
 }

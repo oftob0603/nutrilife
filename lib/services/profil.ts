@@ -2,6 +2,7 @@ import { db } from "../db.ts";
 import { obunaHolati, rolniOqi } from "./huquqlar.ts";
 import { odatniOqi } from "./onboarding-hisob.ts";
 import { ilovadaKun, type Profil } from "./profil-hisob.ts";
+import { rejaniYangilash } from "./rejalar.ts";
 import type { ShaxsiyMalumot } from "./shaxsiy-hisob.ts";
 import { sozlamalarniOqi } from "./sozlamalar-hisob.ts";
 
@@ -21,6 +22,7 @@ export async function profilniOl(foydalanuvchiId: string): Promise<Profil | null
       profil: true,
       // Joriy vazn — eng oxirgi o'lchov; maqsad vazn ham o'sha yozuvda turadi.
       vaznYozuvlari: { orderBy: { vaqt: "desc" }, take: 1, select: { vazn: true, maqsad: true } },
+      rejalar: { orderBy: { hisoblangan: "desc" }, take: 1, select: { kaloriya: true } },
     },
   });
   if (!foydalanuvchi) return null;
@@ -37,6 +39,7 @@ export async function profilniOl(foydalanuvchiId: string): Promise<Profil | null
     maqsad: profil?.maqsad ?? null,
     joriyVazn: vazn?.vazn ?? null,
     maqsadVazn: vazn?.maqsad ?? null,
+    norma: foydalanuvchi.rejalar[0]?.kaloriya ?? null,
     sozlamalar: sozlamalarniOqi(foydalanuvchi),
     jins: profil?.jins ?? null,
     yosh: profil?.yosh ?? null,
@@ -86,4 +89,6 @@ export async function shaxsiyniSaqlash(
       ? [db.vaznYozuvi.update({ where: { id: oxirgi.id }, data: { maqsad: maqsadVazn } })]
       : []),
   ]);
+  // Jins, yosh, bo'y, maqsad yoki faollik o'zgargan bo'lsa norma ham o'zgaradi.
+  await rejaniYangilash(foydalanuvchiId);
 }

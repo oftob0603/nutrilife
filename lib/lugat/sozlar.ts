@@ -346,6 +346,49 @@ export const SOZLAR = {
   "Bo'y": { ru: "Рост", en: "Height" },
   "Joriy vazn": { ru: "Текущий вес", en: "Current weight" },
   "Maqsad vazn": { ru: "Целевой вес", en: "Goal weight" },
+  "Reja tayyorlanmoqda": { ru: "Готовим ваш план", en: "Preparing your plan" },
+  "Javoblaringiz yig'ilmoqda": { ru: "Собираем ваши ответы", en: "Gathering your answers" },
+  "Kunlik norma hisoblanmoqda": { ru: "Считаем дневную норму", en: "Calculating your daily target" },
+  "Makrolar taqsimlanmoqda": { ru: "Распределяем макросы", en: "Splitting your macros" },
+  "kunlik taxminiy maqsadingiz, kkal": {
+    ru: "ваша примерная дневная цель, ккал",
+    en: "your estimated daily target, kcal",
+  },
+  "Nega shunday?": { ru: "Почему так?", en: "Why this number?" },
+  "Bo'y, vazn, yosh, jins va faollikdan kunlik sarf hisoblandi, keyin maqsadingizga qarab tuzatildi. Raqam taxminiy va profil o'zgarsa qayta hisoblanadi.":
+    {
+      ru: "По росту, весу, возрасту, полу и активности рассчитан дневной расход, затем он скорректирован под вашу цель. Число примерное и пересчитывается при изменении профиля.",
+      en: "Your daily energy use was calculated from height, weight, age, sex and activity, then adjusted for your goal. The number is an estimate and is recalculated when your profile changes.",
+    },
+  "Hisob pastki chegaradan past chiqdi — xavfsiz chegara qiymati berildi.": {
+    ru: "Расчёт получился ниже нижней границы — показано безопасное минимальное значение.",
+    en: "The calculation came out below the lower limit — the safe minimum is shown instead.",
+  },
+  "Jins ko'rsatilmagani uchun taxmin kengroq.": {
+    ru: "Пол не указан, поэтому оценка менее точная.",
+    en: "Sex wasn't specified, so the estimate is less precise.",
+  },
+  "Makrolar taqsimlandi": { ru: "Макросы распределены", en: "Your macros are set" },
+  "Natijaning sabablaridan biri — har kungi intizom. Bugungi kichik qadam — ertangi katta o'zgarish.":
+    {
+      ru: "Одна из причин результата — ежедневная дисциплина. Маленький шаг сегодня — большая перемена завтра.",
+      en: "One of the reasons behind results is daily discipline. A small step today is a big change tomorrow.",
+    },
+  "Bu tibbiy tavsiya emas. Qiymatlar taxminiy.": {
+    ru: "Это не медицинская рекомендация. Значения примерные.",
+    en: "This is not medical advice. Values are estimates.",
+  },
+  "Boshlaymiz": { ru: "Начинаем", en: "Let's start" },
+  "Kunlik norma": { ru: "Дневная норма", en: "Daily target" },
+  "Norma o'zgaradi": { ru: "Норма изменится", en: "Your target will change" },
+  "Kunlik normangiz {0} dan {1} ga o'zgaradi. Saqlansinmi?": {
+    ru: "Ваша дневная норма изменится с {0} на {1}. Сохранить?",
+    en: "Your daily target will change from {0} to {1}. Save?",
+  },
+  "O'tgan kunlar qayta hisoblanmaydi — har kun o'sha kundagi norma bilan qoladi.": {
+    ru: "Прошедшие дни не пересчитываются — каждый день остаётся с нормой того дня.",
+    en: "Past days are not recalculated — each day keeps the target it had.",
+  },
   "Raqamni to'g'rilash": { ru: "Исправить цифру", en: "Fix the number" },
   "Maqsadni o'zgartirish": { ru: "Изменить цель", en: "Change the goal" },
   "Vazn tashlashni tanlagansiz, lekin maqsad vazn joriysidan katta": {

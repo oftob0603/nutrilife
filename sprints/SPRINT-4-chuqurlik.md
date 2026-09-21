@@ -7,8 +7,8 @@ to'g'ri ishlasin.
 
 ## Tasklar
 
-- [ ] Mifflin-St Jeor formulasi: onboarding javoblaridan BMR, faollik koeffitsienti va maqsadga qarab tuzatish. Natija — taxminiy kunlik kaloriya va makro maqsadlari, `rejalar` jadvaliga yoziladi. `lib/norma.ts` dagi qotirilgan S1 normasi (2,190 kkal · 120 / 70 / 240 g) olib tashlanadi — Home doirasi, makro chiziqlari va E8 foydalanuvchining o'z rejasidan o'qiydi
-- [ ] Natija oqimi (2 qadam): AI tahlil xulosasi -> "Rejangiz tayyor" ekrani, "nega shunday" izohi va profil ro'yxati bilan. Har joyda "taxminiy" belgisi
+- [x] Mifflin-St Jeor formulasi: onboarding javoblaridan BMR, faollik koeffitsienti va maqsadga qarab tuzatish. Natija — taxminiy kunlik kaloriya va makro maqsadlari, `rejalar` jadvaliga yoziladi. `lib/norma.ts` dagi qotirilgan S1 normasi (2,190 kkal · 120 / 70 / 240 g) olib tashlanadi — Home doirasi, makro chiziqlari va E8 foydalanuvchining o'z rejasidan o'qiydi
+- [x] Natija oqimi (2 qadam): AI tahlil xulosasi -> "Rejangiz tayyor" ekrani, "nega shunday" izohi va profil ro'yxati bilan. Har joyda "taxminiy" belgisi — profil ro'yxati qo'shilmadi (prototipda yo'q, prototip ustun); muddat prognozi o'rniga intizom matni (DECISIONS 2026-09-21)
 - [ ] Nutrition Score formulasi: kaloriya normaga yaqinlik + makro balans, natija `kunlik_xulosa` jadvaliga. Izoh matni: axborot xarakteridagi ball
 - [ ] Skan limitlari: FREE — umr davomida 3 ta, PRO — kuniga 20 ta. `skan_hisobi` jadvali, limit tugaganda tegishli ekran. E2 panelida hisoblagich ("3 tadan 2 ta skan qoldi") va limit tugagan holat: Kamera va Galereya o'chadi, Qo'lda qo'shish ochiq qoladi
 - [ ] Holatlar zanjiri: ovqat yozuvi (`tahlil qilinmoqda` -> `tasdiq kutilmoqda` -> `tasdiqlandi` -> `tahrirlandi` -> `o'chirildi`) va obuna (`FREE` -> `faol` -> `muddati tugadi`). `ovqat_yozuvlari` ga `holat` ustuni qo'shiladi; S1–S2'da qo'lda qo'shilgan mavjud yozuvlar `tasdiqlandi` deb belgilanadi
@@ -33,8 +33,23 @@ To'lov integratsiyasi · bot · admin paneli · retseptlar kutubxonasi.
 ## Hisobot
 
 <!-- hisobotchi to'ldiradi -->
+- 2026-09-21: Sprint 9 ta katta taskdan 20 ta kichik qadamga bo'lib rejalashtirildi; shu sessiyada 1–4 va 2a bajarildi:
+  1. Norma formulasi — yangi sof modul `lib/services/norma-hisob.ts`: Mifflin-St Jeor BMR (erkak/ayol; jins aytilmagan bo'lsa o'rtacha) × faollik (1.2/1.375/1.55/1.725) × maqsad tuzatishi (−15%/0/+12%/+10%); pastki chegara ayol 1,200, erkak va aytilmagan 1,500 kkal; makro 25/30/45, mushak yig'ishda 30/25/45. Koeffitsientlar prototip `shared/plan.js` dan. Tekshiruv: 8 qo'lda hisoblangan holat va 8 buzuq kirish node skriptida — mos.
+  2. Reja bazaga — yangi servis `lib/services/rejalar.ts` (`rejaniYangilash`, `kunRejasi`); onboarding yakunida va `PATCH /api/profil` dan keyin chaqiriladi; `GET /api/ovqat-yozuvlari` javobiga `reja` qo'shildi, Home/Jurnal/E8 shundan o'qiydi; `lib/norma.ts` o'chirildi. Parallel so'rovda dublikat reja topilib, `rejaniYangilash` `pg_advisory_xact_lock` bilan tuzatildi; sinov qatorlari foydalanuvchi ruxsati bilan o'chirildi.
+  2a. F3 "Norma o'zgaradi" tasdiq varag'i va F1 "Qisqacha"da "Kunlik norma" qatori — son klient va serverda bitta `normaHisobi` dan.
+  3. O11 "Reja tayyorlanmoqda" — `SAVOLLAR_SONI = 9`, `QADAMLAR_SONI = 12`; uch matn 0,9 s da almashadi, 2,8 s dan keyin o'tadi, "AI" so'zi yo'q; `onboarding_tugadi` 9-savolda yoziladi (O11–O13 serverga qadam sifatida yozilmaydi).
+  4. O12 natija (2 qism) — yangi `RejaNatijasi.tsx` va `QadamSarlavhasi.tsx`: raqam + "nega shunday" izohi + chegara/jins izohlari, uch makro kartasi, intizom matni, "Boshlaymiz" (hozircha Home'ga).
+  Lug'atga 17 yangi matn (uz/ru/en). Tekshiruv: sinov hisobida (telegram_id 1000000001) Home/Jurnal/E8, faollik o'zgarganda yangi reja, jins aytilmagan holat, orqaga qaytib tahrirlash, rus tili sig'ishi; `tsc --noEmit` va `eslint` toza. Egasining hisobiga (telegram_id 8687031669) bazada `rol = 'admin'` berildi (S3 Handoff'idagi eski holat yopildi).
 
 ## Handoff
+
+Keyingi: 5-qadam — `ovqat_yozuvlari.holat` ustuni migratsiyasi va yozuv holatlari o'tishlari (3-katta task, "Holatlar zanjiri"). Bu migratsiya: dev va production bitta Railway bazasida — migratsiyadan keyin darhol commit/push.
+Kichik qadamlar ro'yxati (20 ta, bajarish tartibida; 1–4 va 2a bajarildi): 1 norma formulasi ✓ · 2 rejani yozish, `lib/norma.ts` ni olib tashlash ✓ · 2a F3 tasdiq varag'i ✓ · 3 O11 ✓ · 4 O12 ✓ · 5 `holat` ustuni va yozuv o'tishlari · 6 obuna holati (FREE/faol/muddati tugadi) · 7 skan limit servisi va `/api/skan` · 8 E2 hisoblagichi va limit tugagan holat · 9 W1 tariflar ekrani (to'lovsiz) va O13 · 10 AI ishonchi: `ai.ts` va "taniy olmadik" ekrani · 11 Nutrition Score formulasi va `kunlik_xulosa` · 12 Home'da Score kartasi · 13 server tekshiruvlari (qiymat chegaralari, porsiya) · 14 oflayn chizig'i, "Qayta urinish", skan xatolari, kamera ruxsati · 15 o'chirish tasdig'i va bo'sh jurnal · 16 Progress servisi va vazn API · 17 P1 va pastki panel · 18 P2 va P3 · 19 "qoldi" manbai va taom taklifi servisi · 20 Home'da taklif bloki va E5 tavsiya kartasi.
+Sinalmagan: egasining hisobiga reja hali yozilmagan (ilova birinchi ochilganda yaratiladi, ~1926 kkal chiqishi kerak); haqiqiy telefon/Telegram WebView; ayol 1,200 chegarasi ekranda emas (faqat formula darajasida).
+Sinalmagan (davomi): O11/O12 ning inglizcha ko'rinishi brauzerda ochilmadi (faqat lug'at); 8788657020 hisobiga 2004 kkal yozilgan.
+Foydalanuvchi qarorlari (2026-09-21): yozuv o'chirilganda qator bazada qoladi, holati `o'chirildi` bo'ladi (streak va Score tarixi halol qolsin); Nutrition Score va taom taklifi — prototipdagidek (boshlashdan oldin `prototip/ui_kits/mobile-app` va `shared/pro.js` ni o'qi); "taniy olmadik" skani FREE limitidan yeyilmaydi (skan qaytariladi); W1 narxlari S6'gacha bitta konfiguratsiya faylida; O13 paywall 9-qadamga kiradi; O12 da "profil ro'yxati" yo'q (prototipdagidek), muddat prognozi o'rniga intizom matni (DECISIONS).
+Kuzatuv: lokal devda 9-savolni saqlash ~4–7 s oladi (uzoqdagi bazaga bitta tranzaksiyada 6–7 so'rov), keyin 2,8 s O11 — production'da sezilarli bo'lsa, saqlashni O11 animatsiyasi bilan parallel qilish mumkin.
+Sinov hisobi (telegram_id 1000000001) asl holatida: erkak · 30 · 175 sm · 80 kg · yengil · vazn tashlash, norma 2044; reja tarixida sinovdan qolgan oraliq qatorlar bor (haqiqiy o'zgarishlar, dublikat emas). Onboardingni qayta sinash: shu hisobga `UPDATE profillar SET onboarding_tugadi = NULL, onboarding_qadami = 9` — lokal dev sessiyasiz so'rovni bazadagi birinchi hisob nomidan o'tkazadi, tekshiruvdan keyin o'zi qayta to'ladi.
 
 Progress sahifasi (P1-P3, streak va kuzatilgan kun ta'riflari) uchun progress-tz.md,
 paywall ekrani (W1) uchun paywall-tz.md, obuna ekrani (F4) uchun profil-tz.md tayyor.

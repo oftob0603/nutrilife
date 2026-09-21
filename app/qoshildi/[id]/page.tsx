@@ -3,7 +3,7 @@ import { KunlikDoira } from "@/app/_components/KunlikDoira";
 import { QaytishTaymeri } from "@/app/_components/QaytishTaymeri";
 import { TaomRasmi } from "@/app/_components/TaomRasmi";
 import { TugmaHavola } from "@/app/_components/Tugma";
-import { NORMA } from "@/lib/norma";
+import type { Reja } from "@/lib/services/norma-hisob";
 import { raqam } from "@/lib/services/taom-hisob";
 import type { Jami, Yozuv } from "@/lib/services/yozuv-hisob";
 import { serverdanApi } from "@/lib/api-asos";
@@ -12,14 +12,16 @@ import { serverTarjimoni } from "@/lib/lugat/server";
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
 export const dynamic = "force-dynamic";
 
-type Kun = { yozuvlar: Yozuv[]; jami: Jami };
+type Kun = { yozuvlar: Yozuv[]; jami: Jami; reja: Reja };
 
 async function kunniYukla(): Promise<Kun | "sessiyasiz" | null> {
   try {
     const javob = await serverdanApi("/api/ovqat-yozuvlari");
     if (javob.status === 401) return "sessiyasiz";
     if (!javob.ok) return null;
-    return (await javob.json()) as Kun;
+    const kun = (await javob.json()) as Omit<Kun, "reja"> & { reja: Reja | null };
+    // Rejasiz kun chizilmaydi: maxraj o'rniga soxta son ko'rsatgandan ko'ra xato holati to'g'riroq.
+    return kun.reja ? { ...kun, reja: kun.reja } : null;
   } catch {
     return null;
   }
@@ -72,7 +74,7 @@ export default async function QoshildiSahifasi({
 
       <KunlikDoira
         qiymat={kun.jami.kaloriya}
-        norma={NORMA.kaloriya}
+        norma={kun.reja.kaloriya}
         boshlangich={oldingi}
       />
 

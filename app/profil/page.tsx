@@ -10,6 +10,7 @@ import {
   vaznMatni,
   type Profil,
 } from "@/lib/services/profil-hisob";
+import { raqam } from "@/lib/services/taom-hisob";
 import { profilniYukla } from "./yukla";
 
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
@@ -121,6 +122,9 @@ export default async function ProfilSahifasi() {
                       nomi={t("Maqsad vazn")}
                       qiymat={vaznMatni(profil.maqsadVazn, profil.sozlamalar.vaznBirligi, tarjimon)}
                     />
+                  )}
+                  {profil.norma !== null && (
+                    <Qator nomi={t("Kunlik norma")} qiymat={t("{0} kkal", raqam(profil.norma))} />
                   )}
                 </dl>
               </section>

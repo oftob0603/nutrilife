@@ -6,7 +6,7 @@ import { YozuvQatori } from "@/app/_components/YozuvQatori";
 import { serverdanApi } from "@/lib/api-asos";
 import { serverTarjimoni } from "@/lib/lugat/server";
 import type { Tarjimon } from "@/lib/lugat/tarjima";
-import { NORMA } from "@/lib/norma";
+import type { Reja } from "@/lib/services/norma-hisob";
 import { raqam } from "@/lib/services/taom-hisob";
 import {
   bugunSana,
@@ -23,13 +23,15 @@ export const dynamic = "force-dynamic";
 
 export const metadata = { title: "Jurnal — Nutrilife" };
 
-type Kun = { yozuvlar: Yozuv[]; jami: Jami };
+type Kun = { yozuvlar: Yozuv[]; jami: Jami; reja: Reja };
 
 async function kunniYukla(sana: string): Promise<Kun | null> {
   try {
     const javob = await serverdanApi(`/api/ovqat-yozuvlari?sana=${sana}`);
     if (!javob.ok) return null;
-    return (await javob.json()) as Kun;
+    const kun = (await javob.json()) as Omit<Kun, "reja"> & { reja: Reja | null };
+    // Rejasiz kun chizilmaydi: maxraj o'rniga soxta son ko'rsatgandan ko'ra xato holati to'g'riroq.
+    return kun.reja ? { ...kun, reja: kun.reja } : null;
   } catch {
     return null;
   }
@@ -99,7 +101,15 @@ function SanaTanlagich({
   );
 }
 
-function KunlikJami({ jami, tarjimon: { t, til } }: { jami: Jami; tarjimon: Tarjimon }) {
+function KunlikJami({
+  jami,
+  reja,
+  tarjimon: { t, til },
+}: {
+  jami: Jami;
+  reja: Reja;
+  tarjimon: Tarjimon;
+}) {
   return (
     <section
       aria-label={t("Kunlik jami")}
@@ -108,13 +118,13 @@ function KunlikJami({ jami, tarjimon: { t, til } }: { jami: Jami; tarjimon: Tarj
       <p className="flex items-baseline gap-2">
         <span className="font-display text-raqam tabular-nums">{raqam(jami.kaloriya)}</span>
         <span className="text-izoh text-matn-2 tabular-nums">
-          {t("/ {0} kkal", raqam(NORMA.kaloriya))}
+          {t("/ {0} kkal", raqam(reja.kaloriya))}
         </span>
       </p>
       <div className="flex gap-4">
-        <MakroChizigi til={til} nomi="Oqsil" qiymat={jami.oqsil} maqsad={NORMA.oqsil} />
-        <MakroChizigi til={til} nomi="Yog'" qiymat={jami.yog} maqsad={NORMA.yog} />
-        <MakroChizigi til={til} nomi="Uglevod" qiymat={jami.uglevod} maqsad={NORMA.uglevod} />
+        <MakroChizigi til={til} nomi="Oqsil" qiymat={jami.oqsil} maqsad={reja.oqsil} />
+        <MakroChizigi til={til} nomi="Yog'" qiymat={jami.yog} maqsad={reja.yog} />
+        <MakroChizigi til={til} nomi="Uglevod" qiymat={jami.uglevod} maqsad={reja.uglevod} />
       </div>
     </section>
   );
@@ -201,7 +211,7 @@ export default async function JurnalSahifasi({ searchParams }: PageProps<"/jurna
             <YuklanmadiKartasi manzil={jurnalManzili(sana, bugun)} t={t} />
           ) : (
             <>
-              <KunlikJami jami={kun.jami} tarjimon={tarjimon} />
+              <KunlikJami jami={kun.jami} reja={kun.reja} tarjimon={tarjimon} />
 
               {kun.yozuvlar.length === 0 ? (
                 <BoshKun bugunmi={sana === bugun} t={t} />

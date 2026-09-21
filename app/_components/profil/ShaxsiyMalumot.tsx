@@ -20,6 +20,7 @@ import {
   maqsadVaznKerakmi,
 } from "@/lib/services/onboarding-hisob";
 import type { Profil } from "@/lib/services/profil-hisob";
+import { raqam } from "@/lib/services/taom-hisob";
 import {
   shaxsiyFormaYarat,
   shaxsiyniTayyorla,
@@ -49,13 +50,14 @@ function Bolim({ sarlavha, children }: { sarlavha: string; children: React.React
 
 /**
  * F3 — onboarding javoblarini tahrirlash, tekshiruvi onboardingdagi bilan bir xil. Joriy vazn
- * bu yerda yo'q: u tarix yozuvi. "Norma o'zgaradi" tasdig'i norma formulasi bilan S4'da keladi.
+ * bu yerda yo'q: u tarix yozuvi. Javoblar kunlik normani o'zgartirsa, saqlashdan oldin tasdiq
+ * so'raladi — yangi son serverdagi bilan bitta formuladan (`normaHisobi`) hisoblanadi.
  */
 export function ShaxsiyMalumot({ profil }: { profil: Profil }) {
   const router = useRouter();
   const { t, erkin } = useTarjima();
   const [forma, setForma] = useState(() => shaxsiyFormaYarat(profil));
-  const [varaq, setVaraq] = useState<"afzalliklar" | "odatlar" | null>(null);
+  const [varaq, setVaraq] = useState<"afzalliklar" | "odatlar" | "norma" | null>(null);
   const [saqlanmoqda, setSaqlanmoqda] = useState(false);
   const [xato, setXato] = useState<string | null>(null);
 
@@ -65,6 +67,10 @@ export function ShaxsiyMalumot({ profil }: { profil: Profil }) {
     maydon
       ? t(maydon.kalit, ...maydon.qiymatlar.map((q) => (typeof q === "string" ? erkin(q) : q)))
       : undefined;
+
+  const { yangiNorma } = tekshiruv;
+  const normaOzgaradi =
+    profil.norma !== null && yangiNorma !== null && yangiNorma !== profil.norma;
 
   const afzalliklarMatni = forma.ovqatAfzalliklari
     .map((qiymat) => AFZALLIKLAR.find((a) => a.qiymat === qiymat))
@@ -88,6 +94,7 @@ export function ShaxsiyMalumot({ profil }: { profil: Profil }) {
         const tana = (await javob.json().catch(() => null)) as { xato?: string } | null;
         setXato(javob.status === 400 && tana?.xato ? erkin(tana.xato) : t("Saqlanmadi. Qayta urinib ko'ring"));
         setSaqlanmoqda(false);
+        setVaraq(null);
         return;
       }
       router.push("/profil");
@@ -95,6 +102,7 @@ export function ShaxsiyMalumot({ profil }: { profil: Profil }) {
     } catch {
       setXato(t("Saqlanmadi. Qayta urinib ko'ring"));
       setSaqlanmoqda(false);
+      setVaraq(null);
     }
   }
 
@@ -193,7 +201,11 @@ export function ShaxsiyMalumot({ profil }: { profil: Profil }) {
               {xato}
             </p>
           )}
-          <Tugma disabled={!tekshiruv.tana} yuklanmoqda={saqlanmoqda} onClick={() => void saqla()}>
+          <Tugma
+            disabled={!tekshiruv.tana}
+            yuklanmoqda={saqlanmoqda}
+            onClick={() => (normaOzgaradi ? setVaraq("norma") : void saqla())}
+          >
             {t("Saqlash")}
           </Tugma>
         </div>
@@ -215,6 +227,31 @@ export function ShaxsiyMalumot({ profil }: { profil: Profil }) {
               }
             />
             <Tugma onClick={() => setVaraq(null)}>{t("Tayyor")}</Tugma>
+          </div>
+        </PastkiVaraq>
+      )}
+
+      {varaq === "norma" && profil.norma !== null && yangiNorma !== null && (
+        <PastkiVaraq sarlavha={t("Norma o'zgaradi")} onYop={() => setVaraq(null)}>
+          <div className="flex flex-col gap-4">
+            <p className="text-asosiy tabular-nums">
+              {t(
+                "Kunlik normangiz {0} dan {1} ga o'zgaradi. Saqlansinmi?",
+                raqam(profil.norma),
+                raqam(yangiNorma),
+              )}
+            </p>
+            <p className="text-izoh text-matn-2">
+              {t("O'tgan kunlar qayta hisoblanmaydi — har kun o'sha kundagi norma bilan qoladi.")}
+            </p>
+            <div className="flex flex-col gap-2">
+              <Tugma yuklanmoqda={saqlanmoqda} onClick={() => void saqla()}>
+                {t("Saqlash")}
+              </Tugma>
+              <Tugma korinish="uchinchi" disabled={saqlanmoqda} onClick={() => setVaraq(null)}>
+                {t("Bekor qilish")}
+              </Tugma>
+            </div>
           </div>
         </PastkiVaraq>
       )}

@@ -3,13 +3,14 @@ import {
   RasmBoglanmadi,
   yozuvYaratish,
 } from "@/lib/services/ovqat-yozuvlari";
+import { kunRejasi } from "@/lib/services/rejalar";
 import { joriyFoydalanuvchiId, kirishKerak } from "@/lib/services/sessiya";
 import { bugunSana, kunlikJami, sanaYaroqli } from "@/lib/services/yozuv-hisob";
 import { yozuvKirishiniTekshir } from "@/lib/services/yozuv-kirish";
 
 const UUID_QOLIPI = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-/** Bir kunning yozuvlari va jami: `?sana=2026-09-20` (standart — bugun). */
+/** Bir kunning yozuvlari, jami va shu kun uchun amaldagi reja: `?sana=2026-09-20` (standart — bugun). */
 export async function GET(sorov: Request) {
   const foydalanuvchiId = await joriyFoydalanuvchiId(sorov);
   if (!foydalanuvchiId) return kirishKerak();
@@ -17,8 +18,11 @@ export async function GET(sorov: Request) {
   const berilgan = new URL(sorov.url).searchParams.get("sana");
   const sana = berilgan && sanaYaroqli(berilgan) ? berilgan : bugunSana();
 
-  const yozuvlar = await kunlikYozuvlar(foydalanuvchiId, sana);
-  return Response.json({ sana, yozuvlar, jami: kunlikJami(yozuvlar) });
+  const [yozuvlar, reja] = await Promise.all([
+    kunlikYozuvlar(foydalanuvchiId, sana),
+    kunRejasi(foydalanuvchiId, sana),
+  ]);
+  return Response.json({ sana, yozuvlar, jami: kunlikJami(yozuvlar), reja });
 }
 
 /** Jurnalga yangi yozuv qo'shadi. */

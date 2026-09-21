@@ -17,6 +17,8 @@ export type Profil = {
   /** Kilogrammda; ko'rsatishda `birliklar` bo'yicha o'giriladi. */
   joriyVazn: number | null;
   maqsadVazn: number | null;
+  /** Amaldagi kunlik norma, kkal (`rejalar` ning oxirgi qatori); hali hisoblanmagan bo'lsa null. */
+  norma: number | null;
   sozlamalar: Sozlamalar;
   /** Shaxsiy ma'lumot (F3) — onboarding javoblari; bo'y santimetrda. */
   jins: string | null;

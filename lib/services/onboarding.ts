@@ -2,13 +2,14 @@ import { db } from "../db.ts";
 import { SHARTLAR_VERSIYASI } from "../shartlar.ts";
 import { hodisaQatori } from "./hodisalar.ts";
 import {
-  QADAMLAR_SONI,
+  SAVOLLAR_SONI,
   odatniOqi,
   type Javoblar,
   type OnboardingHolati,
   type OvqatlanishOdati,
   type QadamJavobi,
 } from "./onboarding-hisob.ts";
+import { rejaniYangilash } from "./rejalar.ts";
 
 // Standart chegara (2 s kutish, 5 s ish) lokal ishlab chiqishda yetmaydi: uzoqdagi bazaga
 // har so'rov ~0,4 s, saqlash tranzaksiyasi esa 4–6 ta so'rovdan iborat.
@@ -47,7 +48,7 @@ export async function onboardingHolati(foydalanuvchiId: string): Promise<Onboard
   };
 
   return {
-    qadam: Math.min(Math.max(profil?.onboardingQadami ?? 1, 1), QADAMLAR_SONI),
+    qadam: Math.min(Math.max(profil?.onboardingQadami ?? 1, 1), SAVOLLAR_SONI),
     tugadi: Boolean(profil?.onboardingTugadi),
     javoblar,
   };
@@ -145,7 +146,7 @@ export async function qadamniSaqlash(foydalanuvchiId: string, javob: QadamJavobi
     }
 
     const tugadi =
-      javob.qadam === QADAMLAR_SONI && !mavjud?.onboardingTugadi ? { onboardingTugadi: new Date() } : {};
+      javob.qadam === SAVOLLAR_SONI && !mavjud?.onboardingTugadi ? { onboardingTugadi: new Date() } : {};
     const onboardingQadami = Math.max(mavjud?.onboardingQadami ?? 1, javob.qadam + 1);
 
     await tx.profil.upsert({
@@ -154,8 +155,13 @@ export async function qadamniSaqlash(foydalanuvchiId: string, javob: QadamJavobi
       update: { ...profil, ...tugadi, onboardingQadami },
     });
 
+    // Natija ekranidan orqaga qaytib javob o'zgartirilsa ham reja yangilanadi — aks holda
+    // ekrandagi son bazadagidan farq qilib qoladi. Son o'zgarmasa yangi qator yozilmaydi.
+    if (mavjud?.onboardingTugadi) await rejaniYangilash(foydalanuvchiId, tx);
+
     // Yakun vaqti bilan bir tranzaksiyada — biri yozilib, ikkinchisi qolib ketmaydi.
     if ("onboardingTugadi" in tugadi) {
+      await rejaniYangilash(foydalanuvchiId, tx);
       await tx.hodisa.createMany({
         data: [hodisaQatori(foydalanuvchiId, "onboarding_tugadi")],
         skipDuplicates: true,

@@ -2,11 +2,13 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTarjima } from "@/app/_components/TilTaminoti";
 import { Tugma } from "@/app/_components/Tugma";
 import { Gildirak, GildirakMaydoni } from "@/app/_components/onboarding/Gildirak";
 import { OnboardingMaydoni } from "@/app/_components/onboarding/OnboardingMaydoni";
+import { QadamSarlavhasi } from "@/app/_components/onboarding/QadamSarlavhasi";
+import { RejaNatijasi } from "@/app/_components/onboarding/RejaNatijasi";
 import { SegmentTanlagich, Variantlar } from "@/app/_components/onboarding/Variantlar";
 import { k, type Kalit, type Tarjimon } from "@/lib/lugat/tarjima";
 import { apiSorov } from "@/lib/services/api-klient";
@@ -29,7 +31,9 @@ import {
   MAQSADLAR,
   MOTIVATSIYALAR,
   OTKAZILADIGAN_QADAMLAR,
-  QADAMLAR_SONI,
+  NATIJA_QADAMI,
+  REJA_TAYYORLANMOQDA_QADAMI,
+  SAVOLLAR_SONI,
   VAZN,
   ftdanSm,
   kgdanLb,
@@ -129,58 +133,51 @@ function Guruh({ sarlavha, children }: { sarlavha: string; children: React.React
   );
 }
 
-/** Prototipdagi StepProgress: orqaga · "9 dan 3" · (o'tkazib yuborish), ostida progress chizig'i. */
-function QadamSarlavhasi({
-  qadam,
-  onOrqaga,
-  onOtkazish,
-}: {
-  qadam: number;
-  onOrqaga: () => void;
-  onOtkazish?: () => void;
-}) {
+const TAYYORLASH_MATNLARI = [
+  "Javoblaringiz yig'ilmoqda",
+  "Kunlik norma hisoblanmoqda",
+  "Makrolar taqsimlanmoqda",
+] as const;
+const MATN_ALMASHISHI_MS = 900;
+const TAYYORLASH_MS = 2800;
+
+/**
+ * 10-qadam (prototip O11). Hisob bir zumda tugaydi — kutish natijaga vazn berish uchun,
+ * 4 soniyadan oshmaydi. Norma formula bilan hisoblanadi, shuning uchun bu yerda "AI"
+ * deyilmaydi (DECISIONS.md). Orqaga tugmasi yo'q.
+ */
+function RejaTayyorlanmoqda({ onTayyor }: { onTayyor: () => void }) {
   const { t } = useTarjima();
+  const [matn, setMatn] = useState(0);
+
+  useEffect(() => {
+    const almashish = setInterval(
+      () => setMatn((joriy) => Math.min(TAYYORLASH_MATNLARI.length - 1, joriy + 1)),
+      MATN_ALMASHISHI_MS,
+    );
+    const yakun = setTimeout(onTayyor, TAYYORLASH_MS);
+    return () => {
+      clearInterval(almashish);
+      clearTimeout(yakun);
+    };
+    // Faqat bir marta: `onTayyor` har chizishda yangi funksiya — taymer qayta boshlanmasin.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <header className="flex flex-col gap-2 px-4 pb-3 pt-2">
-      <div className="flex items-center gap-2">
-        <button
-          type="button"
-          onClick={onOrqaga}
-          aria-label={t("Orqaga")}
-          className="-ml-3 flex size-11 shrink-0 items-center justify-center text-siyoh active:scale-[0.98]"
-        >
-          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M15 5l-7 7 7 7" />
-          </svg>
-        </button>
-        <span className="flex-1 text-izoh tabular-nums text-matn-2">
-          {t("{0} dan {1}", QADAMLAR_SONI, qadam)}
-        </span>
-        {onOtkazish && (
-          <button
-            type="button"
-            onClick={onOtkazish}
-            className="-mr-2 min-h-11 px-2 text-izoh text-matn-2 active:scale-[0.98]"
-          >
-            {t("O'tkazib yuborish")}
-          </button>
-        )}
-      </div>
-      <div
-        role="progressbar"
-        aria-valuemin={1}
-        aria-valuemax={QADAMLAR_SONI}
-        aria-valuenow={qadam}
-        aria-label={t("Onboarding bosqichi")}
-        className="h-1 overflow-hidden rounded-full bg-chegara"
-      >
-        <div
-          className="h-full rounded-full bg-siyoh transition-[width] duration-[250ms]"
-          style={{ width: `${(qadam / QADAMLAR_SONI) * 100}%` }}
+    <main className="mx-auto flex w-full max-w-md flex-1 flex-col">
+      <QadamSarlavhasi qadam={REJA_TAYYORLANMOQDA_QADAMI} />
+      <div className="flex flex-1 flex-col items-center justify-center gap-4 px-4 pb-6 text-center">
+        <span
+          aria-hidden="true"
+          className="size-7 animate-spin rounded-full border-2 border-siyoh border-t-transparent"
         />
+        <h1 className="font-display text-sarlavha">{t("Reja tayyorlanmoqda")}</h1>
+        <p aria-live="polite" className="text-asosiy text-matn-2">
+          {t(TAYYORLASH_MATNLARI[matn])}
+        </p>
       </div>
-    </header>
+    </main>
   );
 }
 
@@ -394,15 +391,27 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
         setSaqlash({ holat: "xato" });
         return;
       }
-      if (qadam === QADAMLAR_SONI) {
-        // Tugma Home ochilguncha band turadi.
-        router.replace("/");
-        return;
-      }
+      // Oxirgi savol: onboarding serverda yakunlandi va reja yozildi — endi ko'rsatuv ekranlari.
+      // Bu yerdan ilova yopilsa, keyingi ochilishda to'g'ri Home chiqadi.
       qadamgaOt(qadam + 1);
     } catch {
       setSaqlash({ holat: "xato" });
     }
+  }
+
+  if (qadam === REJA_TAYYORLANMOQDA_QADAMI) {
+    return <RejaTayyorlanmoqda onTayyor={() => qadamgaOt(NATIJA_QADAMI)} />;
+  }
+
+  if (qadam === NATIJA_QADAMI) {
+    return (
+      <RejaNatijasi
+        forma={forma}
+        onOrqaga={() => qadamgaOt(SAVOLLAR_SONI)}
+        // Paywall (O13) qo'shilguncha to'g'ri Home'ga.
+        onBoshlash={() => router.replace("/")}
+      />
+    );
   }
 
   if (qadam === 1) {
@@ -552,7 +561,7 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
             disabled={!tekshiruv.tana}
             onClick={() => tekshiruv.tana && void yubor(tekshiruv.tana)}
           >
-            {qadam === QADAMLAR_SONI ? t("Tugatish") : t("Davom etish")}
+            {qadam === SAVOLLAR_SONI ? t("Tugatish") : t("Davom etish")}
           </Tugma>
         </div>
       </footer>

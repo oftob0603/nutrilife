@@ -4,7 +4,7 @@ import { KunTanlagich } from "@/app/_components/KunTanlagich";
 import { MakroChizigi } from "@/app/_components/MakroChizigi";
 import { YozuvQatori } from "@/app/_components/YozuvQatori";
 import { QoshishPaneli, QoshishTugmasi } from "@/app/_components/QoshishPaneli";
-import { NORMA } from "@/lib/norma";
+import type { Reja } from "@/lib/services/norma-hisob";
 import type { Profil } from "@/lib/services/profil-hisob";
 import {
   bugunSana,
@@ -21,13 +21,15 @@ import type { Tarjimon } from "@/lib/lugat/tarjima";
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
 export const dynamic = "force-dynamic";
 
-type Kun = { yozuvlar: Yozuv[]; jami: Jami };
+type Kun = { yozuvlar: Yozuv[]; jami: Jami; reja: Reja };
 
 async function kunniYukla(sana: string): Promise<Kun | null> {
   try {
     const javob = await serverdanApi(`/api/ovqat-yozuvlari?sana=${sana}`);
     if (!javob.ok) return null;
-    return (await javob.json()) as Kun;
+    const kun = (await javob.json()) as Omit<Kun, "reja"> & { reja: Reja | null };
+    // Rejasiz kun chizilmaydi: maxraj o'rniga soxta son ko'rsatgandan ko'ra xato holati to'g'riroq.
+    return kun.reja ? { ...kun, reja: kun.reja } : null;
   } catch {
     return null;
   }
@@ -112,26 +114,26 @@ export default async function HomeSahifasi({ searchParams }: PageProps<"/">) {
             <XatoKartasi t={t} />
           ) : (
             <>
-              <KunlikDoira qiymat={kun.jami.kaloriya} norma={NORMA.kaloriya} />
+              <KunlikDoira qiymat={kun.jami.kaloriya} norma={kun.reja.kaloriya} />
 
               <div className="flex gap-4">
                 <MakroChizigi
                   til={til}
                   nomi="Oqsil"
                   qiymat={kun.jami.oqsil}
-                  maqsad={NORMA.oqsil}
+                  maqsad={kun.reja.oqsil}
                 />
                 <MakroChizigi
                   til={til}
                   nomi="Yog'"
                   qiymat={kun.jami.yog}
-                  maqsad={NORMA.yog}
+                  maqsad={kun.reja.yog}
                 />
                 <MakroChizigi
                   til={til}
                   nomi="Uglevod"
                   qiymat={kun.jami.uglevod}
-                  maqsad={NORMA.uglevod}
+                  maqsad={kun.reja.uglevod}
                 />
               </div>
 

@@ -384,6 +384,17 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-21 · Analitika tashqi xizmatsiz, o'z bazamizdagi `hodisalar` jadvalida: `royxat`, `onboarding_tugadi`, `birinchi_skan` (hisobga bir marta) va `kunlik_faollik` (kuniga bitta qator, ilova ochilganda).**
 *Sabab:* To'rt hodisa uchun yangi dependency va uchinchi tomonga ma'lumot uzatish kerak emas. Hisob o'chirilsa qator qoladi, egasi bo'shaydi (`ON DELETE SET NULL`) — sonlar saqlanadi, shaxs bilan bog'lanish uziladi.
 
+## 2026-09-21 — norma va reja natijasi (S4, 1–4-qadamlar)
+
+**2026-09-21 · O12 natija ekranida maqsad vaznga yetish muddati prognozi ("taxminan 14 haftada yetasiz") ko'rsatilmaydi; o'rniga intizom matni: "Natijaning sabablaridan biri — har kungi intizom. Bugungi kichik qadam — ertangi katta o'zgarish."**
+*Sabab:* Foydalanuvchi qarori — muddat va'da bo'lib qolmasin (onboarding-tz 7-bo'lim, 4-ochiq savol shu bilan yopildi); matn barcha maqsadlarda ko'rsatiladi.
+
+**2026-09-21 · Norma formulasi koeffitsientlari prototipdan: maqsad tuzatishi foizda (−15%/0/+12%/+10%), faollik 1.2/1.375/1.55/1.725; jins aytilmagan bo'lsa pastki chegara 1,500 kkal.**
+*Sabab:* onboarding-tz 3-ochiq savol (foiz yoki qat'iy son) prototip foydasiga hal qilindi — prototip ustun.
+
+**2026-09-21 · `onboarding_tugadi` 9-savolda yoziladi; O11–O13 ko'rsatuv ekranlari, serverga qadam sifatida saqlanmaydi.**
+*Sabab:* O'sha lahzada hamma javob bor va reja yozilgan; yarmida chiqib ketgan foydalanuvchi ma'lumot yo'qotmaydi, faqat natija ekranini qayta ko'rmaydi; server va sxema o'zgarmaydi.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

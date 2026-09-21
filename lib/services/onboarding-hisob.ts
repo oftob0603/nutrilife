@@ -8,9 +8,18 @@ import { k, type Kalit } from "../lugat/tarjima.ts";
 /**
  * 1 Intro · 2 Ism · 3 Maqsad · 4 Jins va yosh · 5 O'lchovlar · 6 Faollik · 7 Afzalliklar ·
  * 8 Odatlar · 9 Motivatsiya. Til ekrani yo'q: til Telegram'dan olinadi, keyin Sozlamalardan
- * o'zgartiriladi. "Reja tayyorlanmoqda", norma natijasi va paywall S4'da qo'shiladi.
+ * o'zgartiriladi. Serverga shu to'qqiz qadam saqlanadi; oxirgisida onboarding yakunlanadi
+ * va reja yoziladi.
  */
-export const QADAMLAR_SONI = 9;
+export const SAVOLLAR_SONI = 9;
+/**
+ * Sarlavhada ko'rinadigan jami: savollardan keyin 10 "Reja tayyorlanmoqda", 11 Natija,
+ * 12 Paywall keladi (prototip). Bular ko'rsatuv ekranlari — serverga qadam sifatida yozilmaydi,
+ * yarmida chiqib ketgan foydalanuvchi keyingi safar to'g'ri Home'ga tushadi.
+ */
+export const QADAMLAR_SONI = 12;
+export const REJA_TAYYORLANMOQDA_QADAMI = 10;
+export const NATIJA_QADAMI = 11;
 export const MAQSAD_QADAMI = 3;
 export const OLCHOV_QADAMI = 5;
 /** Shu qadamlarni javobsiz o'tkazib yuborish mumkin — ular normaga ta'sir qilmaydi. */

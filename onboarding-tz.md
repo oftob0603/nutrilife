@@ -334,8 +334,8 @@ Profil va Sozlamalar sahifalari (S3, alohida) · normani qayta hisoblash ekranla
 |---|---|---|
 | 1 | 13 ta ekran ko'pmi? Qaysi biri kesilsa konversiya oshadi — O10 motivatsiya eng zaif nomzod | S3, birinchi foydalanuvchilardan keyin |
 | 2 | "Aytishni xohlamayman" jinsi uchun o'rtacha formula to'g'rimi, yoki jinsni majburiy qilamizmi | S2'dan oldin |
-| 3 | Maqsad tuzatishi foizda (−15%) yoki qat'iy sonda (−500 kkal) bo'lsinmi | S4 |
-| 4 | Prognoz qatori ("14 haftada yetasiz") va'da bo'lib qolmaydimi — huquqiy tomoni | S4, shartlar yozilayotganda |
+| 3 | Maqsad tuzatishi foizda (−15%) yoki qat'iy sonda (−500 kkal) bo'lsinmi | S4 · hal qilindi 2026-09-21: foizda (DECISIONS) |
+| 4 | Prognoz qatori ("14 haftada yetasiz") va'da bo'lib qolmaydimi — huquqiy tomoni | S4, shartlar yozilayotganda · hal qilindi 2026-09-21: prognoz ko'rsatilmaydi (DECISIONS) |
 | 5 | O8 va O9 javoblari S6 gacha hech narsaga ta'sir qilmaydi — ularni hozir so'rash kerakmi yoki keyinroq, kerak bo'lganda so'ralsinmi | S3 |
 
 ---
