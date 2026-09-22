@@ -464,6 +464,23 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-22 · Grafik oynasida (30/90 kun) ikkitadan kam o'lchov qolsa oxirgi ikki o'lchov ko'rsatiladi; "Ikkinchi o'lchovdan keyin grafik chiziladi" faqat jami bitta o'lchovda. Grafik kartasidagi "Vazn qo'shish" tugmasi olib tashlandi — vazn faqat tepadagi "Vaznni qayd etish" orqali kiritiladi.**
 *Sabab:* Foydalanuvchi qarori — bitta sahifada vazn qo'shishning ikki joyi ortiqcha; eski o'lchovli foydalanuvchiga "ikkinchi o'lchov yo'q" deyish noto'g'ri edi.
 
+## 2026-09-22 — Telegram Mini App va bot webhook (S5)
+
+**2026-09-22 · Telegram WebApp SDK `telegram-web-app.js` sahifaga `next/script` (beforeInteractive) bilan telegram.org'dan ulanadi, npm paket ishlatilmaydi.**
+*Sabab:* Foydalanuvchi qarori — Telegram rasmiy skripti doim yangilanib turadi, npm nusxasi eskirishi mumkin.
+
+**2026-09-22 · Mini App faqat `expand()` chaqiradi, `requestFullscreen()` (haqiqiy fullscreen) ishlatilmaydi.**
+*Sabab:* Foydalanuvchi qarori.
+
+**2026-09-22 · "Tizim" mavzu tanlovi Telegram ichida OS'ga emas, Telegram'ning o'z colorScheme'iga ergashadi.**
+*Sabab:* Foydalanuvchi qarori — Mini App Telegram konteynerida ishlaydi, mavzu manbai ham shu bo'lishi tabiiy.
+
+**2026-09-22 · `/api/bot` webhook kalit (`X-Telegram-Bot-Api-Secret-Token`) tekshiruvidan keyin har doim 200 qaytaradi, ichki xato bo'lsa ham.**
+*Sabab:* Foydalanuvchi qarori — Telegram xato kodda yangilanishni qayta-qayta qayta yuborib tiqilinch yaratmasin; vaqtinchalik xatoda o'sha yangilanish yo'qoladi, bu qabul qilingan.
+
+**2026-09-22 · Bot yangilanishlari uchun alohida idempotentlik jadvali qurilmaydi; to'lov taskida idempotentlik to'lov yozuvining o'zi orqali ta'minlanadi.**
+*Sabab:* Foydalanuvchi qarori — hozircha bot faqat log yozadi, qo'shimcha jadval ortiqcha.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

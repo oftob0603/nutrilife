@@ -40,15 +40,31 @@
   --makro-norma: #22c55e;
   /* Brauzerning o'z elementlari (vaqt maydoni, scroll chizig'i) ham mavzuga ergashsin. */
   color-scheme: light;
+  /*
+   * Xavfsiz maydon: Telegram o'z qiymatlarini SDK orqali beradi (--tg-safe-area-inset-* —
+   * qurilma, --tg-content-safe-area-inset-* — Telegram'ning o'z tugmalari); brauzerda env().
+   * Tepada qurilma qiymati olinmaydi: ilova fullscreen'da emas (faqat expand()), status
+   * bar ostini Telegram sarlavhasi egallaydi.
+   */
+  --xavfsiz-tepa: max(env(safe-area-inset-top, 0px), var(--tg-content-safe-area-inset-top, 0px));
+  --xavfsiz-past: max(
+    env(safe-area-inset-bottom, 0px),
+    calc(var(--tg-safe-area-inset-bottom, 0px) + var(--tg-content-safe-area-inset-bottom, 0px))
+  );
 }
+
+/* Telegram ichida o'z orqaga tugmalarimiz yashiriladi — Telegram'ning BackButton'i ishlaydi. */
+@custom-variant telegram (&:where([data-telegram] *));
 
 /*
  * Mavzu: <html data-mavzu="yorug" | "qorongi">; atribut yo'q — "tizim" (lib/mavzu.ts).
+ * "Tizim" Telegram ichida <html data-tizim="yorug" | "qorongi"> ga (Telegram mavzusi),
+ * tashqarida OS'ga ergashadi; data-mavzu doim ustun.
  * Qorong'i tokenlar ikki joyda takrorlanadi: CSS'da media so'rovi bilan atribut tanlagichini
  * bitta blokka birlashtirib bo'lmaydi. Birini o'zgartirsangiz, ikkinchisini ham o'zgartiring.
  */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-mavzu="yorug"]) {
+  :root:not([data-mavzu]):not([data-tizim="yorug"]) {
     --siyoh: #f2f2f3;
     --fon: #0b0b0c;
     --karta: #161618;
@@ -63,7 +79,8 @@
   }
 }
 
-:root[data-mavzu="qorongi"] {
+:root[data-mavzu="qorongi"],
+:root:not([data-mavzu])[data-tizim="qorongi"] {
   --siyoh: #f2f2f3;
   --fon: #0b0b0c;
   --karta: #161618;
@@ -134,6 +151,7 @@
 body {
   background: var(--fon);
   color: var(--siyoh);
+  padding-top: var(--xavfsiz-tepa);
 }
 
 /* AI tahlili paytida rasm ustidan o'tadigan chiziq (E6). Chiziq balandligi rasmning 10% i. */

@@ -72,7 +72,7 @@ export function ProTanishtiruv({
         </div>
       </div>
 
-      <footer className="sticky bottom-0 flex flex-col gap-2 border-t border-chegara bg-fon px-4 pb-[max(24px,env(safe-area-inset-bottom))] pt-3">
+      <footer className="sticky bottom-0 flex flex-col gap-2 border-t border-chegara bg-fon px-4 pb-[max(24px,var(--xavfsiz-past))] pt-3">
         <Tugma
           korinish="pro"
           yuklanmoqda={otilmoqda === "pro"}

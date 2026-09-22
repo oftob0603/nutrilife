@@ -135,17 +135,17 @@
 
   <header class="bosh">
     <div class="logo"><span>K</span><h1>Kalori — loyiha progressi</h1></div>
-    <p>Yangilangan: 2026-09-22 12:09 · manba: <code>sprints/</code> papkasi</p>
+    <p>Yangilangan: 2026-09-22 12:59 · manba: <code>sprints/</code> papkasi</p>
   </header>
 
   <section class="umumiy">
     <div class="umumiy-bosh">
       <h2>Umumiy holat</h2>
-      <span class="katta">69%</span>
+      <span class="katta">72%</span>
     </div>
-    <div class="chiziq"><div class="chiziq-ich" style="width:69%"></div></div>
+    <div class="chiziq"><div class="chiziq-ich" style="width:72%"></div></div>
     <div class="statlar">
-      <div class="stat"><b>42 / 61</b><span>task bajarildi</span></div>
+      <div class="stat"><b>44 / 61</b><span>task bajarildi</span></div>
       <div class="stat"><b>4 / 6</b><span>sprint tugallandi</span></div>
       <div class="stat"><b>S5</b><span>joriy sprint</span></div>
       <div class="stat"><b>5</b><span>ochiq savol</span></div>
@@ -468,30 +468,30 @@ Nutrition Score · to'liq ma'lumot modeli · dizayn nafisligi · uch til.</p>
          <p class="muted">To'lov integratsiyasi · bot · admin paneli · retseptlar kutubxonasi.</p>
        </details>
     </article>
-    <article class="sprint boshlanmagan">
+    <article class="sprint jarayonda">
       <header class="sprint-bosh">
         <div class="sprint-nom">
           <span class="raqam">S5</span>
           <h3>telegram</h3>
         </div>
-        <span class="belgi boshlanmagan">Boshlanmagan</span>
+        <span class="belgi jarayonda">Jarayonda</span>
       </header>
 
       <p class="savol">Qo'lda turadimi?</p>
       <p class="maqsad">Mahsulot Telegram ichida tabiiy ishlasin, o'zi xabar bersin va to'lovni</p>
 
-      <div class="chiziq" role="img" aria-label="0 / 9 task bajarildi">
-        <div class="chiziq-ich" style="width:0%"></div>
+      <div class="chiziq" role="img" aria-label="2 / 9 task bajarildi">
+        <div class="chiziq-ich" style="width:22%"></div>
       </div>
-      <p class="hisob"><strong>0 / 9</strong> task · 0%</p>
+      <p class="hisob"><strong>2 / 9</strong> task · 22%</p>
 
       <ul class="tasklar">
-        <li class="task ">
-          <span class="quti" aria-hidden="true"></span>
+        <li class="task bajarildi">
+          <span class="quti" aria-hidden="true">✓</span>
           <span class="task-matn">Telegram Mini App sifatida to'liq ishlashi: WebApp SDK ulanishi, tema Telegram mavzusiga moslashishi, orqaga tugmasi (S1–S2 ekranlaridagi o'z orqaga tugmasi o'rniga Telegram'niki), xavfsiz maydon (safe area). Pastki navigatsiya S2–S4'da qurilgan — bu yerda faqat Telegram xavfsiz maydoniga moslanadi</span>
         </li>
-        <li class="task ">
-          <span class="quti" aria-hidden="true"></span>
+        <li class="task bajarildi">
+          <span class="quti" aria-hidden="true">✓</span>
           <span class="task-matn">Bot webhook'i Vercel API yo'li sifatida (<code>/api/bot</code>) — doimiy ishlaydigan jarayon yo'q, shuning uchun long polling emas</span>
         </li>
         <li class="task ">
@@ -523,10 +523,13 @@ Nutrition Score · to'liq ma'lumot modeli · dizayn nafisligi · uch til.</p>
           <span class="task-matn">Privacy Policy va Terms of Use sahifalari: 18+, AI taxminlari, obuna va to'lov, bekor qilish, pul qaytarilmasligi, sog'liq bo'yicha ogohlantirish, rasmlar uchinchi tomon AI xizmatiga yuborilishi, O'zbekiston Respublikasi qonuni</span>
         </li></ul>
 
-      
+      <div class="blok">
+         <h4>Hisobot</h4>
+         <ul class="hisobot"><li>2026-09-22: Telegram Mini App SDK ulandi (tema, orqaga tugmasi, safe area) va bot webhook <code>/api/bot</code> qo'shildi, jonli sinov deploy va webhook o'rnatishdan keyin (lib/telegram.ts, app/_components/TelegramUlagich.tsx, app/api/bot/route.ts, lib/services/bot.ts, scripts/bot-webhook.mjs)</li></ul>
+       </div>
       <div class="blok">
          <h4>Handoff</h4>
-         <p class="handoff">Deploy Vercel + Railway'da (DECISIONS 2026-09-16): bot webhook, eslatmalar va fon vazifalari<br>serverless muhitga moslab rejalangan. Paywall (W1) uchun paywall-tz.md tayyor.<br>Prototip auditidan S5'ga qolgan eslatmalar (2026-09-22):<br>- F4 (obuna sahifasi): to'lovlar tarixi ro'yxati — har to'lov uchun summa, <code>sana · usul</code> va holat belgisi (prototip <code>screens-profile.jsx:291-307</code>); hozir faqat &quot;Hozircha to'lov yo'q&quot;. To'lov integratsiyasi taskida qurish.<br>- F5 (hisobni o'chirish, 2-qadam): izoh matni prototipda &quot;O'chirilgach Telegramga qaytariladi va bot orqali bitta xabar yuboriladi.&quot; — ilovada vaqtincha &quot;Hisob darhol o'chadi. Ilovani qayta ochsangiz, yangi hisob yaratiladi.&quot; Mini App SDK va bot ulangach prototip matniga qaytarish, o'chirishdan keyin ilovani yopish va bot xabari.<br>- F4 &quot;Obunani bekor qilish&quot; tugmasi va tasdiq varag'i (S4 Handoff'idan).<br>- Privacy/Terms matnida &quot;18+&quot; bandi: onboarding endi 18 dan kichik yoshni to'smaydi (DECISIONS 2026-09-22) — hujjat matni shunga mos yozilsin yoki qaror qayta ko'rilsin.</p>
+         <p class="handoff">Deploy Vercel + Railway'da (DECISIONS 2026-09-16): bot webhook, eslatmalar va fon vazifalari<br>serverless muhitga moslab rejalangan. Paywall (W1) uchun paywall-tz.md tayyor.<br>Prototip auditidan S5'ga qolgan eslatmalar (2026-09-22):<br>- F4 (obuna sahifasi): to'lovlar tarixi ro'yxati — har to'lov uchun summa, <code>sana · usul</code> va holat belgisi (prototip <code>screens-profile.jsx:291-307</code>); hozir faqat &quot;Hozircha to'lov yo'q&quot;. To'lov integratsiyasi taskida qurish.<br>- F5 (hisobni o'chirish, 2-qadam): izoh matni prototipda &quot;O'chirilgach Telegramga qaytariladi va bot orqali bitta xabar yuboriladi.&quot; — ilovada vaqtincha &quot;Hisob darhol o'chadi. Ilovani qayta ochsangiz, yangi hisob yaratiladi.&quot; Mini App SDK va bot ulangach prototip matniga qaytarish, o'chirishdan keyin ilovani yopish va bot xabari.<br>- F4 &quot;Obunani bekor qilish&quot; tugmasi va tasdiq varag'i (S4 Handoff'idan).<br>- Privacy/Terms matnida &quot;18+&quot; bandi: onboarding endi 18 dan kichik yoshni to'smaydi (DECISIONS 2026-09-22) — hujjat matni shunga mos yozilsin yoki qaror qayta ko'rilsin.<br>Keyingi: 3-task (/start, til tanlash, &quot;Ilovani ochish&quot; tugmasi). Deploydan keyin <code>scripts/bot-webhook.mjs</code> bilan webhook o'rnatilishi va jonli sinov kerak; Vercel'da <code>TELEGRAM_WEBHOOK_SECRET</code> bo'lishi shart.</p>
        </div>
       <details class="qoshimcha">
          <summary>Qabul mezoni (6)</summary>

@@ -1,5 +1,6 @@
 "use client";
 
+import { OrqagaTugma } from "@/app/_components/OrqagaTugma";
 import { useTarjima } from "@/app/_components/TilTaminoti";
 import { QADAMLAR_SONI } from "@/lib/services/onboarding-hisob";
 
@@ -24,16 +25,15 @@ export function QadamSarlavhasi({
         {/* Prototip `StepProgress`: tugma bo'lmasa o'rnida 4 px bo'shliq qoladi. */}
         {!onOrqaga && <span aria-hidden="true" className="w-1 shrink-0" />}
         {onOrqaga && (
-          <button
-            type="button"
-            onClick={onOrqaga}
-            aria-label={t("Orqaga")}
+          <OrqagaTugma
+            nomi={t("Orqaga")}
+            onOrqaga={onOrqaga}
             className="-ml-3 flex size-11 shrink-0 items-center justify-center text-siyoh active:scale-[0.98]"
           >
             <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M15 5l-7 7 7 7" />
             </svg>
-          </button>
+          </OrqagaTugma>
         )}
         <span className="flex-1 text-izoh tabular-nums text-matn-2">
           {t("{0} dan {1}", QADAMLAR_SONI, qadam)}

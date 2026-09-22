@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
+import { OrqagaTugma } from "@/app/_components/OrqagaTugma";
 import { PorsiyaTanlagich } from "@/app/_components/PorsiyaTanlagich";
 import { TaomRasmi } from "@/app/_components/TaomRasmi";
 import type { Reja } from "@/lib/services/norma-hisob";
@@ -78,13 +78,13 @@ export default async function TaomSahifasi({
   return (
     <main className="mx-auto w-full max-w-md px-4 pb-8">
       <header className="flex items-center gap-2 py-4">
-        <Link
+        <OrqagaTugma
+          nomi={t("Orqaga")}
           href="/taomlar"
-          aria-label={t("Orqaga")}
           className="-ml-3 flex size-11 items-center justify-center rounded-chip text-siyoh"
         >
           <ChapStrelka />
-        </Link>
+        </OrqagaTugma>
         <h1 className="min-w-0 truncate text-sarlavha">{taomNomi(taom, til)}</h1>
       </header>
 

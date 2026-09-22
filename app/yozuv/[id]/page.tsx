@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { OrqagaTugma } from "@/app/_components/OrqagaTugma";
 import { notFound } from "next/navigation";
 import { AiBelgisi } from "@/app/_components/AiBelgisi";
 import { TaomRasmi } from "@/app/_components/TaomRasmi";
@@ -47,9 +47,9 @@ export default async function YozuvSahifasi({
   return (
     <main className="mx-auto w-full max-w-md px-4 pb-8">
       <header className="flex items-center gap-2 py-4">
-        <Link
+        <OrqagaTugma
+          nomi={t("Orqaga")}
           href={qaytish}
-          aria-label={t("Orqaga")}
           className="-ml-3 flex size-11 items-center justify-center rounded-chip text-siyoh"
         >
           <svg
@@ -65,7 +65,7 @@ export default async function YozuvSahifasi({
           >
             <path d="m15 18-6-6 6-6" />
           </svg>
-        </Link>
+        </OrqagaTugma>
         <h1 className="min-w-0 flex-1 truncate text-sarlavha">{t("Yozuv tahriri")}</h1>
         {yozuv.manba === "ai" && <AiBelgisi />}
       </header>

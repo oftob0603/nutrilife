@@ -1,17 +1,21 @@
 // Klient komponentlardan o'z API'mizga so'rov. Faqat brauzerda ishlaydi — bazaga tegmaydi.
 
+import { webApp } from "@/lib/telegram";
+
 const SAQLASH_KALITI = "nutrilife-initdata";
 
 /** Qayta kirish ham yordam bermadi — `KirishDarvozasi` "Ilovani qayta oching" pardasini ko'rsatadi. */
 export const SESSIYA_TUGADI_HODISASI = "nutrilife:sessiya-tugadi";
 
 /**
- * Telegram Mini App'ni ochganda initData'ni URL hash'iga qo'yadi (`#tgWebAppData=...`).
- * Ilova ichida yurganda hash yo'qoladi, shuning uchun qiymat shu ochilish davomida
- * saqlab turiladi — Telegram'ning o'z SDK'si ham shunday qiladi (to'liq SDK S5'da ulanadi).
+ * initData avval Telegram SDK'sidan olinadi. SDK yuklanmagan bo'lsa — URL hash'idan
+ * (`#tgWebAppData=...`, Telegram ilovani shunday ochadi); ilova ichida yurganda hash
+ * yo'qoladi, shuning uchun qiymat shu ochilish davomida saqlab turiladi.
  */
 export function initDataniOl(): string | null {
-  const hashdagi = new URLSearchParams(window.location.hash.slice(1)).get("tgWebAppData");
+  const sdkdagi = webApp()?.initData;
+  const hashdagi =
+    sdkdagi || new URLSearchParams(window.location.hash.slice(1)).get("tgWebAppData");
   try {
     if (hashdagi) {
       window.sessionStorage.setItem(SAQLASH_KALITI, hashdagi);

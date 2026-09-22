@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Inter_Tight } from "next/font/google";
+import Script from "next/script";
 import { KirishDarvozasi } from "@/app/_components/KirishDarvozasi";
+import { TelegramUlagich } from "@/app/_components/TelegramUlagich";
 import { TilTaminoti } from "@/app/_components/TilTaminoti";
 import { serverTili } from "@/lib/lugat/server";
 import { MAVZU_SKRIPTI } from "@/lib/mavzu";
@@ -38,6 +40,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
         <script dangerouslySetInnerHTML={{ __html: MAVZU_SKRIPTI }} />
       </head>
       <body className="flex min-h-full flex-col font-sans">
+        {/* Telegram Mini App SDK — gidratsiyadan oldin: kirish initData'ni undan oladi. */}
+        <Script src="https://telegram.org/js/telegram-web-app.js" strategy="beforeInteractive" />
+        <TelegramUlagich />
         <TilTaminoti til={til}>
           <KirishDarvozasi>{children}</KirishDarvozasi>
         </TilTaminoti>

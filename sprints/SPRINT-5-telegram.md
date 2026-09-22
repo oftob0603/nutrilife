@@ -7,8 +7,8 @@ qabul qilsin.
 
 ## Tasklar
 
-- [ ] Telegram Mini App sifatida to'liq ishlashi: WebApp SDK ulanishi, tema Telegram mavzusiga moslashishi, orqaga tugmasi (S1–S2 ekranlaridagi o'z orqaga tugmasi o'rniga Telegram'niki), xavfsiz maydon (safe area). Pastki navigatsiya S2–S4'da qurilgan — bu yerda faqat Telegram xavfsiz maydoniga moslanadi
-- [ ] Bot webhook'i Vercel API yo'li sifatida (`/api/bot`) — doimiy ishlaydigan jarayon yo'q, shuning uchun long polling emas
+- [x] Telegram Mini App sifatida to'liq ishlashi: WebApp SDK ulanishi, tema Telegram mavzusiga moslashishi, orqaga tugmasi (S1–S2 ekranlaridagi o'z orqaga tugmasi o'rniga Telegram'niki), xavfsiz maydon (safe area). Pastki navigatsiya S2–S4'da qurilgan — bu yerda faqat Telegram xavfsiz maydoniga moslanadi
+- [x] Bot webhook'i Vercel API yo'li sifatida (`/api/bot`) — doimiy ishlaydigan jarayon yo'q, shuning uchun long polling emas
 - [ ] Bot kirish nuqtasi: `/start` — salomlashish, til tanlash (o'zbek, rus, ingliz) va "Ilovani ochish" tugmasi. Bot ichida ovqat kiritish yo'q
 - [ ] Paywall va obuna ekrani: uch tarif (39,000 so'm/oy · 170,000 so'm/6 oy · 290,000 so'm/yil), yillik tavsiya belgisi, oylik ekvivalent va tejash ko'rsatilishi, "Hozir emas" tugmasi
 - [ ] To'lov integratsiyasi: Click, Payme va Telegram Stars. Kalitlar Vercel Environment Variables'da, qaytish manzillari production domeniga yoziladi. `tolovlar` jadvali, holat zanjiri `boshlandi` -> `to'landi` / `bekor qilindi`
@@ -33,7 +33,7 @@ avtomatik takroriy to'lov · admin paneli.
 
 ## Hisobot
 
-<!-- hisobotchi to'ldiradi -->
+- 2026-09-22: Telegram Mini App SDK ulandi (tema, orqaga tugmasi, safe area) va bot webhook `/api/bot` qo'shildi, jonli sinov deploy va webhook o'rnatishdan keyin (lib/telegram.ts, app/_components/TelegramUlagich.tsx, app/api/bot/route.ts, lib/services/bot.ts, scripts/bot-webhook.mjs)
 
 ## Handoff
 
@@ -45,6 +45,8 @@ Prototip auditidan S5'ga qolgan eslatmalar (2026-09-22):
 - F5 (hisobni o'chirish, 2-qadam): izoh matni prototipda "O'chirilgach Telegramga qaytariladi va bot orqali bitta xabar yuboriladi." — ilovada vaqtincha "Hisob darhol o'chadi. Ilovani qayta ochsangiz, yangi hisob yaratiladi." Mini App SDK va bot ulangach prototip matniga qaytarish, o'chirishdan keyin ilovani yopish va bot xabari.
 - F4 "Obunani bekor qilish" tugmasi va tasdiq varag'i (S4 Handoff'idan).
 - Privacy/Terms matnida "18+" bandi: onboarding endi 18 dan kichik yoshni to'smaydi (DECISIONS 2026-09-22) — hujjat matni shunga mos yozilsin yoki qaror qayta ko'rilsin.
+
+Keyingi: 3-task (/start, til tanlash, "Ilovani ochish" tugmasi). Deploydan keyin `scripts/bot-webhook.mjs` bilan webhook o'rnatilishi va jonli sinov kerak; Vercel'da `TELEGRAM_WEBHOOK_SECRET` bo'lishi shart.
 
 ---
 

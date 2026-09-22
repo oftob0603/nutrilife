@@ -2,10 +2,11 @@
 
 import { useEffect } from "react";
 import { useTarjima } from "@/app/_components/TilTaminoti";
+import { useTelegramOrqaga } from "@/app/_components/useTelegramOrqaga";
 
 /**
  * Pastdan chiqadigan panel (prototip `BottomSheet`): parda, tutqich, sarlavha va mazmun.
- * Parda bosilsa yoki Escape bosilsa yopiladi.
+ * Parda, Escape yoki Telegram'ning orqaga tugmasi bosilsa yopiladi.
  */
 export function PastkiVaraq({
   sarlavha,
@@ -17,6 +18,7 @@ export function PastkiVaraq({
   children: React.ReactNode;
 }) {
   const { t } = useTarjima();
+  useTelegramOrqaga(onYop);
 
   useEffect(() => {
     const bosildi = (hodisa: KeyboardEvent) => {
@@ -40,7 +42,7 @@ export function PastkiVaraq({
         className="absolute inset-0 bg-parda"
       />
 
-      <section className="relative mx-auto max-h-[85dvh] w-full max-w-md overflow-y-auto rounded-t-panel border border-karta-chegara bg-karta px-4 pb-8 pt-3 motion-safe:animate-[panel_250ms_cubic-bezier(0.2,0,0,1)]">
+      <section className="relative mx-auto max-h-[85dvh] w-full max-w-md overflow-y-auto rounded-t-panel border border-karta-chegara bg-karta px-4 pb-[calc(2rem+var(--xavfsiz-past))] pt-3 motion-safe:animate-[panel_250ms_cubic-bezier(0.2,0,0,1)]">
         <div className="mx-auto mb-4 h-1 w-9 rounded-full bg-chegara" />
         <h2 className="mb-4 text-sarlavha">{sarlavha}</h2>
         {children}

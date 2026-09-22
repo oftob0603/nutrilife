@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { OrqagaTugma } from "@/app/_components/OrqagaTugma";
 import { OflaynChizigi } from "@/app/_components/OflaynChizigi";
 import { VaznPaneli } from "@/app/_components/progress/VaznPaneli";
 import { VaznTarixi } from "@/app/_components/progress/VaznTarixi";
@@ -23,9 +23,9 @@ export default async function VaznTarixiSahifasi() {
       <OflaynChizigi />
       <main className="mx-auto w-full max-w-md px-4 pb-12">
         <header className="flex items-center gap-2 py-4">
-          <Link
+          <OrqagaTugma
+            nomi={t("Orqaga")}
             href="/progress"
-            aria-label={t("Orqaga")}
             className="-ml-3 flex size-11 items-center justify-center rounded-chip text-siyoh"
           >
             <svg
@@ -41,7 +41,7 @@ export default async function VaznTarixiSahifasi() {
             >
               <path d="m15 18-6-6 6-6" />
             </svg>
-          </Link>
+          </OrqagaTugma>
           <h1 className="text-sarlavha">{t("Vazn tarixi")}</h1>
         </header>
 

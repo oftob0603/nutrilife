@@ -134,7 +134,7 @@ export function Tariflar({
 
   return (
     <>
-      <main className="mx-auto w-full max-w-md px-4 pb-[calc(148px+env(safe-area-inset-bottom))] pt-6">
+      <main className="mx-auto w-full max-w-md px-4 pb-[calc(148px+var(--xavfsiz-past))] pt-6">
         <h1 className="font-display text-[28px] font-semibold leading-[1.12] tracking-[-0.02em]">
           {t(paywallSarlavhasi(manba, muddatiTugagan))}
         </h1>
@@ -218,7 +218,7 @@ export function Tariflar({
       </main>
 
       {/* Pastki tugmalar to'g'ridan-to'g'ri sahifa ustida — karta, chegara va soyasiz (prototip). */}
-      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-[5] mx-auto w-full max-w-md px-4 pb-[calc(12px+env(safe-area-inset-bottom))]">
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-[5] mx-auto w-full max-w-md px-4 pb-[calc(12px+var(--xavfsiz-past))]">
         <div className="pointer-events-auto">
           <Tugma korinish="pro" disabled={!tayyor || !tanlangan} onClick={() => setVaraq("tolov")}>
             {t("Davom etish")}

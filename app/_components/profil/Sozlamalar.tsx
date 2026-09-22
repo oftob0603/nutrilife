@@ -8,7 +8,7 @@ import { useTarjima, useTilniOrnat } from "@/app/_components/TilTaminoti";
 import { TugmaHavola } from "@/app/_components/Tugma";
 import { useOnlayn } from "@/app/_components/useOnlayn";
 import type { Kalit } from "@/lib/lugat/tarjima";
-import { MAVZU_NOMLARI, mavzuniTanla } from "@/lib/mavzu";
+import { MAVZU_NOMLARI, mavzuniTanla, tizimgaObuna, tizimQorongimi } from "@/lib/mavzu";
 import { apiSorov } from "@/lib/services/api-klient";
 import {
   SOZLAMA_VARIANTLARI,
@@ -32,14 +32,6 @@ function variantNomi(kalit: SozlamaKaliti, qiymat: string): string {
   return qiymat;
 }
 
-const QORONGI_SOROVI = "(prefers-color-scheme: dark)";
-
-function tizimgaObuna(xabar: () => void) {
-  const sorov = window.matchMedia(QORONGI_SOROVI);
-  sorov.addEventListener("change", xabar);
-  return () => sorov.removeEventListener("change", xabar);
-}
-
 /**
  * Sozlama qatorlari — alohida sahifa emas, Profil sahifasining o'zida (prototip): qator
  * bosilganda variantlar pastki panelda ochiladi, tanlov darhol saqlanadi. Har qator o'zi
@@ -57,7 +49,7 @@ export function Sozlamalar({ boshlangich }: { boshlangich: SozlamalarTuri }) {
 
   const tizimQorongi = useSyncExternalStore(
     tizimgaObuna,
-    () => window.matchMedia(QORONGI_SOROVI).matches,
+    tizimQorongimi,
     () => false,
   );
   const onlayn = useOnlayn();

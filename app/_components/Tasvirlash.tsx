@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { OrqagaTugma } from "@/app/_components/OrqagaTugma";
 import { useState } from "react";
 import { SkanLimitiQatori } from "@/app/_components/SkanLimitiQatori";
 import { Tahlil } from "@/app/_components/Tahlil";
@@ -48,13 +48,13 @@ export function Tasvirlash({ boshlangich }: { boshlangich: string }) {
   return (
     <main className="mx-auto w-full max-w-md px-4 pb-8">
       <header className="flex items-center gap-2 py-4">
-        <Link
+        <OrqagaTugma
+          nomi={t("Orqaga")}
           href="/"
-          aria-label={t("Orqaga")}
           className="-ml-3 flex size-11 items-center justify-center rounded-chip text-siyoh"
         >
           <ChapStrelka />
-        </Link>
+        </OrqagaTugma>
         <h1 className="min-w-0 truncate text-sarlavha">{t("Matn bilan tasvirlash")}</h1>
       </header>
 

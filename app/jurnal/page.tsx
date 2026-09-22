@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { OrqagaTugma } from "@/app/_components/OrqagaTugma";
 import { BoshHolat } from "@/app/_components/BoshHolat";
 import { MakroChizigi } from "@/app/_components/MakroChizigi";
 import { ProQulfi } from "@/app/_components/ProQulfi";
@@ -175,13 +176,13 @@ export default async function JurnalSahifasi({ searchParams }: PageProps<"/jurna
     <>
       <main className="mx-auto w-full max-w-md px-4 pb-32">
         <header className="flex items-center gap-2 py-4">
-          <Link
+          <OrqagaTugma
+            nomi={t("Orqaga")}
             href="/"
-            aria-label={t("Orqaga")}
             className={`-ml-3 ${STRELKA_QOLIPI} text-siyoh`}
           >
             <Strelka yonalish="chap" />
-          </Link>
+          </OrqagaTugma>
           <h1 className="text-sarlavha">{t("Jurnal")}</h1>
         </header>
 

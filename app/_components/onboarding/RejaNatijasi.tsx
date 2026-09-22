@@ -55,7 +55,7 @@ function Izoh({ sarlavha, children }: { sarlavha?: string; children: React.React
 
 function Pastki({ children }: { children: React.ReactNode }) {
   return (
-    <footer className="sticky bottom-0 border-t border-chegara bg-fon px-4 pb-[max(24px,env(safe-area-inset-bottom))] pt-3">
+    <footer className="sticky bottom-0 border-t border-chegara bg-fon px-4 pb-[max(24px,var(--xavfsiz-past))] pt-3">
       {children}
     </footer>
   );

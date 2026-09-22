@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { OrqagaTugma } from "@/app/_components/OrqagaTugma";
 
 const TUGMA = "-ml-3 flex size-11 shrink-0 items-center justify-center rounded-chip text-siyoh";
 
@@ -20,7 +20,7 @@ function ChapStrelka() {
   );
 }
 
-/** Ichki ekran sarlavhasi: chapda orqaga (havola yoki tugma), yonida nom. */
+/** Ichki ekran sarlavhasi: chapda orqaga (havola yoki tugma; Telegram'da — uning tugmasi), yonida nom. */
 export function OrqagaSarlavha({
   sarlavha,
   orqagaNomi,
@@ -35,15 +35,9 @@ export function OrqagaSarlavha({
 }) {
   return (
     <header className="flex items-center gap-2 py-4">
-      {href ? (
-        <Link href={href} aria-label={orqagaNomi} className={TUGMA}>
-          <ChapStrelka />
-        </Link>
-      ) : (
-        <button type="button" onClick={onOrqaga} aria-label={orqagaNomi} className={TUGMA}>
-          <ChapStrelka />
-        </button>
-      )}
+      <OrqagaTugma nomi={orqagaNomi} href={href} onOrqaga={onOrqaga} className={TUGMA}>
+        <ChapStrelka />
+      </OrqagaTugma>
       <h1 className="min-w-0 truncate text-sarlavha">{sarlavha}</h1>
     </header>
   );

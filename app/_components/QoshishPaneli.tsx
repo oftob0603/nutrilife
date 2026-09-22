@@ -7,6 +7,7 @@ import { SkanLimitiQatori } from "@/app/_components/SkanLimitiQatori";
 import { useTarjima } from "@/app/_components/TilTaminoti";
 import { Tugma } from "@/app/_components/Tugma";
 import { useSkanLimiti } from "@/app/_components/useSkanLimiti";
+import { useTelegramOrqaga } from "@/app/_components/useTelegramOrqaga";
 import { rasmniYukla } from "@/lib/services/rasm-yuklash";
 import { limitKorinishi } from "@/lib/services/skan-hisob";
 
@@ -205,6 +206,8 @@ export function QoshishPaneli({ faol }: { faol?: "asosiy" | "statistika" | "prof
     setXato(null);
   }
 
+  useTelegramOrqaga(ochiq ? yop : undefined);
+
   // Panelni sahifadagi boshqa tugma ham ochadi (jurnalning bo'sh holati) — `QoshishTugmasi`.
   useEffect(() => {
     const och = () => setOchiq(true);
@@ -227,7 +230,7 @@ export function QoshishPaneli({ faol }: { faol?: "asosiy" | "statistika" | "prof
       {faol !== undefined && !ochiq && (
         <nav
           aria-label={t("Asosiy navigatsiya")}
-          className="fixed inset-x-4 bottom-[max(1.5rem,env(safe-area-inset-bottom))] mx-auto flex max-w-sm items-center gap-1 rounded-full border border-chegara bg-karta px-2 py-1 shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
+          className="fixed inset-x-4 bottom-[max(1.5rem,var(--xavfsiz-past))] mx-auto flex max-w-sm items-center gap-1 rounded-full border border-chegara bg-karta px-2 py-1 shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
         >
           <Bolim href="/" nomi={t("Asosiy")} faol={faol === "asosiy"}>
             <path d="M15.6 2.7a10 10 0 1 0 5.7 5.7" />
@@ -282,7 +285,7 @@ export function QoshishPaneli({ faol }: { faol?: "asosiy" | "statistika" | "prof
             className="absolute inset-0 bg-parda"
           />
 
-          <div className="relative mx-auto w-full max-w-md rounded-t-panel border border-karta-chegara bg-karta p-4 pb-8 motion-safe:animate-[panel_250ms_cubic-bezier(0.2,0,0,1)]">
+          <div className="relative mx-auto w-full max-w-md rounded-t-panel border border-karta-chegara bg-karta p-4 pb-[calc(2rem+var(--xavfsiz-past))] motion-safe:animate-[panel_250ms_cubic-bezier(0.2,0,0,1)]">
             <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-chegara" />
             {/* Prototip `BottomSheet title` — sarlavha ko'rinadi, faqat aria-label emas. */}
             <h2 className="mb-4 text-sarlavha">{t("Ovqat qo'shish")}</h2>

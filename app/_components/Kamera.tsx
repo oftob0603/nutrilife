@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { OrqagaTugma } from "@/app/_components/OrqagaTugma";
 import { useRouter } from "next/navigation";
 import { useTarjima } from "@/app/_components/TilTaminoti";
 import { rasmniYukla } from "@/lib/services/rasm-yuklash";
@@ -145,7 +145,7 @@ export function Kamera() {
   }
 
   return (
-    <main className="fixed inset-0 flex flex-col bg-black text-white">
+    <main className="fixed inset-0 flex flex-col bg-black pt-[var(--xavfsiz-tepa)] text-white">
       <video
         ref={video}
         playsInline
@@ -165,13 +165,14 @@ export function Kamera() {
 
       {/* Prototip `CameraScreen`: chapda orqaga, markazda holat yozuvi, o'ngda bo'sh o'rin. */}
       <header className="relative flex items-center justify-between p-2">
-        <Link
+        <OrqagaTugma
+          nomi={t("Orqaga")}
           href="/"
-          aria-label={t("Orqaga")}
           className="flex size-11 items-center justify-center rounded-full bg-black/40"
+          joyTutsin
         >
           <Ikona nomi="orqaga" />
-        </Link>
+        </OrqagaTugma>
         <span className="text-izoh text-white/70">
           {holat === "korish" ? t("Rasmni ko'rib chiqing") : t("Kamera")}
         </span>
@@ -200,7 +201,7 @@ export function Kamera() {
         )}
       </div>
 
-      <footer className="relative flex flex-col gap-3 px-4 pt-4 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+      <footer className="relative flex flex-col gap-3 px-4 pt-4 pb-[max(1.5rem,var(--xavfsiz-past))]">
         {xato && (
           <p role="alert" className="rounded-chip bg-black/60 px-3 py-2 text-center text-izoh">
             {xato}
