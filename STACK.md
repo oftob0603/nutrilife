@@ -12,9 +12,9 @@ qatorda yozilgan. Maqsad: o'ylashni stackka emas, mahsulotga sarflash.
 | **PostgreSQL** | Jiddiy loyihalar uchun standart, bepul, har joyda ishlaydi, ma'lumot yo'qolmaydi |
 | **Prisma** | Ma'lumot modelini bitta faylda ko'rsatadi va SQL yozishdan qutqaradi |
 | **Tailwind CSS** | Dizaynni HTML ichida yozasiz — alohida CSS fayllarni boshqarish yo'q |
-| **Vercel** | Next.js'ning o'z platformasi: push qilinganda o'zi quradi va chiqaradi, HTTPS tayyor |
-| **Railway** | PostgreSQL boshqariladigan xizmat sifatida; nusxa va zaxira o'zi bajariladi |
-| **Cloudflare R2** | Ovqat rasmlari ombori (S2): S3-mos, chiqish trafigi bepul; Vercel'da doimiy disk yo'q |
+| **Vercel** | Frontend: sahifalar. `/api/*` so'rovlari Railway'dagi backendga uzatiladi (`BACKEND_URL`, next.config.ts rewrite) |
+| **Railway** | Backend: shu repo `next start` bilan doimiy jarayon sifatida (`app/api/*`, bot webhook, fon vazifalari) va PostgreSQL; nusxa va zaxira o'zi bajariladi |
+| **Cloudflare R2** | Ovqat rasmlari ombori (S2): S3-mos, chiqish trafigi bepul; ilova disk o'rniga tashqi omborga yozadi |
 | **Telegram Mini App** | Auditoriya allaqachon Telegramda; alohida ilova yuklatish shart emas (S5) |
 
 ## Nega aynan shu to'plam

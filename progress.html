@@ -135,7 +135,7 @@
 
   <header class="bosh">
     <div class="logo"><span>K</span><h1>Kalori — loyiha progressi</h1></div>
-    <p>Yangilangan: 2026-09-22 12:59 · manba: <code>sprints/</code> papkasi</p>
+    <p>Yangilangan: 2026-09-22 13:48 · manba: <code>sprints/</code> papkasi</p>
   </header>
 
   <section class="umumiy">
@@ -492,7 +492,7 @@ Nutrition Score · to'liq ma'lumot modeli · dizayn nafisligi · uch til.</p>
         </li>
         <li class="task bajarildi">
           <span class="quti" aria-hidden="true">✓</span>
-          <span class="task-matn">Bot webhook'i Vercel API yo'li sifatida (<code>/api/bot</code>) — doimiy ishlaydigan jarayon yo'q, shuning uchun long polling emas</span>
+          <span class="task-matn">Bot webhook'i API yo'li sifatida (<code>/api/bot</code>) — 2026-09-22 dan backend Railway'da, webhook Railway domeniga o'rnatiladi</span>
         </li>
         <li class="task ">
           <span class="quti" aria-hidden="true"></span>
@@ -504,7 +504,7 @@ Nutrition Score · to'liq ma'lumot modeli · dizayn nafisligi · uch til.</p>
         </li>
         <li class="task ">
           <span class="quti" aria-hidden="true"></span>
-          <span class="task-matn">To'lov integratsiyasi: Click, Payme va Telegram Stars. Kalitlar Vercel Environment Variables'da, qaytish manzillari production domeniga yoziladi. <code>tolovlar</code> jadvali, holat zanjiri <code>boshlandi</code> -&gt; <code>to'landi</code> / <code>bekor qilindi</code></span>
+          <span class="task-matn">To'lov integratsiyasi: Click, Payme va Telegram Stars. Kalitlar Railway Environment Variables'da, qaytish manzillari production domeniga yoziladi. <code>tolovlar</code> jadvali, holat zanjiri <code>boshlandi</code> -&gt; <code>to'landi</code> / <code>bekor qilindi</code></span>
         </li>
         <li class="task ">
           <span class="quti" aria-hidden="true"></span>
@@ -516,7 +516,7 @@ Nutrition Score · to'liq ma'lumot modeli · dizayn nafisligi · uch til.</p>
         </li>
         <li class="task ">
           <span class="quti" aria-hidden="true"></span>
-          <span class="task-matn">Fon vazifalari (Vercel Cron Jobs orqali — server doimiy ishlamaydi; Hobby tarifidagi kunlik chegara sprint boshida tekshiriladi, yetmasa Railway cron): obuna muddati tugashi va tugashdan oldingi ogohlantirish, PRO kunlik skan limitining yangilanishi, kunlik xulosani yopish</span>
+          <span class="task-matn">Fon vazifalari (backend Railway'da doimiy ishlaydi — Railway cron yoki jarayon ichidagi rejalashtirgich, sprint boshida tanlanadi): obuna muddati tugashi va tugashdan oldingi ogohlantirish, PRO kunlik skan limitining yangilanishi, kunlik xulosani yopish</span>
         </li>
         <li class="task ">
           <span class="quti" aria-hidden="true"></span>
@@ -525,11 +525,11 @@ Nutrition Score · to'liq ma'lumot modeli · dizayn nafisligi · uch til.</p>
 
       <div class="blok">
          <h4>Hisobot</h4>
-         <ul class="hisobot"><li>2026-09-22: Telegram Mini App SDK ulandi (tema, orqaga tugmasi, safe area) va bot webhook <code>/api/bot</code> qo'shildi, jonli sinov deploy va webhook o'rnatishdan keyin (lib/telegram.ts, app/_components/TelegramUlagich.tsx, app/api/bot/route.ts, lib/services/bot.ts, scripts/bot-webhook.mjs)</li></ul>
+         <ul class="hisobot"><li>2026-09-22: Telegram Mini App SDK ulandi (tema, orqaga tugmasi, safe area) va bot webhook <code>/api/bot</code> qo'shildi, jonli sinov deploy va webhook o'rnatishdan keyin (lib/telegram.ts, app/_components/TelegramUlagich.tsx, app/api/bot/route.ts, lib/services/bot.ts, scripts/bot-webhook.mjs)</li><li>2026-09-22: backend Railway'ga ko'chirildi, frontend Vercel'da qoldi (DECISIONS 2026-09-16 amalga oshirildi) (next.config.ts, lib/api-asos.ts, lib/services/sessiya.ts, .env.example)</li></ul>
        </div>
       <div class="blok">
          <h4>Handoff</h4>
-         <p class="handoff">Deploy Vercel + Railway'da (DECISIONS 2026-09-16): bot webhook, eslatmalar va fon vazifalari<br>serverless muhitga moslab rejalangan. Paywall (W1) uchun paywall-tz.md tayyor.<br>Prototip auditidan S5'ga qolgan eslatmalar (2026-09-22):<br>- F4 (obuna sahifasi): to'lovlar tarixi ro'yxati — har to'lov uchun summa, <code>sana · usul</code> va holat belgisi (prototip <code>screens-profile.jsx:291-307</code>); hozir faqat &quot;Hozircha to'lov yo'q&quot;. To'lov integratsiyasi taskida qurish.<br>- F5 (hisobni o'chirish, 2-qadam): izoh matni prototipda &quot;O'chirilgach Telegramga qaytariladi va bot orqali bitta xabar yuboriladi.&quot; — ilovada vaqtincha &quot;Hisob darhol o'chadi. Ilovani qayta ochsangiz, yangi hisob yaratiladi.&quot; Mini App SDK va bot ulangach prototip matniga qaytarish, o'chirishdan keyin ilovani yopish va bot xabari.<br>- F4 &quot;Obunani bekor qilish&quot; tugmasi va tasdiq varag'i (S4 Handoff'idan).<br>- Privacy/Terms matnida &quot;18+&quot; bandi: onboarding endi 18 dan kichik yoshni to'smaydi (DECISIONS 2026-09-22) — hujjat matni shunga mos yozilsin yoki qaror qayta ko'rilsin.<br>Keyingi: 3-task (/start, til tanlash, &quot;Ilovani ochish&quot; tugmasi). Deploydan keyin <code>scripts/bot-webhook.mjs</code> bilan webhook o'rnatilishi va jonli sinov kerak; Vercel'da <code>TELEGRAM_WEBHOOK_SECRET</code> bo'lishi shart.</p>
+         <p class="handoff">Deploy: frontend Vercel, backend Railway (DECISIONS 2026-09-16, amalga oshirildi 2026-09-22): bot webhook,<br>eslatmalar va fon vazifalari Railway'dagi doimiy jarayonda ishlaydi. Paywall (W1) uchun paywall-tz.md tayyor.<br>Push'dan keyin: telefonda jonli sinov, bot webhook'ini Railway domeniga qayta o'rnatish (scripts/bot-webhook.mjs), so'ng Vercel'dagi DATABASE_URL'ni o'chirish.<br>Prototip auditidan S5'ga qolgan eslatmalar (2026-09-22):<br>- F4 (obuna sahifasi): to'lovlar tarixi ro'yxati — har to'lov uchun summa, <code>sana · usul</code> va holat belgisi (prototip <code>screens-profile.jsx:291-307</code>); hozir faqat &quot;Hozircha to'lov yo'q&quot;. To'lov integratsiyasi taskida qurish.<br>- F5 (hisobni o'chirish, 2-qadam): izoh matni prototipda &quot;O'chirilgach Telegramga qaytariladi va bot orqali bitta xabar yuboriladi.&quot; — ilovada vaqtincha &quot;Hisob darhol o'chadi. Ilovani qayta ochsangiz, yangi hisob yaratiladi.&quot; Mini App SDK va bot ulangach prototip matniga qaytarish, o'chirishdan keyin ilovani yopish va bot xabari.<br>- F4 &quot;Obunani bekor qilish&quot; tugmasi va tasdiq varag'i (S4 Handoff'idan).<br>- Privacy/Terms matnida &quot;18+&quot; bandi: onboarding endi 18 dan kichik yoshni to'smaydi (DECISIONS 2026-09-22) — hujjat matni shunga mos yozilsin yoki qaror qayta ko'rilsin.<br>Keyingi: 3-task (/start, til tanlash, &quot;Ilovani ochish&quot; tugmasi). Deploydan keyin <code>scripts/bot-webhook.mjs</code> bilan webhook o'rnatilishi va jonli sinov kerak; Vercel'da <code>TELEGRAM_WEBHOOK_SECRET</code> bo'lishi shart.</p>
        </div>
       <details class="qoshimcha">
          <summary>Qabul mezoni (6)</summary>

@@ -1,11 +1,13 @@
 import { headers } from "next/headers";
 
 /**
- * Sahifalar o'z API yo'liga murojaat qilganda ishlatiladigan asos manzil.
- * Production'da localhost ishlatilmaydi (CLAUDE.md): Vercel'da APP_URL yoki
- * platformaning o'z VERCEL_URL o'zgaruvchisi olinadi.
+ * Sahifalar API'ga murojaat qilganda ishlatiladigan asos manzil.
+ * Production'da localhost ishlatilmaydi (CLAUDE.md): Vercel'da BACKEND_URL (Railway'dagi
+ * backend) — server sahifalari API'ni to'g'ridan-to'g'ri chaqiradi, Vercel orqali aylanmaydi.
+ * U berilmagan muhitda — APP_URL yoki platformaning o'z VERCEL_URL o'zgaruvchisi.
  */
 export function apiAsos(): string {
+  if (process.env.BACKEND_URL) return process.env.BACKEND_URL.replace(/\/+$/, "");
   if (process.env.APP_URL) return process.env.APP_URL;
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
   return "http://localhost:3000";

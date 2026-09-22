@@ -70,15 +70,18 @@ function cookiedanToken(sorov: Request): string | null {
 /**
  * O'zgartiruvchi so'rov boshqa saytdan kelganmi. `SameSite=None` cookie begona sahifadan
  * yuborilgan so'rovga ham qo'shiladi — brauzer qo'ygan `Origin` o'z manzilimizga teng
- * bo'lmasa, so'rov egasiz deb hisoblanadi.
+ * bo'lmasa, so'rov egasiz deb hisoblanadi. Backend Railway'da: so'rov Vercel orqali
+ * uzatilganda host Railway domeniga almashishi mumkin, shuning uchun APP_URL (frontend
+ * domeni) ham o'z manzil hisoblanadi.
  */
 function begonaManba(sorov: Request): boolean {
   if (sorov.method === "GET" || sorov.method === "HEAD") return false;
   const origin = sorov.headers.get("origin");
   if (!origin) return false;
-  const host = sorov.headers.get("x-forwarded-host") ?? sorov.headers.get("host");
+  const ozManzillar = [sorov.headers.get("x-forwarded-host"), sorov.headers.get("host")];
   try {
-    return new URL(origin).host !== host;
+    if (process.env.APP_URL) ozManzillar.push(new URL(process.env.APP_URL).host);
+    return !ozManzillar.includes(new URL(origin).host);
   } catch {
     return true;
   }

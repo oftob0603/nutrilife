@@ -481,6 +481,14 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-22 · Bot yangilanishlari uchun alohida idempotentlik jadvali qurilmaydi; to'lov taskida idempotentlik to'lov yozuvining o'zi orqali ta'minlanadi.**
 *Sabab:* Foydalanuvchi qarori — hozircha bot faqat log yozadi, qo'shimcha jadval ortiqcha.
 
+## 2026-09-22 — backend Railway'ga ko'chirildi
+
+**2026-09-22 · Backend (`app/api/*`) Vercel'dan Railway'ga ko'chiriladi — 2026-09-16 dagi "frontend Vercel, backend Railway" qarori amalga oshiriladi.**
+*Sabab:* S1 deploy taskida butun ilova, API ham, Vercel'ga chiqarilib, Railway'da faqat baza qolgan edi — bu qarordan chetlanish kelishilmagan va yozilmagan edi (foydalanuvchi aniqladi). Ko'chirish S5 oldidan: bot, eslatmalar va cron doimiy jarayonga muhtoj. Shu repo Railway'da `next start` bilan alohida xizmat bo'ladi; Vercel `BACKEND_URL` berilganda `/api/*` ni `beforeFiles` rewrite bilan Railway'ga uzatadi — brauzer uchun domen bitta, sessiya cookie'si va CORS o'zgarmaydi. Server sahifalari API'ni `BACKEND_URL` orqali to'g'ridan-to'g'ri chaqiradi. Sirlar (baza, AI, Telegram, sessiya, R2) Railway'da; Vercel'da faqat `BACKEND_URL`.
+
+**2026-09-22 · CSRF tekshiruvi (`sessiya.ts` → `begonaManba`) `APP_URL` hostini ham o'z manzil deb qabul qiladi.**
+*Sabab:* Vercel orqali uzatilgan so'rovda host Railway domeniga almashishi mumkin, `Origin` esa Vercel domeni bo'lib qoladi — aks holda barcha POST/PATCH/DELETE rad etilardi.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |
