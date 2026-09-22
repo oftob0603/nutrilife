@@ -50,6 +50,7 @@ avtomatik takroriy to'lov · admin paneli.
 - 2026-09-22: E7 natija ekranidan katta "~kkal" sarlavhasi olib tashlandi, AI taxmini belgisi qoldi (app/_components/Tahlil.tsx)
 - 2026-09-22: E7 Kaloriya maydoni aksent bilan ajratildi — --aksent-fon foni, lime chegara, yorliq va flame belgisi, yangi --aksent-fon/--aksent-yorliq tokenlari (app/_components/YozuvFormasi.tsx, app/_components/Tahlil.tsx, app/globals.css, DESIGN.md)
 - 2026-09-22: E4 taom qidiruvidan "Oxirgi qo'shilganlar" bo'limi olib tashlandi, ro'yxat faqat qidiruvda chiqadi (app/_components/TaomlarRoyxati.tsx, lib/lugat/sozlar.ts)
+- 2026-09-22: E4 taom qidiruvi ekrani (/taomlar) to'liq olib tashlandi, taom sahifasi /taomlar/[id] Home taklifi uchun qoldi va "Orqaga" Home'ga qaytadi (app/taomlar/, app/_components/TaomlarRoyxati.tsx, app/_components/TaomKartasi.tsx, app/api/taomlar/route.ts, lib/lugat/sozlar.ts)
 
 ## Handoff
 

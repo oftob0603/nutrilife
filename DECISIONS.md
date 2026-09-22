@@ -532,6 +532,9 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-22 · W1 tarif kartasida katta raqam o'ng tomonda — oyiga tushadigan narx ("≈24,200 so'm / oy"), umumiy summa esa tarif nomi ostida kichik matnda. Prototipda aksincha.**
 *Sabab:* Foydalanuvchi qarori.
 
+**2026-09-22 · E4 taom qidiruvi ekrani (`/taomlar`) to'liq olib tashlandi. Taom sahifasi (`/taomlar/[id]`) Home'dagi taom taklifi uchun qoladi, uning "Orqaga" tugmasi Home'ga qaytadi.**
+*Sabab:* Foydalanuvchi qarori — qidiruv bo'limi foydalanuvchilarga kerak emas.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

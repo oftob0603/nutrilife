@@ -80,7 +80,7 @@ export default async function TaomSahifasi({
       <header className="flex items-center gap-2 py-4">
         <OrqagaTugma
           nomi={t("Orqaga")}
-          href="/taomlar"
+          href="/"
           className="-ml-3 flex size-11 items-center justify-center rounded-chip text-siyoh"
         >
           <ChapStrelka />
