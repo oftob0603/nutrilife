@@ -40,6 +40,7 @@ avtomatik takroriy to'lov · admin paneli.
 - 2026-09-22: matn bilan tasvirlash ekranida izoh va placeholder taxminiy miqdor o'rniga og'irlikni (grammda) so'raydi, ruscha/inglizcha tarjimalar yangilandi (app/_components/Tasvirlash.tsx, lib/lugat/sozlar.ts)
 - 2026-09-22: bot /start darhol tanishtiruv matni, "Boshlash" web_app tugmasi va til qatorini chiqaradi, ilovadagi ko'rinadigan nom "NutriLifer" ga almashtirildi (lib/services/bot.ts, lib/services/bot-api.ts, lib/services/foydalanuvchilar.ts, lib/lugat/sozlar.ts)
 - 2026-09-22: bot /start avval til savoli va 3 ta til tugmasini chiqaradi, til tanlangach xabar tanishtiruv matni va "Boshlash" tugmasiga almashadi (lib/services/bot.ts)
+- 2026-09-22: W1 paywall "Davom etish" tugmasiga prototipdagi pw-sweep yorug'lik effekti qo'shildi, faqat shu tugmada (app/globals.css, app/_components/Tugma.tsx, app/_components/Tariflar.tsx, DESIGN.md)
 
 ## Handoff
 

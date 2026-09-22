@@ -21,6 +21,11 @@ const ASOS = `${UMUMIY} h-13 w-full`;
 // Karta ichidagi yonma-yon tugmalar uchun (prototip `size="sm"`): balandligi 44, eni matnga qarab.
 const KICHIK = `${UMUMIY} h-11 px-4`;
 
+// W1 "Davom etish" (prototip pw-sweep): chiziq matn ortidan o'tadi, o'chiq tugmada va
+// "harakatni kamaytirish" yoqilganda yo'q.
+const YORUG_OTISH =
+  "relative isolate overflow-hidden after:pointer-events-none after:absolute after:inset-y-0 after:left-0 after:z-[1] after:hidden after:w-[40%] after:bg-[linear-gradient(100deg,transparent,rgba(255,255,255,0.45),transparent)] motion-safe:enabled:after:block after:animate-[yorug-otish_4000ms_cubic-bezier(0.4,0,0.2,1)_infinite]";
+
 function Aylanma() {
   return (
     <span
@@ -35,6 +40,7 @@ export function Tugma({
   kichik = false,
   yuklanmoqda = false,
   disabled = false,
+  yorugOtish = false,
   onClick,
   children,
 }: {
@@ -42,18 +48,25 @@ export function Tugma({
   kichik?: boolean;
   yuklanmoqda?: boolean;
   disabled?: boolean;
+  /** Tugma ustidan takror o'tadigan yorug'lik — faqat W1 "Davom etish". */
+  yorugOtish?: boolean;
   onClick?: () => void;
   children: React.ReactNode;
 }) {
+  const ichi = (
+    <>
+      {yuklanmoqda && <Aylanma />}
+      {children}
+    </>
+  );
   return (
     <button
       type="button"
       onClick={onClick}
       disabled={disabled || yuklanmoqda}
-      className={`${kichik ? KICHIK : ASOS} ${USLUB[korinish]}`}
+      className={`${kichik ? KICHIK : ASOS} ${USLUB[korinish]}${yorugOtish ? ` ${YORUG_OTISH}` : ""}`}
     >
-      {yuklanmoqda && <Aylanma />}
-      {children}
+      {yorugOtish ? <span className="relative z-[2] flex items-center gap-2">{ichi}</span> : ichi}
     </button>
   );
 }

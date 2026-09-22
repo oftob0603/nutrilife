@@ -220,7 +220,12 @@ export function Tariflar({
       {/* Pastki tugmalar to'g'ridan-to'g'ri sahifa ustida — karta, chegara va soyasiz (prototip). */}
       <div className="pointer-events-none fixed inset-x-0 bottom-0 z-[5] mx-auto w-full max-w-md px-4 pb-[calc(12px+var(--xavfsiz-past))]">
         <div className="pointer-events-auto">
-          <Tugma korinish="pro" disabled={!tayyor || !tanlangan} onClick={() => setVaraq("tolov")}>
+          <Tugma
+            korinish="pro"
+            yorugOtish
+            disabled={!tayyor || !tanlangan}
+            onClick={() => setVaraq("tolov")}
+          >
             {t("Davom etish")}
           </Tugma>
         </div>

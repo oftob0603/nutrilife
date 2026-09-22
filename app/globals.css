@@ -166,6 +166,14 @@ body {
   to { transform: translateY(0); }
 }
 
+/* W1 "Davom etish": har 4s tugma ustidan o'tadigan yorug'lik chizig'i (prototip pw-sweep,
+   tokens/motion.css). Foizlar chiziq eniga (tugmaning 40%) nisbatan: 265% — o'ng chetdan
+   to'liq chiqadi. Siklning 40% ida o'tadi, qolganida ko'rinmay turadi — pulsatsiya emas. */
+@keyframes yorug-otish {
+  0% { transform: translateX(-120%) skewX(-18deg); }
+  40%, 100% { transform: translateX(265%) skewX(-18deg); }
+}
+
 /* W1: "Tavsiya etiladi" belgisi ustidan bir marta o'tadigan yorug'lik (prototip pw-shimmer). */
 @keyframes yaltirash {
   from { transform: translateX(-120%); }

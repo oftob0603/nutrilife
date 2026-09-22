@@ -202,6 +202,13 @@ Qisqa va kam. `--tez: 150ms`, `--asos: 250ms`, egri chiziq `cubic-bezier(0.2, 0,
 Animatsiya faqat uch joyda: doiraning to'lishi (600ms, E8'dagi asosiy lahza), bottom
 sheet ochilishi, sahifa o'tishi. Qolgan hamma joyda oniy.
 
+Istisno — W1 paywall'dagi "Davom etish" tugmasi (prototip `pw-sweep`, `tokens/motion.css`):
+ustidan har 4000ms da oq yorug'lik chizig'i o'tadi — eni tugmaning 40%, `skewX(-18deg)`,
+`rgba(255,255,255,.45)` gradiyent, egri chiziq `cubic-bezier(.4,0,.2,1)`. Chiziq siklning 40%
+ida chapdan o'ngga o'tadi, qolgan vaqt ko'rinmaydi (yaltirash, pulsatsiya emas); matn chiziq
+ustida turadi. O'chiq tugmada va `prefers-reduced-motion` da yo'q. Boshqa PRO tugmalarida
+ishlatilmaydi.
+
 `prefers-reduced-motion` hurmat qilinadi — doira raqami animatsiyasiz darhol yangilanadi.
 
 ## 9. Tekshiruv ro'yxati
