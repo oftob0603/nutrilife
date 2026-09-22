@@ -57,8 +57,8 @@ Magistraldan chiqadigan ishlar. Har biri qovurdoq javobidan kelib chiqadi.
 
 ## 3. Kelajak (v2+)
 
-- Haftalik hisobot va chuqur progress analitikasi — o'rtacha makrolar, eng ko'p yeyilgan
-  taomlar, Nutrition Score o'rtachasi
+- Eng ko'p yeyilgan taomlar tahlili (batafsil statistika va haftalik hisobot V1'ga
+  o'tdi, DECISIONS 2026-09-22)
 - Ma'lumot eksporti: PDF va CSV
 - Avtomatik takroriy to'lov (karta tokenizatsiyasi)
 - O'tgan kunlarga ovqat qo'shish

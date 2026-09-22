@@ -159,8 +159,8 @@ Respublikasi.
 
 ## 10. V1'ga kirmaydiganlar
 
-- Haftalik hisobot va chuqur progress analitikasi (o'rtacha makrolar, eng ko'p yeyilgan
-  taomlar, Score o'rtachasi). V1'da faqat vazn grafigi, streak va kuzatilgan kunlar.
+- Eng ko'p yeyilgan taomlar tahlili (batafsil statistika va haftalik hisobot V1'ga
+  o'tdi, DECISIONS 2026-09-22).
 - Ma'lumot eksporti (PDF, CSV).
 - Murabbiy va nutritsiolog roli.
 - Avtomatik takroriy to'lov (karta tokenizatsiyasi).

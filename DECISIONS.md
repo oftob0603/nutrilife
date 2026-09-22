@@ -431,7 +431,7 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 
 ## 2026-09-22 — progress sahifasi doirasi (S4, 17–19-qadam)
 
-**2026-09-22 · P1'dagi "Batafsil statistika" va "Haftalik hisobot" bo'limlari V1'da qurilmaydi, qulf kartasi ham ko'rsatilmaydi.**
+**2026-09-22 · P1'dagi "Batafsil statistika" va "Haftalik hisobot" bo'limlari V1'da qurilmaydi, qulf kartasi ham ko'rsatilmaydi. (BEKOR QILINDI — 2026-09-22, pastdagi qaror bilan.)**
 *Sabab:* Foydalanuvchi qarori — PRD 10-bo'lim bo'yicha V1'da yo'q imkoniyatlarga qulf ko'rsatish aldov bo'lardi; W1 ro'yxatidagi farq Handoff'da qayd etilgan.
 
 ## 2026-09-22 — taom taklifi (S4, 20-qadam)
@@ -512,6 +512,14 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 
 **2026-09-22 · W1'dan chiqish ("Hozir emas" va Telegram/tizim orqaga tugmasi) kelgan sahifaga qaytaradi; onboardingdan kelinganda va ilova tarixi bo'lmaganda zaxira sahifa (profil -> /profil, boshqalar -> /).**
 *Sabab:* Foydalanuvchi qarori — telefondagi orqaga tugmasi Mini App'ni yopmasin.
+
+## 2026-09-22 — P1 PRO statistika bo'limlari
+
+**2026-09-22 · Batafsil statistika va haftalik hisobot V1'da prototipdagidek quriladi, PRO'da ochiq, FREE va muddati o'tgan PRO'da qulf kartasi; raqamlar FREE'ga API'dan yuborilmaydi.**
+*Sabab:* Foydalanuvchi qarori — W1 va O13 sotayotgan imkoniyat ilovada bo'lishi kerak, prototipda ham ishlaydi.
+
+**2026-09-22 · "Normaga mos kun" (norma ±10%) har kun o'sha kunda amal qilgan normaga solishtiriladi; "kuzatilgan kunlar %" hisob ochilgan kundan sanaladi.**
+*Sabab:* Vazn o'zgarsa norma o'zgaradi; yangi foydalanuvchi past foiz ko'rmasligi uchun.
 
 ## OCHIQ SAVOLLAR
 

@@ -829,6 +829,40 @@ export const SOZLAR = {
   "Qorong'i": { ru: "Тёмная", en: "Dark" },
   "Tizim": { ru: "Системная", en: "System" },
 
+  // ── P1: batafsil statistika va haftalik hisobot (PRO) ─────────────────────
+  "Statistika uchun kamida ikki kunlik yozuv kerak.": {
+    ru: "Для статистики нужны записи минимум за два дня.",
+    en: "Statistics need at least two days of entries.",
+  },
+  "Hisobot uchun bu haftada kamida uch kunlik yozuv kerak.": {
+    ru: "Для отчёта нужны записи минимум за три дня этой недели.",
+    en: "The report needs at least three days of entries this week.",
+  },
+  "kkal — kunlik o'rtacha": { ru: "ккал — в среднем в день", en: "kcal — daily average" },
+  "Makro taqsimoti": { ru: "Распределение БЖУ", en: "Macro split" },
+  "Normaga mos kunlar": { ru: "Дни в пределах нормы", en: "Days within target" },
+  "Normadan oshgan kunlar": { ru: "Дни с превышением", en: "Days over target" },
+  "Eng past kun": { ru: "Самый низкий день", en: "Lowest day" },
+  "Eng baland kun": { ru: "Самый высокий день", en: "Highest day" },
+  "{0} kkal · {1}": { ru: "{0} ккал · {1}", en: "{0} kcal · {1}" },
+  "O'rtacha Nutrition Score": { ru: "Средний Nutrition Score", en: "Average Nutrition Score" },
+  "O'rtachalar faqat yozuv bor kunlardan olinadi — bo'sh kun nol deb hisoblanmaydi.": {
+    ru: "Средние считаются только по дням с записями — пустой день не считается нулём.",
+    en: "Averages use only days with entries — an empty day is not counted as zero.",
+  },
+  "kkal / kun": { ru: "ккал / день", en: "kcal / day" },
+  "{0} o'tgan haftaga nisbatan": { ru: "{0} по сравнению с прошлой неделей", en: "{0} vs last week" },
+  "Yozuv bor kunlar": { ru: "Дни с записями", en: "Days with entries" },
+  "O'rtacha oqsil": { ru: "Средний белок", en: "Average protein" },
+  "O'rtacha kaloriya, makro taqsimoti va normaga mos kunlar.": {
+    ru: "Средние калории, распределение БЖУ и дни в пределах нормы.",
+    en: "Average calories, macro split and days within target.",
+  },
+  "Har hafta: o'rtacha kaloriya, oldingi hafta bilan solishtirish va kunlar bo'yicha ustunlar.": {
+    ru: "Каждую неделю: средние калории, сравнение с прошлой неделей и столбцы по дням.",
+    en: "Each week: average calories, comparison with last week and per-day bars.",
+  },
+
   // ── Telegram bot (/start) — lib/services/bot.ts ────────────────────────────
   "NutriLifer — ovqatlanishingizni aqlli nazorat qiling!": {
     ru: "NutriLifer — умный контроль вашего питания!",

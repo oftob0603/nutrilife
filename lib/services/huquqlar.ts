@@ -77,6 +77,8 @@ export type Huquqlar = {
   makroKuzatish: boolean;
   /** E5 va E7'dagi qolgan kaloriyaga sig'adigan porsiya kartasi (prototip `porsiya`). */
   porsiyaTavsiyasi: boolean;
+  /** P1'dagi "Batafsil ovqatlanish statistikasi" va "Haftalik ovqatlanish hisoboti". */
+  ovqatStatistikasi: boolean;
   adminPaneli: boolean;
 };
 
@@ -104,6 +106,7 @@ export function huquqlar(rol: Rol, obuna: ObunaHolati): Huquqlar {
     taomTakliflari: pro,
     makroKuzatish: pro,
     porsiyaTavsiyasi: pro,
+    ovqatStatistikasi: pro,
     adminPaneli: rol === "admin",
   };
 }

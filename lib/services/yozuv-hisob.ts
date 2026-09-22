@@ -91,6 +91,11 @@ const HAFTA_KUNLARI: Record<Til, readonly string[]> = {
   en: ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
 };
 
+/** Sananing qisqa hafta kuni nomi: "Du", "Пн", "Mo" (haftalik hisobot ustunlari ostida). */
+export function haftaKuniNomi(sana: string, til: Til = "uz"): string {
+  return HAFTA_KUNLARI[til][(new Date(`${sana}T00:00:00.000Z`).getUTCDay() + 6) % 7];
+}
+
 export type HaftaKuni = { sana: string; nomi: string; kun: number };
 
 /** Sana joylashgan haftaning yetti kuni, dushanbadan yakshanbagacha (Home'dagi kun tanlagich). */

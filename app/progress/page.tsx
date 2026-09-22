@@ -2,6 +2,7 @@ import Link from "next/link";
 import { OflaynChizigi } from "@/app/_components/OflaynChizigi";
 import { Ikona } from "@/app/_components/progress/Ikona";
 import { KunKataklari } from "@/app/_components/progress/KunKataklari";
+import { OvqatStatistikasi } from "@/app/_components/progress/OvqatStatistikasi";
 import { StreakKartasi } from "@/app/_components/progress/StreakKartasi";
 import { VaznGrafigi } from "@/app/_components/progress/VaznGrafigi";
 import { VaznKartasi } from "@/app/_components/progress/VaznKartasi";
@@ -12,7 +13,7 @@ import { QoshishPaneli } from "@/app/_components/QoshishPaneli";
 import { XatoKartasi } from "@/app/_components/XatoKartasi";
 import { serverTarjimoni } from "@/lib/lugat/server";
 import { farqMatni, vaznQiymati, type Progress } from "@/lib/services/progress-hisob";
-import { progressniYukla } from "./yukla";
+import { progressniYukla, statistikaniYukla } from "./yukla";
 
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
 export const dynamic = "force-dynamic";
@@ -21,15 +22,15 @@ export const metadata = { title: "Statistika — NutriLifer" };
 
 /**
  * P1 — Progress (panelda "Statistika"). Sahifa foydalanuvchining o'z raqamlarini ko'rsatadi,
- * ularni izohlamaydi: BMI, "sog'lom oraliq", prognoz yo'q (progress-tz.md). Prototipdagi
- * "Batafsil statistika" va "Haftalik hisobot" bo'limlari V1'da yo'q (PRD, 10-bo'lim).
+ * ularni izohlamaydi: BMI, "sog'lom oraliq", prognoz yo'q (progress-tz.md). "Batafsil
+ * statistika" va "Haftalik hisobot" — PRO bo'limlari, FREE'da qulf kartasi (DECISIONS 2026-09-22).
  */
 export default async function ProgressSahifasi({ searchParams }: PageProps<"/progress">) {
   const tarjimon = await serverTarjimoni();
   const { t, til } = tarjimon;
   // `?vazn=1` — F3'dagi "Progress bo'limida vazn qo'shish": sahifa P2 paneli ochiq holda ochiladi.
   const { vazn } = await searchParams;
-  const progress = await progressniYukla();
+  const [progress, statistika] = await Promise.all([progressniYukla(), statistikaniYukla()]);
   // Sessiyasiz ochilgan havola: sahifa kirish pardasi ostida bo'sh turadi (profil bilan bir xil).
   if (progress === "sessiyasiz") return null;
 
@@ -58,6 +59,7 @@ export default async function ProgressSahifasi({ searchParams }: PageProps<"/pro
             {progress.haftalikOzgarish !== null && (
               <HaftalikOzgarish ozgarish={progress.haftalikOzgarish} birlik={progress.vaznBirligi} />
             )}
+            {statistika && <OvqatStatistikasi statistika={statistika} />}
             <Link
               href="/progress/tarix"
               className="flex min-h-11 items-center gap-3 rounded-karta border border-karta-chegara bg-karta p-4 transition-transform active:scale-[0.98]"

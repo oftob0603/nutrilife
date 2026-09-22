@@ -10,6 +10,7 @@ qabul qilsin.
 - [x] Telegram Mini App sifatida to'liq ishlashi: WebApp SDK ulanishi, tema Telegram mavzusiga moslashishi, orqaga tugmasi (S1–S2 ekranlaridagi o'z orqaga tugmasi o'rniga Telegram'niki), xavfsiz maydon (safe area). Pastki navigatsiya S2–S4'da qurilgan — bu yerda faqat Telegram xavfsiz maydoniga moslanadi
 - [x] Bot webhook'i API yo'li sifatida (`/api/bot`) — 2026-09-22 dan backend Railway'da, webhook Railway domeniga o'rnatiladi
 - [x] Bot kirish nuqtasi: `/start` — salomlashish, til tanlash (o'zbek, rus, ingliz) va "Ilovani ochish" tugmasi. Bot ichida ovqat kiritish yo'q
+- [x] P1 PRO bo'limlari: batafsil ovqatlanish statistikasi (7/30 kun) va haftalik ovqatlanish hisoboti prototipdagidek; FREE'da qulf kartasi (DECISIONS 2026-09-22)
 - [ ] Paywall va obuna ekrani: uch tarif (39,000 so'm/oy · 170,000 so'm/6 oy · 290,000 so'm/yil), yillik tavsiya belgisi, oylik ekvivalent va tejash ko'rsatilishi, "Hozir emas" tugmasi
 - [ ] To'lov integratsiyasi: Click, Payme va Telegram Stars. Kalitlar Railway Environment Variables'da, qaytish manzillari production domeniga yoziladi. `tolovlar` jadvali, holat zanjiri `boshlandi` -> `to'landi` / `bekor qilindi`
 - [ ] Obuna faollashuvi: muvaffaqiyatli to'lovdan keyin `obunalar` yozuvi va PRO huquqlari darhol ochiladi
@@ -42,6 +43,7 @@ avtomatik takroriy to'lov · admin paneli.
 - 2026-09-22: bot /start avval til savoli va 3 ta til tugmasini chiqaradi, til tanlangach xabar tanishtiruv matni va "Boshlash" tugmasiga almashadi (lib/services/bot.ts)
 - 2026-09-22: W1 paywall "Davom etish" tugmasiga prototipdagi pw-sweep yorug'lik effekti qo'shildi, faqat shu tugmada (app/globals.css, app/_components/Tugma.tsx, app/_components/Tariflar.tsx, DESIGN.md)
 - 2026-09-22: W1 orqaga chiqishi ("Hozir emas" va Telegram/tizim orqaga tugmasi) kelgan sahifaga qaytadigan qilindi, Telegram Mini App yopilib ketmaydi (app/_components/Tariflar.tsx, lib/services/tarif-hisob.ts)
+- 2026-09-22: P1 sahifasiga PRO uchun batafsil ovqatlanish statistikasi va haftalik ovqatlanish hisoboti prototipdagidek qurildi, FREE'da qulf kartasi (lib/services/statistika-hisob.ts, lib/services/statistika.ts, app/api/statistika/route.ts, app/_components/progress/OvqatStatistikasi.tsx, app/progress/page.tsx, app/progress/yukla.ts, lib/services/huquqlar.ts, lib/services/yozuv-hisob.ts, lib/lugat/sozlar.ts)
 
 ## Handoff
 
@@ -55,9 +57,11 @@ Prototip auditidan S5'ga qolgan eslatmalar (2026-09-22):
 - F4 "Obunani bekor qilish" tugmasi va tasdiq varag'i (S4 Handoff'idan).
 - Privacy/Terms matnida "18+" bandi: onboarding endi 18 dan kichik yoshni to'smaydi (DECISIONS 2026-09-22) — hujjat matni shunga mos yozilsin yoki qaror qayta ko'rilsin.
 
-W1 orqaga tugmasi: Android'da tizim orqaga tugmasi bilan jonli sinov kerak (Profil -> PRO -> orqaga -> Profil).
+W1 orqaga tugmasi: telefonda jonli sinovda tasdiqlandi (2026-09-22).
 
 Keyingi: 4-task (Paywall va obuna ekrani, paywall-tz.md). 3-task jonli sinovi: deploydan keyin telefonda /start → til → Boshlash → ilova shu tilda ochilishi; Railway'da APP_URL Vercel https domeni bo'lishi shart (aks holda Boshlash tugmasi chiqmaydi).
+
+P1 haftalik hisobot: ustunli ko'rinish jonli ma'lumotda (bu haftada 3+ kun yozuv) ko'rib chiqilsin.
 
 ---
 
