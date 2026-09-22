@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AiBelgisi } from "@/app/_components/AiBelgisi";
 import { OrqagaSarlavha } from "@/app/_components/profil/OrqagaSarlavha";
+import { ProQulfi } from "@/app/_components/ProQulfi";
+import { TavsiyaKartasi } from "@/app/_components/TavsiyaKartasi";
+import { useTavsiyaAsosi } from "@/app/_components/useTavsiyaAsosi";
 import { useTarjima } from "@/app/_components/TilTaminoti";
 import { Tugma } from "@/app/_components/Tugma";
 import { XatoKartasi } from "@/app/_components/XatoKartasi";
@@ -12,11 +15,15 @@ import { YozuvFormasi } from "@/app/_components/YozuvFormasi";
 import { k } from "@/lib/lugat/tarjima";
 import { apiSorov } from "@/lib/services/api-klient";
 import { skanJami, type SkanJavobi, type SkanNatija } from "@/lib/services/skan-hisob";
+import { sigadiganGramm } from "@/lib/services/taklif-hisob";
+import { raqam } from "@/lib/services/taom-hisob";
 import {
   boshForma,
   formaQiymatlari,
   formaTuz,
   formaXatolari,
+  miqdorOzgardi,
+  sonOqi,
   type Forma,
   type FormaXatolari,
 } from "@/lib/services/yozuv-forma";
@@ -161,6 +168,14 @@ function Tasdiq({
   );
   const [saqlanmoqda, setSaqlanmoqda] = useState(false);
   const [saqlanmadi, setSaqlanmadi] = useState(false);
+  // Porsiya tavsiyasi (PRO, prototip `ResultScreen`): AI zichligidan qolgan kaloriyaga
+  // sig'adigan gramm; faqat AI natijasida — bo'sh formada zichlik yo'q. Asos yuklanmasa
+  // (oflayn, eski API) karta ham, qulf ham chiqmaydi.
+  const tavsiyaAsosi = useTavsiyaAsosi();
+  const tavsiyaGramm =
+    natija && tavsiyaAsosi && !tavsiyaAsosi.yopiq
+      ? sigadiganGramm(natija.kaloriya100, sonOqi(forma.miqdor) ?? 0, tavsiyaAsosi.qoldi)
+      : null;
 
   const xatolar = formaXatolari(forma);
   const yaroqsiz = Object.keys(xatolar).length > 0;
@@ -222,6 +237,19 @@ function Tasdiq({
         bloklangan={saqlanmoqda}
         onChange={setForma}
       />
+
+      {natija && tavsiyaAsosi?.yopiq && (
+        <ProQulfi zich sarlavha={t("Aqlli porsiya tavsiyalari — PRO")} />
+      )}
+      {tavsiyaGramm !== null && (
+        <TavsiyaKartasi
+          sarlavha={t("Tavsiya: {0} g", tavsiyaGramm)}
+          izoh={t("Qolgan {0} kkal ichida qoladi", raqam(tavsiyaAsosi?.qoldi ?? 0))}
+          onClick={() => {
+            if (!saqlanmoqda) setForma(miqdorOzgardi(forma, String(tavsiyaGramm)));
+          }}
+        />
+      )}
 
       <div className="mt-auto flex flex-col gap-2 pt-2">
         {saqlanmadi && (

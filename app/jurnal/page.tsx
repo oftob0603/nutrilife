@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { BoshHolat } from "@/app/_components/BoshHolat";
 import { MakroChizigi } from "@/app/_components/MakroChizigi";
+import { ProQulfi } from "@/app/_components/ProQulfi";
 import { QoshishPaneli, QoshishTugmasi } from "@/app/_components/QoshishPaneli";
 import { QaytaUrinish } from "@/app/_components/QaytaUrinish";
 import { XatoKartasi } from "@/app/_components/XatoKartasi";
@@ -9,6 +10,7 @@ import { serverdanApi } from "@/lib/api-asos";
 import { serverTarjimoni } from "@/lib/lugat/server";
 import type { Tarjimon } from "@/lib/lugat/tarjima";
 import type { Reja } from "@/lib/services/norma-hisob";
+import type { QulfJavobi } from "@/lib/services/taklif-hisob";
 import { raqam } from "@/lib/services/taom-hisob";
 import {
   bugunSana,
@@ -25,7 +27,8 @@ export const dynamic = "force-dynamic";
 
 export const metadata = { title: "Jurnal — Nutrilife" };
 
-type Kun = { yozuvlar: Yozuv[]; jami: Jami; reja: Reja };
+// `makro` eski API javobida bo'lmaydi — bayroqsiz makro chiziqlari ochilmaydi (PRO imkoniyati).
+type Kun = { yozuvlar: Yozuv[]; jami: Jami; reja: Reja; makro?: QulfJavobi };
 
 async function kunniYukla(sana: string): Promise<Kun | null> {
   try {
@@ -103,13 +106,16 @@ function SanaTanlagich({
   );
 }
 
+/** Kunlik jami kartasi; makro chiziqlari — PRO (prototip `DailyTotals`), FREE'da faqat kkal. */
 function KunlikJami({
   jami,
   reja,
+  makroOchiq,
   tarjimon: { t, til },
 }: {
   jami: Jami;
   reja: Reja;
+  makroOchiq: boolean;
   tarjimon: Tarjimon;
 }) {
   return (
@@ -123,11 +129,13 @@ function KunlikJami({
           {t("/ {0} kkal", raqam(reja.kaloriya))}
         </span>
       </p>
-      <div className="flex gap-4">
-        <MakroChizigi til={til} nomi="Oqsil" qiymat={jami.oqsil} maqsad={reja.oqsil} />
-        <MakroChizigi til={til} nomi="Yog'" qiymat={jami.yog} maqsad={reja.yog} />
-        <MakroChizigi til={til} nomi="Uglevod" qiymat={jami.uglevod} maqsad={reja.uglevod} />
-      </div>
+      {makroOchiq && (
+        <div className="flex gap-4">
+          <MakroChizigi til={til} nomi="Oqsil" qiymat={jami.oqsil} maqsad={reja.oqsil} />
+          <MakroChizigi til={til} nomi="Yog'" qiymat={jami.yog} maqsad={reja.yog} />
+          <MakroChizigi til={til} nomi="Uglevod" qiymat={jami.uglevod} maqsad={reja.uglevod} />
+        </div>
+      )}
     </section>
   );
 }
@@ -189,7 +197,16 @@ export default async function JurnalSahifasi({ searchParams }: PageProps<"/jurna
             </XatoKartasi>
           ) : (
             <>
-              <KunlikJami jami={kun.jami} reja={kun.reja} tarjimon={tarjimon} />
+              <KunlikJami
+                jami={kun.jami}
+                reja={kun.reja}
+                makroOchiq={kun.makro ? !kun.makro.yopiq : false}
+                tarjimon={tarjimon}
+              />
+              {!(kun.makro && !kun.makro.yopiq) && (
+                // Prototip `JournalScreen`: qulf jami kartasining ostida.
+                <ProQulfi zich sarlavha={t("Oqsil, yog' va uglevodlarni kuzatish — PRO")} />
+              )}
 
               {kun.yozuvlar.length === 0 ? (
                 <BoshKun bugunmi={sana === bugun} t={t} />

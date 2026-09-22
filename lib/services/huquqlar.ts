@@ -73,6 +73,10 @@ export type Huquqlar = {
   retseptToliqMatni: boolean;
   nutritionScore: boolean;
   taomTakliflari: boolean;
+  /** Home va Jurnaldagi kunlik oqsil/yog'/uglevod chiziqlari (prototip `makro`). */
+  makroKuzatish: boolean;
+  /** E5 va E7'dagi qolgan kaloriyaga sig'adigan porsiya kartasi (prototip `porsiya`). */
+  porsiyaTavsiyasi: boolean;
   adminPaneli: boolean;
 };
 
@@ -84,8 +88,9 @@ export const PRO_TANILMAGAN_LIMITI = 20;
 
 /**
  * Admin roli PRO bermaydi (foydalanuvchi qarori): admin PRO imkoniyatlarini o'ziga qo'lda
- * obuna berib ochadi. Muddati tugagan PRO — FREE huquqlari. To'liq tarix, jurnal va
- * progress FREE'ga ham ochiq (foydalanuvchi qarori), shuning uchun bu yerda huquq sifatida yo'q.
+ * obuna berib ochadi. Muddati tugagan PRO — FREE huquqlari (prototipdagi `readable` yo'q,
+ * foydalanuvchi qarori 2026-09-22). To'liq tarix, jurnal va progress FREE'ga ham ochiq
+ * (foydalanuvchi qarori), shuning uchun bu yerda huquq sifatida yo'q.
  */
 export function huquqlar(rol: Rol, obuna: ObunaHolati): Huquqlar {
   const pro = obuna.holat === "pro";
@@ -97,6 +102,8 @@ export function huquqlar(rol: Rol, obuna: ObunaHolati): Huquqlar {
     retseptToliqMatni: pro,
     nutritionScore: pro,
     taomTakliflari: pro,
+    makroKuzatish: pro,
+    porsiyaTavsiyasi: pro,
     adminPaneli: rol === "admin",
   };
 }

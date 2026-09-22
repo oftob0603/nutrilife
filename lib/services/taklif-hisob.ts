@@ -19,6 +19,23 @@ export type TaomTaklifi = { taom: Taom; miqdor: number; porsiya: PorsiyaHisobi }
 /** API javobi: PRO'ga taklif (yoki mos taom yo'q bo'lsa null), qolganlarga qulf. */
 export type TaklifJavobi = { yopiq: true } | { yopiq: false; taklif: TaomTaklifi | null };
 
+/** Hisobsiz PRO imkoniyati (makro kuzatish, porsiya tavsiyasi): API faqat yopiq-ochiqligini aytadi. */
+export type QulfJavobi = { yopiq: boolean };
+
+/** Porsiya tavsiyasi uchun asos (E5, E7): bugun qolgan kaloriya va imkoniyat PRO'ga yopiqmi. */
+export type TavsiyaAsosi = { qoldi: number; yopiq: boolean };
+
+/**
+ * AI natijasi uchun tavsiya (E7, PRO; prototip `fitGrams`): taomlar bazasidagi qator emas,
+ * AI bergan 100 g zichligidan qolgan kaloriyaga sig'adigan gramm, 10 ga yaxlitlab (pastga).
+ * Faqat kiritilgan porsiyadan kichik bo'lsa ma'noli — aks holda null (karta chiqmaydi).
+ */
+export function sigadiganGramm(kaloriya100: number, porsiyaGramm: number, qolgan: number): number | null {
+  if (kaloriya100 <= 0 || qolgan <= 0) return null;
+  const gramm = Math.floor(qolgan / (kaloriya100 / 100) / 10) * 10;
+  return gramm > 0 && gramm < porsiyaGramm ? gramm : null;
+}
+
 /**
  * Qolgan kaloriyaga sig'adigan taom: taomlar bazasidagi standart porsiyalar ichida
  * kaloriyasi qolganga eng yaqin, lekin oshmaydigani. Teng kelsa — ro'yxatda birinchisi.

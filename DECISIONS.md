@@ -442,6 +442,11 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-22 · Home'dagi "Qolgan kaloriyaga mos" taklif bo'limi faqat bugun ko'rsatiladi, o'tgan kunlarda chiqmaydi.**
 *Sabab:* O'tgan kunga "nima yeysiz" taklifining ma'nosi yo'q.
 
+## 2026-09-22 — PRO qulflari (S4, 21-qadam)
+
+**2026-09-22 · PRO'da beriladigan imkoniyat FREE'ga berilmaydi: makro kuzatish (Home va Jurnaldagi kunlik oqsil/yog'/uglevod chiziqlari) va porsiya tavsiyasi (E5 va E7) ham prototip `pro.js` reyestridagidek PRO'ga yopildi. Muddati tugagan PRO — FREE huquqlari, prototipdagi `readable` istisnosi yo'q.**
+*Sabab:* Foydalanuvchi qarori — W1 va O13 e'lon qilgan 9 ta imkoniyatdan ilovada bor bo'lganlarining hammasi qulf ostida tursin; "muddati tugagan PRO — FREE" qoidasi (2026-09-21) bitta bo'lib qoladi. Bitta taomning o'z makrolari E5/E7'da ochiq qoladi — u kiritish maydoni, kuzatish emas (prototipda ham qulfsiz). Statistika va haftalik hisobot V1'da hech kimga yo'q (2026-09-22 qarori), retsept va sevimlilar S6'da.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

@@ -4,6 +4,7 @@ import { KunlikDoira } from "@/app/_components/KunlikDoira";
 import { KunTanlagich } from "@/app/_components/KunTanlagich";
 import { MakroChizigi } from "@/app/_components/MakroChizigi";
 import { OflaynChizigi } from "@/app/_components/OflaynChizigi";
+import { ProQulfi } from "@/app/_components/ProQulfi";
 import { QaytaUrinish } from "@/app/_components/QaytaUrinish";
 import { ScoreKartasi } from "@/app/_components/ScoreKartasi";
 import { TaklifKartasi } from "@/app/_components/TaklifKartasi";
@@ -13,7 +14,7 @@ import { QoshishPaneli, QoshishTugmasi } from "@/app/_components/QoshishPaneli";
 import type { Reja } from "@/lib/services/norma-hisob";
 import type { Profil } from "@/lib/services/profil-hisob";
 import type { ScoreJavobi } from "@/lib/services/score-hisob";
-import type { TaklifJavobi } from "@/lib/services/taklif-hisob";
+import type { QulfJavobi, TaklifJavobi } from "@/lib/services/taklif-hisob";
 import {
   bugunSana,
   qoshniSana,
@@ -29,8 +30,9 @@ import type { Tarjimon } from "@/lib/lugat/tarjima";
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
 export const dynamic = "force-dynamic";
 
-// `score`, `qoldi` va `taklif` eski API javobida bo'lmaydi (frontend va backend alohida
-// deploy bo'ladi) — tegishli bo'lim shunda chiqmaydi, Home esa buzilmaydi.
+// `score`, `qoldi`, `taklif` va `makro` eski API javobida bo'lmaydi (frontend va backend
+// alohida deploy bo'ladi) — tegishli bo'lim shunda chiqmaydi, Home esa buzilmaydi. Makro
+// chiziqlari bayroqsiz ochilmaydi: PRO imkoniyati FREE'ga sirg'alib ketmasin.
 type Kun = {
   yozuvlar: Yozuv[];
   jami: Jami;
@@ -38,6 +40,7 @@ type Kun = {
   score?: ScoreJavobi;
   qoldi?: number | null;
   taklif?: TaklifJavobi;
+  makro?: QulfJavobi;
 };
 
 async function kunniYukla(sana: string): Promise<Kun | null> {
@@ -131,26 +134,31 @@ export default async function HomeSahifasi({ searchParams }: PageProps<"/">) {
             <>
               <KunlikDoira qiymat={kun.jami.kaloriya} norma={kun.reja.kaloriya} />
 
-              <div className="flex gap-4">
-                <MakroChizigi
-                  til={til}
-                  nomi="Oqsil"
-                  qiymat={kun.jami.oqsil}
-                  maqsad={kun.reja.oqsil}
-                />
-                <MakroChizigi
-                  til={til}
-                  nomi="Yog'"
-                  qiymat={kun.jami.yog}
-                  maqsad={kun.reja.yog}
-                />
-                <MakroChizigi
-                  til={til}
-                  nomi="Uglevod"
-                  qiymat={kun.jami.uglevod}
-                  maqsad={kun.reja.uglevod}
-                />
-              </div>
+              {kun.makro && !kun.makro.yopiq ? (
+                <div className="flex gap-4">
+                  <MakroChizigi
+                    til={til}
+                    nomi="Oqsil"
+                    qiymat={kun.jami.oqsil}
+                    maqsad={kun.reja.oqsil}
+                  />
+                  <MakroChizigi
+                    til={til}
+                    nomi="Yog'"
+                    qiymat={kun.jami.yog}
+                    maqsad={kun.reja.yog}
+                  />
+                  <MakroChizigi
+                    til={til}
+                    nomi="Uglevod"
+                    qiymat={kun.jami.uglevod}
+                    maqsad={kun.reja.uglevod}
+                  />
+                </div>
+              ) : (
+                // Makro kuzatish — PRO (prototip `screens-home.jsx`): FREE'da chiziqlar o'rnida zich qulf.
+                <ProQulfi zich sarlavha={t("Oqsil, yog' va uglevodlarni kuzatish — PRO")} />
+              )}
 
               {kun.score && (
                 <ScoreKartasi

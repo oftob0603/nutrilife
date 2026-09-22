@@ -3,10 +3,9 @@ import Link from "next/link";
 import { PorsiyaTanlagich } from "@/app/_components/PorsiyaTanlagich";
 import { TaomRasmi } from "@/app/_components/TaomRasmi";
 import { taomNomi, type Taom } from "@/lib/services/taom-hisob";
-import type { TaklifJavobi } from "@/lib/services/taklif-hisob";
+import type { QulfJavobi, TavsiyaAsosi } from "@/lib/services/taklif-hisob";
 import { apiAsos, serverdanApi } from "@/lib/api-asos";
 import { serverTarjimoni } from "@/lib/lugat/server";
-import type { TavsiyaAsosi } from "@/app/_components/PorsiyaTanlagich";
 
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
 export const dynamic = "force-dynamic";
@@ -28,9 +27,9 @@ async function tavsiyaAsosiniYukla(): Promise<TavsiyaAsosi | null> {
   try {
     const javob = await serverdanApi("/api/ovqat-yozuvlari");
     if (!javob.ok) return null;
-    const kun = (await javob.json()) as { qoldi?: number | null; taklif?: TaklifJavobi };
-    if (typeof kun.qoldi !== "number" || !kun.taklif) return null;
-    return { qoldi: kun.qoldi, yopiq: kun.taklif.yopiq };
+    const kun = (await javob.json()) as { qoldi?: number | null; porsiya?: QulfJavobi };
+    if (typeof kun.qoldi !== "number" || !kun.porsiya) return null;
+    return { qoldi: kun.qoldi, yopiq: kun.porsiya.yopiq };
   } catch {
     return null;
   }

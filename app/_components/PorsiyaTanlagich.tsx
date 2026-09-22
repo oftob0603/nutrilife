@@ -9,7 +9,7 @@ import {
   taomNomi,
   type Taom,
 } from "@/lib/services/taom-hisob";
-import { porsiyaTavsiyasi } from "@/lib/services/taklif-hisob";
+import { porsiyaTavsiyasi, type TavsiyaAsosi } from "@/lib/services/taklif-hisob";
 import {
   KALORIYA_CHEGARASI,
   MAKRO_CHEGARASI,
@@ -22,53 +22,9 @@ import type { Kalit } from "@/lib/lugat/tarjima";
 import { apiSorov } from "@/lib/services/api-klient";
 import { OvqatTuriTanlagich } from "@/app/_components/OvqatTuriTanlagich";
 import { ProQulfi } from "@/app/_components/ProQulfi";
+import { TavsiyaKartasi } from "@/app/_components/TavsiyaKartasi";
 import { useTarjima } from "@/app/_components/TilTaminoti";
 import { Tugma } from "@/app/_components/Tugma";
-
-/** Tavsiya uchun asos: bugun qolgan kaloriya va imkoniyat PRO'ga yopiqmi (E5 sahifasi yuklaydi). */
-export type TavsiyaAsosi = { qoldi: number; yopiq: boolean };
-
-function TaroziIkonasi() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width="20"
-      height="20"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      className="shrink-0 text-matn-2"
-    >
-      <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
-      <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
-      <path d="M7 21h10" />
-      <path d="M12 3v18" />
-      <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2" />
-    </svg>
-  );
-}
-
-function OngStrelka() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width="20"
-      height="20"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      className="shrink-0 text-matn-3"
-    >
-      <path d="m9 18 6-6-6-6" />
-    </svg>
-  );
-}
 
 function Chip({
   tanlangan,
@@ -110,7 +66,7 @@ export function PorsiyaTanlagich({
   tavsiyaAsosi = null,
 }: {
   taom: Taom;
-  /** Asos yo'q (yuklanmadi) — tavsiya kartasi ham, qulf ham chiqmaydi. */
+  /** E5 sahifasi yuklaydi; asos yo'q (yuklanmadi) — tavsiya kartasi ham, qulf ham chiqmaydi. */
   tavsiyaAsosi?: TavsiyaAsosi | null;
 }) {
   const router = useRouter();
@@ -239,8 +195,17 @@ export function PorsiyaTanlagich({
           // Prototip `FoodScreen` dagi tavsiya kartasi: bosilsa miqdor tanlanadi. Tavsiya
           // standart chiplardan biri bo'lmasa (masalan 230 g) "Boshqa" maydoniga yoziladi —
           // prototipda bunday tanlov ko'rinmay qolardi.
-          <button
-            type="button"
+          <TavsiyaKartasi
+            sarlavha={t("Tavsiya: {0}", miqdorMatni(tavsiya.miqdor, taom.olchovBirligi))}
+            izoh={
+              tavsiya.chegaralangan
+                ? t(
+                    "{0} kkal — odatdagi katta porsiya, qolgan {1} kkal ichida",
+                    raqam(tavsiya.kaloriya),
+                    qolganKkal,
+                  )
+                : t("{0} kkal — qolgan {1} kkal ichida", raqam(tavsiya.kaloriya), qolganKkal)
+            }
             onClick={() => {
               if (taom.porsiyalar.includes(tavsiya.miqdor)) {
                 setBoshqa("");
@@ -249,25 +214,7 @@ export function PorsiyaTanlagich({
                 setBoshqa(String(tavsiya.miqdor));
               }
             }}
-            className="flex min-h-11 items-center gap-3 rounded-karta border border-karta-chegara bg-karta p-4 text-left transition-transform active:scale-[0.98]"
-          >
-            <TaroziIkonasi />
-            <span className="flex min-w-0 flex-1 flex-col gap-1">
-              <span className="text-karta-sarlavha tabular-nums">
-                {t("Tavsiya: {0}", miqdorMatni(tavsiya.miqdor, taom.olchovBirligi))}
-              </span>
-              <span className="text-izoh text-matn-2 tabular-nums">
-                {tavsiya.chegaralangan
-                  ? t(
-                      "{0} kkal — odatdagi katta porsiya, qolgan {1} kkal ichida",
-                      raqam(tavsiya.kaloriya),
-                      qolganKkal,
-                    )
-                  : t("{0} kkal — qolgan {1} kkal ichida", raqam(tavsiya.kaloriya), qolganKkal)}
-              </span>
-            </span>
-            <OngStrelka />
-          </button>
+          />
         )}
       </section>
 

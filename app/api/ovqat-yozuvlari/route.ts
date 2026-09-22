@@ -8,7 +8,12 @@ import { foydalanuvchiHuquqlari } from "@/lib/services/foydalanuvchilar";
 import { kunRejasi } from "@/lib/services/rejalar";
 import { nutritionScore, type ScoreJavobi } from "@/lib/services/score-hisob";
 import { joriyFoydalanuvchiId, kirishKerak } from "@/lib/services/sessiya";
-import { qolganKaloriya, taomTaklifi, type TaklifJavobi } from "@/lib/services/taklif-hisob";
+import {
+  qolganKaloriya,
+  taomTaklifi,
+  type QulfJavobi,
+  type TaklifJavobi,
+} from "@/lib/services/taklif-hisob";
 import { taomlarniOl } from "@/lib/services/taomlar";
 import { bugunSana, kunlikJami, sanaYaroqli } from "@/lib/services/yozuv-hisob";
 import { yozuvKirishiniTekshir } from "@/lib/services/yozuv-kirish";
@@ -19,6 +24,8 @@ const UUID_QOLIPI = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{1
  * Bir kunning yozuvlari, jami, shu kun uchun amaldagi reja, qolgan kaloriya, Nutrition Score
  * va qolganga mos taom taklifi: `?sana=2026-09-20` (standart — bugun). Score va taklif
  * faqat PRO'ga hisoblab beriladi; `qoldi` hammaga — Home doirasi shu sondan chizadi.
+ * `makro` va `porsiya` — hisobsiz PRO imkoniyatlari, faqat qulf bayrog'i: Home/Jurnal makro
+ * chiziqlari va E5/E7 porsiya tavsiyasi shu bayroqdan o'qiydi.
  */
 export async function GET(sorov: Request) {
   const foydalanuvchiId = await joriyFoydalanuvchiId(sorov);
@@ -43,7 +50,9 @@ export async function GET(sorov: Request) {
   const taklif: TaklifJavobi = huquq.taomTakliflari
     ? { yopiq: false, taklif: qoldi === null ? null : taomTaklifi(await taomlarniOl(), qoldi) }
     : { yopiq: true };
-  return Response.json({ sana, yozuvlar, jami, reja, qoldi, score, taklif });
+  const makro: QulfJavobi = { yopiq: !huquq.makroKuzatish };
+  const porsiya: QulfJavobi = { yopiq: !huquq.porsiyaTavsiyasi };
+  return Response.json({ sana, yozuvlar, jami, reja, qoldi, score, taklif, makro, porsiya });
 }
 
 /** Jurnalga yangi yozuv qo'shadi. */

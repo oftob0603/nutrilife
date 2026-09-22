@@ -732,6 +732,15 @@ export const SOZLAR = {
     ru: "Умные советы по размеру порции — PRO",
     en: "Smart portion advice — PRO",
   },
+  "Oqsil, yog' va uglevodlarni kuzatish — PRO": {
+    ru: "Учёт белков, жиров и углеводов — PRO",
+    en: "Protein, fat and carb tracking — PRO",
+  },
+  "Tavsiya: {0} g": { ru: "Совет: {0} г", en: "Suggested: {0} g" },
+  "Qolgan {0} kkal ichida qoladi": {
+    ru: "Останется в пределах оставшихся {0} ккал",
+    en: "Stays within the remaining {0} kcal",
+  },
   "Tavsiya: {0}": { ru: "Совет: {0}", en: "Suggested: {0}" },
   "{0} kkal — qolgan {1} kkal ichida": {
     ru: "{0} ккал — в пределах оставшихся {1} ккал",
