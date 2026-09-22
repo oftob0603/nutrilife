@@ -5,6 +5,10 @@
   --siyoh: #0b0b0c;
   --aksent: #c6f04c;
   --aksent-matn: #2e3d07;
+  /* Aksent tusidagi yuza (prototip/tokens/colors.css) — ajratilgan maydon foni. */
+  --aksent-fon: #f4fce2;
+  /* Oq kartada lime matn o'qilmaydi — yorug'da aksent oilasining to'q soyasi, qorong'ida lime. */
+  --aksent-yorliq: var(--aksent-matn);
   --fon: #f2f2f3;
   --karta: #ffffff;
   --matn-2: #6b6b70;
@@ -75,6 +79,8 @@
     --karta-chegara: transparent;
     --pro-ink: #c4b5fd;
     --pro-tint: color-mix(in oklch, #c4b5fd 16%, transparent);
+    --aksent-fon: #1c2411;
+    --aksent-yorliq: var(--aksent);
     color-scheme: dark;
   }
 }
@@ -91,6 +97,8 @@
   --karta-chegara: transparent;
   --pro-ink: #c4b5fd;
   --pro-tint: color-mix(in oklch, #c4b5fd 16%, transparent);
+  --aksent-fon: #1c2411;
+  --aksent-yorliq: var(--aksent);
   color-scheme: dark;
 }
 
@@ -125,6 +133,8 @@
   --color-siyoh: var(--siyoh);
   --color-aksent: var(--aksent);
   --color-aksent-matn: var(--aksent-matn);
+  --color-aksent-fon: var(--aksent-fon);
+  --color-aksent-yorliq: var(--aksent-yorliq);
   --color-fon: var(--fon);
   --color-karta: var(--karta);
   --color-matn-2: var(--matn-2);

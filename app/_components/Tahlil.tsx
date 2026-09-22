@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { AiBelgisi } from "@/app/_components/AiBelgisi";
 import { OrqagaSarlavha } from "@/app/_components/profil/OrqagaSarlavha";
 import { ProQulfi } from "@/app/_components/ProQulfi";
-import { SanashRaqami } from "@/app/_components/SanashRaqami";
 import { TavsiyaKartasi } from "@/app/_components/TavsiyaKartasi";
 import { useTavsiyaAsosi } from "@/app/_components/useTavsiyaAsosi";
 import { useTarjima } from "@/app/_components/TilTaminoti";
@@ -237,7 +236,6 @@ function Tasdiq({
   // zahoti porsiya va undan chiqadigan hamma narsa aniq hisoblanadi — belgi yo'qoladi.
   const [tahrirlandi, setTahrirlandi] = useState(natija === null);
   const taxminiy = natija !== null && !tahrirlandi;
-  const kaloriya = sonOqi(forma.kaloriya) ?? 0;
   // Porsiya tavsiyasi (PRO, prototip `ResultScreen`): AI zichligidan qolgan kaloriyaga
   // sig'adigan gramm; faqat AI natijasida — bo'sh formada zichlik yo'q. Asos yuklanmasa
   // (oflayn, eski API) karta ham, qulf ham chiqmaydi.
@@ -310,21 +308,10 @@ function Tasdiq({
       <div className="flex flex-1 flex-col gap-4">
         {rasmId && <Manba manzil={rasmManzili(rasmId)} keng />}
 
+        {/* Katta "~344 kkal" sarlavhasi olib tashlandi (foydalanuvchi qarori) — kaloriya maydonda. */}
         {natija && (
-          <div className="flex flex-col gap-3">
-            {/* E7'ning asosiy lahzasi: kaloriya 0 dan sanab to'ladi, taxmin bo'lsa "~" bilan. */}
-            <p className="flex items-baseline gap-2">
-              <SanashRaqami
-                qiymat={kaloriya}
-                boshlangich={0}
-                format={(son) => `${taxminiy ? "~" : ""}${raqam(son)}`}
-                className="font-display text-raqam"
-              />
-              <span className="text-karta-sarlavha text-matn-2">{t("kkal")}</span>
-            </p>
-            <div>
-              <AiBelgisi />
-            </div>
+          <div>
+            <AiBelgisi />
           </div>
         )}
 
@@ -334,6 +321,7 @@ function Tasdiq({
           birlik="g"
           bloklangan={saqlanmoqda}
           taxminiy={taxminiy}
+          kaloriyaAjratilgan={natija !== null}
           porsiyaIzohi={
             taxminiy && (
               <p className="-mt-2 flex items-start gap-2 text-[11px] leading-[1.45] text-matn-2">

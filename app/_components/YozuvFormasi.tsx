@@ -2,6 +2,7 @@
 
 import { useId } from "react";
 import { OvqatTuriTanlagich } from "@/app/_components/OvqatTuriTanlagich";
+import { Ikona } from "@/app/_components/progress/Ikona";
 import { useTarjima } from "@/app/_components/TilTaminoti";
 import {
   miqdorOzgardi,
@@ -24,6 +25,7 @@ export function Maydon({
   ogohlantirish,
   turi = "son",
   taxminiy = false,
+  ajratilgan = false,
   bloklangan,
   onChange,
 }: {
@@ -35,6 +37,8 @@ export function Maydon({
   ogohlantirish?: string;
   turi?: "son" | "matn" | "vaqt";
   taxminiy?: boolean;
+  /** Ko'zga birinchi tashlanadigan maydon (E7 kaloriya): aksent foni, chegarasi va yorlig'i. */
+  ajratilgan?: boolean;
   bloklangan: boolean;
   onChange: (matn: string) => void;
 }) {
@@ -42,14 +46,20 @@ export function Maydon({
   const izoh = xato ?? ogohlantirish;
   return (
     <div className="flex min-w-0 flex-col gap-1">
-      <label htmlFor={id} className="text-izoh text-matn-2">
+      <label
+        htmlFor={id}
+        className={`text-izoh ${ajratilgan ? "font-medium text-aksent-yorliq" : "text-matn-2"}`}
+      >
         {nomi}
       </label>
       <div
-        className={`flex min-h-13 items-center gap-2 rounded-karta border bg-karta px-4 ${
-          xato ? "border-xato" : "border-chegara"
-        }`}
+        className={`flex min-h-13 items-center gap-2 rounded-karta border px-4 ${
+          ajratilgan ? "bg-aksent-fon" : "bg-karta"
+        } ${xato ? "border-xato" : ajratilgan ? "border-aksent" : "border-chegara"}`}
       >
+        {ajratilgan && (
+          <Ikona nomi="olov" olcham={14} className="-ml-1 shrink-0 text-aksent-yorliq" />
+        )}
         {taxminiy && (
           <span aria-hidden="true" className="-mr-2 shrink-0 text-asosiy text-matn-2">
             ~
@@ -65,7 +75,9 @@ export function Maydon({
           aria-invalid={xato ? true : undefined}
           aria-describedby={izoh ? `${id}-xato` : undefined}
           onChange={(hodisa) => onChange(hodisa.target.value)}
-          className="w-full min-w-0 bg-transparent text-asosiy tabular-nums outline-none disabled:opacity-60"
+          className={`w-full min-w-0 bg-transparent text-asosiy tabular-nums outline-none disabled:opacity-60 ${
+            ajratilgan ? "font-semibold" : ""
+          }`}
         />
         {birlik && <span className="shrink-0 text-izoh text-matn-2">{birlik}</span>}
       </div>
@@ -90,6 +102,7 @@ export function YozuvFormasi({
   birlik,
   bloklangan = false,
   taxminiy = false,
+  kaloriyaAjratilgan = false,
   porsiyaIzohi,
   onChange,
 }: {
@@ -99,6 +112,8 @@ export function YozuvFormasi({
   birlik: string;
   bloklangan?: boolean;
   taxminiy?: boolean;
+  /** E7 natija ekrani: kaloriya maydoni aksent bilan ajratiladi (DESIGN.md). */
+  kaloriyaAjratilgan?: boolean;
   porsiyaIzohi?: React.ReactNode;
   onChange: (forma: Forma) => void;
 }) {
@@ -132,6 +147,7 @@ export function YozuvFormasi({
           qiymat={forma.kaloriya}
           xato={matn(xatolar.kaloriya)}
           taxminiy={taxminiy}
+          ajratilgan={kaloriyaAjratilgan}
           bloklangan={bloklangan}
           onChange={(matn) => onChange(qiymatOzgardi(forma, "kaloriya", matn))}
         />

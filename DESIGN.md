@@ -23,6 +23,12 @@ Ekranlar va oqim: [dizayn-tz.md](dizayn-tz.md).
 
 Aksent ustidagi matn — `#2E3D07` (o'sha oilaning to'q soyasi). Qora ham, oq ham emas.
 
+Ajratilgan maydon (E7 natija ekranidagi "Kaloriya" — foydalanuvchi qarori 2026-09-22):
+`--aksent-fon` foni (yorug' `#F4FCE2`, qorong'i `#1C2411`, prototip/tokens/colors.css),
+1px `--aksent` chegara, yorliq va kichik lucide `flame` belgisi `--aksent-yorliq` rangida
+(yorug'da `#2E3D07` — oq fonda lime matn o'qilmaydi; qorong'ida `--aksent`). Qiymat `--siyoh`,
+birlik `--matn-2`. Gradient yo'q. Faqat shu bitta maydonda.
+
 ### Qorong'i mavzu
 
 | Token | Hex |
