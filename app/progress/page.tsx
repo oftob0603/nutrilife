@@ -24,9 +24,11 @@ export const metadata = { title: "Statistika — Nutrilife" };
  * ularni izohlamaydi: BMI, "sog'lom oraliq", prognoz yo'q (progress-tz.md). Prototipdagi
  * "Batafsil statistika" va "Haftalik hisobot" bo'limlari V1'da yo'q (PRD, 10-bo'lim).
  */
-export default async function ProgressSahifasi() {
+export default async function ProgressSahifasi({ searchParams }: PageProps<"/progress">) {
   const tarjimon = await serverTarjimoni();
   const { t, til } = tarjimon;
+  // `?vazn=1` — F3'dagi "Progress bo'limida vazn qo'shish": sahifa P2 paneli ochiq holda ochiladi.
+  const { vazn } = await searchParams;
   const progress = await progressniYukla();
   // Sessiyasiz ochilgan havola: sahifa kirish pardasi ostida bo'sh turadi (profil bilan bir xil).
   if (progress === "sessiyasiz") return null;
@@ -69,7 +71,7 @@ export default async function ProgressSahifasi() {
               </span>
               <Ikona nomi="ong" className="text-matn-3" />
             </Link>
-            <VaznPaneli progress={progress} />
+            <VaznPaneli progress={progress} boshidaOchiq={vazn === "1"} />
           </div>
         )}
       </main>

@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import { useTarjima } from "@/app/_components/TilTaminoti";
-import { Tugma } from "@/app/_components/Tugma";
 import { vaznMatni } from "@/lib/services/profil-hisob";
 import {
   farqMatni,
@@ -15,7 +14,6 @@ import {
 } from "@/lib/services/progress-hisob";
 import { kunOyMatni } from "@/lib/services/yozuv-hisob";
 import { Ikona } from "./Ikona";
-import { vaznPaneliniOch } from "./vazn-hodisa";
 
 const BALANDLIK = 180;
 const CHAP_JOY = 30;
@@ -282,11 +280,6 @@ export function VaznGrafigi({ progress }: { progress: Progress }) {
               </>
             )}
           </div>
-        )}
-        {bittaNuqta && (
-          <Tugma korinish="ikkilamchi" onClick={() => vaznPaneliniOch()}>
-            {t.t("Vazn qo'shish")}
-          </Tugma>
         )}
       </div>
     </section>

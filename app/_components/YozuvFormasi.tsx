@@ -11,13 +11,19 @@ import {
   type FormaXatosi,
 } from "@/lib/services/yozuv-forma";
 
-/** Bitta kiritish maydoni: yorliq, (bo'lsa) birlik va ostida tekshiruv xatosi. */
+/**
+ * Bitta kiritish maydoni: yorliq, (bo'lsa) birlik va ostida tekshiruv xatosi.
+ * `taxminiy` — qiymat AI taxmini: oldida "~" turadi (prototip E7 `approx`), foydalanuvchi
+ * yozgan zahoti yo'qoladi. Belgi qiymatning o'zida emas — kiritish oqimini buzmaydi.
+ */
 export function Maydon({
   nomi,
   birlik,
   qiymat,
   xato,
+  ogohlantirish,
   turi = "son",
+  taxminiy = false,
   bloklangan,
   onChange,
 }: {
@@ -25,11 +31,15 @@ export function Maydon({
   birlik?: string;
   qiymat: string;
   xato?: string;
+  /** To'smaydigan izoh (prototip `Input warning`) — xato bo'lmaganda, o'sha joyda, kulrang. */
+  ogohlantirish?: string;
   turi?: "son" | "matn" | "vaqt";
+  taxminiy?: boolean;
   bloklangan: boolean;
   onChange: (matn: string) => void;
 }) {
   const id = useId();
+  const izoh = xato ?? ogohlantirish;
   return (
     <div className="flex min-w-0 flex-col gap-1">
       <label htmlFor={id} className="text-izoh text-matn-2">
@@ -40,6 +50,11 @@ export function Maydon({
           xato ? "border-xato" : "border-chegara"
         }`}
       >
+        {taxminiy && (
+          <span aria-hidden="true" className="-mr-2 shrink-0 text-asosiy text-matn-2">
+            ~
+          </span>
+        )}
         <input
           id={id}
           type={turi === "vaqt" ? "time" : "text"}
@@ -48,15 +63,15 @@ export function Maydon({
           disabled={bloklangan}
           maxLength={turi === "son" ? 8 : 80}
           aria-invalid={xato ? true : undefined}
-          aria-describedby={xato ? `${id}-xato` : undefined}
+          aria-describedby={izoh ? `${id}-xato` : undefined}
           onChange={(hodisa) => onChange(hodisa.target.value)}
           className="w-full min-w-0 bg-transparent text-asosiy tabular-nums outline-none disabled:opacity-60"
         />
         {birlik && <span className="shrink-0 text-izoh text-matn-2">{birlik}</span>}
       </div>
-      {xato && (
-        <p id={`${id}-xato`} className="text-izoh text-xato">
-          {xato}
+      {izoh && (
+        <p id={`${id}-xato`} className={`text-izoh ${xato ? "text-xato" : "text-matn-2"}`}>
+          {izoh}
         </p>
       )}
     </div>
@@ -66,12 +81,16 @@ export function Maydon({
 /**
  * Yozuv maydonlari — AI natijasini tasdiqlash (E7) va yozuv tahriri (E10) uchun umumiy.
  * Holat ota komponentda turadi: saqlash xatosida kiritilgan ma'lumot yo'qolmasin.
+ * `taxminiy` — sonli maydonlar AI taxmini ("~"); `porsiyaIzohi` — porsiya va kaloriya
+ * qatori ostidagi izoh (E7'dagi "AI porsiyani taxmin qildi…").
  */
 export function YozuvFormasi({
   forma,
   xatolar,
   birlik,
   bloklangan = false,
+  taxminiy = false,
+  porsiyaIzohi,
   onChange,
 }: {
   forma: Forma;
@@ -79,6 +98,8 @@ export function YozuvFormasi({
   /** Porsiya o'lchov birligi: "g" yoki "dona". */
   birlik: string;
   bloklangan?: boolean;
+  taxminiy?: boolean;
+  porsiyaIzohi?: React.ReactNode;
   onChange: (forma: Forma) => void;
 }) {
   const { t, erkin } = useTarjima();
@@ -101,6 +122,7 @@ export function YozuvFormasi({
           birlik={erkin(birlik)}
           qiymat={forma.miqdor}
           xato={matn(xatolar.miqdor)}
+          taxminiy={taxminiy}
           bloklangan={bloklangan}
           onChange={(matn) => onChange(miqdorOzgardi(forma, matn))}
         />
@@ -109,10 +131,13 @@ export function YozuvFormasi({
           birlik={t("kkal")}
           qiymat={forma.kaloriya}
           xato={matn(xatolar.kaloriya)}
+          taxminiy={taxminiy}
           bloklangan={bloklangan}
           onChange={(matn) => onChange(qiymatOzgardi(forma, "kaloriya", matn))}
         />
       </div>
+
+      {porsiyaIzohi}
 
       <div className="grid grid-cols-3 gap-3">
         <Maydon
@@ -120,6 +145,7 @@ export function YozuvFormasi({
           birlik={t("g")}
           qiymat={forma.oqsil}
           xato={matn(xatolar.oqsil)}
+          taxminiy={taxminiy}
           bloklangan={bloklangan}
           onChange={(matn) => onChange(qiymatOzgardi(forma, "oqsil", matn))}
         />
@@ -128,6 +154,7 @@ export function YozuvFormasi({
           birlik={t("g")}
           qiymat={forma.yog}
           xato={matn(xatolar.yog)}
+          taxminiy={taxminiy}
           bloklangan={bloklangan}
           onChange={(matn) => onChange(qiymatOzgardi(forma, "yog", matn))}
         />
@@ -136,6 +163,7 @@ export function YozuvFormasi({
           birlik={t("g")}
           qiymat={forma.uglevod}
           xato={matn(xatolar.uglevod)}
+          taxminiy={taxminiy}
           bloklangan={bloklangan}
           onChange={(matn) => onChange(qiymatOzgardi(forma, "uglevod", matn))}
         />

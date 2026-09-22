@@ -37,7 +37,8 @@ function ObunaKartasi({
 
   return (
     <section className="flex flex-col items-start gap-3 rounded-karta border border-karta-chegara bg-karta p-4">
-      {obuna.holat !== "free" && <ProBelgisi />}
+      {/* Prototip F1: belgi uch rolda ham; PRO bo'lmaganda bosilsa tariflar ochiladi. */}
+      {obuna.holat === "pro" ? <ProBelgisi /> : <ProBelgisi href="/pro?manba=profil" />}
       <p className="text-karta-sarlavha">{obunaSarlavhasi(obuna, tarjimon)}</p>
       {skan && (
         <p className="text-izoh text-matn-2 tabular-nums">

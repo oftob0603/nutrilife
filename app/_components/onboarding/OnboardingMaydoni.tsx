@@ -13,6 +13,7 @@ export function OnboardingMaydoni({
   xato,
   ogohlantirish,
   turi = "son",
+  placeholder,
   inputRef,
   onChange,
 }: {
@@ -23,6 +24,7 @@ export function OnboardingMaydoni({
   xato?: string | true;
   ogohlantirish?: string;
   turi?: "son" | "butun" | "matn";
+  placeholder?: string;
   inputRef?: Ref<HTMLInputElement>;
   onChange: (matn: string) => void;
 }) {
@@ -45,11 +47,12 @@ export function OnboardingMaydoni({
           inputMode={turi === "son" ? "decimal" : turi === "butun" ? "numeric" : undefined}
           autoComplete={turi === "matn" ? "given-name" : "off"}
           value={qiymat}
+          placeholder={placeholder}
           maxLength={turi === "matn" ? 60 : 6}
           aria-invalid={xato ? true : undefined}
           aria-describedby={izoh ? `${id}-izoh` : undefined}
           onChange={(hodisa) => onChange(hodisa.target.value)}
-          className="w-full min-w-0 bg-transparent text-asosiy tabular-nums outline-none"
+          className="w-full min-w-0 bg-transparent text-asosiy tabular-nums outline-none placeholder:text-matn-3"
         />
         {birlik && <span className="shrink-0 text-izoh text-matn-2">{birlik}</span>}
       </div>

@@ -79,6 +79,20 @@ Lime "bitta to'ldirilgan element" qoidasiga kirmaydi: PRO — alohida rang.
 | `--pro-ink` | yorug' `#6D28D9` · qorong'i `#C4B5FD` | Karta ustidagi PRO rangidagi matn va belgi (W1: tejash foizi, imkoniyat belgilari) |
 | `--pro-tint` | `--pro-ink` ning och tusi: yorug' `#7C3AED` 12% · qorong'i `#C4B5FD` 16% | Tejash belgisi va imkoniyat belgisi foni |
 
+### Makro ranglari
+
+Har makroning o'z rangi bor (prototip/tokens/colors.css) — Home'dagi makro qatori, Nutrition
+Score qismlari, E5 va retseptlar bir makroni bir rangda ko'rsatadi. Rang mavzuga qarab
+o'zgarmaydi va faqat chiziq to'ldiruvida ishlatiladi: yozuv va raqamlar matn tokenlarida
+qoladi, rang holatni yolg'iz o'zi bildirmaydi (yonida doim nom turadi).
+
+| Token | Qiymat | Qayerda |
+|---|---|---|
+| `--makro-oqsil` | `#3B82F6` | Oqsil chizig'i |
+| `--makro-yog` | `#FACC15` | Yog' chizig'i |
+| `--makro-uglevod` | `#EC4899` | Uglevod chizig'i |
+| `--makro-norma` | `#22C55E` | Score'dagi "Norma ichida" chizig'i |
+
 ## 2. Shriftlar
 
 **Inter Tight** — sarlavha va raqam · **Inter** — matn. Ikkalasi kirill va lotinni

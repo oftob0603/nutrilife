@@ -6,6 +6,7 @@ import {
   CHEKLOV_YOQ,
   ISM_CHEGARASI,
   YOSH,
+  YOSH_OGOHLANTIRISH_YOSHI,
   YOSH_XATOSI,
   maqsadVaznKerakmi,
   olchovIzohlari,
@@ -96,8 +97,11 @@ export function qadamniTayyorla(qadam: number, forma: Forma): QadamTekshiruvi {
       break;
 
     case 4:
-      if (forma.yosh < YOSH.min) natija.yoshXatosi = YOSH_XATOSI;
-      else if (forma.jins) natija.tana = { qadam, jins: forma.jins, yosh: forma.yosh };
+      // 18 dan kichik yosh qizil izoh chiqaradi, lekin to'smaydi (prototip O5, DECISIONS 2026-09-22).
+      if (forma.yosh < YOSH_OGOHLANTIRISH_YOSHI) natija.yoshXatosi = YOSH_XATOSI;
+      if (forma.jins && forma.yosh >= YOSH.min) {
+        natija.tana = { qadam, jins: forma.jins, yosh: forma.yosh };
+      }
       break;
 
     case 5: {
@@ -122,18 +126,27 @@ export function qadamniTayyorla(qadam: number, forma: Forma): QadamTekshiruvi {
       if (forma.faollik) natija.tana = { qadam, faollik: forma.faollik };
       break;
 
+    // O8–O10: "Davom etish" javobsiz ham faol (prototip `Step` — `actionDisabled` yo'q);
+    // bo'sh javob o'tkazib yuborilgan bilan bir xil saqlanadi. Ikki qismli odatda bittasi
+    // to'ldirilgan bo'lsa ham bo'sh hisoblanadi — profil tahriri ham shunday (shaxsiy-hisob.ts).
     case 7:
-      if (forma.ovqatAfzalliklari.length > 0) {
-        natija.tana = { qadam, ovqatAfzalliklari: forma.ovqatAfzalliklari };
-      }
+      natija.tana =
+        forma.ovqatAfzalliklari.length > 0
+          ? { qadam, ovqatAfzalliklari: forma.ovqatAfzalliklari }
+          : { qadam, otkazildi: true };
       break;
 
     case 8:
-      if (forma.mahal && forma.joy) natija.tana = { qadam, mahal: forma.mahal, joy: forma.joy };
+      natija.tana =
+        forma.mahal && forma.joy
+          ? { qadam, mahal: forma.mahal, joy: forma.joy }
+          : { qadam, otkazildi: true };
       break;
 
     case 9:
-      if (forma.motivatsiya) natija.tana = { qadam, motivatsiya: forma.motivatsiya };
+      natija.tana = forma.motivatsiya
+        ? { qadam, motivatsiya: forma.motivatsiya }
+        : { qadam, otkazildi: true };
       break;
   }
 

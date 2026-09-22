@@ -447,6 +447,20 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-22 · PRO'da beriladigan imkoniyat FREE'ga berilmaydi: makro kuzatish (Home va Jurnaldagi kunlik oqsil/yog'/uglevod chiziqlari) va porsiya tavsiyasi (E5 va E7) ham prototip `pro.js` reyestridagidek PRO'ga yopildi. Muddati tugagan PRO — FREE huquqlari, prototipdagi `readable` istisnosi yo'q.**
 *Sabab:* Foydalanuvchi qarori — W1 va O13 e'lon qilgan 9 ta imkoniyatdan ilovada bor bo'lganlarining hammasi qulf ostida tursin; "muddati tugagan PRO — FREE" qoidasi (2026-09-21) bitta bo'lib qoladi. Bitta taomning o'z makrolari E5/E7'da ochiq qoladi — u kiritish maydoni, kuzatish emas (prototipda ham qulfsiz). Statistika va haftalik hisobot V1'da hech kimga yo'q (2026-09-22 qarori), retsept va sevimlilar S6'da.
 
+## 2026-09-22 — prototip mosligi (S4 yopilgach, S5 oldidan)
+
+**2026-09-22 · S1–S4 ekranlari prototip bilan qayta solishtirilib, qolib ketgan farqlar prototipga keltirildi: E4 orqaga va doimiy "Matn bilan tasvirlash" (haqiqiy matn maydoniga), "AI taxmini" belgisi AI yozuvida har joyda, E7 katta sanaladigan raqam va "~" belgisi, makro ranglari, E5 makro chiziqlari, E8 belgi va E2 varag'i, 4 s qaytish, E2 sarlavhasi, E3 sarlavha va tik tugmalar; onboardingda O8–O10 "Davom etish" javobsiz ham faol, O12'dan orqaga O11'ga, "Saqlanmadi. Qayta urinish", oxirgi savolda ham "Davom etish", O3 placeholder, O1 chiqish animatsiyasi; F3'da "Progress bo'limida vazn qo'shish" va doim ko'rinadigan "Maqsad vazn", F1'da bosiladigan PRO belgisi; P2 ogohlantirishi maydon ichida.**
+*Sabab:* Foydalanuvchi qarori — prototip ustun (2026-09-20 qoidasi); farqlar sprintlar ichida ataylab emas, e'tibordan chetda qolgan edi.
+
+**2026-09-22 · Makro ranglari tokenlari qo'shildi: `--makro-oqsil` #3B82F6 · `--makro-yog` #FACC15 · `--makro-uglevod` #EC4899 · `--makro-norma` #22C55E (DESIGN.md, "Makro ranglari"). Faqat chiziq to'ldiruvida, mavzuga qarab o'zgarmaydi.**
+*Sabab:* Prototip `MacroBar` shu tokenlarni ishlatadi; DESIGN.md'da yo'q token qo'shiladi qoidasi (2026-09-20). Foydalanuvchi qarori — "bu qat'iy".
+
+**2026-09-22 · O5'da 18 dan kichik yosh to'smaydi: qizil izoh chiqadi, "Davom etish" ochiq, server 13–100 oralig'ini qabul qiladi (g'ildirak 13 dan boshlanadi).**
+*Sabab:* Foydalanuvchi qarori — prototip O5 shunday (README'da ataylab deb yozilgan); onboarding-tz "tugma o'chadi" degan edi. S5 shartlaridagi "18+" bandi bu bilan zid — hujjat matni yozilganda alohida ko'rib chiqiladi.
+
+**2026-09-22 · Grafik oynasida (30/90 kun) ikkitadan kam o'lchov qolsa oxirgi ikki o'lchov ko'rsatiladi; "Ikkinchi o'lchovdan keyin grafik chiziladi" faqat jami bitta o'lchovda. Grafik kartasidagi "Vazn qo'shish" tugmasi olib tashlandi — vazn faqat tepadagi "Vaznni qayd etish" orqali kiritiladi.**
+*Sabab:* Foydalanuvchi qarori — bitta sahifada vazn qo'shishning ikki joyi ortiqcha; eski o'lchovli foydalanuvchiga "ikkinchi o'lchov yo'q" deyish noto'g'ri edi.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

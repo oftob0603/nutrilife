@@ -19,6 +19,9 @@ import { bugunSana, kunlikJami, sanaYaroqli } from "@/lib/services/yozuv-hisob";
 import { yozuvKirishiniTekshir } from "@/lib/services/yozuv-kirish";
 
 const UUID_QOLIPI = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+// Taom identifikatori UUID emas, slug (`chuchvara`, `achchiq-chuchuk` — prisma/seed): faqat
+// kichik lotin harf, raqam va chiziqcha. Yo'q id baribir bazada tutiladi (`TaomTopilmadi`).
+const TAOM_ID_QOLIPI = /^[a-z0-9-]{1,64}$/;
 
 /**
  * Bir kunning yozuvlari, jami, shu kun uchun amaldagi reja, qolgan kaloriya, Nutrition Score
@@ -73,7 +76,7 @@ export async function POST(sorov: Request) {
   }
 
   const taomId = tana.taomId ?? null;
-  if (taomId !== null && (typeof taomId !== "string" || !UUID_QOLIPI.test(taomId))) {
+  if (taomId !== null && (typeof taomId !== "string" || !TAOM_ID_QOLIPI.test(taomId))) {
     return Response.json({ xato: "Taom topilmadi" }, { status: 400 });
   }
 

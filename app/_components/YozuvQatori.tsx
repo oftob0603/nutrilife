@@ -6,8 +6,9 @@ import { raqam } from "@/lib/services/taom-hisob";
 import { vaqtMatni, type Yozuv } from "@/lib/services/yozuv-hisob";
 
 /**
- * Jurnaldagi bitta yozuv (prototipdagi LogEntry). `batafsil` — jurnal sahifasi (E9) uchun:
- * makrolar qatori va AI orqali kirgan yozuvda "AI taxmini" belgisi qo'shiladi.
+ * Jurnaldagi bitta yozuv (prototipdagi LogEntry). AI orqali kirgan yozuvda "AI taxmini"
+ * belgisi har joyda turadi (DESIGN.md: AI raqami belgisiz ko'rinmaydi); `batafsil` — jurnal
+ * sahifasi (E9) uchun makrolar qatorini qo'shadi.
  * Qator bosilsa yozuv tahriri (E10) ochiladi; `qaytish` — u yerdan qaytiladigan ekran.
  */
 export function YozuvQatori({
@@ -34,7 +35,7 @@ export function YozuvQatori({
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
             <p className="min-w-0 truncate text-karta-sarlavha">{yozuv.taomNomi}</p>
-            {batafsil && yozuv.manba === "ai" && <AiBelgisi />}
+            {yozuv.manba === "ai" && <AiBelgisi />}
           </div>
           <p className="mt-1 text-izoh text-matn-2 tabular-nums">
             {porsiya(yozuv.porsiya)} · {vaqtMatni(yozuv.vaqt)}

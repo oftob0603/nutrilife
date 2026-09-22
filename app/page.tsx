@@ -174,12 +174,15 @@ export default async function HomeSahifasi({ searchParams }: PageProps<"/">) {
                   <h2 className="text-karta-sarlavha">
                     {bugunmi ? t("Bugungi ovqatlar") : t("Shu kungi ovqatlar")}
                   </h2>
-                  <Link
-                    href={`/jurnal${manzilQoshimchasi}`}
-                    className="-mr-2 flex min-h-11 items-center px-2 text-izoh font-medium text-matn-2"
-                  >
-                    {t("Hammasi")}
-                  </Link>
+                  {/* Bo'sh kunda havola yo'q — jurnal ham bo'sh (prototip `Section action`). */}
+                  {oxirgilar.length > 0 && (
+                    <Link
+                      href={`/jurnal${manzilQoshimchasi}`}
+                      className="-mr-2 flex min-h-11 items-center px-2 text-izoh font-medium text-matn-2"
+                    >
+                      {t("Hammasi")}
+                    </Link>
+                  )}
                 </div>
                 {oxirgilar.length === 0 ? (
                   <BoshKun bugunmi={bugunmi} t={t} />

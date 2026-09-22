@@ -3,8 +3,8 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-/** E8: hech narsa bosilmasa, ikki soniyadan keyin Home'ga qaytadi. */
-export function QaytishTaymeri({ kechikish = 2000 }: { kechikish?: number }) {
+/** E8: hech narsa bosilmasa, to'rt soniyadan keyin Home'ga qaytadi (prototip `AddedScreen`). */
+export function QaytishTaymeri({ kechikish = 4000 }: { kechikish?: number }) {
   const router = useRouter();
 
   useEffect(() => {

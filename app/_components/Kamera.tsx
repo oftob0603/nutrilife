@@ -163,7 +163,8 @@ export function Kamera() {
         />
       )}
 
-      <header className="relative flex items-center p-2">
+      {/* Prototip `CameraScreen`: chapda orqaga, markazda holat yozuvi, o'ngda bo'sh o'rin. */}
+      <header className="relative flex items-center justify-between p-2">
         <Link
           href="/"
           aria-label={t("Orqaga")}
@@ -171,6 +172,10 @@ export function Kamera() {
         >
           <Ikona nomi="orqaga" />
         </Link>
+        <span className="text-izoh text-white/70">
+          {holat === "korish" ? t("Rasmni ko'rib chiqing") : t("Kamera")}
+        </span>
+        <span aria-hidden="true" className="size-11" />
       </header>
 
       <div className="relative flex flex-1 flex-col items-center justify-center gap-4 px-8 text-center">
@@ -222,20 +227,14 @@ export function Kamera() {
         )}
 
         {holat === "korish" && (
-          <div className="flex gap-3">
-            <button
-              type="button"
-              onClick={qaytaOl}
-              disabled={yuborilmoqda}
-              className={`${TUGMA} border border-white/40 text-white`}
-            >
-              {t("Qayta olish")}
-            </button>
+          // Prototipdagidek ustma-ust: tasdiq tugmasi lime (ekrandagi yagona to'ldirilgan
+          // element), ostida fonsiz "Qayta olish".
+          <div className="flex flex-col gap-2">
             <button
               type="button"
               onClick={tahlilga}
               disabled={yuborilmoqda}
-              className={`${TUGMA} bg-white text-black`}
+              className={`${TUGMA} bg-aksent text-aksent-matn`}
             >
               {yuborilmoqda && (
                 <span
@@ -244,6 +243,14 @@ export function Kamera() {
                 />
               )}
               {yuborilmoqda ? t("Yuklanmoqda…") : xato ? t("Qayta urinish") : t("Tahlil qilish")}
+            </button>
+            <button
+              type="button"
+              onClick={qaytaOl}
+              disabled={yuborilmoqda}
+              className={`${TUGMA} bg-transparent text-white`}
+            >
+              {t("Qayta olish")}
             </button>
           </div>
         )}

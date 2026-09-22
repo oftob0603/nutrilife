@@ -150,6 +150,8 @@ export type Oraliq = (typeof ORALIQLAR)[number];
 /**
  * Grafik oralig'i: oxirgi N kundagi o'lchovlar. Oynadan oldingi eng so'nggi o'lchov ham
  * kiradi — chiziq oynaga "kirib kelsin", 30 kunda bitta o'lchov bo'lsa ham grafik chizilsin.
+ * Oynada ikkitadan kam nuqta qolsa (hamma o'lchov eski) oxirgi ikkitasi olinadi — o'lchovlari
+ * bor foydalanuvchiga "ikkinchi o'lchov yo'q" deyilmaydi (prototipda oraliq massiv kesimi).
  */
 export function oraliqNuqtalari(
   vaznlar: readonly VaznNuqtasi[],
@@ -160,7 +162,8 @@ export function oraliqNuqtalari(
   const boshi = qoshniSana(bugun, -Number(oraliq));
   const ichida = vaznlar.filter((nuqta) => nuqta.sana >= boshi);
   const oldingi = vaznlar.filter((nuqta) => nuqta.sana < boshi).at(-1);
-  return oldingi ? [oldingi, ...ichida] : ichida;
+  const nuqtalar = oldingi ? [oldingi, ...ichida] : ichida;
+  return nuqtalar.length < 2 && vaznlar.length >= 2 ? vaznlar.slice(-2) : nuqtalar;
 }
 
 /** Vazn ko'rsatish birligida: kg — 0,1 aniqlikda, lb — butun (onboarding bilan bir xil). */

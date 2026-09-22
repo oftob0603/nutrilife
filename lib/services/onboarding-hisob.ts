@@ -101,7 +101,13 @@ export function odatniOqi(qiymat: unknown): OvqatlanishOdati | null {
 }
 
 export const ISM_CHEGARASI = 40;
-export const YOSH = { min: 18, max: 100 };
+/**
+ * Qabul qilinadigan yosh — g'ildirak 13 dan boshlanadi. 18 dan kichik yoshda faqat ogohlantirish
+ * chiqadi, to'sish yo'q (prototip O5, foydalanuvchi qarori 2026-09-22); shartlardagi "18+" —
+ * S5 hujjatlarida.
+ */
+export const YOSH = { min: 13, max: 100 };
+export const YOSH_OGOHLANTIRISH_YOSHI = 18;
 export const BOY = { min: 120, max: 230 };
 export const VAZN = { min: 30, max: 300 };
 
@@ -296,7 +302,9 @@ export function qadamniTekshir(
 
     case 4: {
       if (!variantmi(JINSLAR, tana.jins)) return NOTOGRI;
-      if (!oraliqdami(tana.yosh, YOSH) || !Number.isInteger(tana.yosh)) return { xato: YOSH_XATOSI };
+      if (!oraliqdami(tana.yosh, YOSH) || !Number.isInteger(tana.yosh)) {
+        return { xato: `Yosh ${YOSH.min}–${YOSH.max} oralig'ida bo'lsin` };
+      }
       return { javob: { qadam: 4, jins: tana.jins, yosh: tana.yosh } };
     }
 

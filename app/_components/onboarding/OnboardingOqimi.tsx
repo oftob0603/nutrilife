@@ -80,7 +80,7 @@ function saqlashMatni(saqlash: Saqlash, { t, erkin }: Tarjimon): string | null {
       // Server xabari — lug'at kaliti bo'lsa tarjima qilinadi (onboarding-hisob.ts).
       return erkin(saqlash.matn);
     case "xato":
-      return t("Saqlanmadi. Qayta urinib ko'ring");
+      return t("Saqlanmadi. Qayta urinish");
     default:
       return null;
   }
@@ -198,9 +198,17 @@ function Intro({
   onBoshlash: () => void;
 }) {
   const { t } = useTarjima();
+  // Prototip O1: "Boshlash" bosilganda poster 320 ms da so'nib kattalashadi; saqlash
+  // xatosi qaytsa poster joyiga qaytadi.
+  const [chiqmoqda, setChiqmoqda] = useState(false);
+  const sonmoqda = chiqmoqda && !xato;
 
   return (
-    <main className="relative mx-auto flex w-full max-w-md flex-1 flex-col overflow-hidden bg-o1-fon">
+    <main
+      className={`relative mx-auto flex w-full max-w-md flex-1 flex-col overflow-hidden bg-o1-fon motion-safe:transition-[opacity,transform] motion-safe:duration-[320ms] motion-safe:ease-[cubic-bezier(0.2,0,0,1)] ${
+        sonmoqda ? "scale-[1.04] opacity-0" : ""
+      }`}
+    >
       <Image
         src="/onboarding/intro.png"
         alt={t("Ozish, vazn olish, sog'lom turmush tarzi va vaznni saqlash")}
@@ -225,7 +233,14 @@ function Intro({
           {t("«Boshlash»ni bosish orqali Ommaviy oferta shartlarini qabul qilasiz.")}
         </p>
         <div className="rounded-full shadow-[0_1px_2px_rgba(21,128,61,0.18),0_4px_12px_rgba(21,128,61,0.16)]">
-          <Tugma korinish="aksent" yuklanmoqda={band} onClick={onBoshlash}>
+          <Tugma
+            korinish="aksent"
+            yuklanmoqda={band}
+            onClick={() => {
+              setChiqmoqda(true);
+              onBoshlash();
+            }}
+          >
             {t("Boshlash")}
           </Tugma>
         </div>
@@ -409,7 +424,8 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
     return (
       <RejaNatijasi
         forma={forma}
-        onOrqaga={() => qadamgaOt(SAVOLLAR_SONI)}
+        // Prototip O12: orqaga "Reja tayyorlanmoqda"ga qaytadi (u yana natijani ochadi).
+        onOrqaga={() => qadamgaOt(REJA_TAYYORLANMOQDA_QADAMI)}
         onBoshlash={() => qadamgaOt(PRO_QADAMI)}
       />
     );
@@ -450,6 +466,7 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
             <OnboardingMaydoni
               nomi={t("Ism")}
               turi="matn"
+              placeholder="Aziz"
               qiymat={forma.ism}
               xato={tekshiruv.ismUzun && t("{0} belgidan oshmasin", ISM_CHEGARASI)}
               onChange={(ism) => formaOzgardi({ ...forma, ism })}
@@ -572,7 +589,7 @@ export function OnboardingOqimi({ boshlangich }: { boshlangich: OnboardingHolati
             disabled={!tekshiruv.tana}
             onClick={() => tekshiruv.tana && void yubor(tekshiruv.tana)}
           >
-            {qadam === SAVOLLAR_SONI ? t("Tugatish") : t("Davom etish")}
+            {t("Davom etish")}
           </Tugma>
         </div>
       </footer>

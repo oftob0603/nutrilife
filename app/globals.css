@@ -30,6 +30,14 @@
   /* Karta ustidagi PRO rangidagi matn va uning och tusi — karta mavzuga ergashgani uchun bular ham. */
   --pro-ink: #6d28d9;
   --pro-tint: color-mix(in oklch, #7c3aed 12%, transparent);
+  /*
+   * Makro ranglari — DESIGN.md, "Makro ranglari" (prototip/tokens/colors.css). Har makro
+   * har mavzuda bitta rang; faqat chiziq to'ldiruvi, yozuv va raqamlar matn tokenlarida qoladi.
+   */
+  --makro-oqsil: #3b82f6;
+  --makro-yog: #facc15;
+  --makro-uglevod: #ec4899;
+  --makro-norma: #22c55e;
   /* Brauzerning o'z elementlari (vaqt maydoni, scroll chizig'i) ham mavzuga ergashsin. */
   color-scheme: light;
 }
@@ -110,6 +118,10 @@
   --color-parda: var(--parda);
   --color-pro-ink: var(--pro-ink);
   --color-pro-tint: var(--pro-tint);
+  --color-makro-oqsil: var(--makro-oqsil);
+  --color-makro-yog: var(--makro-yog);
+  --color-makro-uglevod: var(--makro-uglevod);
+  --color-makro-norma: var(--makro-norma);
   --color-o1-fon: var(--o1-fon);
   --color-o1-panel: var(--o1-panel);
   --color-o1-chegara: var(--o1-chegara);

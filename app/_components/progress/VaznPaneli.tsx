@@ -19,7 +19,7 @@ import {
 import { raqam } from "@/lib/services/taom-hisob";
 import { sonOqi } from "@/lib/services/yozuv-forma";
 import { kunOyMatni } from "@/lib/services/yozuv-hisob";
-import { VAZN_PANELINI_OCH, type VaznPaneliTafsiloti } from "./vazn-hodisa";
+import { VAZN_PANELINI_OCH, vaznPaneliniOch, type VaznPaneliTafsiloti } from "./vazn-hodisa";
 
 const XABAR_MS = 5000;
 
@@ -30,7 +30,14 @@ const XABAR_MS = 5000;
  * ushlaydi). Saqlangach norma qayta hisoblanadi; o'zgargan bo'lsa panel yopilgach bir
  * qatorli xabar chiqadi. P3 dan tahrirlash uchun ham shu panel ochiladi (`vaznPaneliniOch`).
  */
-export function VaznPaneli({ progress }: { progress: Progress }) {
+export function VaznPaneli({
+  progress,
+  boshidaOchiq = false,
+}: {
+  progress: Progress;
+  /** Sahifa ochilgan zahoti panel ochilsin (F3'dan kelganda); manzildagi belgi keyin olib tashlanadi. */
+  boshidaOchiq?: boolean;
+}) {
   const router = useRouter();
   const t = useTarjima();
   const { til } = t;
@@ -56,6 +63,13 @@ export function VaznPaneli({ progress }: { progress: Progress }) {
     window.addEventListener(VAZN_PANELINI_OCH, och);
     return () => window.removeEventListener(VAZN_PANELINI_OCH, och);
   }, [oxirgi.vazn, birlik, til]);
+
+  useEffect(() => {
+    if (!boshidaOchiq) return;
+    vaznPaneliniOch();
+    // Orqaga qaytilganda yoki yangilanganda panel qayta ochilib ketmasin.
+    router.replace("/progress");
+  }, [boshidaOchiq, router]);
 
   useEffect(() => {
     if (!xabar) return;
@@ -126,19 +140,20 @@ export function VaznPaneli({ progress }: { progress: Progress }) {
               ? t.t("Vazn {0}–{1} {2} oralig'ida bo'lsin", chegara.min, chegara.max, birlikNomi)
               : undefined
           }
+          // Sakrash ogohlantirishi maydonning o'zida (prototip `Input warning`).
+          ogohlantirish={
+            sakrash && !tasdiq && solishtirish
+              ? t.t(
+                  "Oldingi o'lchovdan {0} farq qilyapti. To'g'rimi?",
+                  vaznMatni(Math.abs(kg - solishtirish.vazn), birlik, t),
+                )
+              : undefined
+          }
           onChange={(yangi) => {
             setMatn(yangi);
             setTasdiq(false);
           }}
         />
-        {sakrash && !tasdiq && solishtirish && (
-          <p className="text-izoh text-siyoh">
-            {t.t(
-              "Oldingi o'lchovdan {0} farq qilyapti. To'g'rimi?",
-              vaznMatni(Math.abs(kg - solishtirish.vazn), birlik, t),
-            )}
-          </p>
-        )}
         <div className="flex min-h-11 items-center gap-3 rounded-karta border border-chegara px-4 py-3">
           <span className="min-w-0 flex-1 text-asosiy">{t.t("Sana")}</span>
           <span className="text-izoh text-matn-2 tabular-nums">

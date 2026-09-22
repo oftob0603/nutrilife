@@ -17,7 +17,6 @@ import {
   JOYLAR,
   MAHALLAR,
   MAQSADLAR,
-  maqsadVaznKerakmi,
 } from "@/lib/services/onboarding-hisob";
 import type { Profil } from "@/lib/services/profil-hisob";
 import { raqam } from "@/lib/services/taom-hisob";
@@ -154,15 +153,14 @@ export function ShaxsiyMalumot({ profil }: { profil: Profil }) {
           />
         </Bolim>
 
-        {maqsadVaznKerakmi(forma.maqsad) && (
-          <OnboardingMaydoni
-            nomi={t("Maqsad vazn")}
-            birlik={erkin(vaznBirligi)}
-            qiymat={forma.maqsadVazn}
-            xato={xatoMatni(tekshiruv.maqsadVazn)}
-            onChange={(maqsadVazn) => setForma({ ...forma, maqsadVazn })}
-          />
-        )}
+        {/* Prototipdagidek doim ko'rinadi; "Vaznni saqlash"da qiymat tekshirilmaydi va saqlanmaydi. */}
+        <OnboardingMaydoni
+          nomi={t("Maqsad vazn")}
+          birlik={erkin(vaznBirligi)}
+          qiymat={forma.maqsadVazn}
+          xato={xatoMatni(tekshiruv.maqsadVazn)}
+          onChange={(maqsadVazn) => setForma({ ...forma, maqsadVazn })}
+        />
 
         <Bolim sarlavha={t("Faollik darajasi")}>
           <Variantlar
@@ -191,9 +189,15 @@ export function ShaxsiyMalumot({ profil }: { profil: Profil }) {
           </p>
         </Bolim>
 
-        <p className="rounded-karta border border-karta-chegara bg-karta p-4 text-izoh text-matn-2">
-          {t("Joriy vazn bu yerda o'zgartirilmaydi — u tarix yozuvi.")}
-        </p>
+        {/* Prototip F3: izoh va Statistika bo'limida P2 panelini ochadigan tugma bitta kartada. */}
+        <div className="flex flex-col gap-2 rounded-karta border border-karta-chegara bg-karta p-4">
+          <p className="text-izoh text-matn-2">
+            {t("Joriy vazn bu yerda o'zgartirilmaydi — u tarix yozuvi.")}
+          </p>
+          <Tugma korinish="uchinchi" onClick={() => router.push("/progress?vazn=1")}>
+            {t("Progress bo'limida vazn qo'shish")}
+          </Tugma>
+        </div>
 
         <div className="flex flex-col gap-2">
           {xato && (

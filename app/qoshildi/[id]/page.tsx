@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
+import { AiBelgisi } from "@/app/_components/AiBelgisi";
 import { KunlikDoira } from "@/app/_components/KunlikDoira";
 import { QaytishTaymeri } from "@/app/_components/QaytishTaymeri";
+import { QoshishPaneli, QoshishTugmasi } from "@/app/_components/QoshishPaneli";
 import { TaomRasmi } from "@/app/_components/TaomRasmi";
 import { TugmaHavola } from "@/app/_components/Tugma";
 import type { Reja } from "@/lib/services/norma-hisob";
@@ -86,14 +88,16 @@ export default async function QoshildiSahifasi({
             {t("{0} · {1} kkal", porsiya(yozuv.porsiya), raqam(yozuv.kaloriya))}
           </p>
         </div>
+        {yozuv.manba === "ai" && <AiBelgisi />}
       </div>
 
       <div className="flex w-full flex-col gap-2">
         <TugmaHavola href="/">{t("Asosiyga qaytish")}</TugmaHavola>
-        <TugmaHavola korinish="uchinchi" href="/taomlar">
-          {t("Yana qo'shish")}
-        </TugmaHavola>
+        {/* Prototip `AddedScreen`: "Yana qo'shish" E2 manba tanlash varag'ini ochadi. */}
+        <QoshishTugmasi korinish="uchinchi">{t("Yana qo'shish")}</QoshishTugmasi>
       </div>
+
+      <QoshishPaneli />
     </main>
   );
 }

@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { PorsiyaTanlagich } from "@/app/_components/PorsiyaTanlagich";
 import { TaomRasmi } from "@/app/_components/TaomRasmi";
+import type { Reja } from "@/lib/services/norma-hisob";
 import { taomNomi, type Taom } from "@/lib/services/taom-hisob";
 import type { QulfJavobi, TavsiyaAsosi } from "@/lib/services/taklif-hisob";
 import { apiAsos, serverdanApi } from "@/lib/api-asos";
@@ -18,20 +19,32 @@ async function taomniYukla(id: string): Promise<Taom | null> {
   return taom;
 }
 
+type KunAsosi = { tavsiyaAsosi: TavsiyaAsosi | null; reja: Reja | null };
+
 /**
- * Porsiya tavsiyasi uchun asos: bugun qolgan kaloriya va imkoniyat PRO'ga yopiqmi — Home
- * doirasi bilan bir manbadan (`GET /api/ovqat-yozuvlari`). Yuklanmasa (oflayn, eski API)
- * tavsiya kartasi chiqmaydi, taom sahifasi esa ishlayveradi.
+ * Bugungi kundan E5'ga kerak bo'lgan asos — Home doirasi bilan bir manbadan
+ * (`GET /api/ovqat-yozuvlari`): porsiya tavsiyasi uchun qolgan kaloriya va imkoniyat PRO'ga
+ * yopiqmi, makro chiziqlari uchun kunlik reja. Yuklanmasa (oflayn, eski API) tavsiya kartasi
+ * chiqmaydi, makrolar chiziqsiz ko'rinadi, taom sahifasi esa ishlayveradi.
  */
-async function tavsiyaAsosiniYukla(): Promise<TavsiyaAsosi | null> {
+async function kunAsosiniYukla(): Promise<KunAsosi> {
   try {
     const javob = await serverdanApi("/api/ovqat-yozuvlari");
-    if (!javob.ok) return null;
-    const kun = (await javob.json()) as { qoldi?: number | null; porsiya?: QulfJavobi };
-    if (typeof kun.qoldi !== "number" || !kun.porsiya) return null;
-    return { qoldi: kun.qoldi, yopiq: kun.porsiya.yopiq };
+    if (!javob.ok) return { tavsiyaAsosi: null, reja: null };
+    const kun = (await javob.json()) as {
+      qoldi?: number | null;
+      porsiya?: QulfJavobi;
+      reja?: Reja | null;
+    };
+    return {
+      tavsiyaAsosi:
+        typeof kun.qoldi === "number" && kun.porsiya
+          ? { qoldi: kun.qoldi, yopiq: kun.porsiya.yopiq }
+          : null,
+      reja: kun.reja ?? null,
+    };
   } catch {
-    return null;
+    return { tavsiyaAsosi: null, reja: null };
   }
 }
 
@@ -58,7 +71,7 @@ export default async function TaomSahifasi({
 }: PageProps<"/taomlar/[id]">) {
   const { t, til } = await serverTarjimoni();
   const { id } = await params;
-  const [taom, tavsiyaAsosi] = await Promise.all([taomniYukla(id), tavsiyaAsosiniYukla()]);
+  const [taom, { tavsiyaAsosi, reja }] = await Promise.all([taomniYukla(id), kunAsosiniYukla()]);
 
   if (!taom) notFound();
 
@@ -77,7 +90,7 @@ export default async function TaomSahifasi({
 
       <div className="flex flex-col gap-6">
         <TaomRasmi rasm={taom.rasm} olcham="katta" />
-        <PorsiyaTanlagich taom={taom} tavsiyaAsosi={tavsiyaAsosi} />
+        <PorsiyaTanlagich taom={taom} tavsiyaAsosi={tavsiyaAsosi} makroMaqsad={reja} />
       </div>
     </main>
   );

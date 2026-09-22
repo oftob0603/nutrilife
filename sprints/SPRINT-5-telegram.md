@@ -40,6 +40,12 @@ avtomatik takroriy to'lov · admin paneli.
 Deploy Vercel + Railway'da (DECISIONS 2026-09-16): bot webhook, eslatmalar va fon vazifalari
 serverless muhitga moslab rejalangan. Paywall (W1) uchun paywall-tz.md tayyor.
 
+Prototip auditidan S5'ga qolgan eslatmalar (2026-09-22):
+- F4 (obuna sahifasi): to'lovlar tarixi ro'yxati — har to'lov uchun summa, `sana · usul` va holat belgisi (prototip `screens-profile.jsx:291-307`); hozir faqat "Hozircha to'lov yo'q". To'lov integratsiyasi taskida qurish.
+- F5 (hisobni o'chirish, 2-qadam): izoh matni prototipda "O'chirilgach Telegramga qaytariladi va bot orqali bitta xabar yuboriladi." — ilovada vaqtincha "Hisob darhol o'chadi. Ilovani qayta ochsangiz, yangi hisob yaratiladi." Mini App SDK va bot ulangach prototip matniga qaytarish, o'chirishdan keyin ilovani yopish va bot xabari.
+- F4 "Obunani bekor qilish" tugmasi va tasdiq varag'i (S4 Handoff'idan).
+- Privacy/Terms matnida "18+" bandi: onboarding endi 18 dan kichik yoshni to'smaydi (DECISIONS 2026-09-22) — hujjat matni shunga mos yozilsin yoki qaror qayta ko'rilsin.
+
 ---
 
 *Kalori · vibecoding plugin bilan yaratilgan · vibecoding.uz*

@@ -118,6 +118,7 @@ export const SOZLAR = {
   // ── Ovqat qo'shish paneli (E2) ─────────────────────────────────────────────
   "Ovqat qo'shish": { ru: "Добавить приём пищи", en: "Add food" },
   "Kamera": { ru: "Камера", en: "Camera" },
+  "Rasmni ko'rib chiqing": { ru: "Проверьте фото", en: "Review the photo" },
   "Ovqatni rasmga oling": { ru: "Сфотографируйте еду", en: "Photograph your food" },
   "Galereya": { ru: "Галерея", en: "Gallery" },
   "Tayyor rasmni tanlang": { ru: "Выберите готовое фото", en: "Choose an existing photo" },
@@ -189,7 +190,18 @@ export const SOZLAR = {
   "Taom qidiruvi": { ru: "Поиск блюда", en: "Dish search" },
   "Baza hozircha bo'sh.": { ru: "База пока пуста.", en: "The database is empty for now." },
   "Taom qidirish": { ru: "Найти блюдо", en: "Search for a dish" },
+  "Osh, manti, somsa…": { ru: "Плов, манты, самса…", en: "Plov, manti, samsa…" },
+  "Natijalar": { ru: "Результаты", en: "Results" },
+  "Oxirgi qo'shilganlar": { ru: "Недавно добавленные", en: "Recently added" },
+  "Taomni matn bilan tasvirlab bering yoki rasmga oling.": {
+    ru: "Опишите блюдо текстом или сфотографируйте его.",
+    en: "Describe the dish in text or take a photo.",
+  },
   "Tozalash": { ru: "Очистить", en: "Clear" },
+  "Progress bo'limida vazn qo'shish": {
+    ru: "Добавить вес в разделе «Статистика»",
+    en: "Add weight in Statistics",
+  },
   "«{0}» topilmadi": { ru: "«{0}» не найдено", en: "“{0}” not found" },
   "Boshqa nom bilan qidirib ko'ring yoki taomni AI yordamida qo'shing.": {
     ru: "Попробуйте другое название или добавьте блюдо с помощью ИИ.",
@@ -239,6 +251,10 @@ export const SOZLAR = {
     en: "The dish could not be recognised several times today. Try again tomorrow or add it manually",
   },
   "Natija": { ru: "Результат", en: "Result" },
+  "AI porsiyani taxmin qildi. Og'irlikni aniq kiritsangiz, natija yanada aniq bo'ladi.": {
+    ru: "ИИ оценил порцию примерно. Укажите точный вес — результат станет точнее.",
+    en: "The AI estimated the portion. Enter the exact weight for a more accurate result.",
+  },
   "Ma'lumotni o'zingiz kiriting": { ru: "Введите данные сами", en: "Enter the details yourself" },
   "Raqamlar taxminiy, tahrirlash mumkin": {
     ru: "Цифры приблизительные, их можно изменить",

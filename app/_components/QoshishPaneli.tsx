@@ -17,7 +17,7 @@ export function QoshishTugmasi({
   korinish,
   children,
 }: {
-  korinish?: "asosiy" | "ikkilamchi";
+  korinish?: "asosiy" | "ikkilamchi" | "uchinchi";
   children?: React.ReactNode;
 }) {
   const { t } = useTarjima();
@@ -166,9 +166,10 @@ function Bolim({
  * E2 — ovqat qo'shish manbasini tanlash paneli. Kamera E3 ekranini ochadi; galereya tizim
  * rasm tanlagichini ochadi va tanlangan rasm yuklangach tahlil sahifasiga o'tadi.
  * Ostida skan hisoblagichi; limit tugaganda Kamera va Galereya o'chadi, qo'lda qo'shish ochiq.
- * Faqat E1 va E9 da chiziladi — oqim ichidagi ekranlarda panel yo'q.
+ * `faol` berilmasa pastki panel chizilmaydi, faqat E2 varag'i `QoshishTugmasi` bilan ochiladi —
+ * E8'dagi "Yana qo'shish" shunday ishlaydi (prototip `openSheet`).
  */
-export function QoshishPaneli({ faol }: { faol: "asosiy" | "statistika" | "profil" }) {
+export function QoshishPaneli({ faol }: { faol?: "asosiy" | "statistika" | "profil" }) {
   const router = useRouter();
   const { t, erkin } = useTarjima();
   const [ochiq, setOchiq] = useState(false);
@@ -223,7 +224,7 @@ export function QoshishPaneli({ faol }: { faol: "asosiy" | "statistika" | "profi
   return (
     <>
       {/* E2 ochiq bo'lganda panel yashiriladi — foydalanuvchi oqimdan tasodifan chiqib ketmasin. */}
-      {!ochiq && (
+      {faol !== undefined && !ochiq && (
         <nav
           aria-label={t("Asosiy navigatsiya")}
           className="fixed inset-x-4 bottom-[max(1.5rem,env(safe-area-inset-bottom))] mx-auto flex max-w-sm items-center gap-1 rounded-full border border-chegara bg-karta px-2 py-1 shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
@@ -283,6 +284,8 @@ export function QoshishPaneli({ faol }: { faol: "asosiy" | "statistika" | "profi
 
           <div className="relative mx-auto w-full max-w-md rounded-t-panel border border-karta-chegara bg-karta p-4 pb-8 motion-safe:animate-[panel_250ms_cubic-bezier(0.2,0,0,1)]">
             <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-chegara" />
+            {/* Prototip `BottomSheet title` — sarlavha ko'rinadi, faqat aria-label emas. */}
+            <h2 className="mb-4 text-sarlavha">{t("Ovqat qo'shish")}</h2>
             <div className="flex flex-col gap-3">
               <Qator
                 ikona="kamera"

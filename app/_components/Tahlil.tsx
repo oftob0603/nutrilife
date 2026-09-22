@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { AiBelgisi } from "@/app/_components/AiBelgisi";
 import { OrqagaSarlavha } from "@/app/_components/profil/OrqagaSarlavha";
 import { ProQulfi } from "@/app/_components/ProQulfi";
+import { SanashRaqami } from "@/app/_components/SanashRaqami";
 import { TavsiyaKartasi } from "@/app/_components/TavsiyaKartasi";
 import { useTavsiyaAsosi } from "@/app/_components/useTavsiyaAsosi";
 import { useTarjima } from "@/app/_components/TilTaminoti";
@@ -79,13 +80,12 @@ function skanSorovi(kalit: string, tana: { rasmId?: string; matn?: string }) {
   return sorov;
 }
 
-function Manba({ rasmId, matn, kichik = false }: { rasmId?: string; matn?: string; kichik?: boolean }) {
+/** E6'da kvadrat (260 px), E7'da butun enida, balandligi 160 px (prototip `FoodImage maxHeight`). */
+function Manba({ rasmId, matn, keng = false }: { rasmId?: string; matn?: string; keng?: boolean }) {
   const { t } = useTarjima();
-  const olcham = kichik ? "max-w-[120px]" : "max-w-[260px]";
+  const olcham = keng ? "h-40" : "aspect-square max-w-[260px]";
   return (
-    <div
-      className={`relative aspect-square w-full ${olcham} overflow-hidden rounded-karta bg-chegara`}
-    >
+    <div className={`relative w-full ${olcham} overflow-hidden rounded-karta bg-chegara`}>
       {rasmId ? (
         <Image
           src={`/api/rasmlar/${rasmId}`}
@@ -168,6 +168,11 @@ function Tasdiq({
   );
   const [saqlanmoqda, setSaqlanmoqda] = useState(false);
   const [saqlanmadi, setSaqlanmadi] = useState(false);
+  // "~" — AI taxmin qilgan qiymat belgisi (prototip `edited`): foydalanuvchi son yozgan
+  // zahoti porsiya va undan chiqadigan hamma narsa aniq hisoblanadi — belgi yo'qoladi.
+  const [tahrirlandi, setTahrirlandi] = useState(natija === null);
+  const taxminiy = natija !== null && !tahrirlandi;
+  const kaloriya = sonOqi(forma.kaloriya) ?? 0;
   // Porsiya tavsiyasi (PRO, prototip `ResultScreen`): AI zichligidan qolgan kaloriyaga
   // sig'adigan gramm; faqat AI natijasida — bo'sh formada zichlik yo'q. Asos yuklanmasa
   // (oflayn, eski API) karta ham, qulf ham chiqmaydi.
@@ -214,29 +219,70 @@ function Tasdiq({
     }
   }
 
-  return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col gap-4 px-4 pb-8 pt-6">
-      <h1 className="text-sarlavha">
-        {natija ? t("Natija") : t("Ma'lumotni o'zingiz kiriting")}
-      </h1>
+  function formaOzgardi(yangi: Forma) {
+    // Nom yoki ovqat turi o'zgarishi taxminni aniq qilmaydi — faqat sonlar.
+    if (
+      yangi.miqdor !== forma.miqdor ||
+      yangi.kaloriya !== forma.kaloriya ||
+      yangi.oqsil !== forma.oqsil ||
+      yangi.yog !== forma.yog ||
+      yangi.uglevod !== forma.uglevod
+    ) {
+      setTahrirlandi(true);
+    }
+    setForma(yangi);
+  }
 
-      <div className="flex items-center gap-4">
-        {rasmId && <Manba rasmId={rasmId} kichik />}
+  return (
+    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col px-4 pb-8">
+      {/* Prototip `ScreenHeader onBack` — orqaga bekor qilish bilan bir xil (yozuv hali yo'q). */}
+      <OrqagaSarlavha
+        sarlavha={natija ? t("Natija") : t("Ma'lumotni o'zingiz kiriting")}
+        orqagaNomi={t("Orqaga")}
+        onOrqaga={onBekor}
+      />
+
+      <div className="flex flex-1 flex-col gap-4">
+        {rasmId && <Manba rasmId={rasmId} keng />}
+
         {natija && (
-          <div className="flex min-w-0 flex-col items-start gap-2">
-            <AiBelgisi />
-            <p className="text-izoh text-matn-2">{t("Raqamlar taxminiy, tahrirlash mumkin")}</p>
+          <div className="flex flex-col gap-3">
+            {/* E7'ning asosiy lahzasi: kaloriya 0 dan sanab to'ladi, taxmin bo'lsa "~" bilan. */}
+            <p className="flex items-baseline gap-2">
+              <SanashRaqami
+                qiymat={kaloriya}
+                boshlangich={0}
+                format={(son) => `${taxminiy ? "~" : ""}${raqam(son)}`}
+                className="font-display text-raqam"
+              />
+              <span className="text-karta-sarlavha text-matn-2">{t("kkal")}</span>
+            </p>
+            <div>
+              <AiBelgisi />
+            </div>
           </div>
         )}
-      </div>
 
-      <YozuvFormasi
-        forma={forma}
-        xatolar={korinadiganXatolar}
-        birlik="g"
-        bloklangan={saqlanmoqda}
-        onChange={setForma}
-      />
+        <YozuvFormasi
+          forma={forma}
+          xatolar={korinadiganXatolar}
+          birlik="g"
+          bloklangan={saqlanmoqda}
+          taxminiy={taxminiy}
+          porsiyaIzohi={
+            taxminiy && (
+              <p className="-mt-2 flex items-start gap-2 text-[11px] leading-[1.45] text-matn-2">
+                <Uchqun />
+                <span className="min-w-0 flex-1">
+                  {t(
+                    "AI porsiyani taxmin qildi. Og'irlikni aniq kiritsangiz, natija yanada aniq bo'ladi.",
+                  )}
+                </span>
+              </p>
+            )
+          }
+          onChange={formaOzgardi}
+        />
 
       {natija && tavsiyaAsosi?.yopiq && (
         <ProQulfi zich sarlavha={t("Aqlli porsiya tavsiyalari — PRO")} />
@@ -246,30 +292,52 @@ function Tasdiq({
           sarlavha={t("Tavsiya: {0} g", tavsiyaGramm)}
           izoh={t("Qolgan {0} kkal ichida qoladi", raqam(tavsiyaAsosi?.qoldi ?? 0))}
           onClick={() => {
-            if (!saqlanmoqda) setForma(miqdorOzgardi(forma, String(tavsiyaGramm)));
+            if (!saqlanmoqda) formaOzgardi(miqdorOzgardi(forma, String(tavsiyaGramm)));
           }}
         />
       )}
 
-      <div className="mt-auto flex flex-col gap-2 pt-2">
-        {saqlanmadi && (
-          <p role="alert" className="text-center text-asosiy text-xato">
-            {t("Yozuv saqlanmadi. Qayta urinib ko'ring")}
-          </p>
-        )}
-        <Tugma
-          korinish="aksent"
-          yuklanmoqda={saqlanmoqda}
-          disabled={yaroqsiz}
-          onClick={tasdiqla}
-        >
-          {saqlanmadi ? t("Qayta urinish") : t("Tasdiqlash va qo'shish")}
-        </Tugma>
-        <Tugma korinish="uchinchi" disabled={saqlanmoqda} onClick={onBekor}>
-          {t("Bekor qilish")}
-        </Tugma>
+        <div className="mt-auto flex flex-col gap-2 pt-2">
+          {saqlanmadi && (
+            <p role="alert" className="text-center text-asosiy text-xato">
+              {t("Yozuv saqlanmadi. Qayta urinib ko'ring")}
+            </p>
+          )}
+          <Tugma
+            korinish="aksent"
+            yuklanmoqda={saqlanmoqda}
+            disabled={yaroqsiz}
+            onClick={tasdiqla}
+          >
+            {saqlanmadi ? t("Qayta urinish") : t("Tasdiqlash va qo'shish")}
+          </Tugma>
+          <Tugma korinish="uchinchi" disabled={saqlanmoqda} onClick={onBekor}>
+            {t("Bekor qilish")}
+          </Tugma>
+        </div>
       </div>
     </main>
+  );
+}
+
+/** Lucide `sparkles`, 12 px, aksent matn rangida (prototip E7 izohi). */
+function Uchqun() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="12"
+      height="12"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className="mt-[3px] shrink-0 text-aksent-matn"
+    >
+      <path d="M9.9 2.9 11.4 7a3 3 0 0 0 1.8 1.8l4.1 1.5-4.1 1.5a3 3 0 0 0-1.8 1.8l-1.5 4.1-1.5-4.1a3 3 0 0 0-1.8-1.8L2.5 10.3l4.1-1.5A3 3 0 0 0 8.4 7z" />
+      <path d="M20 3v4M22 5h-4M4 17v2M5 18H3" />
+    </svg>
   );
 }
 

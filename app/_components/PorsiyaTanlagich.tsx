@@ -20,6 +20,8 @@ import { sonOqi } from "@/lib/services/yozuv-forma";
 import { OVQAT_TURLARI, type OvqatTuri } from "@/lib/services/yozuv-hisob";
 import type { Kalit } from "@/lib/lugat/tarjima";
 import { apiSorov } from "@/lib/services/api-klient";
+import type { Reja } from "@/lib/services/norma-hisob";
+import { MakroChizigi } from "@/app/_components/MakroChizigi";
 import { OvqatTuriTanlagich } from "@/app/_components/OvqatTuriTanlagich";
 import { ProQulfi } from "@/app/_components/ProQulfi";
 import { TavsiyaKartasi } from "@/app/_components/TavsiyaKartasi";
@@ -51,6 +53,7 @@ function Chip({
   );
 }
 
+/** Reja yuklanmagan (oflayn, eski API) holat uchun zaxira — chiziqsiz, faqat son. */
 function Makro({ nomi, qiymat }: { nomi: Kalit; qiymat: number }) {
   const { t } = useTarjima();
   return (
@@ -64,10 +67,13 @@ function Makro({ nomi, qiymat }: { nomi: Kalit; qiymat: number }) {
 export function PorsiyaTanlagich({
   taom,
   tavsiyaAsosi = null,
+  makroMaqsad = null,
 }: {
   taom: Taom;
   /** E5 sahifasi yuklaydi; asos yo'q (yuklanmadi) — tavsiya kartasi ham, qulf ham chiqmaydi. */
   tavsiyaAsosi?: TavsiyaAsosi | null;
+  /** Kunlik makro maqsadlari — chiziqlar shunga nisbatan to'ladi (prototip `MacroBar goal`). */
+  makroMaqsad?: Pick<Reja, "oqsil" | "yog" | "uglevod"> | null;
 }) {
   const router = useRouter();
   const { t, til, erkin, miqdor: miqdorMatni } = useTarjima();
@@ -140,9 +146,24 @@ export function PorsiyaTanlagich({
       </div>
 
       <div className="flex gap-4">
-        <Makro nomi="Oqsil" qiymat={hisob.oqsil} />
-        <Makro nomi="Yog'" qiymat={hisob.yog} />
-        <Makro nomi="Uglevod" qiymat={hisob.uglevod} />
+        {makroMaqsad ? (
+          <>
+            <MakroChizigi til={til} nomi="Oqsil" qiymat={hisob.oqsil} maqsad={makroMaqsad.oqsil} />
+            <MakroChizigi til={til} nomi="Yog'" qiymat={hisob.yog} maqsad={makroMaqsad.yog} />
+            <MakroChizigi
+              til={til}
+              nomi="Uglevod"
+              qiymat={hisob.uglevod}
+              maqsad={makroMaqsad.uglevod}
+            />
+          </>
+        ) : (
+          <>
+            <Makro nomi="Oqsil" qiymat={hisob.oqsil} />
+            <Makro nomi="Yog'" qiymat={hisob.yog} />
+            <Makro nomi="Uglevod" qiymat={hisob.uglevod} />
+          </>
+        )}
       </div>
 
       <section className="flex flex-col gap-2">

@@ -21,6 +21,8 @@ export function QadamSarlavhasi({
   return (
     <header className="flex flex-col gap-2 px-4 pb-3 pt-2">
       <div className="flex min-h-11 items-center gap-2">
+        {/* Prototip `StepProgress`: tugma bo'lmasa o'rnida 4 px bo'shliq qoladi. */}
+        {!onOrqaga && <span aria-hidden="true" className="w-1 shrink-0" />}
         {onOrqaga && (
           <button
             type="button"
