@@ -35,12 +35,14 @@ avtomatik takroriy to'lov · admin paneli.
 
 - 2026-09-22: Telegram Mini App SDK ulandi (tema, orqaga tugmasi, safe area) va bot webhook `/api/bot` qo'shildi, jonli sinov deploy va webhook o'rnatishdan keyin (lib/telegram.ts, app/_components/TelegramUlagich.tsx, app/api/bot/route.ts, lib/services/bot.ts, scripts/bot-webhook.mjs)
 - 2026-09-22: backend Railway'ga ko'chirildi, frontend Vercel'da qoldi (DECISIONS 2026-09-16 amalga oshirildi) (next.config.ts, lib/api-asos.ts, lib/services/sessiya.ts, .env.example)
+- 2026-09-22: Railway'ga ko'chirish telefonda jonli sinovda tasdiqlandi, bot webhook Railway domeniga o'rnatildi
+- 2026-09-22: galereyadan rasm tanlanganda to'liq ekranli E6 yuklash holati va telefondagi nusxa tahlilda ishlatilishi qo'shildi (app/_components/QoshishPaneli.tsx, app/_components/Tahlil.tsx, lib/services/rasm-yuklash.ts)
 
 ## Handoff
 
 Deploy: frontend Vercel, backend Railway (DECISIONS 2026-09-16, amalga oshirildi 2026-09-22): bot webhook,
 eslatmalar va fon vazifalari Railway'dagi doimiy jarayonda ishlaydi. Paywall (W1) uchun paywall-tz.md tayyor.
-Push'dan keyin: telefonda jonli sinov, bot webhook'ini Railway domeniga qayta o'rnatish (scripts/bot-webhook.mjs), so'ng Vercel'dagi DATABASE_URL'ni o'chirish.
+Telefonda jonli sinov va bot webhook o'rnatish bajarildi (2026-09-22); Vercel'da faqat BACKEND_URL qoldi.
 
 Prototip auditidan S5'ga qolgan eslatmalar (2026-09-22):
 - F4 (obuna sahifasi): to'lovlar tarixi ro'yxati — har to'lov uchun summa, `sana · usul` va holat belgisi (prototip `screens-profile.jsx:291-307`); hozir faqat "Hozircha to'lov yo'q". To'lov integratsiyasi taskida qurish.

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SkanLimitiQatori } from "@/app/_components/SkanLimitiQatori";
+import { RasmYuklash } from "@/app/_components/Tahlil";
 import { useTarjima } from "@/app/_components/TilTaminoti";
 import { Tugma } from "@/app/_components/Tugma";
 import { useSkanLimiti } from "@/app/_components/useSkanLimiti";
@@ -165,7 +166,8 @@ function Bolim({
  * Suzuvchi pastki panel (prototip `BottomBar`: Asosiy · Retseptlar · [+] · Statistika · Profil;
  * jurnal panelda emas — Home'dagi "Hammasi" orqali ochiladi) va "+" ochadigan
  * E2 — ovqat qo'shish manbasini tanlash paneli. Kamera E3 ekranini ochadi; galereya tizim
- * rasm tanlagichini ochadi va tanlangan rasm yuklangach tahlil sahifasiga o'tadi.
+ * rasm tanlagichini ochadi — rasm tanlanishi bilan to'liq ekranli yuklash (E6 ko'rinishida)
+ * chiqadi, yuklangach tahlil sahifasiga o'tiladi.
  * Ostida skan hisoblagichi; limit tugaganda Kamera va Galereya o'chadi, qo'lda qo'shish ochiq.
  * `faol` berilmasa pastki panel chizilmaydi, faqat E2 varag'i `QoshishTugmasi` bilan ochiladi —
  * E8'dagi "Yana qo'shish" shunday ishlaydi (prototip `openSheet`).
@@ -174,11 +176,20 @@ export function QoshishPaneli({ faol }: { faol?: "asosiy" | "statistika" | "prof
   const router = useRouter();
   const { t, erkin } = useTarjima();
   const [ochiq, setOchiq] = useState(false);
-  const [yuklanmoqda, setYuklanmoqda] = useState(false);
-  const [xato, setXato] = useState<string | null>(null);
+  // Galereyadan tanlangan rasm: `manzil` — telefondagi nusxa (darhol ko'rinadi), `rasmId` —
+  // serverga yuklandi va tahlil sahifasi ochilmoqda.
+  const [yuklash, setYuklash] = useState<{
+    manzil: string;
+    rasmId: string | null;
+    xato: string | null;
+  } | null>(null);
+  const yuklanmoqda = yuklash !== null;
   const tanlagich = useRef<HTMLInputElement>(null);
   // Xatodan keyin "Qayta urinish" rasmni qayta tanlatmasdan yuboradi.
   const oxirgiRasm = useRef<Blob | null>(null);
+  // Har yuborishning tartib raqami: bekor qilingan yuklashning kech kelgan javobi e'tiborsiz qoladi.
+  const navbat = useRef(0);
+  const nusxaManzili = useRef<string | null>(null);
   const limit = useSkanLimiti(ochiq);
   // Limit hali kelmagan yoki olib bo'lmagan bo'lsa yo'llar ochiq — limitni baribir server ushlaydi.
   const korinish = typeof limit === "object" && limit !== null ? limitKorinishi(limit) : null;
@@ -187,26 +198,60 @@ export function QoshishPaneli({ faol }: { faol?: "asosiy" | "statistika" | "prof
   const tariflargaOt =
     korinish?.paywall && !yuklanmoqda ? () => router.push("/pro?manba=limit") : undefined;
 
+  function nusxaniBoshat() {
+    if (nusxaManzili.current) URL.revokeObjectURL(nusxaManzili.current);
+    nusxaManzili.current = null;
+  }
+
   async function yubor(rasm: Blob) {
+    const bu = ++navbat.current;
     oxirgiRasm.current = rasm;
-    setXato(null);
-    setYuklanmoqda(true);
+    if (!nusxaManzili.current) nusxaManzili.current = URL.createObjectURL(rasm);
+    const manzil = nusxaManzili.current;
+    setYuklash({ manzil, rasmId: null, xato: null });
     try {
-      router.push(`/tahlil/${await rasmniYukla(rasm)}`);
+      const rasmId = await rasmniYukla(rasm);
+      if (bu !== navbat.current) {
+        rasmniOchir(rasmId);
+        return;
+      }
+      setYuklash({ manzil, rasmId, xato: null });
+      router.push(`/tahlil/${rasmId}`);
     } catch (sabab) {
+      if (bu !== navbat.current) return;
       // Xabar — lug'at kaliti yoki serverdan kelgan matn (rasm-yuklash.ts).
-      setXato(sabab instanceof Error ? erkin(sabab.message) : t("Yuklanmadi"));
-      setYuklanmoqda(false);
+      const xato = sabab instanceof Error ? erkin(sabab.message) : t("Yuklanmadi");
+      setYuklash({ manzil, rasmId: null, xato });
     }
+  }
+
+  /** Foydalanuvchi kutmay bekor qildi — yuklangan rasm egasiz qolmasin. */
+  function rasmniOchir(rasmId: string) {
+    void fetch(`/api/rasmlar/${rasmId}`, { method: "DELETE", keepalive: true }).catch(() => {});
+  }
+
+  /** Yuklash ekranidan E2 panelga qaytish; ketayotgan yuklash natijasi tashlanadi. */
+  function yuklashniBekorQil() {
+    navbat.current++;
+    if (yuklash?.rasmId) {
+      // Tahlil sahifasiga o'tish boshlangan — joriy sahifaga qayta o'tish uni bekor qiladi.
+      rasmniOchir(yuklash.rasmId);
+      router.replace(window.location.pathname + window.location.search);
+    }
+    oxirgiRasm.current = null;
+    nusxaniBoshat();
+    setYuklash(null);
   }
 
   function yop() {
     if (yuklanmoqda) return;
     setOchiq(false);
-    setXato(null);
   }
 
-  useTelegramOrqaga(ochiq ? yop : undefined);
+  useTelegramOrqaga(yuklanmoqda ? yuklashniBekorQil : ochiq ? yop : undefined);
+
+  // Sahifadan chiqilganda (tahlilga o'tish) telefondagi nusxa xotirada qolmasin.
+  useEffect(() => nusxaniBoshat, []);
 
   // Panelni sahifadagi boshqa tugma ham ochadi (jurnalning bo'sh holati) — `QoshishTugmasi`.
   useEffect(() => {
@@ -301,7 +346,7 @@ export function QoshishPaneli({ faol }: { faol?: "asosiy" | "statistika" | "prof
               <Qator
                 ikona="galereya"
                 nomi={t("Galereya")}
-                izoh={yuklanmoqda ? t("Rasm yuklanmoqda…") : t("Tayyor rasmni tanlang")}
+                izoh={t("Tayyor rasmni tanlang")}
                 ochiq={!yuklanmoqda && !skanYopiq}
                 onClick={() => tanlagich.current?.click()}
                 onYopiq={tariflargaOt}
@@ -331,19 +376,6 @@ export function QoshishPaneli({ faol }: { faol?: "asosiy" | "statistika" | "prof
 
               <SkanLimitiQatori limit={limit} />
 
-              {xato && (
-                <div role="alert" className="flex items-center justify-between gap-3 px-1">
-                  <p className="text-izoh text-xato">{xato}</p>
-                  <button
-                    type="button"
-                    onClick={() => oxirgiRasm.current && void yubor(oxirgiRasm.current)}
-                    className="min-h-11 shrink-0 text-izoh font-medium text-siyoh"
-                  >
-                    {t("Qayta urinish")}
-                  </button>
-                </div>
-              )}
-
               <button
                 type="button"
                 onClick={yop}
@@ -354,6 +386,18 @@ export function QoshishPaneli({ faol }: { faol?: "asosiy" | "statistika" | "prof
               </button>
             </div>
           </div>
+        </div>
+      )}
+
+      {yuklash && (
+        <div className="fixed inset-0 z-20 overflow-y-auto bg-fon pt-[var(--xavfsiz-tepa)]">
+          <RasmYuklash
+            manzil={yuklash.manzil}
+            tayyor={yuklash.rasmId !== null}
+            xato={yuklash.xato}
+            onQayta={() => oxirgiRasm.current && void yubor(oxirgiRasm.current)}
+            onBekor={yuklashniBekorQil}
+          />
         </div>
       )}
     </>

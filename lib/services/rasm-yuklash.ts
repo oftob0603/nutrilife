@@ -44,6 +44,16 @@ export async function rasmniSiq(manba: Blob): Promise<Blob> {
   throw new Error(k("Rasm juda katta. Boshqa rasm tanlang"));
 }
 
+// Oxirgi yuklangan rasmning telefondagi nusxasi: tahlil ekrani uni omborga imzoli havola
+// orqali qayta so'ramasdan darhol ko'rsatadi — yuklash va tahlil orasida bo'sh joy miltillamaydi.
+// Bittasi saqlanadi, yangisi kelganda eskisi bo'shatiladi.
+let nusxa: { rasmId: string; manzil: string } | null = null;
+
+/** Rasm ko'rsatiladigan manzil: shu seansda yuklangan bo'lsa telefondagi nusxa, aks holda API. */
+export function rasmManzili(rasmId: string): string {
+  return nusxa?.rasmId === rasmId ? nusxa.manzil : `/api/rasmlar/${rasmId}`;
+}
+
 /**
  * Rasmni siqib serverga yuboradi va `rasmlar` dagi ID ni qaytaradi. Xato bo'lsa
  * foydalanuvchiga ko'rsatiladigan o'zbekcha matn (lug'at kaliti) bilan Error tashlaydi — ekran
@@ -72,5 +82,7 @@ export async function rasmniYukla(manba: Blob): Promise<string> {
   if (!javob.ok || !tana?.rasm) {
     throw new Error(tana?.xato ?? k("Yuklanmadi. Qayta urinib ko'ring"));
   }
+  if (nusxa) URL.revokeObjectURL(nusxa.manzil);
+  nusxa = { rasmId: tana.rasm.id, manzil: URL.createObjectURL(siqilgan) };
   return tana.rasm.id;
 }

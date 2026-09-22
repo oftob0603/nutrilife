@@ -15,6 +15,7 @@ import { XatoKartasi } from "@/app/_components/XatoKartasi";
 import { YozuvFormasi } from "@/app/_components/YozuvFormasi";
 import { k } from "@/lib/lugat/tarjima";
 import { apiSorov } from "@/lib/services/api-klient";
+import { rasmManzili } from "@/lib/services/rasm-yuklash";
 import { skanJami, type SkanJavobi, type SkanNatija } from "@/lib/services/skan-hisob";
 import { sigadiganGramm } from "@/lib/services/taklif-hisob";
 import { raqam } from "@/lib/services/taom-hisob";
@@ -80,15 +81,18 @@ function skanSorovi(kalit: string, tana: { rasmId?: string; matn?: string }) {
   return sorov;
 }
 
-/** E6'da kvadrat (260 px), E7'da butun enida, balandligi 160 px (prototip `FoodImage maxHeight`). */
-function Manba({ rasmId, matn, keng = false }: { rasmId?: string; matn?: string; keng?: boolean }) {
+/**
+ * E6'da kvadrat (260 px), E7'da butun enida, balandligi 160 px (prototip `FoodImage maxHeight`).
+ * `manzil` — rasm manzili: telefondagi nusxa (`rasmManzili`) yoki hali yuklanmagan rasmning o'zi.
+ */
+function Manba({ manzil, matn, keng = false }: { manzil?: string; matn?: string; keng?: boolean }) {
   const { t } = useTarjima();
   const olcham = keng ? "h-40" : "aspect-square max-w-[260px]";
   return (
     <div className={`relative w-full ${olcham} overflow-hidden rounded-karta bg-chegara`}>
-      {rasmId ? (
+      {manzil ? (
         <Image
-          src={`/api/rasmlar/${rasmId}`}
+          src={manzil}
           alt={t("Yuklangan ovqat rasmi")}
           fill
           unoptimized
@@ -105,7 +109,7 @@ function Manba({ rasmId, matn, keng = false }: { rasmId?: string; matn?: string;
 }
 
 /** Kutish holati: skaner chizig'i, almashinuvchi qadamlar, uzoq kutish qatori. */
-function Kutish({ rasmId, matn }: { rasmId?: string; matn?: string }) {
+function Kutish({ manzil, matn }: { manzil?: string; matn?: string }) {
   const { t } = useTarjima();
   const [qadam, setQadam] = useState(0);
   const [uzoq, setUzoq] = useState(false);
@@ -126,7 +130,7 @@ function Kutish({ rasmId, matn }: { rasmId?: string; matn?: string }) {
     <div className="flex flex-1 flex-col items-center justify-center gap-4">
       {/* Chiziq rasm chegarasidan chiqmasin — konteyner uni qirqadi. */}
       <div className="relative w-full max-w-[260px] overflow-hidden rounded-karta">
-        <Manba rasmId={rasmId} matn={matn} />
+        <Manba manzil={manzil} matn={matn} />
         <span
           aria-hidden="true"
           className="absolute inset-x-0 top-0 h-[10%] bg-gradient-to-b from-transparent via-aksent to-transparent opacity-90 motion-safe:animate-[skaner_1400ms_cubic-bezier(0.2,0,0,1)_infinite] motion-reduce:hidden"
@@ -138,6 +142,67 @@ function Kutish({ rasmId, matn }: { rasmId?: string; matn?: string }) {
         {uzoq && <p className="text-izoh text-matn-2">{t("Biroz cho'zilmoqda, kutamiz…")}</p>}
       </div>
     </div>
+  );
+}
+
+/**
+ * Galereyadan tanlangan rasm serverga yuklanayotgan payt — E6 bilan bir xil ekran, rasm
+ * telefonning o'zidan darhol ko'rinadi. Yuklash tugagach (`tayyor`) tahlil ko'rinishiga
+ * o'tadi, tahlil sahifasi ochilganda ham rasm joyidan qimirlamaydi.
+ */
+export function RasmYuklash({
+  manzil,
+  tayyor,
+  xato,
+  onQayta,
+  onBekor,
+}: {
+  manzil: string;
+  tayyor: boolean;
+  xato: string | null;
+  onQayta: () => void;
+  onBekor: () => void;
+}) {
+  const { t } = useTarjima();
+  return (
+    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col px-4">
+      {tayyor ? (
+        <Kutish manzil={manzil} />
+      ) : (
+        <div className="flex flex-1 flex-col items-center justify-center gap-4">
+          <div className="relative w-full max-w-[260px]">
+            <div className={xato ? "" : "opacity-60"}>
+              <Manba manzil={manzil} />
+            </div>
+            {/* Rasm ustida mavzudan qat'i nazar ko'rinsin — Kamera'dagidek sof oq. */}
+            {!xato && (
+              <span
+                aria-hidden="true"
+                className="absolute inset-0 m-auto size-10 animate-spin rounded-full border-4 border-white border-t-transparent drop-shadow"
+              />
+            )}
+          </div>
+          <h1 className="text-center text-sarlavha">
+            {xato ? t("Yuklanmadi") : t("Rasm yuklanmoqda…")}
+          </h1>
+          {xato && (
+            <p role="alert" className="text-center text-asosiy text-xato">
+              {xato}
+            </p>
+          )}
+        </div>
+      )}
+      <div className="flex flex-col gap-2 pb-8 pt-6">
+        {xato && (
+          <Tugma korinish="ikkilamchi" onClick={onQayta}>
+            {t("Qayta urinish")}
+          </Tugma>
+        )}
+        <Tugma korinish="uchinchi" onClick={onBekor}>
+          {t("Bekor qilish")}
+        </Tugma>
+      </div>
+    </main>
   );
 }
 
@@ -243,7 +308,7 @@ function Tasdiq({
       />
 
       <div className="flex flex-1 flex-col gap-4">
-        {rasmId && <Manba rasmId={rasmId} keng />}
+        {rasmId && <Manba manzil={rasmManzili(rasmId)} keng />}
 
         {natija && (
           <div className="flex flex-col gap-3">
@@ -399,7 +464,7 @@ export function Tahlil({
   if (!javob) {
     return (
       <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col px-4">
-        <Kutish key={urinish} rasmId={rasmId} matn={matn} />
+        <Kutish key={urinish} manzil={rasmId && rasmManzili(rasmId)} matn={matn} />
         <div className="flex flex-col gap-2 pb-8 pt-6">
           <Tugma korinish="uchinchi" onClick={bekorQil}>
             {t("Bekor qilish")}

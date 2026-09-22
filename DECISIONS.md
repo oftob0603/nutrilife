@@ -489,6 +489,11 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-22 · CSRF tekshiruvi (`sessiya.ts` → `begonaManba`) `APP_URL` hostini ham o'z manzil deb qabul qiladi.**
 *Sabab:* Vercel orqali uzatilgan so'rovda host Railway domeniga almashishi mumkin, `Origin` esa Vercel domeni bo'lib qoladi — aks holda barcha POST/PATCH/DELETE rad etilardi.
 
+## 2026-09-22 — galereya rasm yuklash ekrani
+
+**2026-09-22 · Galereyadan tanlangan rasm yuklanguncha to'liq ekranli E6 ko'rinishi chiqadi va yuklangan rasmning telefondagi nusxasi tahlil ekranida ishlatiladi.**
+*Sabab:* Foydalanuvchi qarori — paneldagi kichik "Rasm yuklanmoqda…" yozuvi ko'rinmay qolardi (dizayn-tz E2: "tanlangach E6"); nusxa R2'dan qayta yuklashdagi miltillashni yo'qotadi.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |
