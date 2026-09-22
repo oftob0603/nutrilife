@@ -113,6 +113,15 @@ export async function telegramBoyichaTopYokiYarat(
   }
 }
 
+/** Hisobning Telegram ID'si; hisob yo'q yoki Telegram'siz (dev) bo'lsa null. */
+export async function telegramIdniOl(foydalanuvchiId: string): Promise<bigint | null> {
+  const topildi = await db.foydalanuvchi.findUnique({
+    where: { id: foydalanuvchiId },
+    select: { telegramId: true },
+  });
+  return topildi?.telegramId ?? null;
+}
+
 /** Telegram ID bo'yicha saqlangan til; hisob hali yo'q bo'lsa null. */
 export async function telegramTili(telegramId: bigint): Promise<string | null> {
   const topildi = await db.foydalanuvchi.findUnique({ where: { telegramId }, select: { til: true } });

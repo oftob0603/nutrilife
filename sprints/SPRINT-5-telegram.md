@@ -52,6 +52,8 @@ avtomatik takroriy to'lov · admin paneli.
 - 2026-09-22: E4 taom qidiruvidan "Oxirgi qo'shilganlar" bo'limi olib tashlandi, ro'yxat faqat qidiruvda chiqadi (app/_components/TaomlarRoyxati.tsx, lib/lugat/sozlar.ts)
 - 2026-09-22: E4 taom qidiruvi ekrani (/taomlar) to'liq olib tashlandi, taom sahifasi /taomlar/[id] Home taklifi uchun qoldi va "Orqaga" Home'ga qaytadi (app/taomlar/, app/_components/TaomlarRoyxati.tsx, app/_components/TaomKartasi.tsx, app/api/taomlar/route.ts, lib/lugat/sozlar.ts)
 - 2026-09-22: fon vazifalari qo'shildi — obuna muddati bot xabarlari 5 bosqichda (7/3/1 kun oldin, tugagandan keyin, 2 kun keyin) va yetim rasmlarni tozalash, Railway'da FON_VAZIFALARI=1 bilan har daqiqada ishlaydigan rejalashtirgich (instrumentation.ts, lib/services/fon-vazifalari.ts, lib/services/obuna-xabar-hisob.ts, lib/services/bot.ts, prisma/schema.prisma, scripts/fon-vazifalari.mjs)
+- 2026-09-22: bot nomi va tavsiflari uch tilda (standart o'zbekcha, ru, en) Bot API orqali o'rnatildi (scripts/bot-tavsif.mjs); bot yangi botga almashtirildi, webhook Railway domeniga qayta o'rnatildi
+- 2026-09-22: bot chatidagi menyu tugmasi foydalanuvchi tilida — /start da til tanlanganda va Profil'da til o'zgarganda "Kirish" / "Войти" / "Open app" (lib/services/bot.ts, lib/services/foydalanuvchilar.ts, app/api/profil/sozlamalar/route.ts, lib/lugat/sozlar.ts)
 
 ## Handoff
 
@@ -74,6 +76,8 @@ P1 haftalik hisobot: ustunli ko'rinish jonli ma'lumotda (bu haftada 3+ kun yozuv
 Railway backend'ga ADMIN_TELEGRAM=NutrliLiferPro qo'shilishi kerak (foydalanuvchi qo'shadi) — aks holda W1 "Davom etish" "To'lov tez orada" varag'ini ochadi.
 
 Fon vazifalari: Railway backend'da FON_VAZIFALARI=1 qo'shilgan (foydalanuvchi, 2026-09-22); deploydan keyin Railway logida "Fon vazifalari —" qatorlari chiqishini tekshirish. Dev foydalanuvchining telegram_id si soxta (1000000001) — bot sinovi uchun haqiqiy hisob kerak.
+
+Bot almashtirilsa: Railway va .env da TELEGRAM_BOT_TOKEN, keyin scripts/bot-webhook.mjs https://nutrilife-production-e0a5.up.railway.app va scripts/bot-tavsif.mjs; @BotFather'da menyu tugmasi (URL https://nutrilife-khaki.vercel.app, Title "Kirish") va avatar.
 
 ---
 

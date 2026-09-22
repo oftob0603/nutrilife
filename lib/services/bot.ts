@@ -3,8 +3,8 @@
 // Logga foydalanuvchi matni yoki ismi yozilmaydi — faqat yangilanish turi va raqami.
 
 import { tarjimon, tilniOqi, TILLAR, type Tarjimon, type Til } from "../lugat/tarjima.ts";
-import { BotApiXatosi, tugmaniTasdiqla, xabarniTahrirla, xabarYubor } from "./bot-api.ts";
-import { botTiliniSaqlash, telegramTili } from "./foydalanuvchilar.ts";
+import { BotApiXatosi, botSorov, tugmaniTasdiqla, xabarniTahrirla, xabarYubor } from "./bot-api.ts";
+import { botTiliniSaqlash, telegramIdniOl, telegramTili } from "./foydalanuvchilar.ts";
 
 /** Telegram `User` ning bizga kerak qismi. */
 export type BotFoydalanuvchi = {
@@ -79,6 +79,32 @@ function boshlashTugmasi(t: Tarjimon["t"]): object[] {
 }
 
 /**
+ * Shu chatdagi menyu tugmasini (chat pastidagi ilova tugmasi) foydalanuvchi tiliga o'rnatadi.
+ * Telegram'da tugma matnini tilga qarab beradigan sozlama yo'q — @BotFather'dagisi hamma uchun
+ * bitta ("Kirish"), shuning uchun til tanlanganda har chatga alohida qo'yiladi. Xato til
+ * tanlashni to'xtatmaydi (foydalanuvchi botni bloklagan bo'lishi mumkin).
+ */
+export async function menyuTugmasiniOrnat(chatId: number, til: Til): Promise<void> {
+  const manzil = ilovaManzili();
+  if (!manzil) return;
+  const { t } = tarjimon(til);
+  try {
+    await botSorov("setChatMenuButton", {
+      chat_id: chatId,
+      menu_button: { type: "web_app", text: t("Kirish"), web_app: { url: manzil } },
+    });
+  } catch {
+    console.error("Bot: menyu tugmasi o'rnatilmadi");
+  }
+}
+
+/** Ilovada til o'zgarganda — shu foydalanuvchining bot chatidagi menyu tugmasi ham. */
+export async function foydalanuvchiMenyusiniYangila(foydalanuvchiId: string, til: Til): Promise<void> {
+  const telegramId = await telegramIdniOl(foydalanuvchiId);
+  if (telegramId !== null) await menyuTugmasiniOrnat(Number(telegramId), til);
+}
+
+/**
  * /start xabari: til hali noma'lum bo'lgani uchun savol uch tilda, pastda shu tartibda
  * uchta til tugmasi. Til bosilgach shu xabar `salomXabari` ga almashadi.
  */
@@ -142,6 +168,7 @@ async function tugmaniQaytaIshla(bosildi: BotTugmaBosildi): Promise<void> {
   const til = tilniOqi(mos[1]);
   await botTiliniSaqlash(BigInt(bosildi.from.id), til, bosildi.from.first_name || null);
   await tugmaniTasdiqla(bosildi.id);
+  await menyuTugmasiniOrnat(xabar.chat.id, til);
 
   const { matn, tugmalar } = salomXabari(til);
   try {

@@ -1,4 +1,5 @@
 import { tilCookie } from "@/lib/lugat/server";
+import { foydalanuvchiMenyusiniYangila } from "@/lib/services/bot";
 import { sozlamalarniSaqlash } from "@/lib/services/foydalanuvchilar";
 import { joriyFoydalanuvchiId, kirishKerak } from "@/lib/services/sessiya";
 import { sozlamaniTekshir } from "@/lib/services/sozlamalar-hisob";
@@ -21,6 +22,8 @@ export async function PATCH(sorov: Request) {
   if (!ozgarish) return Response.json({ xato: "So'rov o'qilmadi" }, { status: 400 });
 
   if (!(await sozlamalarniSaqlash(foydalanuvchiId, ozgarish))) return kirishKerak();
+  // Bot chatidagi menyu tugmasi ham yangi tilda bo'lsin; xato javobni to'xtatmaydi.
+  if (ozgarish.til) await foydalanuvchiMenyusiniYangila(foydalanuvchiId, ozgarish.til).catch(() => {});
 
   // Sahifalar tilni cookie'dan o'qiydi — til o'zgarsa u ham shu javobda yangilanadi.
   return new Response(null, {

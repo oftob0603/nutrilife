@@ -330,6 +330,8 @@ export const SOZLAR = {
     en: "By tapping “Start” you accept the terms of the Public Offer.",
   },
   "Boshlash": { ru: "Начать", en: "Start" },
+  // Bot chatidagi menyu tugmasi (setChatMenuButton) — qisqa bo'lsin.
+  "Kirish": { ru: "Войти", en: "Open app" },
   // ── Obuna muddati haqidagi bot xabarlari (S5 fon vazifalari) ─────────────
   "NutriLifer PRO obunangiz 7 kundan keyin tugaydi.": {
     ru: "Ваша подписка NutriLifer PRO закончится через 7 дней.",
