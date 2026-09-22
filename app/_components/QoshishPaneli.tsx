@@ -315,12 +315,15 @@ export function QoshishPaneli({ faol }: { faol?: "asosiy" | "statistika" | "prof
                   if (rasm) void yubor(rasm);
                 }}
               />
+              {/* Foydalanuvchi qarori (DECISIONS 2026-09-22): qo'lda qo'shish — matn maydoni
+                  (AI tahlil), taom bazasi emas; shuning uchun u ham skan limitiga bo'ysunadi. */}
               <Qator
                 ikona="qolda"
                 nomi={t("Qo'lda qo'shish")}
-                izoh={t("Taom bazasidan tanlang — cheklovsiz")}
-                ochiq={!yuklanmoqda}
-                onClick={() => router.push("/taomlar")}
+                izoh={t("Nima yeganingizni yozing — AI hisoblaydi")}
+                ochiq={!yuklanmoqda && !skanYopiq}
+                onClick={() => router.push("/tasvirlash")}
+                onYopiq={tariflargaOt}
               />
 
               <SkanLimitiQatori limit={limit} />

@@ -118,6 +118,9 @@ paywall ekrani (W1) uchun paywall-tz.md, obuna ekrani (F4) uchun profil-tz.md ta
 Prototip mosligi auditi (2026-09-22, S4 yopilgach): to'rt Explore agent S1-S4 ekranlarini prototip bilan solishtirdi, ~30 farq topildi va tuzatildi (DECISIONS 2026-09-22 — to'rtta qaror). Yo'l-yo'lakay topilgan eski xato ham tuzatildi: E5 "Jurnalga qo'shish" 13-qadamdan beri 400 qaytarar edi (taom id slug, server UUID kutgan) — endi ishlaydi.
 Sinalmagan (audit): O1 chiqish animatsiyasi va O3 placeholder ko'z bilan, ruscha/inglizcha ko'rinish, FREE'da bosiladigan PRO belgisi, E7 rasmli (kamera) oqim.
 Keyingi: S4 yakunlandi, S5'ga o'tish uchun foydalanuvchi ruxsati kerak.
+- 2026-09-22 (davomi 11): foydalanuvchi qarori bilan E2 "Qo'lda qo'shish" taom bazasi (E4) o'rniga matn tasvirlash ekranini ochadi, tahlil xato kartalaridagi "Qo'lda qo'shish" bo'sh forma ochadi — `QoshishPaneli.tsx`, `Tasvirlash.tsx`, `Tahlil.tsx`, `app/api/skan/route.ts`, `lib/services/skan-hisob.ts`, `lib/lugat/sozlar.ts` (DECISIONS 2026-09-22).
+
+Keyingi (davomi 11): `/taomlar` (E4) UI'dan uzildi, sahifa va API joyida qoladi — E5 Home taklifi kartasidan ochiladi; sinalmagan ruscha/inglizcha yangi matnlar va limit tugagan holatdagi yangi izoh/o'chiq qator.
 
 ---
 

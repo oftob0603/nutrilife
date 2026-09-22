@@ -458,6 +458,9 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-22 · O5'da 18 dan kichik yosh to'smaydi: qizil izoh chiqadi, "Davom etish" ochiq, server 13–100 oralig'ini qabul qiladi (g'ildirak 13 dan boshlanadi).**
 *Sabab:* Foydalanuvchi qarori — prototip O5 shunday (README'da ataylab deb yozilgan); onboarding-tz "tugma o'chadi" degan edi. S5 shartlaridagi "18+" bandi bu bilan zid — hujjat matni yozilganda alohida ko'rib chiqiladi.
 
+**2026-09-22 · E2'dagi "Qo'lda qo'shish" taom bazasini (E4) emas, matn bilan tasvirlash ekranini ochadi — "Nima yedingiz?" maydoni, AI hisoblaydi. Bu AI skan bo'lgani uchun limitga bo'ysunadi: limit tugaganda Kamera va Galereya kabi o'chadi, bosilsa tariflar. Taom bazasiga (E4 qidiruvi) ilovada hech qayerdan kirilmaydi: tahlil xatosi kartalaridagi "Qo'lda qo'shish" ham bazani emas, bo'sh yozuv formasini ("Baribir tahrirlab kiritish") ochadi.**
+*Sabab:* Foydalanuvchi qarori — prototipdagi baza qidiruvi o'rniga foydalanuvchi shunchaki yeganini yozib qo'yishi kerak; "taom bazasiga kirish joyi shart emas". Prototipdan chekinish. Oqibatlari: FREE'da 3 bepul skan tugagach E2'da ochiq yo'l qolmaydi (limit xabarlari endi "qo'lda qo'shish cheklovsiz" demaydi); `/taomlar` ro'yxati (E4) UI'dan uzildi, lekin sahifa va API joyida qoladi — E5 (taom sahifasi) Home'dagi taom taklifi kartasidan ochilaveradi.
+
 **2026-09-22 · Grafik oynasida (30/90 kun) ikkitadan kam o'lchov qolsa oxirgi ikki o'lchov ko'rsatiladi; "Ikkinchi o'lchovdan keyin grafik chiziladi" faqat jami bitta o'lchovda. Grafik kartasidagi "Vazn qo'shish" tugmasi olib tashlandi — vazn faqat tepadagi "Vaznni qayd etish" orqali kiritiladi.**
 *Sabab:* Foydalanuvchi qarori — bitta sahifada vazn qo'shishning ikki joyi ortiqcha; eski o'lchovli foydalanuvchiga "ikkinchi o'lchov yo'q" deyish noto'g'ri edi.
 

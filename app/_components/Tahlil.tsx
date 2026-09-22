@@ -390,7 +390,9 @@ export function Tahlil({
   if (javob?.holat === "tayyor") {
     return <Tasdiq natija={javob.natija} rasmId={rasmId} onBekor={bekorQil} />;
   }
-  if (javob?.holat === "tanib_bolmadi" && qoldaKiritish) {
+  // Ikkala xato ekranidan ham ochiladi: AI taniy olmadi yoki javob bermadi — qiymatni
+  // foydalanuvchining o'zi kiritadi (bo'sh forma, AI belgisiz, skan sarflanmaydi).
+  if (javob && qoldaKiritish) {
     return <Tasdiq natija={null} rasmId={rasmId} onBekor={bekorQil} />;
   }
 
@@ -408,9 +410,10 @@ export function Tahlil({
   }
 
   // Karta ichida birinchi yo'l "ikkilamchi", qolgani "uchinchi" (prototip `ErrorState`).
-  const qolda = (korinish: "ikkilamchi" | "uchinchi") => (
-    <Tugma korinish={korinish} onClick={() => ket("/taomlar")}>
-      {t("Qo'lda qo'shish")}
+  // Taom bazasiga yo'l yo'q (DECISIONS 2026-09-22) — zaxira yo'l qiymatni o'zi kiritish.
+  const ozimKiritaman = (korinish: "ikkilamchi" | "uchinchi") => (
+    <Tugma korinish={korinish} onClick={() => setQoldaKiritish(true)}>
+      {t("Baribir tahrirlab kiritish")}
     </Tugma>
   );
 
@@ -438,7 +441,6 @@ export function Tahlil({
                 {t("Qayta yozish")}
               </Tugma>
             )}
-            {qolda("uchinchi")}
           </XatoKartasi>
           <div className="mt-3">
             <Tugma korinish="uchinchi" onClick={() => setQoldaKiritish(true)}>
@@ -453,7 +455,7 @@ export function Tahlil({
               {t("Qayta urinish")}
             </Tugma>
           )}
-          {qolda(javob.qaytaUrinsa ? "uchinchi" : "ikkilamchi")}
+          {ozimKiritaman(javob.qaytaUrinsa ? "uchinchi" : "ikkilamchi")}
         </XatoKartasi>
       )}
     </main>

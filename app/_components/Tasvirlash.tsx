@@ -28,8 +28,9 @@ function ChapStrelka() {
 }
 
 /**
- * Matn bilan tasvirlash — E4 "topilmadi" holatidan chiqish yo'li. Yuborilgach rasm oqimi
- * bilan bir xil tahlil ekrani (E6) ochiladi; bekor qilinsa yozilgan matn joyida qoladi.
+ * Matn bilan tasvirlash — E2'dagi "Qo'lda qo'shish" ochadigan ekran (DECISIONS 2026-09-22:
+ * taom bazasi emas, matn maydoni) va E4 "topilmadi" holatidan chiqish yo'li. Yuborilgach rasm
+ * oqimi bilan bir xil tahlil ekrani (E6) ochiladi; bekor qilinsa yozilgan matn joyida qoladi.
  * Matnli tasvir ham AI skan — rasm bilan bitta limit; tugagan bo'lsa tugma o'chadi.
  */
 export function Tasvirlash({ boshlangich }: { boshlangich: string }) {
@@ -48,7 +49,7 @@ export function Tasvirlash({ boshlangich }: { boshlangich: string }) {
     <main className="mx-auto w-full max-w-md px-4 pb-8">
       <header className="flex items-center gap-2 py-4">
         <Link
-          href="/taomlar"
+          href="/"
           aria-label={t("Orqaga")}
           className="-ml-3 flex size-11 items-center justify-center rounded-chip text-siyoh"
         >

@@ -124,18 +124,22 @@ export const SOZLAR = {
   "Tayyor rasmni tanlang": { ru: "Выберите готовое фото", en: "Choose an existing photo" },
   "Rasm yuklanmoqda…": { ru: "Фото загружается…", en: "Uploading photo…" },
   "Qo'lda qo'shish": { ru: "Добавить вручную", en: "Add manually" },
+  "Nima yeganingizni yozing — AI hisoblaydi": {
+    ru: "Напишите, что вы ели — ИИ посчитает",
+    en: "Write what you ate — the AI will count it",
+  },
   "Taom bazasidan tanlang — cheklovsiz": {
     ru: "Выберите из базы блюд — без ограничений",
     en: "Pick from the dish database — unlimited",
   },
   "{0} tadan {1} ta skan qoldi": { ru: "Осталось сканирований: {1} из {0}", en: "{1} of {0} scans left" },
-  "Bepul skanlar tugadi. Qo'lda qo'shish cheklovsiz.": {
-    ru: "Бесплатные сканирования закончились. Вручную можно добавлять без ограничений.",
-    en: "Your free scans are used up. Adding manually is unlimited.",
+  "Bepul skanlar tugadi.": {
+    ru: "Бесплатные сканирования закончились.",
+    en: "Your free scans are used up.",
   },
-  "Bugungi {0} ta skan ishlatildi. Ertaga yangilanadi — qo'lda qo'shish cheklovsiz.": {
-    ru: "Сегодняшние сканирования ({0}) использованы. Завтра лимит обновится — вручную можно добавлять без ограничений.",
-    en: "Today's {0} scans are used up. They reset tomorrow — adding manually is unlimited.",
+  "Bugungi {0} ta skan ishlatildi. Ertaga yangilanadi.": {
+    ru: "Сегодняшние сканирования ({0}) использованы. Завтра лимит обновится.",
+    en: "Today's {0} scans are used up. They reset tomorrow.",
   },
   "Yuklanmadi": { ru: "Не загружено", en: "Upload failed" },
 
@@ -234,17 +238,14 @@ export const SOZLAR = {
     en: "The AI did not respond. Try again, or add the dish manually.",
   },
   "Internet bilan aloqa yo'q": { ru: "Нет связи с интернетом", en: "No internet connection" },
-  "Bugungi AI skanlar tugadi. Taomni qo'lda qo'shish cheklovsiz": {
-    ru: "ИИ-сканирования на сегодня закончились. Добавлять блюда вручную можно без ограничений",
-    en: "Today's AI scans are used up. Adding dishes manually is unlimited",
+  "Bugungi AI skanlar tugadi. Ertaga yana urinib ko'ring": {
+    ru: "ИИ-сканирования на сегодня закончились. Попробуйте завтра",
+    en: "Today's AI scans are used up. Try again tomorrow",
   },
-  "Bepul skanlar tugadi. Taomni qo'lda qo'shish cheklovsiz": {
-    ru: "Бесплатные сканирования закончились. Добавлять блюда вручную можно без ограничений",
-    en: "Your free scans are used up. Adding dishes manually is unlimited",
-  },
-  "Bugungi skanlar ishlatildi. Ertaga yangilanadi — qo'lda qo'shish cheklovsiz": {
-    ru: "Сканирования на сегодня использованы. Завтра лимит обновится — вручную можно добавлять без ограничений",
-    en: "Today's scans are used up. They reset tomorrow — adding manually is unlimited",
+  // "Bepul skanlar tugadi" — W1 bo'limida (bitta kalit, ikki joyda ishlatiladi).
+  "Bugungi skanlar ishlatildi. Ertaga yangilanadi": {
+    ru: "Сканирования на сегодня использованы. Завтра лимит обновится",
+    en: "Today's scans are used up. They reset tomorrow",
   },
   "Bugun taom bir necha marta tanilmadi. Ertaga yana urinib ko'ring yoki taomni qo'lda qo'shing": {
     ru: "Сегодня блюдо не удалось распознать несколько раз. Попробуйте завтра или добавьте блюдо вручную",

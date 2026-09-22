@@ -13,12 +13,12 @@ export const maxDuration = 60;
 
 // Ekranda ko'rinadi — klient lug'at orqali tarjima qiladi.
 const LIMIT_XABARLARI: Record<LimitSababi | "kun", string> = {
-  skan: k("Bepul skanlar tugadi. Taomni qo'lda qo'shish cheklovsiz"),
-  kun: k("Bugungi skanlar ishlatildi. Ertaga yangilanadi — qo'lda qo'shish cheklovsiz"),
+  skan: k("Bepul skanlar tugadi"),
+  kun: k("Bugungi skanlar ishlatildi. Ertaga yangilanadi"),
   tanilmagan: k(
     "Bugun taom bir necha marta tanilmadi. Ertaga yana urinib ko'ring yoki taomni qo'lda qo'shing",
   ),
-  texnik: k("Bugungi AI skanlar tugadi. Taomni qo'lda qo'shish cheklovsiz"),
+  texnik: k("Bugungi AI skanlar tugadi. Ertaga yana urinib ko'ring"),
 };
 
 const UUID_QOLIPI = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;

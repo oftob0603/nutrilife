@@ -131,13 +131,13 @@ export function limitKorinishi({ davr, soni, qoldi, tanilmaganQoldi }: SkanQoldi
     return davr === "kun"
       ? {
           tugagan: true,
-          matn: k("Bugungi {0} ta skan ishlatildi. Ertaga yangilanadi — qo'lda qo'shish cheklovsiz."),
+          matn: k("Bugungi {0} ta skan ishlatildi. Ertaga yangilanadi."),
           qiymatlar: [soni],
           paywall: false,
         }
       : {
           tugagan: true,
-          matn: k("Bepul skanlar tugadi. Qo'lda qo'shish cheklovsiz."),
+          matn: k("Bepul skanlar tugadi."),
           qiymatlar: [],
           paywall: true,
         };
