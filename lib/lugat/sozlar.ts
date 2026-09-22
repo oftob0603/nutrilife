@@ -710,6 +710,38 @@ export const SOZLAR = {
     en: "Shows your daily nutrition balance on a 0–100 scale.",
   },
 
+  // ── Qolgan kaloriyaga mos taklif (E1) va porsiya tavsiyasi (E5) ────────────
+  "Qolgan kaloriyaga mos": { ru: "Под оставшиеся калории", en: "Fits your remaining calories" },
+  "Qolgan kaloriyangizga sig'adigan taomlar tanlanadi.": {
+    ru: "Подбираем блюда, которые вписываются в оставшиеся калории.",
+    en: "We pick dishes that fit within your remaining calories.",
+  },
+  "Kunlik norma to'ldi — bugunga taklif yo'q.": {
+    ru: "Дневная норма набрана — на сегодня предложений нет.",
+    en: "You’ve reached today’s target — no suggestions for today.",
+  },
+  "Qolgan {0} kkal uchun mos taom topilmadi.": {
+    ru: "Под оставшиеся {0} ккал подходящего блюда не нашлось.",
+    en: "No dish fits the remaining {0} kcal.",
+  },
+  "{0} · {1} kkal · qolgan {2} kkal ichida": {
+    ru: "{0} · {1} ккал · в пределах оставшихся {2} ккал",
+    en: "{0} · {1} kcal · within the remaining {2} kcal",
+  },
+  "Aqlli porsiya tavsiyalari — PRO": {
+    ru: "Умные советы по размеру порции — PRO",
+    en: "Smart portion advice — PRO",
+  },
+  "Tavsiya: {0}": { ru: "Совет: {0}", en: "Suggested: {0}" },
+  "{0} kkal — qolgan {1} kkal ichida": {
+    ru: "{0} ккал — в пределах оставшихся {1} ккал",
+    en: "{0} kcal — within the remaining {1} kcal",
+  },
+  "{0} kkal — odatdagi katta porsiya, qolgan {1} kkal ichida": {
+    ru: "{0} ккал — обычная большая порция, в пределах оставшихся {1} ккал",
+    en: "{0} kcal — a regular large serving, within the remaining {1} kcal",
+  },
+
   // ── Mavzu ──────────────────────────────────────────────────────────────────
   "Mavzu": { ru: "Тема", en: "Theme" },
   "Yorug'": { ru: "Светлая", en: "Light" },

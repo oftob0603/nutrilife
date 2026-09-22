@@ -6,12 +6,14 @@ import { MakroChizigi } from "@/app/_components/MakroChizigi";
 import { OflaynChizigi } from "@/app/_components/OflaynChizigi";
 import { QaytaUrinish } from "@/app/_components/QaytaUrinish";
 import { ScoreKartasi } from "@/app/_components/ScoreKartasi";
+import { TaklifKartasi } from "@/app/_components/TaklifKartasi";
 import { XatoKartasi } from "@/app/_components/XatoKartasi";
 import { YozuvQatori } from "@/app/_components/YozuvQatori";
 import { QoshishPaneli, QoshishTugmasi } from "@/app/_components/QoshishPaneli";
 import type { Reja } from "@/lib/services/norma-hisob";
 import type { Profil } from "@/lib/services/profil-hisob";
 import type { ScoreJavobi } from "@/lib/services/score-hisob";
+import type { TaklifJavobi } from "@/lib/services/taklif-hisob";
 import {
   bugunSana,
   qoshniSana,
@@ -27,9 +29,16 @@ import type { Tarjimon } from "@/lib/lugat/tarjima";
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
 export const dynamic = "force-dynamic";
 
-// `score` eski API javobida bo'lmaydi (frontend va backend alohida deploy bo'ladi) — bo'lim
-// shunda chiqmaydi, Home esa buzilmaydi.
-type Kun = { yozuvlar: Yozuv[]; jami: Jami; reja: Reja; score?: ScoreJavobi };
+// `score`, `qoldi` va `taklif` eski API javobida bo'lmaydi (frontend va backend alohida
+// deploy bo'ladi) — tegishli bo'lim shunda chiqmaydi, Home esa buzilmaydi.
+type Kun = {
+  yozuvlar: Yozuv[];
+  jami: Jami;
+  reja: Reja;
+  score?: ScoreJavobi;
+  qoldi?: number | null;
+  taklif?: TaklifJavobi;
+};
 
 async function kunniYukla(sana: string): Promise<Kun | null> {
   try {
@@ -179,6 +188,10 @@ export default async function HomeSahifasi({ searchParams }: PageProps<"/">) {
                   </ul>
                 )}
               </section>
+
+              {bugunmi && kun.taklif && typeof kun.qoldi === "number" && (
+                <TaklifKartasi til={til} qoldi={kun.qoldi} taklif={kun.taklif} />
+              )}
             </>
           )}
         </div>
