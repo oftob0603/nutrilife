@@ -659,6 +659,10 @@ export const SOZLAR = {
   "Maxfiylik siyosati": { ru: "Политика конфиденциальности", en: "Privacy Policy" },
   "Hozir emas": { ru: "Не сейчас", en: "Not now" },
   "Tariflarni yuklab bo'lmadi": { ru: "Не удалось загрузить тарифы", en: "Could not load the plans" },
+  "NutriLifer PRO — {0} tarif ({1} so'm) ga obuna bo'lmoqchiman.": {
+    ru: "NutriLifer PRO — хочу оформить подписку на тариф «{0}» ({1} сум).",
+    en: "NutriLifer PRO — I'd like to subscribe to the {0} plan ({1} UZS).",
+  },
   "To'lov tez orada": { ru: "Оплата скоро появится", en: "Payments are coming soon" },
   "To'lov tez orada ishga tushadi. Hozircha ilovadan bepul foydalanishingiz mumkin.": {
     ru: "Оплата скоро заработает. Пока приложением можно пользоваться бесплатно.",

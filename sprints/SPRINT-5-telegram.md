@@ -11,9 +11,9 @@ qabul qilsin.
 - [x] Bot webhook'i API yo'li sifatida (`/api/bot`) — 2026-09-22 dan backend Railway'da, webhook Railway domeniga o'rnatiladi
 - [x] Bot kirish nuqtasi: `/start` — salomlashish, til tanlash (o'zbek, rus, ingliz) va "Ilovani ochish" tugmasi. Bot ichida ovqat kiritish yo'q
 - [x] P1 PRO bo'limlari: batafsil ovqatlanish statistikasi (7/30 kun) va haftalik ovqatlanish hisoboti prototipdagidek; FREE'da qulf kartasi (DECISIONS 2026-09-22)
-- [ ] Paywall va obuna ekrani: uch tarif (39,000 so'm/oy · 170,000 so'm/6 oy · 290,000 so'm/yil), yillik tavsiya belgisi, oylik ekvivalent va tejash ko'rsatilishi, "Hozir emas" tugmasi
-- [ ] To'lov integratsiyasi: Click, Payme va Telegram Stars. Kalitlar Railway Environment Variables'da, qaytish manzillari production domeniga yoziladi. `tolovlar` jadvali, holat zanjiri `boshlandi` -> `to'landi` / `bekor qilindi`
-- [ ] Obuna faollashuvi: muvaffaqiyatli to'lovdan keyin `obunalar` yozuvi va PRO huquqlari darhol ochiladi
+- [x] Paywall va obuna ekrani: uch tarif (39,000 so'm/oy · 170,000 so'm/6 oy · 290,000 so'm/yil), yillik tavsiya belgisi, oylik ekvivalent va tejash ko'rsatilishi, "Hozir emas" tugmasi
+- [ ] To'lov integratsiyasi: Click, Payme va Telegram Stars. Kalitlar Railway Environment Variables'da, qaytish manzillari production domeniga yoziladi. `tolovlar` jadvali, holat zanjiri `boshlandi` -> `to'landi` / `bekor qilindi` — KEYINGA QOLDIRILDI (DECISIONS 2026-09-22: hozircha obuna admin orqali qo'lda, to'lov API'lari real foydalanuvchilardan keyin talabga qarab)
+- [ ] Obuna faollashuvi: muvaffaqiyatli to'lovdan keyin `obunalar` yozuvi va PRO huquqlari darhol ochiladi — KEYINGA QOLDIRILDI (DECISIONS 2026-09-22: hozircha obuna admin orqali qo'lda, to'lov API'lari real foydalanuvchilardan keyin talabga qarab)
 - [ ] Bildirishnomalar bot orqali: nonushta, tushlik, kechki ovqat va suv eslatmalari; sozlamalarda har biri alohida yoqiladi va o'chiriladi
 - [ ] Fon vazifalari (backend Railway'da doimiy ishlaydi — Railway cron yoki jarayon ichidagi rejalashtirgich, sprint boshida tanlanadi): obuna muddati tugashi va tugashdan oldingi ogohlantirish, PRO kunlik skan limitining yangilanishi, kunlik xulosani yopish
 - [ ] Privacy Policy va Terms of Use sahifalari: 18+, AI taxminlari, obuna va to'lov, bekor qilish, pul qaytarilmasligi, sog'liq bo'yicha ogohlantirish, rasmlar uchinchi tomon AI xizmatiga yuborilishi, O'zbekiston Respublikasi qonuni
@@ -44,6 +44,7 @@ avtomatik takroriy to'lov · admin paneli.
 - 2026-09-22: W1 paywall "Davom etish" tugmasiga prototipdagi pw-sweep yorug'lik effekti qo'shildi, faqat shu tugmada (app/globals.css, app/_components/Tugma.tsx, app/_components/Tariflar.tsx, DESIGN.md)
 - 2026-09-22: W1 orqaga chiqishi ("Hozir emas" va Telegram/tizim orqaga tugmasi) kelgan sahifaga qaytadigan qilindi, Telegram Mini App yopilib ketmaydi (app/_components/Tariflar.tsx, lib/services/tarif-hisob.ts)
 - 2026-09-22: P1 sahifasiga PRO uchun batafsil ovqatlanish statistikasi va haftalik ovqatlanish hisoboti prototipdagidek qurildi, FREE'da qulf kartasi (lib/services/statistika-hisob.ts, lib/services/statistika.ts, app/api/statistika/route.ts, app/_components/progress/OvqatStatistikasi.tsx, app/progress/page.tsx, app/progress/yukla.ts, lib/services/huquqlar.ts, lib/services/yozuv-hisob.ts, lib/lugat/sozlar.ts)
+- 2026-09-22: W1 "Davom etish" tanlangan tarif yozilgan tayyor xabar bilan admin Telegram chatini ochadigan qilindi, tarif kartasida oylik narx katta ko'rsatiladi (app/_components/Tariflar.tsx, app/api/tariflar/route.ts, lib/services/tarif-hisob.ts, lib/telegram.ts, lib/lugat/sozlar.ts, .env.example)
 
 ## Handoff
 
@@ -59,9 +60,11 @@ Prototip auditidan S5'ga qolgan eslatmalar (2026-09-22):
 
 W1 orqaga tugmasi: telefonda jonli sinovda tasdiqlandi (2026-09-22).
 
-Keyingi: 4-task (Paywall va obuna ekrani, paywall-tz.md). 3-task jonli sinovi: deploydan keyin telefonda /start → til → Boshlash → ilova shu tilda ochilishi; Railway'da APP_URL Vercel https domeni bo'lishi shart (aks holda Boshlash tugmasi chiqmaydi).
+Keyingi: 8-task (bot orqali bildirishnomalar). 3-task jonli sinovi: deploydan keyin telefonda /start → til → Boshlash → ilova shu tilda ochilishi; Railway'da APP_URL Vercel https domeni bo'lishi shart (aks holda Boshlash tugmasi chiqmaydi).
 
 P1 haftalik hisobot: ustunli ko'rinish jonli ma'lumotda (bu haftada 3+ kun yozuv) ko'rib chiqilsin.
+
+Railway backend'ga ADMIN_TELEGRAM=NutrliLiferPro qo'shilishi kerak (foydalanuvchi qo'shadi) — aks holda W1 "Davom etish" "To'lov tez orada" varag'ini ochadi.
 
 ---
 

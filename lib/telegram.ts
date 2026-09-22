@@ -13,6 +13,7 @@ type WebApp = {
   ready(): void;
   expand(): void;
   disableVerticalSwipes(): void;
+  openTelegramLink(url: string): void;
   setHeaderColor(rang: string): void;
   setBackgroundColor(rang: string): void;
   setBottomBarColor(rang: string): void;
@@ -79,4 +80,14 @@ export function ranglarniTenglashtir() {
     sdk.setBackgroundColor(fon);
   }
   if (sdk.isVersionAtLeast("7.10")) sdk.setBottomBarColor(fon);
+}
+
+/**
+ * t.me havolasini ochadi: Telegram ichida — Telegram'ning o'zida (chat shu yerda ochiladi),
+ * tashqarida (lokal dev, oddiy brauzer) — yangi oynada.
+ */
+export function telegramHavolaniOch(url: string) {
+  const sdk = webApp();
+  if (sdk) sdk.openTelegramLink(url);
+  else window.open(url, "_blank", "noopener");
 }

@@ -12,25 +12,31 @@ import { apiSorov } from "@/lib/services/api-klient";
 import { tarifNomi } from "@/lib/services/obuna-hisob";
 import { raqam } from "@/lib/services/taom-hisob";
 import {
+  adminHavolasi,
   boshlangichTarif,
   oyiga,
   oylikNarx,
   paywallQaytishi,
   paywallSarlavhasi,
   tejash,
+  xabarNarxi,
   type PaywallManbai,
 } from "@/lib/services/tarif-hisob";
 import type { TarifNarxi } from "@/lib/tariflar";
+import { telegramHavolaniOch } from "@/lib/telegram";
+
+/** `admin` — obuna so'rovi boradigan Telegram username; null bo'lsa "To'lov tez orada" varag'i. */
+type Javob = { tariflar: TarifNarxi[]; admin: string | null };
 
 /** "yuklanmoqda" — narxlar kutilmoqda; null — olib bo'lmadi. */
-type Holat = TarifNarxi[] | "yuklanmoqda" | null;
+type Holat = Javob | "yuklanmoqda" | null;
 
 type Varaq = "tolov" | "hujjat" | null;
 
-async function tariflarniOl(): Promise<TarifNarxi[] | null> {
+async function tariflarniOl(): Promise<Javob | null> {
   try {
     const javob = await apiSorov("/api/tariflar");
-    return javob.ok ? ((await javob.json()) as { tariflar: TarifNarxi[] }).tariflar : null;
+    return javob.ok ? ((await javob.json()) as Javob) : null;
   } catch {
     return null;
   }
@@ -50,6 +56,7 @@ function TarifKartasi({
   const { t } = useTarjima();
   const nomi = tarifNomi(tarif.id);
   const foiz = tejash(tarif, oylik);
+  // Katta raqam — oyiga tushadigan narx, uning ostida umumiy summa (foydalanuvchi qarori).
 
   return (
     <button
@@ -79,12 +86,12 @@ function TarifKartasi({
           )}
         </span>
         <span className="mt-1.5 block text-izoh text-matn-2 tabular-nums">
-          {t(tarif.oylar === 1 ? "{0} so'm / oy" : "≈{0} so'm / oy", raqam(oyiga(tarif)))}
+          {t("{0} so'm", raqam(tarif.narx))}
         </span>
       </span>
       <span className="flex shrink-0 flex-col items-end gap-1.5">
         <span className="whitespace-nowrap font-display text-karta-sarlavha tabular-nums">
-          {t("{0} so'm", raqam(tarif.narx))}
+          {t(tarif.oylar === 1 ? "{0} so'm / oy" : "≈{0} so'm / oy", raqam(oyiga(tarif)))}
         </span>
         {foiz > 0 && (
           <span className="whitespace-nowrap rounded-full bg-pro-tint px-2 py-[2px] text-[11px] font-medium text-pro-ink tabular-nums">
@@ -99,8 +106,9 @@ function TarifKartasi({
 /**
  * W1 — tariflar (paywall-tz.md; qolip: prototip/ui_kits/paywall/Tariffs.jsx). "Hozir emas"
  * har holatda ishlaydi — ekran hech qachon tupik emas; o'chadigan tugma — "Davom etish".
- * To'lov usuli (W2) to'lov tarmog'ida quriladi — ungacha "Davom etish" buni aytadigan varaqni
- * ochadi. Shartlar va maxfiylik hujjatlari ham hali yo'q — havolalar shunday varaq ochadi.
+ * To'lov tizimlari ulanguncha (DECISIONS 2026-09-22) "Davom etish" admin bilan Telegram chatini
+ * tanlangan tarif yozilgan tayyor xabar bilan ochadi; admin berilmagan bo'lsa — "To'lov tez
+ * orada" varag'i. Shartlar va maxfiylik hujjatlari hali yo'q — havolalar shunday varaq ochadi.
  */
 export function Tariflar({
   manba,
@@ -123,7 +131,7 @@ export function Tariflar({
       if (bekor) return;
       setTariflar(kelgan);
       // Qayta urinishda foydalanuvchi tanlovi saqlanadi.
-      if (kelgan) setTanlangan((joriy) => joriy ?? boshlangichTarif(kelgan));
+      if (kelgan) setTanlangan((joriy) => joriy ?? boshlangichTarif(kelgan.tariflar));
     });
     return () => {
       bekor = true;
@@ -142,7 +150,24 @@ export function Tariflar({
   }, [manba, router]);
   useTelegramOrqaga(qayt);
 
-  const tayyor = Array.isArray(tariflar) && tariflar.length > 0;
+  const royxat = tariflar && tariflar !== "yuklanmoqda" ? tariflar.tariflar : [];
+  const tayyor = royxat.length > 0;
+
+  const davomEt = () => {
+    const tarif = royxat.find(({ id }) => id === tanlangan);
+    const admin = tariflar && tariflar !== "yuklanmoqda" ? tariflar.admin : null;
+    const nomi = tarif && tarifNomi(tarif.id);
+    if (!tarif || !admin || !nomi) {
+      setVaraq("tolov");
+      return;
+    }
+    const matn = t(
+      "NutriLifer PRO — {0} tarif ({1} so'm) ga obuna bo'lmoqchiman.",
+      t(nomi),
+      xabarNarxi(tarif.narx),
+    );
+    telegramHavolaniOch(adminHavolasi(admin, matn));
+  };
 
   return (
     <>
@@ -194,11 +219,11 @@ export function Tariflar({
               </div>
             </div>
           ) : (
-            tariflar.map((tarif) => (
+            royxat.map((tarif) => (
               <TarifKartasi
                 key={tarif.id}
                 tarif={tarif}
-                oylik={oylikNarx(tariflar)}
+                oylik={oylikNarx(royxat)}
                 tanlangan={tarif.id === tanlangan}
                 onTanla={() => setTanlangan(tarif.id)}
               />
@@ -236,7 +261,7 @@ export function Tariflar({
             korinish="pro"
             yorugOtish
             disabled={!tayyor || !tanlangan}
-            onClick={() => setVaraq("tolov")}
+            onClick={davomEt}
           >
             {t("Davom etish")}
           </Tugma>

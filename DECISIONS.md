@@ -521,6 +521,17 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-22 · "Normaga mos kun" (norma ±10%) har kun o'sha kunda amal qilgan normaga solishtiriladi; "kuzatilgan kunlar %" hisob ochilgan kundan sanaladi.**
 *Sabab:* Vazn o'zgarsa norma o'zgaradi; yangi foydalanuvchi past foiz ko'rmasligi uchun.
 
+## 2026-09-22 — PRO obunasi admin orqali (5-task)
+
+**2026-09-22 · To'lov tizimlari (Click, Payme, Telegram Stars) hozircha ulanmaydi; W1'dagi "Davom etish" admin bilan Telegram chatini tanlangan tarif yozilgan tayyor xabar bilan ochadi ("NutriLifer PRO — Yillik tarif (290 000 so'm) ga obuna bo'lmoqchiman.", foydalanuvchi tilida). Admin to'lovni qabul qilib, obunani qo'lda beradi (`obunalar`, tarif `qolda`). W2–W5 ekranlari qurilmaydi.**
+*Sabab:* Foydalanuvchi qarori — to'lov API'lari tayyor emas; ular real foydalanuvchilar paydo bo'lgach talabga qarab qo'shiladi.
+
+**2026-09-22 · Admin username'i kodda emas, backend `ADMIN_TELEGRAM` o'zgaruvchisida (Railway); ekranga `GET /api/tariflar` javobidagi `admin` maydoni orqali keladi. Berilmagan bo'lsa "Davom etish" "To'lov tez orada" varag'ini ochadi.**
+*Sabab:* Admin almashsa kod o'zgarmasin; frontend (Vercel) sozlamasiz qoladi.
+
+**2026-09-22 · W1 tarif kartasida katta raqam o'ng tomonda — oyiga tushadigan narx ("≈24,200 so'm / oy"), umumiy summa esa tarif nomi ostida kichik matnda. Prototipda aksincha.**
+*Sabab:* Foydalanuvchi qarori.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

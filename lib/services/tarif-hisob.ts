@@ -54,3 +54,22 @@ export function paywallSarlavhasi(manba: PaywallManbai, muddatiTugagan: boolean)
 export function paywallQaytishi(manba: PaywallManbai): string {
   return manba === "profil" ? "/profil" : "/";
 }
+
+/** Telegram username (5–32 belgi: harf, raqam, _); boshidagi @ olib tashlanadi. Noto'g'ri — null. */
+export function adminUsername(qiymat: string | undefined): string | null {
+  const username = qiymat?.trim().replace(/^@/, "") ?? "";
+  return /^[A-Za-z0-9_]{5,32}$/.test(username) ? username : null;
+}
+
+/** Tayyor xabardagi narx: "290 000" — minglar bo'sh joy bilan. */
+export function xabarNarxi(narx: number): string {
+  return Math.round(narx).toLocaleString("en-US").replaceAll(",", " ");
+}
+
+/**
+ * Admin bilan chat havolasi, xabar maydonida tayyor matn bilan (DECISIONS 2026-09-22:
+ * to'lov tizimlari ulanguncha obuna admin orqali qo'lda rasmiylashtiriladi).
+ */
+export function adminHavolasi(username: string, matn: string): string {
+  return `https://t.me/${username}?text=${encodeURIComponent(matn)}`;
+}
