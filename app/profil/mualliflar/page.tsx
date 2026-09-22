@@ -3,7 +3,7 @@ import { TaomRasmi } from "@/app/_components/TaomRasmi";
 import { serverTarjimoni } from "@/lib/lugat/server";
 import { LITSENZIYA_HAVOLALARI, RASM_MUALLIFLARI } from "@/lib/taom-rasm-mualliflari";
 
-export const metadata = { title: "Rasm mualliflari — Nutrilife" };
+export const metadata = { title: "Rasm mualliflari — NutriLifer" };
 
 const HAVOLA = "underline decoration-chegara underline-offset-2 active:text-matn-2";
 const TASHQI = { target: "_blank", rel: "noopener noreferrer" } as const;

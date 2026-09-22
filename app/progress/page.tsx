@@ -17,7 +17,7 @@ import { progressniYukla } from "./yukla";
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
 export const dynamic = "force-dynamic";
 
-export const metadata = { title: "Statistika — Nutrilife" };
+export const metadata = { title: "Statistika — NutriLifer" };
 
 /**
  * P1 — Progress (panelda "Statistika"). Sahifa foydalanuvchining o'z raqamlarini ko'rsatadi,

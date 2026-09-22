@@ -2,6 +2,10 @@
 // Bot faqat kirish nuqtasi (DECISIONS 2026-09-13): /start, til tanlash va "Ilovani ochish".
 // Logga foydalanuvchi matni yoki ismi yozilmaydi — faqat yangilanish turi va raqami.
 
+import { tarjimon, tilniOqi, TILLAR, type Tarjimon, type Til } from "../lugat/tarjima.ts";
+import { BotApiXatosi, tugmaniTasdiqla, xabarniTahrirla, xabarYubor } from "./bot-api.ts";
+import { botTiliniSaqlash, telegramTili } from "./foydalanuvchilar.ts";
+
 /** Telegram `User` ning bizga kerak qismi. */
 export type BotFoydalanuvchi = {
   id: number;
@@ -46,10 +50,105 @@ function turi(yangilanish: BotYangilanish): string {
   return "boshqa";
 }
 
+/** Til tugmalari — tanlangani ✓ bilan. Nomlar tarjima qilinmaydi: har til o'z nomi bilan. */
+const TIL_NOMLARI: Record<Til, string> = {
+  uz: "🇺🇿 O'zbekcha",
+  ru: "🇷🇺 Русский",
+  en: "🇬🇧 English",
+};
+const TIL_TUGMASI = /^til:(uz|ru|en)$/;
+
+function html(matn: string): string {
+  return matn.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
 /**
- * Bitta yangilanishni qayta ishlaydi. Hozircha faqat qayd qiladi — /start va til tanlash
- * keyingi taskda shu yerga ulanadi. Xato chiqsa yuqoriga uzatiladi (webhook logga yozadi).
+ * Mini App manzili — `APP_URL` (Railway'da frontend, Vercel domeni). Telegram `web_app`
+ * tugmasi faqat https qabul qiladi; noto'g'ri bo'lsa tugmasiz xabar ketadi va logga yoziladi.
  */
+function ilovaManzili(): string | null {
+  const manzil = process.env.APP_URL;
+  if (manzil?.startsWith("https://")) return manzil;
+  console.error("Bot: APP_URL https emas yoki sozlanmagan — \"Boshlash\" tugmasi chiqmaydi");
+  return null;
+}
+
+function boshlashTugmasi(t: Tarjimon["t"]): object[] {
+  const manzil = ilovaManzili();
+  return manzil ? [{ text: `✨ ${t("Boshlash")}`, web_app: { url: manzil } }] : [];
+}
+
+/** /start xabari: tanishtiruv, "Boshlash" va til tanlovi. */
+function salomXabari(til: Til): { matn: string; tugmalar: object } {
+  const { t } = tarjimon(til);
+  const matn = [
+    `🥗 <b>${html(t("NutriLifer — ovqatlanishingizni aqlli nazorat qiling!"))}</b>`,
+    `📸 ${html(t("Taomni rasmga oling — AI kaloriyasi va ozuqaviy qiymatini hisoblaydi."))}`,
+    [`🔥 ${t("Kaloriya")}`, `🥩 ${t("Oqsil")}`, `🥑 ${t("Yog'")}`, `🍚 ${t("Uglevodlar")}`].map(html).join("\n"),
+    html(t("Shuningdek, kunlik maqsadingizni kuzatib, ovqatlanish tarixingizni saqlashingiz mumkin.")),
+    `<b>${html(t("Boshlash uchun tugmani bosing:"))}</b>`,
+  ].join("\n\n");
+  const tilQatori = TILLAR.map((kod) => ({
+    text: kod === til ? `✓ ${TIL_NOMLARI[kod]}` : TIL_NOMLARI[kod],
+    callback_data: `til:${kod}`,
+  }));
+  const qatorlar = [boshlashTugmasi(t), tilQatori].filter((qator) => qator.length > 0);
+  return { matn, tugmalar: { inline_keyboard: qatorlar } };
+}
+
+/** Saqlangan til, u bo'lmasa Telegram tili (tanish bo'lmasa o'zbekcha). */
+async function foydalanuvchiTili(kimdan: BotFoydalanuvchi | undefined): Promise<Til> {
+  if (!kimdan) return "uz";
+  const saqlangan = await telegramTili(BigInt(kimdan.id));
+  return tilniOqi(saqlangan ?? kimdan.language_code?.slice(0, 2));
+}
+
+async function xabarniQaytaIshla(xabar: BotXabar): Promise<void> {
+  // Bot faqat shaxsiy chatda javob beradi — web_app tugmasi guruhlarda ishlamaydi.
+  if (xabar.chat.type !== "private" || xabar.from?.is_bot) return;
+  const til = await foydalanuvchiTili(xabar.from);
+
+  if (xabar.text === "/start" || xabar.text?.startsWith("/start ")) {
+    const { matn, tugmalar } = salomXabari(til);
+    await xabarYubor(xabar.chat.id, matn, { parse_mode: "HTML", reply_markup: tugmalar });
+    return;
+  }
+
+  // Botda ovqat kiritish yo'q (DECISIONS 2026-09-13) — har qanday boshqa xabarga ilovaga yo'l.
+  const { t } = tarjimon(til);
+  const tugma = boshlashTugmasi(t);
+  await xabarYubor(xabar.chat.id, t("Ovqat ilova ichida qo'shiladi. Ochish uchun tugmani bosing:"), {
+    ...(tugma.length > 0 && { reply_markup: { inline_keyboard: [tugma] } }),
+  });
+}
+
+async function tugmaniQaytaIshla(bosildi: BotTugmaBosildi): Promise<void> {
+  const mos = TIL_TUGMASI.exec(bosildi.data ?? "");
+  const xabar = bosildi.message;
+  if (!mos || !xabar) {
+    await tugmaniTasdiqla(bosildi.id);
+    return;
+  }
+
+  const til = tilniOqi(mos[1]);
+  await botTiliniSaqlash(BigInt(bosildi.from.id), til, bosildi.from.first_name || null);
+  await tugmaniTasdiqla(bosildi.id);
+
+  const { matn, tugmalar } = salomXabari(til);
+  try {
+    await xabarniTahrirla(xabar.chat.id, xabar.message_id, matn, {
+      parse_mode: "HTML",
+      reply_markup: tugmalar,
+    });
+  } catch (xato) {
+    // Shu tilning o'zi qayta bosilsa Telegram "message is not modified" qaytaradi — bu xato emas.
+    if (!(xato instanceof BotApiXatosi && xato.message.includes("message is not modified"))) throw xato;
+  }
+}
+
+/** Bitta yangilanishni qayta ishlaydi. Xato chiqsa yuqoriga uzatiladi (webhook logga yozadi). */
 export async function yangilanishniQaytaIshla(yangilanish: BotYangilanish): Promise<void> {
   console.info(`Bot: yangilanish ${yangilanish.update_id} (${turi(yangilanish)})`);
+  if (yangilanish.message) await xabarniQaytaIshla(yangilanish.message);
+  else if (yangilanish.callback_query) await tugmaniQaytaIshla(yangilanish.callback_query);
 }

@@ -175,13 +175,13 @@ export function KirishDarvozasi({ children }: { children: React.ReactNode }) {
               <h1 className="text-sarlavha">{t("Ilovani Telegram orqali oching")}</h1>
               <p className="text-asosiy text-matn-2">
                 {t(
-                  "Nutrilife faqat Telegram ichida ishlaydi. Botni ochib, ilovani o'sha yerdan ishga tushiring.",
+                  "NutriLifer faqat Telegram ichida ishlaydi. Botni ochib, ilovani o'sha yerdan ishga tushiring.",
                 )}
               </p>
             </div>
           ) : (
             <>
-              <p className="font-display text-sarlavha">Nutrilife</p>
+              <p className="font-display text-sarlavha">NutriLifer</p>
               <span
                 role="status"
                 aria-label={t("Kirilmoqda")}

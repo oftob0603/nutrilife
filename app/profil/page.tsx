@@ -21,7 +21,7 @@ import { profilniYukla, skanLimitiniYukla } from "./yukla";
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
 export const dynamic = "force-dynamic";
 
-export const metadata = { title: "Profil — Nutrilife" };
+export const metadata = { title: "Profil — NutriLifer" };
 
 /** Obuna kartasi: FREE, faol PRO yoki muddati tugagan PRO (profil-tz.md, F1). */
 function ObunaKartasi({

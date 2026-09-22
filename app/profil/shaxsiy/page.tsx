@@ -4,7 +4,7 @@ import { profilniYukla } from "../yukla";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = { title: "Shaxsiy ma'lumot — Nutrilife" };
+export const metadata = { title: "Shaxsiy ma'lumot — NutriLifer" };
 
 /** F3 — shaxsiy ma'lumot. Yuklanmasa Profil sahifasiga qaytadi: xato kartasi o'sha yerda. */
 export default async function ShaxsiySahifasi() {

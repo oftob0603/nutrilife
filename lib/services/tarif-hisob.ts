@@ -35,11 +35,11 @@ export function manbaniOqi(qiymat: unknown): PaywallManbai {
 }
 
 const SARLAVHALAR: Record<PaywallManbai, Kalit> = {
-  onboarding: k("Nutrilife PRO bilan ko'proq"),
-  profil: k("Nutrilife PRO"),
+  onboarding: k("NutriLifer PRO bilan ko'proq"),
+  profil: k("NutriLifer PRO"),
   limit: k("Bepul skanlar tugadi"),
   // Home'dagi yopiq PRO kartasidan (Nutrition Score, taom taklifi).
-  imkoniyat: k("Nutrilife PRO"),
+  imkoniyat: k("NutriLifer PRO"),
 };
 
 /** W1 sarlavhasi; muddati tugagan PRO'da manbadan qat'i nazar "PRO ni tiklash". */

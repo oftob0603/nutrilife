@@ -5,7 +5,7 @@ import { serverdanApi } from "@/lib/api-asos";
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
 export const dynamic = "force-dynamic";
 
-export const metadata = { title: "Tahlil — Nutrilife" };
+export const metadata = { title: "Tahlil — NutriLifer" };
 
 /** Rasm bormi — API topilgan rasm uchun omborga yo'naltiradi (302), aks holda 404. */
 async function rasmBormi(id: string): Promise<boolean | "sessiyasiz"> {

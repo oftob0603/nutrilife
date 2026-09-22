@@ -21,7 +21,7 @@ const interTight = Inter_Tight({
 });
 
 export const metadata: Metadata = {
-  title: "Nutrilife",
+  title: "NutriLifer",
   description: "Ovqatingiz qancha kaloriya — rasmga oling, bilib oling",
 };
 

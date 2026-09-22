@@ -10,7 +10,7 @@ import type { Yozuv } from "@/lib/services/yozuv-hisob";
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
 export const dynamic = "force-dynamic";
 
-export const metadata = { title: "Yozuv tahriri — Nutrilife" };
+export const metadata = { title: "Yozuv tahriri — NutriLifer" };
 
 async function yozuvniYukla(id: string): Promise<Yozuv | "sessiyasiz" | null> {
   const javob = await serverdanApi(`/api/ovqat-yozuvlari/${id}`);

@@ -10,7 +10,7 @@ import { progressniYukla } from "../yukla";
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
 export const dynamic = "force-dynamic";
 
-export const metadata = { title: "Vazn tarixi — Nutrilife" };
+export const metadata = { title: "Vazn tarixi — NutriLifer" };
 
 /** P3 — vazn tarixi. Bo'sh holati bo'lmaydi: onboardingdan kamida bitta o'lchov doim bor. */
 export default async function VaznTarixiSahifasi() {

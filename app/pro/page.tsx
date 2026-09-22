@@ -7,7 +7,7 @@ import { manbaniOqi } from "@/lib/services/tarif-hisob";
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
 export const dynamic = "force-dynamic";
 
-export const metadata = { title: "PRO — Nutrilife" };
+export const metadata = { title: "PRO — NutriLifer" };
 
 /** Obuna holati; sessiyasiz yoki olib bo'lmagan bo'lsa null — ekran baribir ochiladi. */
 async function obunaHolati(): Promise<ObunaTafsiloti["holat"] | null> {

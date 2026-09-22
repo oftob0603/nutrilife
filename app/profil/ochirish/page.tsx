@@ -4,7 +4,7 @@ import { profilniYukla } from "../yukla";
 
 export const dynamic = "force-dynamic";
 
-export const metadata = { title: "Hisobni o'chirish — Nutrilife" };
+export const metadata = { title: "Hisobni o'chirish — NutriLifer" };
 
 /** F5 — hisobni o'chirish. Faol PRO bo'lsa ogohlantirish matni boshqacha, shuning uchun profil kerak. */
 export default async function OchirishSahifasi() {

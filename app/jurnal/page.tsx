@@ -26,7 +26,7 @@ import {
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
 export const dynamic = "force-dynamic";
 
-export const metadata = { title: "Jurnal — Nutrilife" };
+export const metadata = { title: "Jurnal — NutriLifer" };
 
 // `makro` eski API javobida bo'lmaydi — bayroqsiz makro chiziqlari ochilmaydi (PRO imkoniyati).
 type Kun = { yozuvlar: Yozuv[]; jami: Jami; reja: Reja; makro?: QulfJavobi };

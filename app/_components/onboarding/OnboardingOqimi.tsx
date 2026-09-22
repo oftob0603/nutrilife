@@ -219,7 +219,7 @@ function Intro({
       />
       <div className="absolute inset-x-0 bottom-0 flex flex-col gap-4 rounded-t-[32px] border-t border-o1-chegara bg-o1-panel px-4 pb-[max(24px,var(--xavfsiz-past))] pt-6 text-o1-matn shadow-[0_-2px_32px_rgba(11,11,12,0.14)]">
         <div className="flex flex-col gap-2">
-          <span className="font-display text-karta-sarlavha text-o1-matn-2">NutriLife</span>
+          <span className="font-display text-karta-sarlavha text-o1-matn-2">NutriLifer</span>
           <h1 className="font-display text-sarlavha">
             {t("Taomingiz haqida ko'proq bilishni xohlaysizmi?")}
           </h1>

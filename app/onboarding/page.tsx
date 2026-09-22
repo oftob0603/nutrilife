@@ -7,7 +7,7 @@ import type { OnboardingHolati } from "@/lib/services/onboarding-hisob";
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
 export const dynamic = "force-dynamic";
 
-export const metadata = { title: "Tanishuv — Nutrilife" };
+export const metadata = { title: "Tanishuv — NutriLifer" };
 
 async function holatniYukla(): Promise<OnboardingHolati | null> {
   try {

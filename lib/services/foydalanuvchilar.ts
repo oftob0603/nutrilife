@@ -113,6 +113,33 @@ export async function telegramBoyichaTopYokiYarat(
   }
 }
 
+/** Telegram ID bo'yicha saqlangan til; hisob hali yo'q bo'lsa null. */
+export async function telegramTili(telegramId: bigint): Promise<string | null> {
+  const topildi = await db.foydalanuvchi.findUnique({ where: { telegramId }, select: { til: true } });
+  return topildi?.til ?? null;
+}
+
+/**
+ * Botda tanlangan til. Hisob bo'lsa faqat `til` yangilanadi; bo'lmasa shu til va ism bilan
+ * yaratiladi — Mini App keyin ochilganda `telegramBoyichaTopYokiYarat` shu hisobni topadi va
+ * ilova botda tanlangan tilda ochiladi (DECISIONS 2026-09-20). Avatar bu yerda yozilmaydi:
+ * bot yangilanishida rasm yo'q, u Mini App kirishida to'ldiriladi.
+ */
+export async function botTiliniSaqlash(telegramId: bigint, til: Til, ism: string | null): Promise<void> {
+  const yangila = () => db.foydalanuvchi.update({ where: { telegramId }, data: { til } });
+  const mavjud = await db.foydalanuvchi.findUnique({ where: { telegramId }, select: { id: true } });
+  if (mavjud) {
+    await yangila();
+    return;
+  }
+  try {
+    await db.foydalanuvchi.create({ data: { telegramId, til, profil: { create: { ism } } } });
+  } catch (xato) {
+    if (!takroriyKalitmi(xato)) throw xato;
+    await yangila();
+  }
+}
+
 /** Sozlama qatorlaridagi o'zgarish (til, mavzu, birliklar); hisob topilmasa false. */
 export async function sozlamalarniSaqlash(
   id: string,

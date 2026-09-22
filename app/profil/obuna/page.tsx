@@ -13,7 +13,7 @@ import {
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
 export const dynamic = "force-dynamic";
 
-export const metadata = { title: "Obuna — Nutrilife" };
+export const metadata = { title: "Obuna — NutriLifer" };
 
 /** "sessiyasiz" — havola sessiyasiz ochilgan; null — yuklab bo'lmadi. */
 async function obunaniYukla(): Promise<ObunaTafsiloti | "sessiyasiz" | null> {

@@ -55,3 +55,18 @@ export function xabarYubor(
 ): Promise<unknown> {
   return botSorov("sendMessage", { chat_id: chatId, text: matn, ...qoshimcha });
 }
+
+/** Xabar matni va tugmalarini almashtiradi (til tanlanganda). */
+export function xabarniTahrirla(
+  chatId: number,
+  xabarId: number,
+  matn: string,
+  qoshimcha: Record<string, unknown> = {},
+): Promise<unknown> {
+  return botSorov("editMessageText", { chat_id: chatId, message_id: xabarId, text: matn, ...qoshimcha });
+}
+
+/** Inline tugma bosilganini tasdiqlaydi — aks holda tugmada yuklanish belgisi aylanib turadi. */
+export function tugmaniTasdiqla(tugmaId: string): Promise<unknown> {
+  return botSorov("answerCallbackQuery", { callback_query_id: tugmaId });
+}

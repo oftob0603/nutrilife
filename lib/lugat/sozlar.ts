@@ -80,9 +80,9 @@ export const SOZLAR = {
     en: "Your session has expired. Close the app and open it again from Telegram.",
   },
   "Ilovani Telegram orqali oching": { ru: "Откройте приложение через Telegram", en: "Open the app from Telegram" },
-  "Nutrilife faqat Telegram ichida ishlaydi. Botni ochib, ilovani o'sha yerdan ishga tushiring.": {
-    ru: "Nutrilife работает только внутри Telegram. Откройте бота и запустите приложение оттуда.",
-    en: "Nutrilife only works inside Telegram. Open the bot and launch the app from there.",
+  "NutriLifer faqat Telegram ichida ishlaydi. Botni ochib, ilovani o'sha yerdan ishga tushiring.": {
+    ru: "NutriLifer работает только внутри Telegram. Откройте бота и запустите приложение оттуда.",
+    en: "NutriLifer only works inside Telegram. Open the bot and launch the app from there.",
   },
 
   // ── Home (E1) ──────────────────────────────────────────────────────────────
@@ -625,8 +625,8 @@ export const SOZLAR = {
   "Obunani yuklab bo'lmadi": { ru: "Не удалось загрузить подписку", en: "Could not load the subscription" },
 
   // ── Tariflar (W1) va onboarding oxiri (O13) ────────────────────────────────
-  "Nutrilife PRO bilan ko'proq": { ru: "С Nutrilife PRO — больше", en: "Get more with Nutrilife PRO" },
-  "Nutrilife PRO": { ru: "Nutrilife PRO", en: "Nutrilife PRO" },
+  "NutriLifer PRO bilan ko'proq": { ru: "С NutriLifer PRO — больше", en: "Get more with NutriLifer PRO" },
+  "NutriLifer PRO": { ru: "NutriLifer PRO", en: "NutriLifer PRO" },
   "Bepul skanlar tugadi": { ru: "Бесплатные сканирования закончились", en: "Your free scans are used up" },
   "PRO ni tiklash": { ru: "Восстановить PRO", en: "Restore PRO" },
   "Kuniga 20 tagacha AI skan": { ru: "До 20 ИИ-сканирований в день", en: "Up to 20 AI scans a day" },
@@ -828,6 +828,26 @@ export const SOZLAR = {
   "O'chirilmadi. Qayta urinib ko'ring": { ru: "Не удалено. Попробуйте ещё раз", en: "Not deleted. Try again" },
   "Qorong'i": { ru: "Тёмная", en: "Dark" },
   "Tizim": { ru: "Системная", en: "System" },
+
+  // ── Telegram bot (/start) — lib/services/bot.ts ────────────────────────────
+  "NutriLifer — ovqatlanishingizni aqlli nazorat qiling!": {
+    ru: "NutriLifer — умный контроль вашего питания!",
+    en: "NutriLifer — track your nutrition the smart way!",
+  },
+  "Taomni rasmga oling — AI kaloriyasi va ozuqaviy qiymatini hisoblaydi.": {
+    ru: "Сфотографируйте блюдо — AI посчитает его калорийность и пищевую ценность.",
+    en: "Snap a photo of your meal — AI calculates its calories and nutritional value.",
+  },
+  "Uglevodlar": { ru: "Углеводы", en: "Carbs" },
+  "Shuningdek, kunlik maqsadingizni kuzatib, ovqatlanish tarixingizni saqlashingiz mumkin.": {
+    ru: "Также можно следить за дневной целью и хранить историю питания.",
+    en: "You can also track your daily goal and keep a history of your meals.",
+  },
+  "Boshlash uchun tugmani bosing:": { ru: "Нажмите кнопку, чтобы начать:", en: "Tap the button to get started:" },
+  "Ovqat ilova ichida qo'shiladi. Ochish uchun tugmani bosing:": {
+    ru: "Еда добавляется в приложении. Нажмите кнопку, чтобы открыть его:",
+    en: "Meals are added in the app. Tap the button to open it:",
+  },
 } as const satisfies Record<string, Tarjima>;
 
 export type Kalit = keyof typeof SOZLAR;
