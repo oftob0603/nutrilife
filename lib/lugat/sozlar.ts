@@ -197,7 +197,6 @@ export const SOZLAR = {
   "Taom qidirish": { ru: "Найти блюдо", en: "Search for a dish" },
   "Osh, manti, somsa…": { ru: "Плов, манты, самса…", en: "Plov, manti, samsa…" },
   "Natijalar": { ru: "Результаты", en: "Results" },
-  "Oxirgi qo'shilganlar": { ru: "Недавно добавленные", en: "Recently added" },
   "Taomni matn bilan tasvirlab bering yoki rasmga oling.": {
     ru: "Опишите блюдо текстом или сфотографируйте его.",
     en: "Describe the dish in text or take a photo.",

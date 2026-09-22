@@ -34,7 +34,8 @@ function Ikona({ nomi }: { nomi: "qidiruv" | "yopish" }) {
 
 /**
  * E4 — taom qidiruvi (prototip `SearchScreen`). Baza kichik, shuning uchun filtr klientda
- * ishlaydi. Ro'yxat ostida doim "Matn bilan tasvirlash" turadi — bazada yo'q taomni yozib
+ * ishlaydi. Ro'yxat faqat qidiruvda chiqadi — bo'sh so'rovdagi "Oxirgi qo'shilganlar" bo'limi
+ * olib tashlangan (foydalanuvchi qarori 2026-09-22). Ro'yxat ostida doim "Matn bilan tasvirlash" turadi — bazada yo'q taomni yozib
  * berish yo'li faqat "topilmadi" holatiga bog'liq emas; u haqiqiy matn maydonini ochadi.
  */
 export function TaomlarRoyxati({ taomlar }: { taomlar: Taom[] }) {
@@ -79,7 +80,7 @@ export function TaomlarRoyxati({ taomlar }: { taomlar: Taom[] }) {
         )}
       </label>
 
-      {natijalar.length === 0 ? (
+      {!sorov.trim() ? null : natijalar.length === 0 ? (
         <div className="flex flex-col items-center gap-3 rounded-karta border border-karta-chegara bg-karta p-4 text-center">
           <p className="text-karta-sarlavha">{t("«{0}» topilmadi", sorov.trim())}</p>
           <p className="text-izoh text-matn-2">
@@ -94,9 +95,7 @@ export function TaomlarRoyxati({ taomlar }: { taomlar: Taom[] }) {
         </div>
       ) : (
         <section className="flex flex-col gap-2">
-          <h2 className="text-karta-sarlavha">
-            {sorov.trim() ? t("Natijalar") : t("Oxirgi qo'shilganlar")}
-          </h2>
+          <h2 className="text-karta-sarlavha">{t("Natijalar")}</h2>
           <ul className="flex flex-col gap-3">
             {natijalar.map((taom) => (
               <TaomKartasi key={taom.id} taom={taom} />

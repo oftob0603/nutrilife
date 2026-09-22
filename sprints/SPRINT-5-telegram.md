@@ -49,6 +49,7 @@ avtomatik takroriy to'lov · admin paneli.
 - 2026-09-22: Home kunlik kaloriya doirasi 10% kichraytirildi (224 -> 202px, halqa qalinligi o'zgarmadi), E8'da ham (app/_components/KunlikDoira.tsx)
 - 2026-09-22: E7 natija ekranidan katta "~kkal" sarlavhasi olib tashlandi, AI taxmini belgisi qoldi (app/_components/Tahlil.tsx)
 - 2026-09-22: E7 Kaloriya maydoni aksent bilan ajratildi — --aksent-fon foni, lime chegara, yorliq va flame belgisi, yangi --aksent-fon/--aksent-yorliq tokenlari (app/_components/YozuvFormasi.tsx, app/_components/Tahlil.tsx, app/globals.css, DESIGN.md)
+- 2026-09-22: E4 taom qidiruvidan "Oxirgi qo'shilganlar" bo'limi olib tashlandi, ro'yxat faqat qidiruvda chiqadi (app/_components/TaomlarRoyxati.tsx, lib/lugat/sozlar.ts)
 
 ## Handoff
 
