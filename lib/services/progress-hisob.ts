@@ -1,4 +1,6 @@
-import { VAZN } from "./onboarding-hisob.ts";
+import type { Til } from "../lugat/tarjima.ts";
+import { kgdanLb, VAZN } from "./onboarding-hisob.ts";
+import type { VaznBirligi } from "./sozlamalar-hisob.ts";
 import { qoshniSana } from "./yozuv-hisob.ts";
 
 // Progress (P1–P3) hisoblari — sof funksiyalar, bazasiz. Ta'riflar progress-tz.md 1-bo'limda
@@ -14,6 +16,8 @@ export type KunKatagi = { sana: string; kuzatilgan: boolean };
 
 export type Progress = {
   bugun: string;
+  /** Foydalanuvchi sozlamasi — faqat ko'rsatish uchun; qiymatlar doim kg. */
+  vaznBirligi: VaznBirligi;
   /** Eskidan yangiga; kamida bitta (onboardingdan). */
   vaznlar: VaznNuqtasi[];
   maqsadVazn: number | null;
@@ -101,11 +105,13 @@ export function haftalikOzgarish(vaznlar: readonly VaznNuqtasi[]): number | null
 
 export function progressHisobi({
   bugun,
+  vaznBirligi,
   vaznlar,
   maqsadVazn,
   kuzatilganSanalar,
 }: {
   bugun: string;
+  vaznBirligi: VaznBirligi;
   vaznlar: VaznNuqtasi[];
   maqsadVazn: number | null;
   kuzatilganSanalar: readonly string[];
@@ -116,6 +122,7 @@ export function progressHisobi({
       : Math.round((vaznlar[vaznlar.length - 1].vazn - vaznlar[0].vazn) * 10) / 10;
   return {
     bugun,
+    vaznBirligi,
     vaznlar,
     maqsadVazn,
     ozgarish,
@@ -133,4 +140,43 @@ export function vaznniTekshir(qiymat: unknown): { vazn: number } | { xato: strin
     return { xato: `Vazn ${VAZN.min}–${VAZN.max} kg oralig'ida bo'lsin` };
   }
   return { vazn: Math.round(qiymat * 10) / 10 };
+}
+
+// --- Ko'rsatish yordamchilari (P1–P3) --------------------------------------------------
+
+export const ORALIQLAR = ["30", "90", "hammasi"] as const;
+export type Oraliq = (typeof ORALIQLAR)[number];
+
+/**
+ * Grafik oralig'i: oxirgi N kundagi o'lchovlar. Oynadan oldingi eng so'nggi o'lchov ham
+ * kiradi — chiziq oynaga "kirib kelsin", 30 kunda bitta o'lchov bo'lsa ham grafik chizilsin.
+ */
+export function oraliqNuqtalari(
+  vaznlar: readonly VaznNuqtasi[],
+  oraliq: Oraliq,
+  bugun: string,
+): VaznNuqtasi[] {
+  if (oraliq === "hammasi") return [...vaznlar];
+  const boshi = qoshniSana(bugun, -Number(oraliq));
+  const ichida = vaznlar.filter((nuqta) => nuqta.sana >= boshi);
+  const oldingi = vaznlar.filter((nuqta) => nuqta.sana < boshi).at(-1);
+  return oldingi ? [oldingi, ...ichida] : ichida;
+}
+
+/** Vazn ko'rsatish birligida: kg — 0,1 aniqlikda, lb — butun (onboarding bilan bir xil). */
+export function vaznQiymati(kg: number, birlik: VaznBirligi): number {
+  return birlik === "lb" ? kgdanLb(kg) : Math.round(kg * 10) / 10;
+}
+
+/** Son matni: o'zbek va rus tilida kasr vergul bilan, inglizchada nuqta. */
+export function sonMatni(son: number, til: Til): string {
+  const matn = String(son);
+  return til === "en" ? matn : matn.replace(".", ",");
+}
+
+/** Ishorali farq: "+1,2" · "−0,8" · "0" (minus — chiziqcha emas, matematik belgi). */
+export function farqMatni(farq: number, til: Til): string {
+  const yaxlit = Math.round(farq * 10) / 10;
+  const belgi = yaxlit > 0 ? "+" : yaxlit < 0 ? "−" : "";
+  return belgi + sonMatni(Math.abs(yaxlit), til);
 }

@@ -8,14 +8,17 @@ import { foydalanuvchiHuquqlari } from "@/lib/services/foydalanuvchilar";
 import { kunRejasi } from "@/lib/services/rejalar";
 import { nutritionScore, type ScoreJavobi } from "@/lib/services/score-hisob";
 import { joriyFoydalanuvchiId, kirishKerak } from "@/lib/services/sessiya";
+import { qolganKaloriya, taomTaklifi, type TaklifJavobi } from "@/lib/services/taklif-hisob";
+import { taomlarniOl } from "@/lib/services/taomlar";
 import { bugunSana, kunlikJami, sanaYaroqli } from "@/lib/services/yozuv-hisob";
 import { yozuvKirishiniTekshir } from "@/lib/services/yozuv-kirish";
 
 const UUID_QOLIPI = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 /**
- * Bir kunning yozuvlari, jami, shu kun uchun amaldagi reja va Nutrition Score:
- * `?sana=2026-09-20` (standart — bugun). Score faqat PRO'ga hisoblab beriladi.
+ * Bir kunning yozuvlari, jami, shu kun uchun amaldagi reja, qolgan kaloriya, Nutrition Score
+ * va qolganga mos taom taklifi: `?sana=2026-09-20` (standart — bugun). Score va taklif
+ * faqat PRO'ga hisoblab beriladi; `qoldi` hammaga — Home doirasi shu sondan chizadi.
  */
 export async function GET(sorov: Request) {
   const foydalanuvchiId = await joriyFoydalanuvchiId(sorov);
@@ -32,10 +35,15 @@ export async function GET(sorov: Request) {
   if (!huquq) return kirishKerak();
 
   const jami = kunlikJami(yozuvlar);
+  const qoldi = reja ? qolganKaloriya(jami, reja) : null;
   const score: ScoreJavobi = huquq.nutritionScore
     ? { yopiq: false, natija: reja ? nutritionScore(jami, reja) : null }
     : { yopiq: true };
-  return Response.json({ sana, yozuvlar, jami, reja, score });
+  // Taomlar bazasi faqat taklif kerak bo'lganda o'qiladi — FREE so'rovi qimmatlashmasin.
+  const taklif: TaklifJavobi = huquq.taomTakliflari
+    ? { yopiq: false, taklif: qoldi === null ? null : taomTaklifi(await taomlarniOl(), qoldi) }
+    : { yopiq: true };
+  return Response.json({ sana, yozuvlar, jami, reja, qoldi, score, taklif });
 }
 
 /** Jurnalga yangi yozuv qo'shadi. */

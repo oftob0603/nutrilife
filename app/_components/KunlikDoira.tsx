@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useTarjima } from "@/app/_components/TilTaminoti";
 import { raqam } from "@/lib/services/taom-hisob";
+import { qolganKaloriya } from "@/lib/services/taklif-hisob";
 
 const OLCHAM = 224;
 const QALINLIK = 14; // DESIGN.md, 6-bo'lim
@@ -54,7 +55,8 @@ export function KunlikDoira({
 
   const ulush = norma > 0 ? Math.min(1, korinadigan / norma) : 0;
   const oshdi = korinadigan > norma;
-  const qoldi = Math.max(0, norma - korinadigan);
+  // Taom taklifi bilan bitta manba: doira "qoldi" deb ko'rsatgan son taklif hisoblangan son.
+  const qoldi = qolganKaloriya({ kaloriya: korinadigan }, { kaloriya: norma });
 
   return (
     <div className="flex flex-col items-center gap-2">

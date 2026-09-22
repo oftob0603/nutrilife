@@ -429,6 +429,11 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-21 · Streak faqat ovqat yozuvidan hisoblanadi — vazn kiritish kunni "kuzatilgan" qilmaydi.**
 *Sabab:* progress-tz ochiq savol 2 yopildi; "kuzatilgan kun" ta'rifi `kunlik_xulosa` (faol ovqat yozuvi bor kun) bilan bir xil turadi, ikki xil mezon chalkashtirmaydi.
 
+## 2026-09-22 — progress sahifasi doirasi (S4, 17–19-qadam)
+
+**2026-09-22 · P1'dagi "Batafsil statistika" va "Haftalik hisobot" bo'limlari V1'da qurilmaydi, qulf kartasi ham ko'rsatilmaydi.**
+*Sabab:* Foydalanuvchi qarori — PRD 10-bo'lim bo'yicha V1'da yo'q imkoniyatlarga qulf ko'rsatish aldov bo'lardi; W1 ro'yxatidagi farq Handoff'da qayd etilgan.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

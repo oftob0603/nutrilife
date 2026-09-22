@@ -13,10 +13,16 @@ import { limitKorinishi } from "@/lib/services/skan-hisob";
 const PANELNI_OCH = "qoshish-panelini-och";
 
 /** Bo'sh holatdagi tugma — shu sahifadagi `QoshishPaneli` ni (E2) ochadi. */
-export function QoshishTugmasi({ children }: { children?: React.ReactNode }) {
+export function QoshishTugmasi({
+  korinish,
+  children,
+}: {
+  korinish?: "asosiy" | "ikkilamchi";
+  children?: React.ReactNode;
+}) {
   const { t } = useTarjima();
   return (
-    <Tugma onClick={() => window.dispatchEvent(new Event(PANELNI_OCH))}>
+    <Tugma korinish={korinish} onClick={() => window.dispatchEvent(new Event(PANELNI_OCH))}>
       {children ?? t("Ovqat qo'shish")}
     </Tugma>
   );
@@ -98,7 +104,7 @@ function Qator({
 
 /**
  * Pastki paneldagi bitta bo'lim: nishon va ostida yozuv. Faol bo'lim ostida --fon rangli joy.
- * `href` berilmasa bo'lim o'chiq — sahifasi hali qurilmagan (Retseptlar — S6, Statistika — S4).
+ * `href` berilmasa bo'lim o'chiq — sahifasi hali qurilmagan (Retseptlar — S6).
  */
 function Bolim({
   href,
@@ -162,7 +168,7 @@ function Bolim({
  * Ostida skan hisoblagichi; limit tugaganda Kamera va Galereya o'chadi, qo'lda qo'shish ochiq.
  * Faqat E1 va E9 da chiziladi — oqim ichidagi ekranlarda panel yo'q.
  */
-export function QoshishPaneli({ faol }: { faol: "asosiy" | "profil" }) {
+export function QoshishPaneli({ faol }: { faol: "asosiy" | "statistika" | "profil" }) {
   const router = useRouter();
   const { t, erkin } = useTarjima();
   const [ochiq, setOchiq] = useState(false);
@@ -250,7 +256,7 @@ export function QoshishPaneli({ faol }: { faol: "asosiy" | "profil" }) {
               <path d="M12 5v14M5 12h14" />
             </svg>
           </button>
-          <Bolim nomi={t("Statistika")}>
+          <Bolim href="/progress" nomi={t("Statistika")} faol={faol === "statistika"}>
             <path d="M16 7h6v6" />
             <path d="m22 7-8.5 8.5-5-5L2 17" />
           </Bolim>
