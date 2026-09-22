@@ -41,6 +41,7 @@ avtomatik takroriy to'lov · admin paneli.
 - 2026-09-22: bot /start darhol tanishtiruv matni, "Boshlash" web_app tugmasi va til qatorini chiqaradi, ilovadagi ko'rinadigan nom "NutriLifer" ga almashtirildi (lib/services/bot.ts, lib/services/bot-api.ts, lib/services/foydalanuvchilar.ts, lib/lugat/sozlar.ts)
 - 2026-09-22: bot /start avval til savoli va 3 ta til tugmasini chiqaradi, til tanlangach xabar tanishtiruv matni va "Boshlash" tugmasiga almashadi (lib/services/bot.ts)
 - 2026-09-22: W1 paywall "Davom etish" tugmasiga prototipdagi pw-sweep yorug'lik effekti qo'shildi, faqat shu tugmada (app/globals.css, app/_components/Tugma.tsx, app/_components/Tariflar.tsx, DESIGN.md)
+- 2026-09-22: W1 orqaga chiqishi ("Hozir emas" va Telegram/tizim orqaga tugmasi) kelgan sahifaga qaytadigan qilindi, Telegram Mini App yopilib ketmaydi (app/_components/Tariflar.tsx, lib/services/tarif-hisob.ts)
 
 ## Handoff
 
@@ -53,6 +54,8 @@ Prototip auditidan S5'ga qolgan eslatmalar (2026-09-22):
 - F5 (hisobni o'chirish, 2-qadam): izoh matni prototipda "O'chirilgach Telegramga qaytariladi va bot orqali bitta xabar yuboriladi." — ilovada vaqtincha "Hisob darhol o'chadi. Ilovani qayta ochsangiz, yangi hisob yaratiladi." Mini App SDK va bot ulangach prototip matniga qaytarish, o'chirishdan keyin ilovani yopish va bot xabari.
 - F4 "Obunani bekor qilish" tugmasi va tasdiq varag'i (S4 Handoff'idan).
 - Privacy/Terms matnida "18+" bandi: onboarding endi 18 dan kichik yoshni to'smaydi (DECISIONS 2026-09-22) — hujjat matni shunga mos yozilsin yoki qaror qayta ko'rilsin.
+
+W1 orqaga tugmasi: Android'da tizim orqaga tugmasi bilan jonli sinov kerak (Profil -> PRO -> orqaga -> Profil).
 
 Keyingi: 4-task (Paywall va obuna ekrani, paywall-tz.md). 3-task jonli sinovi: deploydan keyin telefonda /start → til → Boshlash → ilova shu tilda ochilishi; Railway'da APP_URL Vercel https domeni bo'lishi shart (aks holda Boshlash tugmasi chiqmaydi).
 

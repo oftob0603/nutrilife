@@ -508,6 +508,11 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-22 · Foydalanuvchiga ko'rinadigan mahsulot nomi doimo "NutriLifer" (ilgari "Nutrilife").**
 *Sabab:* Foydalanuvchi qarori; ichki `nutrilife-*` localStorage kalitlari o'zgarmaydi.
 
+## 2026-09-22 — W1 paywall orqaga tugmasi
+
+**2026-09-22 · W1'dan chiqish ("Hozir emas" va Telegram/tizim orqaga tugmasi) kelgan sahifaga qaytaradi; onboardingdan kelinganda va ilova tarixi bo'lmaganda zaxira sahifa (profil -> /profil, boshqalar -> /).**
+*Sabab:* Foydalanuvchi qarori — telefondagi orqaga tugmasi Mini App'ni yopmasin.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

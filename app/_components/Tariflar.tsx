@@ -6,6 +6,7 @@ import { PastkiVaraq } from "@/app/_components/PastkiVaraq";
 import { ProImkoniyatBelgisi } from "@/app/_components/ProImkoniyatBelgisi";
 import { useTarjima } from "@/app/_components/TilTaminoti";
 import { Tugma } from "@/app/_components/Tugma";
+import { useTelegramOrqaga } from "@/app/_components/useTelegramOrqaga";
 import { PRO_IMKONIYATLARI } from "@/lib/pro-imkoniyatlar";
 import { apiSorov } from "@/lib/services/api-klient";
 import { tarifNomi } from "@/lib/services/obuna-hisob";
@@ -130,6 +131,17 @@ export function Tariflar({
   }, [urinish]);
 
   const yopVaraq = useCallback(() => setVaraq(null), []);
+
+  // "Hozir emas" va Telegram orqaga tugmasi — kelgan sahifaga. Onboardingdan `replace` bilan
+  // kelinadi (unga qaytish ma'nosiz), ilova tarixi bo'lmasa ham (to'g'ridan-to'g'ri ochilgan)
+  // manbaga qarab zaxira sahifa — ekran hech qachon tupik emas. Varaq ochiq bo'lsa, Telegram
+  // tugmasi avval varaqni yopadi (PastkiVaraq o'z amalini ustiga qo'yadi).
+  const qayt = useCallback(() => {
+    if (manba !== "onboarding" && window.history.length > 1) router.back();
+    else router.replace(paywallQaytishi(manba));
+  }, [manba, router]);
+  useTelegramOrqaga(qayt);
+
   const tayyor = Array.isArray(tariflar) && tariflar.length > 0;
 
   return (
@@ -231,7 +243,7 @@ export function Tariflar({
         </div>
         <button
           type="button"
-          onClick={() => router.replace(paywallQaytishi(manba))}
+          onClick={qayt}
           className="pointer-events-auto mt-2 min-h-11 w-full text-asosiy font-medium text-matn-2"
         >
           {t("Hozir emas")}

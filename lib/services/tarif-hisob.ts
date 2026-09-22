@@ -47,7 +47,10 @@ export function paywallSarlavhasi(manba: PaywallManbai, muddatiTugagan: boolean)
   return muddatiTugagan ? k("PRO ni tiklash") : SARLAVHALAR[manba];
 }
 
-/** "Hozir emas" qaytaradigan sahifa — paywall hech qachon tupik emas. */
+/**
+ * Paywall'dan chiqishda zaxira sahifa: onboardingdan kelinganda yoki ilova tarixi bo'lmaganda
+ * (odatda "Hozir emas" va orqaga tugmasi kelgan sahifaga qaytaradi) — tupik bo'lmasin.
+ */
 export function paywallQaytishi(manba: PaywallManbai): string {
   return manba === "profil" ? "/profil" : "/";
 }
