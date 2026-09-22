@@ -535,6 +535,23 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-22 · E4 taom qidiruvi ekrani (`/taomlar`) to'liq olib tashlandi. Taom sahifasi (`/taomlar/[id]`) Home'dagi taom taklifi uchun qoladi, uning "Orqaga" tugmasi Home'ga qaytadi.**
 *Sabab:* Foydalanuvchi qarori — qidiruv bo'limi foydalanuvchilarga kerak emas.
 
+## 2026-09-22 — fon vazifalari (9-task)
+
+**2026-09-22 · Fon vazifalari Railway backend jarayonining o'zida ishlaydi (har daqiqada tekshiradi) (`instrumentation.ts`, faqat `FON_VAZIFALARI=1` bo'lganda; Vercel va lokalda o'chiq), bir vaqtda bitta nusxa — PostgreSQL advisory lock. Railway cron ishlatilmadi.**
+*Sabab:* Alohida xizmat va sozlama kerak emas, kutubxona qo'shilmaydi; backend doimiy jarayon (DECISIONS 2026-09-16).
+
+**2026-09-22 · Obuna muddati tugashi, kunlik skan limitining yangilanishi va kunlik xulosani yopish uchun fon vazifasi yozilmaydi — ular vazifasiz to'g'ri ishlaydi.**
+*Sabab:* PRO `tugash > hozir` dan hisoblanadi (2026-09-21), skanlar Toshkent kuni bo'yicha sanaladi, `kunlik_xulosa` har yozuvda qayta hisoblanadi.
+
+**2026-09-22 · Obuna muddati haqida bot xabarlari besh bosqichda: 7 kun, 3 kun, 1 kun oldin, tugaganda va 2–3 kundan keyin (matnlar va har bosqichga alohida tugma foydalanuvchidan — emoji bilan ikki qator, foydalanuvchi tilida; tugma web_app orqali /pro ni ochadi). Har bosqich Toshkent kalendari bo'yicha aniq vaqtda ketadi (foydalanuvchi jadvali): 7 kun oldin 12:23, 3 kun oldin 18:32, 1 kun oldin 19:31, tugagandan keyingi birinchi 12:11, tugash sanasidan 2 kun keyin 18:37; server o'chiq bo'lsa 6 soat ichida kechikib ketadi, keyin bosqich tashlanadi. Rejalashtirgich har daqiqada tekshiradi, rasm tozalash soatiga bir marta. Oxirgi yuborilgan bosqich `obunalar.xabar_bosqichi` da. Faqat foydalanuvchining eng so'nggi obunasi olinadi. Bot bloklangan / chat topilmasa bosqich yuborilgan deb belgilanadi.**
+*Sabab:* Foydalanuvchi qarori (bildirishnomalar keyinga qoldirilgan bo'lsa ham, obuna ogohlantirishi hozir); kalendar kuni matndagi "7 kundan keyin", "ertaga" ni doim to'g'ri qiladi.
+
+**2026-09-22 · Yozuvga bog'lanmagan va 24 soatdan eski rasmlar fon vazifasida ombordan va bazadan o'chiriladi (soatiga 200 tagacha).**
+*Sabab:* DECISIONS 2026-09-20 va'dasi — tahlilni tasdiqlamay tashlab ketilgan rasmlar.
+
+**2026-09-22 · Bot orqali bildirishnomalar (S5 8-task: nonushta, tushlik, kechki ovqat, suv eslatmalari) keyinga qoldirildi — to'lov integratsiyasi (Click, Payme, Stars) bilan bir qatorda keyinroq qo'shiladi.**
+*Sabab:* Foydalanuvchi qarori.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

@@ -14,8 +14,8 @@ qabul qilsin.
 - [x] Paywall va obuna ekrani: uch tarif (39,000 so'm/oy · 170,000 so'm/6 oy · 290,000 so'm/yil), yillik tavsiya belgisi, oylik ekvivalent va tejash ko'rsatilishi, "Hozir emas" tugmasi
 - [ ] To'lov integratsiyasi: Click, Payme va Telegram Stars. Kalitlar Railway Environment Variables'da, qaytish manzillari production domeniga yoziladi. `tolovlar` jadvali, holat zanjiri `boshlandi` -> `to'landi` / `bekor qilindi` — KEYINGA QOLDIRILDI (DECISIONS 2026-09-22: hozircha obuna admin orqali qo'lda, to'lov API'lari real foydalanuvchilardan keyin talabga qarab)
 - [ ] Obuna faollashuvi: muvaffaqiyatli to'lovdan keyin `obunalar` yozuvi va PRO huquqlari darhol ochiladi — KEYINGA QOLDIRILDI (DECISIONS 2026-09-22: hozircha obuna admin orqali qo'lda, to'lov API'lari real foydalanuvchilardan keyin talabga qarab)
-- [ ] Bildirishnomalar bot orqali: nonushta, tushlik, kechki ovqat va suv eslatmalari; sozlamalarda har biri alohida yoqiladi va o'chiriladi
-- [ ] Fon vazifalari (backend Railway'da doimiy ishlaydi — Railway cron yoki jarayon ichidagi rejalashtirgich, sprint boshida tanlanadi): obuna muddati tugashi va tugashdan oldingi ogohlantirish, PRO kunlik skan limitining yangilanishi, kunlik xulosani yopish
+- [ ] Bildirishnomalar bot orqali: nonushta, tushlik, kechki ovqat va suv eslatmalari; sozlamalarda har biri alohida yoqiladi va o'chiriladi — KEYINGA QOLDIRILDI (DECISIONS 2026-09-22: bot bildirishnomalari keyinroq, to'lovlar kabi)
+- [x] Fon vazifalari (backend Railway'da doimiy ishlaydi — Railway cron yoki jarayon ichidagi rejalashtirgich, sprint boshida tanlanadi): obuna muddati tugashi va tugashdan oldingi ogohlantirish, PRO kunlik skan limitining yangilanishi, kunlik xulosani yopish. 2026-09-22 aniqlandi: tugash, limit va xulosa vazifasiz ishlaydi; vazifalar — obuna muddati bot xabarlari (7/3/1 kun, tugaganda, 2–3 kundan keyin) va yetim rasmlarni tozalash (DECISIONS 2026-09-22)
 - [ ] Privacy Policy va Terms of Use sahifalari: 18+, AI taxminlari, obuna va to'lov, bekor qilish, pul qaytarilmasligi, sog'liq bo'yicha ogohlantirish, rasmlar uchinchi tomon AI xizmatiga yuborilishi, O'zbekiston Respublikasi qonuni
 
 ## Qabul mezoni
@@ -24,7 +24,7 @@ qabul qilsin.
 - Mini App Telegram ichida to'liq ekranda ochiladi, pastki navigatsiya barmoq yetadigan joyda
 - Telegram Stars orqali test to'lov o'tkaziladi va PRO darhol faollashadi
 - Obuna muddati tugagach yangi skan yopiladi, lekin butun jurnal va progress ochiq qoladi
-- Nonushta eslatmasi belgilangan vaqtda botdan keladi
+- Nonushta eslatmasi belgilangan vaqtda botdan keladi — keyinga qoldirildi (bildirishnomalar taski bilan)
 - Terms sahifasida sog'liq bo'yicha ogohlantirish matni to'liq ko'rinadi
 
 ## Bu sprintda YO'Q
@@ -51,6 +51,7 @@ avtomatik takroriy to'lov · admin paneli.
 - 2026-09-22: E7 Kaloriya maydoni aksent bilan ajratildi — --aksent-fon foni, lime chegara, yorliq va flame belgisi, yangi --aksent-fon/--aksent-yorliq tokenlari (app/_components/YozuvFormasi.tsx, app/_components/Tahlil.tsx, app/globals.css, DESIGN.md)
 - 2026-09-22: E4 taom qidiruvidan "Oxirgi qo'shilganlar" bo'limi olib tashlandi, ro'yxat faqat qidiruvda chiqadi (app/_components/TaomlarRoyxati.tsx, lib/lugat/sozlar.ts)
 - 2026-09-22: E4 taom qidiruvi ekrani (/taomlar) to'liq olib tashlandi, taom sahifasi /taomlar/[id] Home taklifi uchun qoldi va "Orqaga" Home'ga qaytadi (app/taomlar/, app/_components/TaomlarRoyxati.tsx, app/_components/TaomKartasi.tsx, app/api/taomlar/route.ts, lib/lugat/sozlar.ts)
+- 2026-09-22: fon vazifalari qo'shildi — obuna muddati bot xabarlari 5 bosqichda (7/3/1 kun oldin, tugagandan keyin, 2 kun keyin) va yetim rasmlarni tozalash, Railway'da FON_VAZIFALARI=1 bilan har daqiqada ishlaydigan rejalashtirgich (instrumentation.ts, lib/services/fon-vazifalari.ts, lib/services/obuna-xabar-hisob.ts, lib/services/bot.ts, prisma/schema.prisma, scripts/fon-vazifalari.mjs)
 
 ## Handoff
 
@@ -66,11 +67,13 @@ Prototip auditidan S5'ga qolgan eslatmalar (2026-09-22):
 
 W1 orqaga tugmasi: telefonda jonli sinovda tasdiqlandi (2026-09-22).
 
-Keyingi: 8-task (bot orqali bildirishnomalar). 3-task jonli sinovi: deploydan keyin telefonda /start → til → Boshlash → ilova shu tilda ochilishi; Railway'da APP_URL Vercel https domeni bo'lishi shart (aks holda Boshlash tugmasi chiqmaydi).
+Keyingi: 10-task (Privacy Policy va Terms of Use sahifalari). 3-task jonli sinovi: deploydan keyin telefonda /start → til → Boshlash → ilova shu tilda ochilishi; Railway'da APP_URL Vercel https domeni bo'lishi shart (aks holda Boshlash tugmasi chiqmaydi).
 
 P1 haftalik hisobot: ustunli ko'rinish jonli ma'lumotda (bu haftada 3+ kun yozuv) ko'rib chiqilsin.
 
 Railway backend'ga ADMIN_TELEGRAM=NutrliLiferPro qo'shilishi kerak (foydalanuvchi qo'shadi) — aks holda W1 "Davom etish" "To'lov tez orada" varag'ini ochadi.
+
+Fon vazifalari: Railway backend'da FON_VAZIFALARI=1 qo'shilgan (foydalanuvchi, 2026-09-22); deploydan keyin Railway logida "Fon vazifalari —" qatorlari chiqishini tekshirish. Dev foydalanuvchining telegram_id si soxta (1000000001) — bot sinovi uchun haqiqiy hisob kerak.
 
 ---
 

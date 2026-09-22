@@ -234,6 +234,9 @@ model Obuna {
   tarif           String
   boshlanish      DateTime @default(now())
   tugash          DateTime
+  /// Bot orqali yuborilgan oxirgi muddat xabari bosqichi (lib/services/obuna-xabar-hisob.ts):
+  /// 0 — hali yo'q, 1 — 7 kun, 2 — 3 kun, 3 — 1 kun, 4 — tugadi, 5 — qayta taklif.
+  xabarBosqichi   Int      @default(0) @map("xabar_bosqichi")
   yaratilgan      DateTime @default(now())
 
   foydalanuvchi Foydalanuvchi @relation(fields: [foydalanuvchiId], references: [id], onDelete: Cascade)

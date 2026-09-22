@@ -330,6 +330,52 @@ export const SOZLAR = {
     en: "By tapping “Start” you accept the terms of the Public Offer.",
   },
   "Boshlash": { ru: "Начать", en: "Start" },
+  // ── Obuna muddati haqidagi bot xabarlari (S5 fon vazifalari) ─────────────
+  "NutriLifer PRO obunangiz 7 kundan keyin tugaydi.": {
+    ru: "Ваша подписка NutriLifer PRO закончится через 7 дней.",
+    en: "Your NutriLifer PRO subscription ends in 7 days.",
+  },
+  "PRO imkoniyatlaringiz hali 7 kun davomida faol.": {
+    ru: "Возможности PRO доступны вам ещё 7 дней.",
+    en: "Your PRO features stay active for 7 more days.",
+  },
+  "Obuna muddatini ko'rish": { ru: "Посмотреть срок подписки", en: "View subscription period" },
+  "PRO obunangiz tugashiga 3 kun qoldi.": {
+    ru: "До конца подписки PRO осталось 3 дня.",
+    en: "3 days left on your PRO subscription.",
+  },
+  "AI skanlar, Nutrition Score va batafsil statistika siz uchun hali faol.": {
+    ru: "AI-сканы, Nutrition Score и подробная статистика пока доступны вам.",
+    en: "AI scans, Nutrition Score and detailed statistics are still active for you.",
+  },
+  "PRO imkoniyatlarini davom ettirish": { ru: "Сохранить возможности PRO", en: "Keep PRO features" },
+  "PRO obunangiz ertaga tugaydi.": {
+    ru: "Подписка PRO заканчивается завтра.",
+    en: "Your PRO subscription ends tomorrow.",
+  },
+  "PRO imkoniyatlaridan foydalanishni davom ettirish uchun obunani davom ettirishingiz mumkin.": {
+    ru: "Чтобы и дальше пользоваться возможностями PRO, вы можете продлить подписку.",
+    en: "To keep using PRO features, you can renew your subscription.",
+  },
+  "Obunani davom ettirish": { ru: "Продлить подписку", en: "Renew subscription" },
+  "NutriLifer PRO obunangiz tugadi.": {
+    ru: "Ваша подписка NutriLifer PRO закончилась.",
+    en: "Your NutriLifer PRO subscription has ended.",
+  },
+  "PRO funksiyalarini qayta faollashtirishingiz mumkin.": {
+    ru: "Вы можете снова активировать функции PRO.",
+    en: "You can reactivate PRO features.",
+  },
+  "PRO ni qayta faollashtirish": { ru: "Снова активировать PRO", en: "Reactivate PRO" },
+  "NutriLifer PRO siz uchun yana mavjud.": {
+    ru: "NutriLifer PRO снова доступен для вас.",
+    en: "NutriLifer PRO is available for you again.",
+  },
+  "AI skan, Nutrition Score va boshqa PRO imkoniyatlarini qayta oching.": {
+    ru: "Откройте заново AI-скан, Nutrition Score и другие возможности PRO.",
+    en: "Unlock AI scans, Nutrition Score and other PRO features again.",
+  },
+  "PRO ga qaytish": { ru: "Вернуться к PRO", en: "Back to PRO" },
   "Tugatish": { ru: "Завершить", en: "Finish" },
   "{0} dan {1}": { ru: "{1} из {0}", en: "{1} of {0}" },
   "O'tkazib yuborish": { ru: "Пропустить", en: "Skip" },

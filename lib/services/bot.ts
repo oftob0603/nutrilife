@@ -66,7 +66,7 @@ function html(matn: string): string {
  * Mini App manzili — `APP_URL` (Railway'da frontend, Vercel domeni). Telegram `web_app`
  * tugmasi faqat https qabul qiladi; noto'g'ri bo'lsa tugmasiz xabar ketadi va logga yoziladi.
  */
-function ilovaManzili(): string | null {
+export function ilovaManzili(): string | null {
   const manzil = process.env.APP_URL;
   if (manzil?.startsWith("https://")) return manzil;
   console.error("Bot: APP_URL https emas yoki sozlanmagan — \"Boshlash\" tugmasi chiqmaydi");
