@@ -20,6 +20,7 @@ export const SOZLAR = {
   "Bekor qilish": { ru: "Отмена", en: "Cancel" },
   "Saqlash": { ru: "Сохранить", en: "Save" },
   "Davom etish": { ru: "Продолжить", en: "Continue" },
+  "Obuna bo'lish": { ru: "Оформить подписку", en: "Subscribe" },
   "Qayta urinish": { ru: "Повторить", en: "Try again" },
   "O'chirish": { ru: "Удалить", en: "Delete" },
   "Nusxalash": { ru: "Копировать", en: "Copy" },

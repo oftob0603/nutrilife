@@ -105,8 +105,8 @@ function TarifKartasi({
 
 /**
  * W1 — tariflar (paywall-tz.md; qolip: prototip/ui_kits/paywall/Tariffs.jsx). "Hozir emas"
- * har holatda ishlaydi — ekran hech qachon tupik emas; o'chadigan tugma — "Davom etish".
- * To'lov tizimlari ulanguncha (DECISIONS 2026-09-22) "Davom etish" admin bilan Telegram chatini
+ * har holatda ishlaydi — ekran hech qachon tupik emas; o'chadigan tugma — "Obuna bo'lish".
+ * To'lov tizimlari ulanguncha (DECISIONS 2026-09-22) "Obuna bo'lish" admin bilan Telegram chatini
  * tanlangan tarif yozilgan tayyor xabar bilan ochadi; admin berilmagan bo'lsa — "To'lov tez
  * orada" varag'i. Shartlar va maxfiylik hujjatlari hali yo'q — havolalar shunday varaq ochadi.
  */
@@ -263,7 +263,7 @@ export function Tariflar({
             disabled={!tayyor || !tanlangan}
             onClick={davomEt}
           >
-            {t("Davom etish")}
+            {t("Obuna bo'lish")}
           </Tugma>
         </div>
         <button
