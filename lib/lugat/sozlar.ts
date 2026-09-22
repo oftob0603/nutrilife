@@ -216,13 +216,13 @@ export const SOZLAR = {
   "Boshqa": { ru: "Другое", en: "Other" },
   "Jurnalga qo'shish": { ru: "Добавить в журнал", en: "Add to journal" },
   "Saqlanmadi. Qayta urinib ko'ring": { ru: "Не сохранено. Попробуйте ещё раз", en: "Not saved. Try again" },
-  "Nima yedingiz? Taom nomi va taxminiy miqdorini yozing.": {
-    ru: "Что вы ели? Напишите название блюда и примерное количество.",
-    en: "What did you eat? Write the dish name and a rough amount.",
+  "Nima yedingiz? Taom nomi va og'irligini (grammda) yozing.": {
+    ru: "Что вы ели? Напишите название блюда и вес (в граммах).",
+    en: "What did you eat? Write the dish name and its weight (in grams).",
   },
-  "Masalan: bir kosa mastava va yarimta non": {
-    ru: "Например: тарелка маставы и пол-лепёшки",
-    en: "For example: a bowl of mastava and half a flatbread",
+  "Masalan: mastava 400 g va yarimta non (100 g)": {
+    ru: "Например: мастава 400 г и пол-лепёшки (100 г)",
+    en: "For example: mastava 400 g and half a flatbread (100 g)",
   },
 
   // ── AI tahlil (E6) va tasdiqlash (E7) ──────────────────────────────────────

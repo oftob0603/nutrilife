@@ -61,14 +61,14 @@ export function Tasvirlash({ boshlangich }: { boshlangich: string }) {
       <div className="flex flex-col gap-4">
         <label className="flex flex-col gap-2">
           <span className="text-izoh text-matn-2">
-            {t("Nima yedingiz? Taom nomi va taxminiy miqdorini yozing.")}
+            {t("Nima yedingiz? Taom nomi va og'irligini (grammda) yozing.")}
           </span>
           <textarea
             value={matn}
             onChange={(hodisa) => setMatn(hodisa.target.value)}
             maxLength={MATN_CHEGARASI}
             rows={4}
-            placeholder={t("Masalan: bir kosa mastava va yarimta non")}
+            placeholder={t("Masalan: mastava 400 g va yarimta non (100 g)")}
             className="w-full resize-none rounded-karta border border-chegara bg-karta p-4 text-asosiy outline-none placeholder:text-matn-3"
           />
         </label>

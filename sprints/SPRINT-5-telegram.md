@@ -37,6 +37,7 @@ avtomatik takroriy to'lov · admin paneli.
 - 2026-09-22: backend Railway'ga ko'chirildi, frontend Vercel'da qoldi (DECISIONS 2026-09-16 amalga oshirildi) (next.config.ts, lib/api-asos.ts, lib/services/sessiya.ts, .env.example)
 - 2026-09-22: Railway'ga ko'chirish telefonda jonli sinovda tasdiqlandi, bot webhook Railway domeniga o'rnatildi
 - 2026-09-22: galereyadan rasm tanlanganda to'liq ekranli E6 yuklash holati va telefondagi nusxa tahlilda ishlatilishi qo'shildi (app/_components/QoshishPaneli.tsx, app/_components/Tahlil.tsx, lib/services/rasm-yuklash.ts)
+- 2026-09-22: matn bilan tasvirlash ekranida izoh va placeholder taxminiy miqdor o'rniga og'irlikni (grammda) so'raydi, ruscha/inglizcha tarjimalar yangilandi (app/_components/Tasvirlash.tsx, lib/lugat/sozlar.ts)
 
 ## Handoff
 

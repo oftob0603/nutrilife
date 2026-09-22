@@ -494,6 +494,9 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-22 · Galereyadan tanlangan rasm yuklanguncha to'liq ekranli E6 ko'rinishi chiqadi va yuklangan rasmning telefondagi nusxasi tahlil ekranida ishlatiladi.**
 *Sabab:* Foydalanuvchi qarori — paneldagi kichik "Rasm yuklanmoqda…" yozuvi ko'rinmay qolardi (dizayn-tz E2: "tanlangach E6"); nusxa R2'dan qayta yuklashdagi miltillashni yo'qotadi.
 
+**2026-09-22 · Matn bilan tasvirlashda foydalanuvchidan taxminiy miqdor emas, og'irlik grammda so'raladi.**
+*Sabab:* Foydalanuvchi qarori — AI grammli tavsifdan aniqroq hisoblaydi.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |
