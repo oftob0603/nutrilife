@@ -499,8 +499,11 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 
 ## 2026-09-22 — bot /start (3-task)
 
-**2026-09-22 · `/start` darhol tanishtiruv matni va "✨ Boshlash" tugmasini chiqaradi, til tanlovi shu xabardagi tugmalar qatorida — alohida til qadami yo'q.**
+**2026-09-22 · `/start` darhol tanishtiruv matni va "✨ Boshlash" tugmasini chiqaradi, til tanlovi shu xabardagi tugmalar qatorida — alohida til qadami yo'q. (BEKOR QILINDI — pastdagi 2026-09-22 qarori bilan almashtirildi.)**
 *Sabab:* Bitta bosishda ilovaga kirish; foydalanuvchi tanishtiruv matnini o'zi berdi.
+
+**2026-09-22 · `/start` avval uch tilli til savoli va 3 ta til tugmasini chiqaradi; til tanlangach xabar tanishtiruv matni va "✨ Boshlash" tugmasiga almashadi. Oldingi (bitta xabarda matn + til qatori) qaror bekor.**
+*Sabab:* Foydalanuvchi qarori.
 
 **2026-09-22 · Foydalanuvchiga ko'rinadigan mahsulot nomi doimo "NutriLifer" (ilgari "Nutrilife").**
 *Sabab:* Foydalanuvchi qarori; ichki `nutrilife-*` localStorage kalitlari o'zgarmaydi.

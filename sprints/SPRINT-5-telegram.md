@@ -39,6 +39,7 @@ avtomatik takroriy to'lov · admin paneli.
 - 2026-09-22: galereyadan rasm tanlanganda to'liq ekranli E6 yuklash holati va telefondagi nusxa tahlilda ishlatilishi qo'shildi (app/_components/QoshishPaneli.tsx, app/_components/Tahlil.tsx, lib/services/rasm-yuklash.ts)
 - 2026-09-22: matn bilan tasvirlash ekranida izoh va placeholder taxminiy miqdor o'rniga og'irlikni (grammda) so'raydi, ruscha/inglizcha tarjimalar yangilandi (app/_components/Tasvirlash.tsx, lib/lugat/sozlar.ts)
 - 2026-09-22: bot /start darhol tanishtiruv matni, "Boshlash" web_app tugmasi va til qatorini chiqaradi, ilovadagi ko'rinadigan nom "NutriLifer" ga almashtirildi (lib/services/bot.ts, lib/services/bot-api.ts, lib/services/foydalanuvchilar.ts, lib/lugat/sozlar.ts)
+- 2026-09-22: bot /start avval til savoli va 3 ta til tugmasini chiqaradi, til tanlangach xabar tanishtiruv matni va "Boshlash" tugmasiga almashadi (lib/services/bot.ts)
 
 ## Handoff
 

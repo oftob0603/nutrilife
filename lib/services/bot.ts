@@ -50,7 +50,7 @@ function turi(yangilanish: BotYangilanish): string {
   return "boshqa";
 }
 
-/** Til tugmalari — tanlangani ✓ bilan. Nomlar tarjima qilinmaydi: har til o'z nomi bilan. */
+/** Til tugmalari. Nomlar tarjima qilinmaydi: har til o'z nomi bilan. */
 const TIL_NOMLARI: Record<Til, string> = {
   uz: "🇺🇿 O'zbekcha",
   ru: "🇷🇺 Русский",
@@ -78,7 +78,21 @@ function boshlashTugmasi(t: Tarjimon["t"]): object[] {
   return manzil ? [{ text: `✨ ${t("Boshlash")}`, web_app: { url: manzil } }] : [];
 }
 
-/** /start xabari: tanishtiruv, "Boshlash" va til tanlovi. */
+/**
+ * /start xabari: til hali noma'lum bo'lgani uchun savol uch tilda, pastda shu tartibda
+ * uchta til tugmasi. Til bosilgach shu xabar `salomXabari` ga almashadi.
+ */
+const TIL_SAVOLI = [
+  "✨ Xush kelibsiz! Qaysi tilda davom etamiz?",
+  "✨ Добро пожаловать! На каком языке продолжим?",
+  "✨ Welcome! Which language should we use?",
+].join("\n");
+
+const TIL_TUGMALARI = {
+  inline_keyboard: TILLAR.map((kod) => [{ text: TIL_NOMLARI[kod], callback_data: `til:${kod}` }]),
+};
+
+/** Til tanlangandan keyingi xabar: tanishtiruv va "Boshlash" tugmasi. */
 function salomXabari(til: Til): { matn: string; tugmalar: object } {
   const { t } = tarjimon(til);
   const matn = [
@@ -88,12 +102,8 @@ function salomXabari(til: Til): { matn: string; tugmalar: object } {
     html(t("Shuningdek, kunlik maqsadingizni kuzatib, ovqatlanish tarixingizni saqlashingiz mumkin.")),
     `<b>${html(t("Boshlash uchun tugmani bosing:"))}</b>`,
   ].join("\n\n");
-  const tilQatori = TILLAR.map((kod) => ({
-    text: kod === til ? `✓ ${TIL_NOMLARI[kod]}` : TIL_NOMLARI[kod],
-    callback_data: `til:${kod}`,
-  }));
-  const qatorlar = [boshlashTugmasi(t), tilQatori].filter((qator) => qator.length > 0);
-  return { matn, tugmalar: { inline_keyboard: qatorlar } };
+  const tugma = boshlashTugmasi(t);
+  return { matn, tugmalar: { inline_keyboard: tugma.length > 0 ? [tugma] : [] } };
 }
 
 /** Saqlangan til, u bo'lmasa Telegram tili (tanish bo'lmasa o'zbekcha). */
@@ -106,14 +116,13 @@ async function foydalanuvchiTili(kimdan: BotFoydalanuvchi | undefined): Promise<
 async function xabarniQaytaIshla(xabar: BotXabar): Promise<void> {
   // Bot faqat shaxsiy chatda javob beradi — web_app tugmasi guruhlarda ishlamaydi.
   if (xabar.chat.type !== "private" || xabar.from?.is_bot) return;
-  const til = await foydalanuvchiTili(xabar.from);
 
   if (xabar.text === "/start" || xabar.text?.startsWith("/start ")) {
-    const { matn, tugmalar } = salomXabari(til);
-    await xabarYubor(xabar.chat.id, matn, { parse_mode: "HTML", reply_markup: tugmalar });
+    await xabarYubor(xabar.chat.id, TIL_SAVOLI, { reply_markup: TIL_TUGMALARI });
     return;
   }
 
+  const til = await foydalanuvchiTili(xabar.from);
   // Botda ovqat kiritish yo'q (DECISIONS 2026-09-13) — har qanday boshqa xabarga ilovaga yo'l.
   const { t } = tarjimon(til);
   const tugma = boshlashTugmasi(t);
