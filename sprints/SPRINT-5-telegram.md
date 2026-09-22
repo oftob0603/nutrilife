@@ -46,6 +46,7 @@ avtomatik takroriy to'lov · admin paneli.
 - 2026-09-22: W1 orqaga chiqishi ("Hozir emas" va Telegram/tizim orqaga tugmasi) kelgan sahifaga qaytadigan qilindi, Telegram Mini App yopilib ketmaydi (app/_components/Tariflar.tsx, lib/services/tarif-hisob.ts)
 - 2026-09-22: P1 sahifasiga PRO uchun batafsil ovqatlanish statistikasi va haftalik ovqatlanish hisoboti prototipdagidek qurildi, FREE'da qulf kartasi (lib/services/statistika-hisob.ts, lib/services/statistika.ts, app/api/statistika/route.ts, app/_components/progress/OvqatStatistikasi.tsx, app/progress/page.tsx, app/progress/yukla.ts, lib/services/huquqlar.ts, lib/services/yozuv-hisob.ts, lib/lugat/sozlar.ts)
 - 2026-09-22: W1 "Davom etish" tanlangan tarif yozilgan tayyor xabar bilan admin Telegram chatini ochadigan qilindi, tarif kartasida oylik narx katta ko'rsatiladi (app/_components/Tariflar.tsx, app/api/tariflar/route.ts, lib/services/tarif-hisob.ts, lib/telegram.ts, lib/lugat/sozlar.ts, .env.example)
+- 2026-09-22: Home kunlik kaloriya doirasi 10% kichraytirildi (224 -> 202px, halqa qalinligi o'zgarmadi), E8'da ham (app/_components/KunlikDoira.tsx)
 
 ## Handoff
 

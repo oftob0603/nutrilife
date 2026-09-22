@@ -5,7 +5,7 @@ import { useTarjima } from "@/app/_components/TilTaminoti";
 import { raqam } from "@/lib/services/taom-hisob";
 import { qolganKaloriya } from "@/lib/services/taklif-hisob";
 
-const OLCHAM = 224;
+const OLCHAM = 202; // 224 dan 10% kichik (foydalanuvchi so'rovi)
 const QALINLIK = 14; // DESIGN.md, 6-bo'lim
 const RADIUS = (OLCHAM - QALINLIK) / 2;
 const AYLANA = 2 * Math.PI * RADIUS;
