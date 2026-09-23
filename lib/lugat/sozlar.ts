@@ -325,9 +325,13 @@ export const SOZLAR = {
     ru: "Хотите знать больше о своей еде?",
     en: "Want to know more about your food?",
   },
-  "«Boshlash»ni bosish orqali Ommaviy oferta shartlarini qabul qilasiz.": {
-    ru: "Нажимая «Начать», вы принимаете условия Публичной оферты.",
-    en: "By tapping “Start” you accept the terms of the Public Offer.",
+  "«Boshlash»ni bosish orqali {0} qabul qilasiz.": {
+    ru: "Нажимая «Начать», вы принимаете {0}.",
+    en: "By tapping “Start” you accept {0}.",
+  },
+  "Ommaviy oferta shartlarini": {
+    ru: "условия Публичной оферты",
+    en: "the terms of the Public Offer",
   },
   "Boshlash": { ru: "Начать", en: "Start" },
   // Bot chatidagi menyu tugmasi (setChatMenuButton) — qisqa bo'lsin.
@@ -694,6 +698,12 @@ export const SOZLAR = {
     en: "No automatic charges. When the term ends, you renew it yourself.",
   },
   "Foydalanish shartlari": { ru: "Условия использования", en: "Terms of Use" },
+  "Ommaviy oferta": { ru: "Публичная оферта", en: "Public Offer" },
+  "Versiya: {0}": { ru: "Версия: {0}", en: "Version: {0}" },
+  "Hujjat hozircha o'zbek tilida.": {
+    ru: "Документ пока доступен на узбекском языке.",
+    en: "This document is currently available in Uzbek.",
+  },
   "Maxfiylik siyosati": { ru: "Политика конфиденциальности", en: "Privacy Policy" },
   "Hozir emas": { ru: "Не сейчас", en: "Not now" },
   "Tariflarni yuklab bo'lmadi": { ru: "Не удалось загрузить тарифы", en: "Could not load the plans" },

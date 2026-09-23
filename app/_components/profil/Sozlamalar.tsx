@@ -128,8 +128,11 @@ export function Sozlamalar({ boshlangich }: { boshlangich: SozlamalarTuri }) {
         </p>
       </section>
 
-      {/* Prototipdagi ikkinchi karta; Yordam, shartlar va maxfiylik qatorlari S5'da shu yerga qo'shiladi. */}
+      {/* Prototipdagi ikkinchi karta: huquqiy hujjatlar va rasm mualliflari. */}
       <div className="overflow-hidden rounded-karta border border-karta-chegara bg-karta">
+        <SozlamaQatori nomi={t("Foydalanish shartlari")} href="/shartlar" />
+        <SozlamaQatori nomi={t("Maxfiylik siyosati")} href="/maxfiylik" />
+        <SozlamaQatori nomi={t("Ommaviy oferta")} href="/oferta" />
         <SozlamaQatori nomi={t("Rasm mualliflari")} href="/profil/mualliflar" />
       </div>
 

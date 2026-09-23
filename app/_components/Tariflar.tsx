@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { PastkiVaraq } from "@/app/_components/PastkiVaraq";
 import { ProImkoniyatBelgisi } from "@/app/_components/ProImkoniyatBelgisi";
@@ -31,7 +32,7 @@ type Javob = { tariflar: TarifNarxi[]; admin: string | null };
 /** "yuklanmoqda" — narxlar kutilmoqda; null — olib bo'lmadi. */
 type Holat = Javob | "yuklanmoqda" | null;
 
-type Varaq = "tolov" | "hujjat" | null;
+type Varaq = "tolov" | null;
 
 async function tariflarniOl(): Promise<Javob | null> {
   try {
@@ -108,7 +109,7 @@ function TarifKartasi({
  * har holatda ishlaydi — ekran hech qachon tupik emas; o'chadigan tugma — "Obuna bo'lish".
  * To'lov tizimlari ulanguncha (DECISIONS 2026-09-22) "Obuna bo'lish" admin bilan Telegram chatini
  * tanlangan tarif yozilgan tayyor xabar bilan ochadi; admin berilmagan bo'lsa — "To'lov tez
- * orada" varag'i. Shartlar va maxfiylik hujjatlari hali yo'q — havolalar shunday varaq ochadi.
+ * orada" varag'i. Shartlar va maxfiylik havolalari hujjat sahifalarini ochadi (S5 10-task).
  */
 export function Tariflar({
   manba,
@@ -236,21 +237,13 @@ export function Tariflar({
         </p>
 
         <div className="mt-1 flex flex-wrap items-center gap-x-2 text-izoh">
-          <button
-            type="button"
-            onClick={() => setVaraq("hujjat")}
-            className="min-h-11 underline-offset-2 active:underline"
-          >
+          <Link href="/shartlar" className="min-h-11 content-center underline-offset-2 active:underline">
             {t("Foydalanish shartlari")}
-          </button>
+          </Link>
           <span className="text-matn-3">·</span>
-          <button
-            type="button"
-            onClick={() => setVaraq("hujjat")}
-            className="min-h-11 underline-offset-2 active:underline"
-          >
+          <Link href="/maxfiylik" className="min-h-11 content-center underline-offset-2 active:underline">
             {t("Maxfiylik siyosati")}
-          </button>
+          </Link>
         </div>
       </main>
 
@@ -276,15 +269,10 @@ export function Tariflar({
       </div>
 
       {varaq && (
-        <PastkiVaraq
-          sarlavha={varaq === "tolov" ? t("To'lov tez orada") : t("Hujjat tayyorlanmoqda")}
-          onYop={yopVaraq}
-        >
+        <PastkiVaraq sarlavha={t("To'lov tez orada")} onYop={yopVaraq}>
           <div className="flex flex-col gap-4">
             <p className="text-asosiy">
-              {varaq === "tolov"
-                ? t("To'lov tez orada ishga tushadi. Hozircha ilovadan bepul foydalanishingiz mumkin.")
-                : t("Hujjat matni tez orada shu yerda paydo bo'ladi.")}
+              {t("To'lov tez orada ishga tushadi. Hozircha ilovadan bepul foydalanishingiz mumkin.")}
             </p>
             <Tugma onClick={yopVaraq}>{t("Tushunarli")}</Tugma>
           </div>

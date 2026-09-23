@@ -552,6 +552,20 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-22 · Bot orqali bildirishnomalar (S5 8-task: nonushta, tushlik, kechki ovqat, suv eslatmalari) keyinga qoldirildi — to'lov integratsiyasi (Click, Payme, Stars) bilan bir qatorda keyinroq qo'shiladi.**
 *Sabab:* Foydalanuvchi qarori.
 
+## 2026-09-23 — huquqiy hujjatlar matni
+
+**2026-09-23 · Ommaviy oferta, Foydalanish shartlari va Maxfiylik siyosati matnlari foydalanuvchi tomonidan yozildi (repo ildizidagi uchta .txt, versiya 2026-09-23) va ilovaga moslandi: aloqa faqat Telegram @NutriLiferPro, "mobil ilova" yo'q (bot + Mini App), maxfiylikda ovqatlanish odati va ilova sozlamalari (til, mavzu, birliklar) sanaladi, nom birinchi o'rinda "NutriLifer bot", keyin "NutriLifer".**
+*Sabab:* Hujjat ilovadagi haqiqatni aytishi kerak.
+
+**2026-09-23 · Hujjatlarda "obunani bekor qilish" va "to'langan pul qaytarilmaydi" bandlari yo'q: avtomatik takroriy to'lov qo'llanilmaydi, PRO muddat oxirida o'zi yopiladi, jurnal va progress ochiq qoladi; PRO, muddat va to'lov bilan bog'liq masalalar admin (@NutriLiferPro) bilan hal qilinadi. S5 task matni shunga moslandi.**
+*Sabab:* Foydalanuvchi qarori — to'lov tizimlari hali ulanmagan, obuna admin orqali qo'lda beriladi (DECISIONS 2026-09-22).
+
+**2026-09-23 · Shartlar yangilanganda avval qabul qilganlardan qayta rozilik so'ralmaydi: hujjatlarda "yangilanishdan keyin foydalanishda davom etish qabul qilish hisoblanadi" deb yozildi.**
+*Sabab:* Foydalanuvchi qarori.
+
+**2026-09-23 · 18 yosh: onboarding 18 dan kichik yoshni to'smaydi (ogohlantirish chiqadi, "Davom etish" ishlaydi), hujjatlarda esa foydalanuvchi o'zi 18+ ekanini tasdiqlaydi. 2026-09-22 dagi ochiq masala shu bilan yopildi.**
+*Sabab:* Foydalanuvchi qarori.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

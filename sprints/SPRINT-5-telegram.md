@@ -16,7 +16,7 @@ qabul qilsin.
 - [ ] Obuna faollashuvi: muvaffaqiyatli to'lovdan keyin `obunalar` yozuvi va PRO huquqlari darhol ochiladi — KEYINGA QOLDIRILDI (DECISIONS 2026-09-22: hozircha obuna admin orqali qo'lda, to'lov API'lari real foydalanuvchilardan keyin talabga qarab)
 - [ ] Bildirishnomalar bot orqali: nonushta, tushlik, kechki ovqat va suv eslatmalari; sozlamalarda har biri alohida yoqiladi va o'chiriladi — KEYINGA QOLDIRILDI (DECISIONS 2026-09-22: bot bildirishnomalari keyinroq, to'lovlar kabi)
 - [x] Fon vazifalari (backend Railway'da doimiy ishlaydi — Railway cron yoki jarayon ichidagi rejalashtirgich, sprint boshida tanlanadi): obuna muddati tugashi va tugashdan oldingi ogohlantirish, PRO kunlik skan limitining yangilanishi, kunlik xulosani yopish. 2026-09-22 aniqlandi: tugash, limit va xulosa vazifasiz ishlaydi; vazifalar — obuna muddati bot xabarlari (7/3/1 kun, tugaganda, 2–3 kundan keyin) va yetim rasmlarni tozalash (DECISIONS 2026-09-22)
-- [ ] Privacy Policy va Terms of Use sahifalari: 18+, AI taxminlari, obuna va to'lov, bekor qilish, pul qaytarilmasligi, sog'liq bo'yicha ogohlantirish, rasmlar uchinchi tomon AI xizmatiga yuborilishi, O'zbekiston Respublikasi qonuni
+- [x] Privacy Policy va Terms of Use sahifalari: 18+, AI taxminlari, obuna va to'lov, sog'liq bo'yicha ogohlantirish, rasmlar uchinchi tomon AI xizmatiga yuborilishi, O'zbekiston Respublikasi qonuni. 2026-09-23 aniqlandi: "bekor qilish" va "pul qaytarilmasligi" bandlari yozilmaydi — avtomatik takroriy to'lov yo'q, PRO muddat oxirida o'zi yopiladi, to'lov masalalari admin bilan hal qilinadi (foydalanuvchi qarori); matnlar tayyor: uchta .txt fayl repo ildizida
 
 ## Qabul mezoni
 
@@ -54,6 +54,7 @@ avtomatik takroriy to'lov · admin paneli.
 - 2026-09-22: fon vazifalari qo'shildi — obuna muddati bot xabarlari 5 bosqichda (7/3/1 kun oldin, tugagandan keyin, 2 kun keyin) va yetim rasmlarni tozalash, Railway'da FON_VAZIFALARI=1 bilan har daqiqada ishlaydigan rejalashtirgich (instrumentation.ts, lib/services/fon-vazifalari.ts, lib/services/obuna-xabar-hisob.ts, lib/services/bot.ts, prisma/schema.prisma, scripts/fon-vazifalari.mjs)
 - 2026-09-22: bot nomi va tavsiflari uch tilda (standart o'zbekcha, ru, en) Bot API orqali o'rnatildi (scripts/bot-tavsif.mjs); bot yangi botga almashtirildi, webhook Railway domeniga qayta o'rnatildi
 - 2026-09-22: bot chatidagi menyu tugmasi foydalanuvchi tilida — /start da til tanlanganda va Profil'da til o'zgarganda "Kirish" / "Войти" / "Open app" (lib/services/bot.ts, lib/services/foydalanuvchilar.ts, app/api/profil/sozlamalar/route.ts, lib/lugat/sozlar.ts)
+- 2026-09-23: Ommaviy oferta, Foydalanish shartlari va Maxfiylik siyosati sahifalari uch tilda qo'shildi, Profil va W1 havolalari ularga ulandi (hujjatlar/, lib/hujjatlar.ts, lib/services/hujjat-hisob.ts, app/_components/Hujjat.tsx, app/oferta, app/shartlar, app/maxfiylik, app/_components/profil/Sozlamalar.tsx, app/_components/Tariflar.tsx, app/_components/onboarding/OnboardingOqimi.tsx, scripts/hujjat-yig.mjs)
 
 ## Handoff
 
@@ -69,7 +70,7 @@ Prototip auditidan S5'ga qolgan eslatmalar (2026-09-22):
 
 W1 orqaga tugmasi: telefonda jonli sinovda tasdiqlandi (2026-09-22).
 
-Keyingi: 10-task (Privacy Policy va Terms of Use sahifalari). 3-task jonli sinovi: deploydan keyin telefonda /start → til → Boshlash → ilova shu tilda ochilishi; Railway'da APP_URL Vercel https domeni bo'lishi shart (aks holda Boshlash tugmasi chiqmaydi).
+Keyingi: S5 yakuni — qolgan tasklar (to'lov, bildirishnomalar) keyinga qoldirilgan. 3-task jonli sinovi: deploydan keyin telefonda /start → til → Boshlash → ilova shu tilda ochilishi; Railway'da APP_URL Vercel https domeni bo'lishi shart (aks holda Boshlash tugmasi chiqmaydi).
 
 P1 haftalik hisobot: ustunli ko'rinish jonli ma'lumotda (bu haftada 3+ kun yozuv) ko'rib chiqilsin.
 
@@ -78,6 +79,8 @@ Railway backend'ga ADMIN_TELEGRAM=NutrliLiferPro qo'shilishi kerak (foydalanuvch
 Fon vazifalari: Railway backend'da FON_VAZIFALARI=1 qo'shilgan (foydalanuvchi, 2026-09-22); deploydan keyin Railway logida "Fon vazifalari —" qatorlari chiqishini tekshirish. Dev foydalanuvchining telegram_id si soxta (1000000001) — bot sinovi uchun haqiqiy hisob kerak.
 
 Bot almashtirilsa: Railway va .env da TELEGRAM_BOT_TOKEN, keyin scripts/bot-webhook.mjs https://nutrilife-production-e0a5.up.railway.app va scripts/bot-tavsif.mjs; @BotFather'da menyu tugmasi (URL https://nutrilife-khaki.vercel.app, Title "Kirish") va avatar.
+
+Hujjat matni o'zgarsa: hujjatlar/<nom>.<til>.md ni tahrirlab, `node scripts/hujjat-yig.mjs` ni ishga tushirish shart (lib/hujjatlar.ts avtomatik yaratiladi).
 
 ---
 

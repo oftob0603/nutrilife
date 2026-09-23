@@ -72,6 +72,9 @@ type Saqlash =
   | { holat: "tinch" | "saqlanmoqda" | "xato" | "oflayn" }
   | { holat: "rad"; matn: string };
 
+/** Jumlani havola atrofida ikkiga bo'lish uchun vaqtinchalik belgi — matnda uchramaydi. */
+const AJRATGICH = "§§";
+
 function saqlashMatni(saqlash: Saqlash, { t, erkin }: Tarjimon): string | null {
   switch (saqlash.holat) {
     case "oflayn":
@@ -198,6 +201,8 @@ function Intro({
   onBoshlash: () => void;
 }) {
   const { t } = useTarjima();
+  // Jumla ichidagi hujjat nomi havola bo'ladi: tarjima matni ajratgich bo'yicha ikkiga bo'linadi.
+  const ofertaBolaklari = t("«Boshlash»ni bosish orqali {0} qabul qilasiz.", AJRATGICH).split(AJRATGICH);
   // Prototip O1: "Boshlash" bosilganda poster 320 ms da so'nib kattalashadi; saqlash
   // xatosi qaytsa poster joyiga qaytadi.
   const [chiqmoqda, setChiqmoqda] = useState(false);
@@ -230,7 +235,17 @@ function Intro({
           </p>
         )}
         <p className="text-center text-izoh text-o1-matn-2">
-          {t("«Boshlash»ni bosish orqali Ommaviy oferta shartlarini qabul qilasiz.")}
+          {/* Hujjat nomi jumla ichida havola; yangi oynada ochiladi — onboarding joyida qoladi. */}
+          {ofertaBolaklari[0]}
+          <a
+            href="/oferta"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2"
+          >
+            {t("Ommaviy oferta shartlarini")}
+          </a>
+          {ofertaBolaklari[1]}
         </p>
         <div className="rounded-full shadow-[0_1px_2px_rgba(21,128,61,0.18),0_4px_12px_rgba(21,128,61,0.16)]">
           <Tugma

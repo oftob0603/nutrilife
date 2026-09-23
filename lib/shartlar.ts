@@ -3,4 +3,4 @@
  * o'zgarganda yangilanadi — `foydalanuvchilar.shartlar_versiyasi` kim qaysi matnni qabul
  * qilganini ko'rsatadi.
  */
-export const SHARTLAR_VERSIYASI = "2026-09-20";
+export const SHARTLAR_VERSIYASI = "2026-09-23";
