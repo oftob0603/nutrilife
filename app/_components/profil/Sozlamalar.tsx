@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useSyncExternalStore, useTransition } from "react";
+import { Fragment, useState, useSyncExternalStore, useTransition } from "react";
 import { Variantlar } from "@/app/_components/onboarding/Variantlar";
 import { PastkiVaraq } from "@/app/_components/PastkiVaraq";
 import { useTarjima, useTilniOrnat } from "@/app/_components/TilTaminoti";
@@ -23,6 +24,14 @@ const QATORLAR: readonly { kalit: SozlamaKaliti; nomi: Kalit }[] = [
   { kalit: "mavzu", nomi: "Mavzu" },
   { kalit: "vaznBirligi", nomi: "Vazn birligi" },
   { kalit: "boyBirligi", nomi: "Bo'y birligi" },
+];
+
+const HUJJAT_HAVOLALARI: readonly { href: string; nomi: Kalit }[] = [
+  { href: "/shartlar", nomi: "Foydalanish shartlari" },
+  { href: "/maxfiylik", nomi: "Maxfiylik siyosati" },
+  { href: "/oferta", nomi: "Ommaviy oferta" },
+  // CC BY / BY-SA rasm litsenziyalari muallifni ko'rsatishni talab qiladi — sahifa shu uchun.
+  { href: "/profil/mualliflar", nomi: "Rasm mualliflari" },
 ];
 
 /** Variantning ekrandagi nomi: til o'z tilida, mavzu va birliklar lug'at orqali. */
@@ -123,17 +132,25 @@ export function Sozlamalar({ boshlangich }: { boshlangich: SozlamalarTuri }) {
             {t("Internet yo'q. Sozlamalar o'qish uchun ochiq, o'zgartirish vaqtincha bloklangan.")}
           </p>
         )}
-        <p className="text-izoh text-matn-2">
-          {t("Birlik faqat ko'rsatish uchun — baza doim kg va sm da saqlaydi.")}
-        </p>
       </section>
 
-      {/* Prototipdagi ikkinchi karta: huquqiy hujjatlar va rasm mualliflari. */}
-      <div className="overflow-hidden rounded-karta border border-karta-chegara bg-karta">
-        <SozlamaQatori nomi={t("Foydalanish shartlari")} href="/shartlar" />
-        <SozlamaQatori nomi={t("Maxfiylik siyosati")} href="/maxfiylik" />
-        <SozlamaQatori nomi={t("Ommaviy oferta")} href="/oferta" />
-        <SozlamaQatori nomi={t("Rasm mualliflari")} href="/profil/mualliflar" />
+      {/*
+       * Huquqiy hujjatlar va rasm mualliflari — karta qatori emas, mayda havolalar
+       * (foydalanuvchi qarori 2026-09-23). Chiziq doimiy: "Rasm mualliflari" sahifasidagi
+       * havolalar uslubi — bosilmasdan ham havola ekani ko'rinib turadi.
+       */}
+      <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-izoh text-matn-2">
+        {HUJJAT_HAVOLALARI.map(({ href, nomi }, i) => (
+          <Fragment key={href}>
+            {i > 0 && <span className="text-matn-3">·</span>}
+            <Link
+              href={href}
+              className="underline decoration-chegara underline-offset-2 active:decoration-matn-2"
+            >
+              {t(nomi)}
+            </Link>
+          </Fragment>
+        ))}
       </div>
 
       <TugmaHavola korinish="xavfli" href="/profil/ochirish">

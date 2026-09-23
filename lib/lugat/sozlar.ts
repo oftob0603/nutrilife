@@ -594,10 +594,6 @@ export const SOZLAR = {
     ru: "Нет интернета. Настройки можно просматривать, но изменить пока нельзя.",
     en: "You are offline. Settings stay readable, but changes are blocked for now.",
   },
-  "Birlik faqat ko'rsatish uchun — baza doim kg va sm da saqlaydi.": {
-    ru: "Единицы влияют только на отображение — данные всегда хранятся в кг и см.",
-    en: "Units only change what you see — data is always stored in kg and cm.",
-  },
 
   // ── Shaxsiy ma'lumot (F3) ──────────────────────────────────────────────────
   "Aytmayman": { ru: "Не указывать", en: "Rather not say" },

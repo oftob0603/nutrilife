@@ -57,6 +57,7 @@ avtomatik takroriy to'lov · admin paneli.
 - 2026-09-23: Ommaviy oferta, Foydalanish shartlari va Maxfiylik siyosati sahifalari uch tilda qo'shildi, Profil va W1 havolalari ularga ulandi (hujjatlar/, lib/hujjatlar.ts, lib/services/hujjat-hisob.ts, app/_components/Hujjat.tsx, app/oferta, app/shartlar, app/maxfiylik, app/_components/profil/Sozlamalar.tsx, app/_components/Tariflar.tsx, app/_components/onboarding/OnboardingOqimi.tsx, scripts/hujjat-yig.mjs)
 - 2026-09-23: F5 hisobni o'chirish tasdig'i matn yozdirmaydi — "Hisobni o'chirishni tasdiqlaysizmi?" savoli va "Ha, o'chirilsin" tugmasi (app/_components/profil/HisobniOchirish.tsx, lib/lugat/sozlar.ts)
 - 2026-09-23: onboarding O1 dagi Ommaviy oferta havolasi ilova ichida ochiladigan qilindi, orqaga qaytganda O1 joyida qoladi (app/_components/onboarding/OnboardingOqimi.tsx)
+- 2026-09-23: profil sozlamalarida huquqiy hujjatlar va rasm mualliflari mayda havolalar qatoriga aylandi (doimiy chiziq bilan), "Rasm mualliflari" kartasi va birlik haqidagi izoh olib tashlandi (app/_components/profil/Sozlamalar.tsx, lib/lugat/sozlar.ts)
 
 ## Handoff
 
