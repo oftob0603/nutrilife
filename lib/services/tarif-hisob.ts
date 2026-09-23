@@ -20,11 +20,6 @@ export function oylikNarx(tariflar: TarifNarxi[]): number {
   return tariflar.find((tarif) => tarif.oylar === 1)?.narx ?? 0;
 }
 
-/** Oldindan tanlanadigan tarif: tavsiya etilgani, bo'lmasa birinchisi. */
-export function boshlangichTarif(tariflar: TarifNarxi[]): TarifNarxi["id"] | null {
-  return (tariflar.find((tarif) => tarif.tavsiya) ?? tariflar[0])?.id ?? null;
-}
-
 /** Paywall qayerdan ochilgani — sarlavha va "Hozir emas" qaytadigan joy shunga bog'liq. */
 export const PAYWALL_MANBALARI = ["onboarding", "profil", "limit", "imkoniyat"] as const;
 export type PaywallManbai = (typeof PAYWALL_MANBALARI)[number];

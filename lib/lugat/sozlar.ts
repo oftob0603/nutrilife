@@ -689,6 +689,7 @@ export const SOZLAR = {
   "Haftalik ovqatlanish hisoboti": { ru: "Недельный отчёт о питании", en: "Weekly nutrition report" },
   "PRO imkoniyatlari": { ru: "Возможности PRO", en: "PRO features" },
   "Tarif tanlang": { ru: "Выберите тариф", en: "Choose a plan" },
+  "Avval tarifni tanlang": { ru: "Сначала выберите тариф", en: "Choose a plan first" },
   "Tavsiya etiladi": { ru: "Рекомендуем", en: "Recommended" },
   "{0} so'm": { ru: "{0} сум", en: "{0} UZS" },
   "{0} so'm / oy": { ru: "{0} сум / мес.", en: "{0} UZS / mo" },

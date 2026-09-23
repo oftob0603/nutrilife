@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { PastkiVaraq } from "@/app/_components/PastkiVaraq";
@@ -14,7 +14,6 @@ import { tarifNomi } from "@/lib/services/obuna-hisob";
 import { raqam } from "@/lib/services/taom-hisob";
 import {
   adminHavolasi,
-  boshlangichTarif,
   oyiga,
   oylikNarx,
   paywallQaytishi,
@@ -121,7 +120,12 @@ export function Tariflar({
   const router = useRouter();
   const { t } = useTarjima();
   const [tariflar, setTariflar] = useState<Holat>("yuklanmoqda");
+  // Tarif oldindan tanlanmaydi — foydalanuvchi o'zi tanlaydi (DECISIONS 2026-09-23).
   const [tanlangan, setTanlangan] = useState<TarifNarxi["id"] | null>(null);
+  // Tarifsiz "Obuna bo'lish" bosilgan son; 0 — eslatma yo'q. Har bosish kartalarni qayta ko'rsatadi.
+  const [eslatma, setEslatma] = useState(0);
+  const tanlovRef = useRef<HTMLDivElement>(null);
+  const pastRef = useRef<HTMLDivElement>(null);
   const [varaq, setVaraq] = useState<Varaq>(null);
   // Har "Qayta urinish" — yangi urinish raqami; yuklash effekti shunga bog'langan.
   const [urinish, setUrinish] = useState(0);
@@ -131,8 +135,6 @@ export function Tariflar({
     void tariflarniOl().then((kelgan) => {
       if (bekor) return;
       setTariflar(kelgan);
-      // Qayta urinishda foydalanuvchi tanlovi saqlanadi.
-      if (kelgan) setTanlangan((joriy) => joriy ?? boshlangichTarif(kelgan.tariflar));
     });
     return () => {
       bekor = true;
@@ -140,6 +142,23 @@ export function Tariflar({
   }, [urinish]);
 
   const yopVaraq = useCallback(() => setVaraq(null), []);
+
+  // Eslatma chiqqach: kartalar pastki tugmalar ostida yoki ekrandan tepada qolgan bo'lsa, sahifa
+  // ular tugmalar ustida to'liq ko'rinadigan joyga siljiydi; ko'rinib turgan bo'lsa qimirlamaydi.
+  useEffect(() => {
+    const blok = tanlovRef.current;
+    const past = pastRef.current;
+    if (!eslatma || !blok || !past) return;
+    const { top, bottom } = blok.getBoundingClientRect();
+    const tepa = 16;
+    const chegara = past.getBoundingClientRect().top - 16;
+    let siljish = 0;
+    if (top < tepa) siljish = top - tepa;
+    else if (bottom > chegara) siljish = Math.min(bottom - chegara, top - tepa);
+    if (!siljish) return;
+    const kamHarakat = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollBy({ top: siljish, behavior: kamHarakat ? "auto" : "smooth" });
+  }, [eslatma]);
 
   // "Hozir emas" va Telegram orqaga tugmasi — kelgan sahifaga. Onboardingdan `replace` bilan
   // kelinadi (unga qaytish ma'nosiz), ilova tarixi bo'lmasa ham (to'g'ridan-to'g'ri ochilgan)
@@ -155,6 +174,10 @@ export function Tariflar({
   const tayyor = royxat.length > 0;
 
   const davomEt = () => {
+    if (!tanlangan) {
+      setEslatma((son) => son + 1);
+      return;
+    }
     const tarif = royxat.find(({ id }) => id === tanlangan);
     const admin = tariflar && tariflar !== "yuklanmoqda" ? tariflar.admin : null;
     const nomi = tarif && tarifNomi(tarif.id);
@@ -192,44 +215,51 @@ export function Tariflar({
           ))}
         </ul>
 
-        <div role="radiogroup" aria-label={t("Tarif tanlang")} className="mt-5 flex flex-col gap-3">
-          {tariflar === "yuklanmoqda" ? (
-            [0, 1, 2].map((i) => (
-              <div
-                key={i}
-                aria-hidden="true"
-                className="h-[84px] rounded-karta border-2 border-chegara bg-karta p-4"
-              >
-                <div className="h-4 w-24 animate-pulse rounded-full bg-chegara" />
-                <div className="mt-3 h-3 w-40 animate-pulse rounded-full bg-chegara" />
-              </div>
-            ))
-          ) : !tayyor ? (
-            <div role="alert" className="rounded-karta border-2 border-chegara bg-karta p-4">
-              <p className="text-asosiy">{t("Tariflarni yuklab bo'lmadi")}</p>
-              {/* Prototip: ikkilamchi ko'rinish, balandligi 44 px, butun enida. */}
-              <button
-                type="button"
-                onClick={() => {
-                  setTariflar("yuklanmoqda");
-                  setUrinish((son) => son + 1);
-                }}
-                className="mt-3 min-h-11 w-full rounded-full border border-chegara px-4 text-asosiy font-medium text-siyoh transition-transform active:scale-[0.98]"
-              >
-                {t("Qayta urinish")}
-              </button>
-            </div>
-          ) : (
-            royxat.map((tarif) => (
-              <TarifKartasi
-                key={tarif.id}
-                tarif={tarif}
-                oylik={oylikNarx(royxat)}
-                tanlangan={tarif.id === tanlangan}
-                onTanla={() => setTanlangan(tarif.id)}
-              />
-            ))
+        <div ref={tanlovRef} className="mt-5 flex flex-col gap-2">
+          {eslatma > 0 && !tanlangan && (
+            <p role="alert" className="text-izoh text-xato">
+              {t("Avval tarifni tanlang")}
+            </p>
           )}
+          <div role="radiogroup" aria-label={t("Tarif tanlang")} className="flex flex-col gap-3">
+            {tariflar === "yuklanmoqda" ? (
+              [0, 1, 2].map((i) => (
+                <div
+                  key={i}
+                  aria-hidden="true"
+                  className="h-[84px] rounded-karta border-2 border-chegara bg-karta p-4"
+                >
+                  <div className="h-4 w-24 animate-pulse rounded-full bg-chegara" />
+                  <div className="mt-3 h-3 w-40 animate-pulse rounded-full bg-chegara" />
+                </div>
+              ))
+            ) : !tayyor ? (
+              <div role="alert" className="rounded-karta border-2 border-chegara bg-karta p-4">
+                <p className="text-asosiy">{t("Tariflarni yuklab bo'lmadi")}</p>
+                {/* Prototip: ikkilamchi ko'rinish, balandligi 44 px, butun enida. */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setTariflar("yuklanmoqda");
+                    setUrinish((son) => son + 1);
+                  }}
+                  className="mt-3 min-h-11 w-full rounded-full border border-chegara px-4 text-asosiy font-medium text-siyoh transition-transform active:scale-[0.98]"
+                >
+                  {t("Qayta urinish")}
+                </button>
+              </div>
+            ) : (
+              royxat.map((tarif) => (
+                <TarifKartasi
+                  key={tarif.id}
+                  tarif={tarif}
+                  oylik={oylikNarx(royxat)}
+                  tanlangan={tarif.id === tanlangan}
+                  onTanla={() => setTanlangan(tarif.id)}
+                />
+              ))
+            )}
+          </div>
         </div>
 
         <p className="mt-4 text-izoh leading-snug text-matn-2">
@@ -248,12 +278,15 @@ export function Tariflar({
       </main>
 
       {/* Pastki tugmalar to'g'ridan-to'g'ri sahifa ustida — karta, chegara va soyasiz (prototip). */}
-      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-[5] mx-auto w-full max-w-md px-4 pb-[calc(12px+var(--xavfsiz-past))]">
+      <div
+        ref={pastRef}
+        className="pointer-events-none fixed inset-x-0 bottom-0 z-[5] mx-auto w-full max-w-md px-4 pb-[calc(12px+var(--xavfsiz-past))]"
+      >
         <div className="pointer-events-auto">
           <Tugma
             korinish="pro"
             yorugOtish
-            disabled={!tayyor || !tanlangan}
+            disabled={!tayyor}
             onClick={davomEt}
           >
             {t("Obuna bo'lish")}

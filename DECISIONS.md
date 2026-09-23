@@ -589,6 +589,9 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-23 · Tarjimalar prototip lug'atiga moslandi, kontekst boshqa bo'lgan kalitlar bundan mustasno: "Afzalliklar" (F3 da "Предпочтения/Preferences"), "Yangilash" (obunani "Продлить/Renew"), Score darajalari "Yaxshi/O'rtacha/Past" (prototipda "Past" retsept murakkabligi — "Легко/Easy"), hujjat nomlari "Terms of Use / Privacy Policy", ruscha "Измерений: {0}" (son bilan kelishadi).**
 *Sabab:* Prototip lug'atida bir kalit ikki kontekstda ishlatilgan; ilovada har kalitning bitta ma'nosi bor.
 
+**2026-09-23 · W1 da tarif oldindan tanlanmaydi: ekran tanlovsiz ochiladi, "Obuna bo'lish" faol turadi; tarifsiz bosilsa kartalar tepasida "Avval tarifni tanlang" chiqadi va kartalar pastki tugmalar ostida bo'lsa ko'rinadigan joyga siljiydi. Yillikdagi "Tavsiya etiladi" belgisi qoladi (paywall-tz.md dagi "yillik oldindan tanlangan" qoidasi o'rniga).**
+*Sabab:* Foydalanuvchi qarori — to'lov tarifini odam o'zi ongli tanlashi kerak.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

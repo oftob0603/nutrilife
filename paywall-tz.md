@@ -50,7 +50,9 @@ foydalanaveradi.
 **Qoidalar:**
 
 - Narxlar **admin panelidan keladi** ([admin-tz.md](admin-tz.md) A12), kodda qotirilmaydi
-- Yillik tarif oldindan tanlangan holda keladi (PRD 8-bo'lim — yillik tavsiya etiladi)
+- Hech bir tarif oldindan tanlanmaydi — foydalanuvchi o'zi tanlaydi; yillikda "Tavsiya etiladi" belgisi
+  (PRD 8-bo'lim). Tarifsiz "Obuna bo'lish" bosilsa "Avval tarifni tanlang" chiqadi va kartalar
+  ko'rinadigan joyga siljiydi (DECISIONS 2026-09-23)
 - Tejash foizi narxlardan **hisoblanadi**, qo'lda yozilmaydi — narx o'zgarsa foiz ham
   o'zgaradi
 - Muddati tugagan PRO uchun sarlavha: "PRO ni tiklash"
