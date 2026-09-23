@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTarjima } from "@/app/_components/TilTaminoti";
@@ -235,16 +236,11 @@ function Intro({
           </p>
         )}
         <p className="text-center text-izoh text-o1-matn-2">
-          {/* Hujjat nomi jumla ichida havola; yangi oynada ochiladi — onboarding joyida qoladi. */}
+          {/* Hujjat nomi jumla ichida havola; ilova ichida ochiladi, orqaga qaytganda O1 joyida. */}
           {ofertaBolaklari[0]}
-          <a
-            href="/oferta"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline underline-offset-2"
-          >
+          <Link href="/oferta" className="underline underline-offset-2">
             {t("Ommaviy oferta shartlarini")}
-          </a>
+          </Link>
           {ofertaBolaklari[1]}
         </p>
         <div className="rounded-full shadow-[0_1px_2px_rgba(21,128,61,0.18),0_4px_12px_rgba(21,128,61,0.16)]">

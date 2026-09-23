@@ -576,6 +576,11 @@ export const SOZLAR = {
   "lb": { ru: "фунт", en: "lb" },
   "ft": { ru: "фут", en: "ft" },
   "Shaxsiy ma'lumot": { ru: "Личные данные", en: "Personal details" },
+  "Hisobni o'chirishni tasdiqlaysizmi?": {
+    ru: "Подтверждаете удаление аккаунта?",
+    en: "Delete your account?",
+  },
+  "Ha, o'chirilsin": { ru: "Да, удалить", en: "Yes, delete" },
   "Hisobni o'chirish": { ru: "Удалить аккаунт", en: "Delete account" },
   "Rasm mualliflari": { ru: "Авторы фотографий", en: "Photo credits" },
   "Taom rasmlari Wikimedia Commons'dan olingan. Har biri kesilgan va WebP formatiga o'girilgan — boshqa o'zgarish kiritilmagan.": {
@@ -635,8 +640,6 @@ export const SOZLAR = {
     en: "Deleted data cannot be restored.",
   },
   "Tasdiqlash": { ru: "Подтверждение", en: "Confirm" },
-  "Tasdiqlash uchun «{0}» deb yozing": { ru: "Для подтверждения введите «{0}»", en: "Type “{0}” to confirm" },
-  "O'CHIRISH": { ru: "УДАЛИТЬ", en: "DELETE" },
   "Hisob darhol o'chadi. Ilovani qayta ochsangiz, yangi hisob yaratiladi.": {
     ru: "Аккаунт удаляется сразу. Если открыть приложение снова, будет создан новый аккаунт.",
     en: "The account is deleted right away. Opening the app again creates a new account.",

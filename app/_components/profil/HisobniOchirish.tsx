@@ -1,13 +1,10 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useState } from "react";
 import { useTarjima } from "@/app/_components/TilTaminoti";
 import { Tugma, TugmaHavola } from "@/app/_components/Tugma";
 import type { Kalit } from "@/lib/lugat/tarjima";
 import { OrqagaSarlavha } from "./OrqagaSarlavha";
-
-// Telefon klaviaturasi tutuq belgisini turlicha qo'yadi (' ’ ʻ ʼ `) — hammasi bitta deb olinadi.
-const tozala = (matn: string) => matn.trim().replace(/[‘’ʻʼ`]/g, "'");
 
 const OCHADIGANLAR: readonly Kalit[] = [
   "Profil va shaxsiy ma'lumot",
@@ -37,17 +34,15 @@ function Ogohlantirish() {
 }
 
 /**
- * F5 — hisobni o'chirish, ikki qadam: avval nima o'chishi ko'rsatiladi, keyin tasdiq so'zi
- * qo'lda yoziladi — shundan keyingina tugma yonadi. O'chirish darhol va qaytarib bo'lmaydi.
+ * F5 — hisobni o'chirish, ikki qadam: avval nima o'chishi ko'rsatiladi, keyin tasdiq so'raladi.
+ * Tasdiq matn yozdirmaydi — "Ha, o'chirilsin" bosiladi (foydalanuvchi qarori 2026-09-23).
+ * O'chirish darhol va qaytarib bo'lmaydi.
  */
 export function HisobniOchirish({ faolPro }: { faolPro: boolean }) {
   const { t } = useTarjima();
-  const maydonId = useId();
   const [qadam, setQadam] = useState<1 | 2 | "ochirildi">(1);
-  const [yozilgan, setYozilgan] = useState("");
   const [ochirilmoqda, setOchirilmoqda] = useState(false);
   const [xato, setXato] = useState(false);
-  const soz = t("O'CHIRISH");
 
   async function ochir() {
     setXato(false);
@@ -124,23 +119,7 @@ export function HisobniOchirish({ faolPro }: { faolPro: boolean }) {
       />
 
       <div className="flex flex-col gap-6">
-        <div className="flex flex-col gap-1">
-          <label htmlFor={maydonId} className="text-izoh text-matn-2">
-            {t("Tasdiqlash uchun «{0}» deb yozing", soz)}
-          </label>
-          <input
-            id={maydonId}
-            type="text"
-            autoComplete="off"
-            autoCapitalize="characters"
-            autoCorrect="off"
-            spellCheck={false}
-            maxLength={20}
-            value={yozilgan}
-            onChange={(hodisa) => setYozilgan(hodisa.target.value)}
-            className="min-h-13 w-full rounded-karta border border-chegara bg-karta px-4 text-asosiy outline-none"
-          />
-        </div>
+        <p className="text-asosiy">{t("Hisobni o'chirishni tasdiqlaysizmi?")}</p>
 
         <div className="flex flex-col gap-2">
           {xato && (
@@ -148,12 +127,16 @@ export function HisobniOchirish({ faolPro }: { faolPro: boolean }) {
               {t("O'chirib bo'lmadi. Qayta urinib ko'ring")}
             </p>
           )}
+          {/* Tasdiq tugmasi to'ldirilgan ("xavfli" — tiniq, qizil matn: profildagi kirish tugmasi uslubi). */}
+          <Tugma yuklanmoqda={ochirilmoqda} onClick={() => void ochir()}>
+            {t("Ha, o'chirilsin")}
+          </Tugma>
           <Tugma
-            disabled={tozala(yozilgan) !== soz}
-            yuklanmoqda={ochirilmoqda}
-            onClick={() => void ochir()}
+            korinish="uchinchi"
+            disabled={ochirilmoqda}
+            onClick={() => setQadam(1)}
           >
-            {t("Hisobni o'chirish")}
+            {t("Bekor qilish")}
           </Tugma>
         </div>
 

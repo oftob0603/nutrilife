@@ -55,6 +55,8 @@ avtomatik takroriy to'lov · admin paneli.
 - 2026-09-22: bot nomi va tavsiflari uch tilda (standart o'zbekcha, ru, en) Bot API orqali o'rnatildi (scripts/bot-tavsif.mjs); bot yangi botga almashtirildi, webhook Railway domeniga qayta o'rnatildi
 - 2026-09-22: bot chatidagi menyu tugmasi foydalanuvchi tilida — /start da til tanlanganda va Profil'da til o'zgarganda "Kirish" / "Войти" / "Open app" (lib/services/bot.ts, lib/services/foydalanuvchilar.ts, app/api/profil/sozlamalar/route.ts, lib/lugat/sozlar.ts)
 - 2026-09-23: Ommaviy oferta, Foydalanish shartlari va Maxfiylik siyosati sahifalari uch tilda qo'shildi, Profil va W1 havolalari ularga ulandi (hujjatlar/, lib/hujjatlar.ts, lib/services/hujjat-hisob.ts, app/_components/Hujjat.tsx, app/oferta, app/shartlar, app/maxfiylik, app/_components/profil/Sozlamalar.tsx, app/_components/Tariflar.tsx, app/_components/onboarding/OnboardingOqimi.tsx, scripts/hujjat-yig.mjs)
+- 2026-09-23: F5 hisobni o'chirish tasdig'i matn yozdirmaydi — "Hisobni o'chirishni tasdiqlaysizmi?" savoli va "Ha, o'chirilsin" tugmasi (app/_components/profil/HisobniOchirish.tsx, lib/lugat/sozlar.ts)
+- 2026-09-23: onboarding O1 dagi Ommaviy oferta havolasi ilova ichida ochiladigan qilindi, orqaga qaytganda O1 joyida qoladi (app/_components/onboarding/OnboardingOqimi.tsx)
 
 ## Handoff
 
