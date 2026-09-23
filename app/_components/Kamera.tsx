@@ -2,10 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { OrqagaTugma } from "@/app/_components/OrqagaTugma";
 import { useRouter } from "next/navigation";
 import { useTarjima } from "@/app/_components/TilTaminoti";
+import { sinf } from "@/app/_components/Tugma";
+import { useSkanLimiti } from "@/app/_components/useSkanLimiti";
 import { rasmniYukla } from "@/lib/services/rasm-yuklash";
+import { limitKorinishi } from "@/lib/services/skan-hisob";
 
 type Holat = "yuklanmoqda" | "jonli" | "korish" | "xato";
 type Surat = { rasm: Blob; manzil: string };
@@ -67,8 +71,16 @@ export function Kamera() {
   const [surat, setSurat] = useState<Surat | null>(null);
   const [yuborilmoqda, setYuborilmoqda] = useState(false);
   const [xato, setXato] = useState<string | null>(null);
+  // Skan limiti: kelguncha rasmga olish va galereya o'chiq, tugagan bo'lsa kamera yoqilmaydi —
+  // tez bosilganda tugagan limit bilan rasm yuklanib ketmasin. Olib bo'lmasa (null) ochiq:
+  // limitni baribir server ushlaydi.
+  const limit = useSkanLimiti();
+  const limitKutilmoqda = limit === "yuklanmoqda";
+  const limitHolati = typeof limit === "object" && limit !== null ? limitKorinishi(limit) : null;
+  const limitTugagan = limitHolati?.tugagan ?? false;
 
   useEffect(() => {
+    if (limitTugagan) return;
     let bekor = false;
     let oqim: MediaStream | null = null;
 
@@ -97,7 +109,7 @@ export function Kamera() {
       bekor = true;
       oqim?.getTracks().forEach((yol) => yol.stop());
     };
-  }, [urinish]);
+  }, [urinish, limitTugagan]);
 
   // Ko'rib chiqish uchun yaratilgan vaqtinchalik manzil xotirada qolib ketmasin.
   useEffect(() => {
@@ -134,7 +146,7 @@ export function Kamera() {
   }
 
   async function tahlilga() {
-    if (!surat) return;
+    if (!surat || limitKutilmoqda || limitTugagan) return;
     setXato(null);
     setYuborilmoqda(true);
     try {
@@ -183,6 +195,12 @@ export function Kamera() {
           />
         )}
 
+        {limitHolati?.tugagan && (
+          <div className="absolute inset-0 z-[1] flex items-center justify-center bg-[#161618] px-6 text-center">
+            <p className="text-karta-sarlavha">{t(limitHolati.matn, ...limitHolati.qiymatlar)}</p>
+          </div>
+        )}
+
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 px-6 text-center">
           {holat === "yuklanmoqda" && <Aylanma />}
 
@@ -200,7 +218,7 @@ export function Kamera() {
           )}
         </div>
 
-        {holat === "jonli" && (
+        {holat === "jonli" && !limitTugagan && (
           <p className="absolute inset-x-6 bottom-6 text-center text-izoh text-[rgba(242,242,243,0.7)]">
             {t("Taomni tepadan, to'liq ko'rinishda oling")}
           </p>
@@ -214,75 +232,88 @@ export function Kamera() {
           </p>
         )}
 
-        {holat === "jonli" && (
-          <div className="flex items-center justify-between">
-            <button
-              type="button"
-              onClick={() => tanlagich.current?.click()}
-              aria-label={t("Galereyadan tanlash")}
-              className="flex size-11 items-center justify-center rounded-chip border border-[rgba(242,242,243,0.25)]"
-            >
-              <Ikona nomi="galereya" />
-            </button>
-            <button
-              type="button"
-              onClick={suratgaOl}
-              aria-label={t("Rasmga olish")}
-              className="size-18 rounded-full border-4 border-[rgba(242,242,243,0.35)] bg-[#f2f2f3] bg-clip-padding transition-transform active:scale-[0.98]"
-            />
-            <span aria-hidden="true" className="size-11" />
-          </div>
-        )}
-
-        {holat === "korish" && (
-          // Prototipdagidek ustma-ust: tasdiq tugmasi lime (ekrandagi yagona to'ldirilgan
-          // element), ostida fonsiz "Qayta olish".
-          <div className="flex flex-col gap-2">
-            <button
-              type="button"
-              onClick={tahlilga}
-              disabled={yuborilmoqda}
-              className={`${TUGMA} bg-aksent text-aksent-matn`}
-            >
-              {yuborilmoqda && (
-                <span
-                  aria-hidden="true"
-                  className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent"
+        {limitHolati?.tugagan ? (
+          limitHolati.paywall && (
+            <Link href="/pro?manba=limit" className={sinf("pro")}>
+              {t("PRO ni ochish")}
+            </Link>
+          )
+        ) : (
+          <>
+            {holat === "jonli" && (
+              <div className="flex items-center justify-between">
+                <button
+                  type="button"
+                  onClick={() => tanlagich.current?.click()}
+                  disabled={limitKutilmoqda}
+                  aria-label={t("Galereyadan tanlash")}
+                  className="flex size-11 items-center justify-center rounded-chip border border-[rgba(242,242,243,0.25)] disabled:opacity-40"
+                >
+                  <Ikona nomi="galereya" />
+                </button>
+                <button
+                  type="button"
+                  onClick={suratgaOl}
+                  disabled={limitKutilmoqda}
+                  aria-label={t("Rasmga olish")}
+                  className="size-18 rounded-full border-4 border-[rgba(242,242,243,0.35)] bg-[#f2f2f3] bg-clip-padding transition-transform active:scale-[0.98] disabled:opacity-40"
                 />
-              )}
-              {yuborilmoqda ? t("Yuklanmoqda…") : xato ? t("Qayta urinish") : t("Tahlil qilish")}
-            </button>
-            <button
-              type="button"
-              onClick={qaytaOl}
-              disabled={yuborilmoqda}
-              className={`${TUGMA} bg-transparent text-[#f2f2f3]`}
-            >
-              {t("Qayta olish")}
-            </button>
-          </div>
-        )}
+                <span aria-hidden="true" className="size-11" />
+              </div>
+            )}
 
-        {holat === "xato" && (
-          <div className="flex flex-col gap-2">
-            <button
-              type="button"
-              onClick={() => {
-                setHolat("yuklanmoqda");
-                setUrinish((son) => son + 1);
-              }}
-              className={`${TUGMA} bg-[#f2f2f3] text-[#0b0b0c]`}
-            >
-              {t("Qayta urinish")}
-            </button>
-            <button
-              type="button"
-              onClick={() => tanlagich.current?.click()}
-              className={`${TUGMA} border border-[rgba(242,242,243,0.25)] text-[#f2f2f3]`}
-            >
-              {t("Galereyadan tanlash")}
-            </button>
-          </div>
+            {holat === "korish" && (
+              // Prototipdagidek ustma-ust: tasdiq tugmasi lime (ekrandagi yagona to'ldirilgan
+              // element), ostida fonsiz "Qayta olish".
+              <div className="flex flex-col gap-2">
+                <button
+                  type="button"
+                  onClick={tahlilga}
+                  disabled={yuborilmoqda || limitKutilmoqda}
+                  className={`${TUGMA} bg-aksent text-aksent-matn`}
+                >
+                  {yuborilmoqda && (
+                    <span
+                      aria-hidden="true"
+                      className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent"
+                    />
+                  )}
+                  {yuborilmoqda ? t("Yuklanmoqda…") : xato ? t("Qayta urinish") : t("Tahlil qilish")}
+                </button>
+                <button
+                  type="button"
+                  onClick={qaytaOl}
+                  disabled={yuborilmoqda}
+                  className={`${TUGMA} bg-transparent text-[#f2f2f3]`}
+                >
+                  {t("Qayta olish")}
+                </button>
+              </div>
+            )}
+
+            {holat === "xato" && (
+              <div className="flex flex-col gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setHolat("yuklanmoqda");
+                    setUrinish((son) => son + 1);
+                  }}
+                  className={`${TUGMA} bg-[#f2f2f3] text-[#0b0b0c]`}
+                >
+                  {t("Qayta urinish")}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => tanlagich.current?.click()}
+                  disabled={limitKutilmoqda}
+                  className={`${TUGMA} border border-[rgba(242,242,243,0.25)] text-[#f2f2f3]`}
+                >
+                  {t("Galereyadan tanlash")}
+                </button>
+              </div>
+            )}
+          </>
         )}
       </footer>
 

@@ -59,6 +59,7 @@ avtomatik takroriy to'lov · admin paneli.
 - 2026-09-23: onboarding O1 dagi Ommaviy oferta havolasi ilova ichida ochiladigan qilindi, orqaga qaytganda O1 joyida qoladi (app/_components/onboarding/OnboardingOqimi.tsx)
 - 2026-09-23: profil sozlamalarida huquqiy hujjatlar va rasm mualliflari mayda havolalar qatoriga aylandi (doimiy chiziq bilan), "Rasm mualliflari" kartasi va birlik haqidagi izoh olib tashlandi (app/_components/profil/Sozlamalar.tsx, lib/lugat/sozlar.ts)
 - 2026-09-23: prototip auditi — ~75 farq, ~30 tasi ataylab; tuzatildi: asosiy tugma lime, qorong'i matn/karta tokenlari (on-siyoh, karta-press, text-belgi), sarlavha shrifti Inter Tight, orqaga 24 px, E2 qatorlari va panel, E3 kamera ramkasi, E7 tavsiya joyi, E9 jami kartasi, E10 sarlavhasi, P1 streak/vazn formati/sanalar, P2 xato va xabar, P3 farq joyi, ProQulfi butunicha bosiladi, F3 18+ izohi, Profil Yordam (admin Telegram chati), skeletlar, O13/F1 matnlari, ~50 ru/en tarjima (app/_components/*, app/globals.css, lib/lugat/sozlar.ts, DESIGN.md, DECISIONS.md)
+- 2026-09-23: skan limiti tugaganda tez bosish xatosi tuzatildi — limit serverdan kelguncha E2 qatorlari, Tasvirlash tugmasi va kameradagi rasmga olish/galereya o'chiq; limit tugagan bo'lsa kamera yoqilmaydi, xabar va FREE'da PRO ni ochish chiqadi; server nazorati o'zgarmadi (app/_components/QoshishPaneli.tsx, Tasvirlash.tsx, Kamera.tsx)
 
 ## Handoff
 

@@ -186,7 +186,7 @@ function Bolim({
  * E2 — ovqat qo'shish manbasini tanlash paneli. Kamera E3 ekranini ochadi; galereya tizim
  * rasm tanlagichini ochadi — rasm tanlanishi bilan to'liq ekranli yuklash (E6 ko'rinishida)
  * chiqadi, yuklangach tahlil sahifasiga o'tiladi.
- * Ostida skan hisoblagichi; limit tugaganda Kamera va Galereya o'chadi, qo'lda qo'shish ochiq.
+ * Ostida skan hisoblagichi; limit kelguncha va tugaganda uchala yo'l ham o'chiq (bitta AI limiti).
  * `faol` berilmasa pastki panel chizilmaydi, faqat E2 varag'i `QoshishTugmasi` bilan ochiladi —
  * E8'dagi "Yana qo'shish" shunday ishlaydi (prototip `openSheet`).
  */
@@ -209,9 +209,11 @@ export function QoshishPaneli({ faol }: { faol?: "asosiy" | "statistika" | "prof
   const navbat = useRef(0);
   const nusxaManzili = useRef<string | null>(null);
   const limit = useSkanLimiti(ochiq);
-  // Limit hali kelmagan yoki olib bo'lmagan bo'lsa yo'llar ochiq — limitni baribir server ushlaydi.
   const korinish = typeof limit === "object" && limit !== null ? limitKorinishi(limit) : null;
   const skanYopiq = korinish?.tugagan ?? false;
+  // Limit kelguncha yo'llar vaqtincha yopiq — tez bosilganda tugagan limit bilan kamera yoki
+  // tahlil ochilib ketmasin. Olib bo'lmasa (null) ochiq: limitni baribir server ushlaydi.
+  const yollarOchiq = !yuklanmoqda && limit !== "yuklanmoqda" && !skanYopiq;
   // Bepul skanlar tugagan: o'chiq qator bosilsa tariflar ekrani ochiladi (paywall-tz.md, 1-bo'lim).
   const tariflargaOt =
     korinish?.paywall && !yuklanmoqda ? () => router.push("/pro?manba=limit") : undefined;
@@ -358,7 +360,7 @@ export function QoshishPaneli({ faol }: { faol?: "asosiy" | "statistika" | "prof
                 ikona="kamera"
                 nomi={t("Kamera")}
                 izoh={t("Ovqatni rasmga oling")}
-                ochiq={!yuklanmoqda && !skanYopiq}
+                ochiq={yollarOchiq}
                 onClick={() => router.push("/kamera")}
                 onYopiq={tariflargaOt}
               />
@@ -366,7 +368,7 @@ export function QoshishPaneli({ faol }: { faol?: "asosiy" | "statistika" | "prof
                 ikona="galereya"
                 nomi={t("Galereya")}
                 izoh={t("Tayyor rasmni tanlang")}
-                ochiq={!yuklanmoqda && !skanYopiq}
+                ochiq={yollarOchiq}
                 onClick={() => tanlagich.current?.click()}
                 onYopiq={tariflargaOt}
               />
@@ -388,7 +390,7 @@ export function QoshishPaneli({ faol }: { faol?: "asosiy" | "statistika" | "prof
                 ikona="qolda"
                 nomi={t("Qo'lda qo'shish")}
                 izoh={t("Nima yeganingizni yozing — AI hisoblaydi")}
-                ochiq={!yuklanmoqda && !skanYopiq}
+                ochiq={yollarOchiq}
                 onClick={() => router.push("/tasvirlash")}
                 onYopiq={tariflargaOt}
               />

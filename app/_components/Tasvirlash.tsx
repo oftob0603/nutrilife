@@ -39,7 +39,11 @@ export function Tasvirlash({ boshlangich }: { boshlangich: string }) {
   const [yuborilgan, setYuborilgan] = useState<string | null>(null);
   // Tahlildan qaytilganda son yangilansin — forma ko'ringan har safar qayta so'raladi.
   const limit = useSkanLimiti(yuborilgan === null);
-  const skanYopiq = typeof limit === "object" && limit !== null && limitKorinishi(limit).tugagan;
+  // Limit kelguncha ham yopiq — tez bosilsa tugagan limit bilan tahlil yuborilmasin.
+  // Olib bo'lmasa (null) ochiq: limitni baribir server ushlaydi.
+  const skanYopiq =
+    limit === "yuklanmoqda" ||
+    (typeof limit === "object" && limit !== null && limitKorinishi(limit).tugagan);
 
   if (yuborilgan) {
     return <Tahlil matn={yuborilgan} onBekor={() => setYuborilgan(null)} />;
