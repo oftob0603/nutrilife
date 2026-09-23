@@ -45,21 +45,24 @@ function Ikona({ nomi }: { nomi: "kamera" | "galereya" | "qolda" }) {
         <path d="m21 16-5-5-5 5-2-2-6 6" />
       </>
     ),
+    // lucide `pencil` — prototip E2 "Qo'lda qo'shish".
     qolda: (
       <>
-        <path d="M12 3v18M3 12h18" />
+        <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
+        <path d="m15 5 4 4" />
       </>
     ),
   };
 
+  // Prototip `ActionRow`: ikona 24 px, lucide chizig'i 1.75.
   return (
     <svg
       viewBox="0 0 24 24"
-      width="20"
-      height="20"
+      width="24"
+      height="24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth="1.75"
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
@@ -91,15 +94,30 @@ function Qator({
       type="button"
       disabled={!ochiq && !onYopiq}
       onClick={ochiq ? onClick : onYopiq}
-      className={`flex min-h-16 w-full items-center gap-3 rounded-karta border border-chegara p-4 text-left ${
-        ochiq ? "bg-karta text-siyoh" : "bg-transparent text-matn-3"
+      // Prototip `ActionRow`: o'chiq qator butunicha 0.4 shaffoflikda, oxirida "›".
+      className={`flex min-h-11 w-full items-center gap-3 rounded-karta border border-chegara bg-karta p-4 text-left text-siyoh transition-transform active:scale-[0.98] ${
+        ochiq ? "" : "opacity-40"
       }`}
     >
       <Ikona nomi={ikona} />
-      <span className="min-w-0 flex-1">
-        <span className="block text-karta-sarlavha">{nomi}</span>
-        <span className="mt-1 block text-izoh text-matn-2">{izoh}</span>
+      <span className="flex min-w-0 flex-1 flex-col gap-1">
+        <span className="text-karta-sarlavha">{nomi}</span>
+        <span className="text-izoh text-matn-2">{izoh}</span>
       </span>
+      <svg
+        viewBox="0 0 24 24"
+        width="20"
+        height="20"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+        className="shrink-0 text-matn-3"
+      >
+        <path d="m9 18 6-6-6-6" />
+      </svg>
     </button>
   );
 }
@@ -290,7 +308,8 @@ export function QoshishPaneli({ faol }: { faol?: "asosiy" | "statistika" | "prof
             type="button"
             onClick={() => setOchiq(true)}
             aria-label={t("Ovqat qo'shish")}
-            className="flex size-14 shrink-0 items-center justify-center rounded-full bg-siyoh text-fon shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-transform active:scale-[0.98]"
+            // Prototip BottomBar: bosilganda 0.92 ga prujina bilan kichrayadi, soya yo'qoladi.
+            className="flex size-14 shrink-0 items-center justify-center rounded-full bg-siyoh text-on-siyoh shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-[transform,box-shadow] duration-[250ms,120ms] ease-[cubic-bezier(0.34,1.56,0.64,1)] active:scale-[0.92] active:shadow-none motion-reduce:active:scale-100"
           >
             <svg
               viewBox="0 0 24 24"
@@ -330,8 +349,8 @@ export function QoshishPaneli({ faol }: { faol?: "asosiy" | "statistika" | "prof
             className="absolute inset-0 bg-parda"
           />
 
-          <div className="relative mx-auto w-full max-w-md rounded-t-panel border border-karta-chegara bg-karta p-4 pb-[calc(2rem+var(--xavfsiz-past))] motion-safe:animate-[panel_250ms_cubic-bezier(0.2,0,0,1)]">
-            <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-chegara" />
+          <div className="relative mx-auto w-full max-w-md rounded-t-panel bg-karta px-4 pt-3 pb-[calc(1.5rem+var(--xavfsiz-past))] motion-safe:animate-[panel_250ms_cubic-bezier(0.2,0,0,1)]">
+            <div className="mx-auto mb-4 h-1 w-9 rounded-full bg-chegara" />
             {/* Prototip `BottomSheet title` — sarlavha ko'rinadi, faqat aria-label emas. */}
             <h2 className="mb-4 text-sarlavha">{t("Ovqat qo'shish")}</h2>
             <div className="flex flex-col gap-3">
@@ -380,7 +399,7 @@ export function QoshishPaneli({ faol }: { faol?: "asosiy" | "statistika" | "prof
                 type="button"
                 onClick={yop}
                 disabled={yuklanmoqda}
-                className="min-h-11 text-asosiy text-matn-2 disabled:opacity-40"
+                className="min-h-11 text-asosiy font-medium text-siyoh transition-transform active:scale-[0.98] disabled:opacity-40"
               >
                 {t("Bekor qilish")}
               </button>

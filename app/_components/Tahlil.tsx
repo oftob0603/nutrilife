@@ -86,9 +86,10 @@ function skanSorovi(kalit: string, tana: { rasmId?: string; matn?: string }) {
  */
 function Manba({ manzil, matn, keng = false }: { manzil?: string; matn?: string; keng?: boolean }) {
   const { t } = useTarjima();
-  const olcham = keng ? "h-40" : "aspect-square max-w-[260px]";
+  // E7'dagi keng rasm prototip `FoodImage` radiusida (12 px), E6 kvadrati karta radiusida.
+  const olcham = keng ? "h-40 rounded-chip" : "aspect-square max-w-[260px] rounded-karta";
   return (
-    <div className={`relative w-full ${olcham} overflow-hidden rounded-karta bg-chegara`}>
+    <div className={`relative w-full ${olcham} overflow-hidden bg-chegara`}>
       {manzil ? (
         <Image
           src={manzil}
@@ -322,33 +323,35 @@ function Tasdiq({
           bloklangan={saqlanmoqda}
           taxminiy={taxminiy}
           kaloriyaAjratilgan={natija !== null}
+          // Prototip E7: porsiya izohidan keyin, makro maydonlaridan oldin — tavsiya yoki PRO qulfi.
           porsiyaIzohi={
-            taxminiy && (
-              <p className="-mt-2 flex items-start gap-2 text-[11px] leading-[1.45] text-matn-2">
-                <Uchqun />
-                <span className="min-w-0 flex-1">
-                  {t(
-                    "AI porsiyani taxmin qildi. Og'irlikni aniq kiritsangiz, natija yanada aniq bo'ladi.",
-                  )}
-                </span>
-              </p>
-            )
+            <>
+              {taxminiy && (
+                <p className="-mt-2 flex items-start gap-2 text-[11px] leading-[1.45] text-matn-2">
+                  <Uchqun />
+                  <span className="min-w-0 flex-1">
+                    {t(
+                      "AI porsiyani taxmin qildi. Og'irlikni aniq kiritsangiz, natija yanada aniq bo'ladi.",
+                    )}
+                  </span>
+                </p>
+              )}
+              {natija && tavsiyaAsosi?.yopiq && (
+                <ProQulfi zich sarlavha={t("Aqlli porsiya tavsiyalari — PRO")} />
+              )}
+              {tavsiyaGramm !== null && (
+                <TavsiyaKartasi
+                  sarlavha={t("Tavsiya: {0} g", tavsiyaGramm)}
+                  izoh={t("Qolgan {0} kkal ichida qoladi", raqam(tavsiyaAsosi?.qoldi ?? 0))}
+                  onClick={() => {
+                    if (!saqlanmoqda) formaOzgardi(miqdorOzgardi(forma, String(tavsiyaGramm)));
+                  }}
+                />
+              )}
+            </>
           }
           onChange={formaOzgardi}
         />
-
-      {natija && tavsiyaAsosi?.yopiq && (
-        <ProQulfi zich sarlavha={t("Aqlli porsiya tavsiyalari — PRO")} />
-      )}
-      {tavsiyaGramm !== null && (
-        <TavsiyaKartasi
-          sarlavha={t("Tavsiya: {0} g", tavsiyaGramm)}
-          izoh={t("Qolgan {0} kkal ichida qoladi", raqam(tavsiyaAsosi?.qoldi ?? 0))}
-          onClick={() => {
-            if (!saqlanmoqda) formaOzgardi(miqdorOzgardi(forma, String(tavsiyaGramm)));
-          }}
-        />
-      )}
 
         <div className="mt-auto flex flex-col gap-2 pt-2">
           {saqlanmadi && (
@@ -480,7 +483,7 @@ export function Tahlil({
             izoh={
               rasmId
                 ? t(
-                    "Rasmda bir nechta taom bor yoki yorug'lik yetmagan bo'lishi mumkin. Qiymatni o'zimiz uydirmaymiz.",
+                    "Rasmda bir nechta taom bor yoki yorug'lik yetmagan. Qiymatni o'zimiz uydirmaymiz.",
                   )
                 : t("Tasvir yetarli emas yoki bu ovqat emas. Qiymatni o'zimiz uydirmaymiz.")
             }

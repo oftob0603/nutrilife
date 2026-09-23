@@ -166,6 +166,16 @@ const KUNLAR: Record<Til, readonly string[]> = {
   en: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
 };
 
+/** "20.09.2026" — prototip `sanaToliq` (Home sarlavhasi, vazn tarixi va paneli). */
+export function sanaToliq(sana: string): string {
+  return `${sana.slice(8, 10)}.${sana.slice(5, 7)}.${sana.slice(0, 4)}`;
+}
+
+/** "20.09" — prototip `sanaQisqa` (statistika qatorlari, grafikdagi tanlangan nuqta). */
+export function sanaQisqa(sana: string): string {
+  return `${sana.slice(8, 10)}.${sana.slice(5, 7)}`;
+}
+
 /** Kun va oy: "20-sentabr" · "20 сентября" · "20 September". */
 export function kunOyMatni(sana: string, til: Til = "uz"): string {
   const kun = new Date(`${sana}T00:00:00.000Z`);

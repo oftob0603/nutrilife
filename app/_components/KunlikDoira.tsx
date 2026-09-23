@@ -13,7 +13,8 @@ const DAVOMIYLIK = 600;
 
 /**
  * Kunlik doira: soat 12 dan boshlanadi, soat yo'nalishi bo'yicha to'ladi.
- * `boshlangich` berilsa, shu qiymatdan `qiymat`gacha to'ladi (E8'dagi asosiy lahza).
+ * Ochilganda 0 dan to'ladi (prototip `DailyRing`); `boshlangich` berilsa, shu qiymatdan
+ * `qiymat`gacha to'ladi (E8'dagi asosiy lahza).
  */
 export function KunlikDoira({
   qiymat,
@@ -25,8 +26,8 @@ export function KunlikDoira({
   boshlangich?: number;
 }) {
   const { t } = useTarjima();
-  const [korinadigan, setKorinadigan] = useState(boshlangich ?? qiymat);
-  const oldingi = useRef(boshlangich ?? qiymat);
+  const [korinadigan, setKorinadigan] = useState(boshlangich ?? 0);
+  const oldingi = useRef(boshlangich ?? 0);
 
   useEffect(() => {
     const kamHarakat = window.matchMedia(

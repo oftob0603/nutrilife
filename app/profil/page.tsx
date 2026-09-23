@@ -16,7 +16,7 @@ import {
   type Profil,
 } from "@/lib/services/profil-hisob";
 import { raqam } from "@/lib/services/taom-hisob";
-import { profilniYukla, skanLimitiniYukla } from "./yukla";
+import { adminniYukla, profilniYukla, skanLimitiniYukla } from "./yukla";
 
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
 export const dynamic = "force-dynamic";
@@ -48,7 +48,7 @@ function ObunaKartasi({
       {obuna.holat === "tugagan" && (
         <p className="text-izoh text-matn-2">
           {t(
-            "Jurnal, tarix va progress o'qish uchun ochiq. Faqat yangi AI skan va retseptlarning to'liq matni yopildi.",
+            "Jurnal, tarix va progress o'qish uchun ochiq. Yangi AI skan va boshqa PRO imkoniyatlari yopildi.",
           )}
         </p>
       )}
@@ -79,7 +79,11 @@ export default async function ProfilSahifasi() {
   const tarjimon = await serverTarjimoni();
   const { t } = tarjimon;
   // Parallel: skan hisoblagichi profil ochilishini sekinlashtirmasin.
-  const [profil, skan] = await Promise.all([profilniYukla(), skanLimitiniYukla()]);
+  const [profil, skan, admin] = await Promise.all([
+    profilniYukla(),
+    skanLimitiniYukla(),
+    adminniYukla(),
+  ]);
   // Sessiyasiz ochilgan havola: sahifa kirish pardasi ostida bo'sh turadi, kirgach
   // `KirishDarvozasi` uni sessiya bilan qayta so'raydi.
   if (profil === "sessiyasiz") return null;
@@ -95,10 +99,7 @@ export default async function ProfilSahifasi() {
         </header>
 
         {profil === null ? (
-          <XatoKartasi
-            sarlavha={t("Profilni yuklab bo'lmadi")}
-            izoh={t("Serverga ulanolmadik. Internetni tekshirib, qayta urinib ko'ring.")}
-          >
+          <XatoKartasi sarlavha={t("Profilni yuklab bo'lmadi")}>
             <QaytaUrinish />
           </XatoKartasi>
         ) : (
@@ -139,7 +140,7 @@ export default async function ProfilSahifasi() {
               </section>
             )}
 
-            <Sozlamalar boshlangich={profil.sozlamalar} />
+            <Sozlamalar boshlangich={profil.sozlamalar} admin={admin} />
           </div>
         )}
       </main>

@@ -43,10 +43,7 @@ export default async function ProgressSahifasi({ searchParams }: PageProps<"/pro
         </header>
 
         {progress === null ? (
-          <XatoKartasi
-            sarlavha={t("Ma'lumotni yuklab bo'lmadi")}
-            izoh={t("Serverga ulanolmadik. Internetni tekshirib, qayta urinib ko'ring.")}
-          >
+          <XatoKartasi sarlavha={t("Ma'lumotni yuklab bo'lmadi")}>
             <QaytaUrinish />
           </XatoKartasi>
         ) : (
@@ -54,7 +51,7 @@ export default async function ProgressSahifasi({ searchParams }: PageProps<"/pro
             <VaznKartasi progress={progress} til={til} />
             <VaznQaydi />
             <VaznGrafigi progress={progress} />
-            <StreakKartasi streak={progress.streak} kuzatilganJami={progress.kuzatilganJami} til={til} />
+            <StreakKartasi streak={progress.streak} til={til} />
             <KunKataklari kunlar={progress.oxirgi30} bugun={progress.bugun} til={til} />
             {progress.haftalikOzgarish !== null && (
               <HaftalikOzgarish ozgarish={progress.haftalikOzgarish} birlik={progress.vaznBirligi} />
@@ -93,7 +90,7 @@ async function HaftalikOzgarish({ ozgarish, birlik }: { ozgarish: number; birlik
       <Ikona nomi={ozgarish <= 0 ? "pasaymoqda" : "osmoqda"} className="text-matn-2" />
       <span className="min-w-0 flex-1 text-izoh text-matn-2">{t("Haftalik o'zgarish")}</span>
       <span className="text-karta-sarlavha tabular-nums">
-        {t("{0} / hafta", `${farqMatni(vaznQiymati(ozgarish, birlik), til)} ${birlikNomi}`)}
+        {t("{0} / hafta", `${farqMatni(vaznQiymati(ozgarish, birlik), til, birlik === "kg")} ${birlikNomi}`)}
       </span>
     </section>
   );

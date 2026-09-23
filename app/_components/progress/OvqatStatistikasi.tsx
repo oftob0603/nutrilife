@@ -13,7 +13,7 @@ import {
   type StatistikaOraligi,
 } from "@/lib/services/statistika-hisob";
 import { raqam } from "@/lib/services/taom-hisob";
-import { haftaKuniNomi, kunOyMatni } from "@/lib/services/yozuv-hisob";
+import { haftaKuniNomi, sanaQisqa } from "@/lib/services/yozuv-hisob";
 
 const KARTA = "flex flex-col gap-4 rounded-karta border border-karta-chegara bg-karta p-4";
 
@@ -41,10 +41,23 @@ function Qatorlar({ qatorlar }: { qatorlar: [string, string][] }) {
   );
 }
 
-function Bosh({ kaloriya, izoh, qoshimcha }: { kaloriya: number; izoh: string; qoshimcha?: string }) {
+/** Katta raqam: batafsil statistikada 40 px, haftalik hisobotda 36 px (prototip). */
+function Bosh({
+  kaloriya,
+  izoh,
+  qoshimcha,
+  kichik = false,
+}: {
+  kaloriya: number;
+  izoh: string;
+  qoshimcha?: string;
+  kichik?: boolean;
+}) {
   return (
     <div className="flex items-baseline gap-2">
-      <span className="font-display text-[40px] leading-none font-semibold tracking-[-0.03em] tabular-nums">
+      <span
+        className={`font-display ${kichik ? "text-[36px]" : "text-[40px]"} leading-none font-semibold tracking-[-0.03em] tabular-nums`}
+      >
         {raqam(kaloriya)}
       </span>
       <span className="text-izoh text-matn-2">{izoh}</span>
@@ -110,10 +123,10 @@ function BatafsilKarta({
               [t("Makro taqsimoti"), `${s.taqsimot.oqsil} / ${s.taqsimot.yog} / ${s.taqsimot.uglevod}%`],
               [t("Normaga mos kunlar"), t("{0} / {1}", s.normagaMos, s.kunlar)],
               [t("Normadan oshgan kunlar"), String(s.normadanOshgan)],
-              [t("Eng past kun"), t("{0} kkal · {1}", raqam(s.engPast.kaloriya), kunOyMatni(s.engPast.sana, til))],
+              [t("Eng past kun"), t("{0} kkal · {1}", raqam(s.engPast.kaloriya), sanaQisqa(s.engPast.sana))],
               [
                 t("Eng baland kun"),
-                t("{0} kkal · {1}", raqam(s.engBaland.kaloriya), kunOyMatni(s.engBaland.sana, til)),
+                t("{0} kkal · {1}", raqam(s.engBaland.kaloriya), sanaQisqa(s.engBaland.sana)),
               ],
               [t("Kuzatilgan kunlar"), `${s.kuzatilganUlush}%`],
               ...(s.ortachaScore === null
@@ -121,7 +134,7 @@ function BatafsilKarta({
                 : [[t("O'rtacha Nutrition Score"), t("{0} / {1}", s.ortachaScore, 100)] as [string, string]]),
             ]}
           />
-          <p className="text-[11px] leading-snug text-matn-2">
+          <p className="text-belgi text-matn-2">
             {t("O'rtachalar faqat yozuv bor kunlardan olinadi — bo'sh kun nol deb hisoblanmaydi.")}
           </p>
         </>
@@ -150,6 +163,7 @@ function HaftalikKarta({ hisobot, normaKaloriya }: { hisobot: HaftalikHisobot | 
   return (
     <div className={KARTA}>
       <Bosh
+        kichik
         kaloriya={hisobot.ortachaKaloriya}
         izoh={t("kkal / kun")}
         qoshimcha={farq === null ? undefined : `${belgi}${t("{0} o'tgan haftaga nisbatan", raqam(Math.abs(farq)))}`}
@@ -167,7 +181,7 @@ function HaftalikKarta({ hisobot, normaKaloriya }: { hisobot: HaftalikHisobot | 
                   style={{ height: balandlik }}
                 />
               </span>
-              <span className="text-[11px] text-matn-3">{haftaKuniNomi(kun.sana, til)}</span>
+              <span className="text-belgi text-matn-3">{haftaKuniNomi(kun.sana, til)}</span>
             </span>
           );
         })}

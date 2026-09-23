@@ -44,7 +44,7 @@ function Chip({
       aria-pressed={tanlangan}
       className={`min-h-11 rounded-chip border px-4 text-asosiy font-medium tabular-nums transition-colors ${
         tanlangan
-          ? "border-siyoh bg-siyoh text-fon"
+          ? "border-siyoh bg-siyoh text-on-siyoh"
           : "border-chegara bg-karta text-siyoh"
       }`}
     >
@@ -251,18 +251,13 @@ export function PorsiyaTanlagich({
       {xato && (
         <div
           role="alert"
-          className="flex items-center gap-3 rounded-karta border border-xato p-4"
+          className="flex items-center justify-between gap-3 rounded-karta border border-xato bg-karta px-4 py-3"
         >
-          <p className="flex-1 text-asosiy text-xato">
-            {t("Saqlanmadi. Qayta urinib ko'ring")}
-          </p>
-          <button
-            type="button"
-            onClick={jurnalgaQosh}
-            className="min-h-11 rounded-chip px-4 text-asosiy font-medium text-siyoh"
-          >
+          {/* Prototip `ErrorState inline`: izoh o'lchamidagi qizil matn va uchinchi darajali tugma. */}
+          <p className="text-izoh text-xato">{t("Saqlanmadi. Qayta urinish")}</p>
+          <Tugma korinish="uchinchi" kichik onClick={jurnalgaQosh}>
             {t("Qayta urinish")}
-          </button>
+          </Tugma>
         </div>
       )}
     </div>

@@ -1,7 +1,8 @@
 import Image from "next/image";
 
 /**
- * Taom rasmi: ro'yxat va yozuv qatorida kichik kvadrat, taom sahifasida (E5) 4:3.
+ * Taom rasmi: ro'yxat va yozuv qatorida kichik kvadrat (48 px), taom taklifida 56 px,
+ * taom sahifasida (E5) 4:3.
  * Rasm yo'q bo'lsa prototipdagidek bo'sh o'rin turadi (DESIGN.md, 6-bo'lim).
  */
 export function TaomRasmi({
@@ -9,12 +10,12 @@ export function TaomRasmi({
   olcham = "kichik",
 }: {
   rasm: string | null;
-  olcham?: "kichik" | "katta";
+  olcham?: "kichik" | "orta" | "katta";
 }) {
   const qolip =
     olcham === "katta"
       ? "relative aspect-[4/3] w-full overflow-hidden rounded-chip bg-chegara"
-      : "relative size-12 shrink-0 overflow-hidden rounded-chip bg-chegara";
+      : `relative ${olcham === "orta" ? "size-14" : "size-12"} shrink-0 overflow-hidden rounded-chip bg-chegara`;
 
   return (
     <div className={qolip}>
@@ -23,7 +24,7 @@ export function TaomRasmi({
           src={rasm}
           alt=""
           fill
-          sizes={olcham === "katta" ? "(min-width: 448px) 416px, 100vw" : "48px"}
+          sizes={olcham === "katta" ? "(min-width: 448px) 416px, 100vw" : olcham === "orta" ? "56px" : "48px"}
           // Yuklangan rasm imzoli ombor havolasiga yo'naltiriladi — optimizator uni o'qiy olmaydi.
           unoptimized={rasm.startsWith("/api/")}
           priority={olcham === "katta"}

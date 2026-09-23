@@ -36,8 +36,8 @@ export function OnboardingMaydoni({
         {nomi}
       </label>
       <div
-        className={`flex min-h-13 items-center gap-2 rounded-karta border bg-karta px-4 ${
-          xato ? "border-xato" : "border-chegara"
+        className={`flex min-h-11 items-center gap-2 rounded-karta border bg-karta px-4 transition-colors ${
+          xato ? "border-xato" : "border-chegara focus-within:border-siyoh"
         }`}
       >
         <input
@@ -52,7 +52,7 @@ export function OnboardingMaydoni({
           aria-invalid={xato ? true : undefined}
           aria-describedby={izoh ? `${id}-izoh` : undefined}
           onChange={(hodisa) => onChange(hodisa.target.value)}
-          className="w-full min-w-0 bg-transparent text-asosiy tabular-nums outline-none placeholder:text-matn-3"
+          className="w-full min-w-0 bg-transparent py-3 text-asosiy tabular-nums outline-none placeholder:text-matn-3"
         />
         {birlik && <span className="shrink-0 text-izoh text-matn-2">{birlik}</span>}
       </div>

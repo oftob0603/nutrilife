@@ -111,7 +111,7 @@ To'liq ro'yxat [PRD.md](PRD.md) 10-bo'limida.
 ## 2026-09-13 — savala raundidan keyingi qarorlar
 
 **2026-09-13 · FREE limiti o'zgartirildi: umr davomida jami 3 ta skan EMAS, kuniga
-1 ta bepul skan.**
+1 ta bepul skan. (BEKOR QILINDI — 2026-09-23: amaldagi qoida umr davomida jami 3 ta AI skan.)**
 *Sabab:* O'sish marketologi e'tirozi — birinchi foydalanuvchilar pulli reklamadan
 keladi, 3 ta skan tugagach o'sha kuni ketib qoladi va reklama puli qaytmaydi.
 Kunlik limit odat shakllanishiga imkon beradi. Bu [PRD.md](PRD.md) 8-bo'limidagi
@@ -193,7 +193,7 @@ O'zbekistonda yozgi vaqt yo'q, shuning uchun qat'iy siljish yetarli va yangi dep
 *Sabab:* Vertikal kesim uchun onboarding ham, auth ham kerak emas; ikkalasi bitta joyda turadi va
 S3'da rejadan hamda real foydalanuvchi ID'sidan keladi.
 
-**2026-09-20 · E5'dagi "Jurnalga qo'shish" tugmasi `--siyoh` rangida (DESIGN.md'da lime deb yozilgan).**
+**2026-09-20 · E5'dagi "Jurnalga qo'shish" tugmasi `--siyoh` rangida (DESIGN.md'da lime deb yozilgan). (BEKOR QILINDI — 2026-09-23: prototipdagi `primary` tugma lime, pastdagi qaror bilan.)**
 *Sabab:* Prototipdagi FoodScreen `primary` tugmani ishlatadi va zid kelganda prototip ustun turadi;
 lime E8'dagi doira va tasdiq belgisida qoladi.
 
@@ -400,7 +400,7 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-21 · `ovqat_yozuvlari` ga `holat` ustuni qo'shildi, lekin unda faqat uch qiymat: `tasdiqlandi`, `tahrirlandi`, `ochirildi`. PRD zanjiridagi `tahlil qilinmoqda` va `tasdiq kutilmoqda` bazaga tushmaydi — klient holatida qoladi. 2026-09-20 dagi "`holat` ustuni qo'shilmadi" qarori shu bilan almashtirildi.**
 *Sabab:* Tasdiqlanmagan AI natijasi jadvalga tushmasligi haqidagi qaror (2026-09-13) kuchda qoladi; ustun esa o'chirilgan yozuvni saqlab qolish uchun kerak — qator o'chsa streak va Nutrition Score tarixi o'zgarib qolardi. O'chirilgan yozuvning rasmi saqlanmaydi (bazadan ham, R2'dan ham o'chadi): foydalanuvchi o'chirgan surat omborda yotmasligi kerak, tarix uchun raqamlar yetarli.
 
-**2026-09-21 · F4 "Obuna" ekrani S4'da to'lovsiz, faqat o'qish uchun qurildi: "Obunani bekor qilish" tugmasi S5'ga qoldirildi; FREE va muddati tugagan hisob F4'ga kirmaydi.**
+**2026-09-21 · F4 "Obuna" ekrani S4'da to'lovsiz, faqat o'qish uchun qurildi: "Obunani bekor qilish" tugmasi S5'ga qoldirildi; FREE va muddati tugagan hisob F4'ga kirmaydi. (2026-09-23: tugma umuman qurilmaydi — pastdagi qaror.)**
 *Sabab:* Avtomatik takroriy to'lov yo'q — "bekor qilish" faqat keyingi eslatmani o'chiradi, eslatmalar esa S5'da (bot). Hech narsa qilmaydigan qizil tugma foydalanuvchini chalg'itadi. Prototipda ham F4'ga faqat faol PRO'dan kiriladi.
 
 **2026-09-21 · Skan limitidan faqat tanilgan taom yeyiladi; "tanib bo'lmadi" urinishi qaytariladi, lekin `skan_hisobi.tanilmagan` da sanaladi va kuniga cheklanadi: FREE 5 ta, PRO 20 ta. Kamera, galereya va matnli "Tasvirlash" — bitta limit. S2'dagi "tanib bo'lmadi ham hisobga kiradi" qoidasi shu bilan almashtirildi.**
@@ -565,6 +565,29 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 
 **2026-09-23 · 18 yosh: onboarding 18 dan kichik yoshni to'smaydi (ogohlantirish chiqadi, "Davom etish" ishlaydi), hujjatlarda esa foydalanuvchi o'zi 18+ ekanini tasdiqlaydi. 2026-09-22 dagi ochiq masala shu bilan yopildi.**
 *Sabab:* Foydalanuvchi qarori.
+
+## 2026-09-23 — prototip auditi (S5 yopilgach, S6 oldidan)
+
+**2026-09-23 · Asosiy tugma lime (`--aksent` fon, `--aksent-matn` matn) — prototip `--btn-primary-bg: var(--aksent)`. Uchinchi darajali tugma `--siyoh` matnli va 44 px, xavfli tugma chegarali. 2026-09-20 dagi "E5 tugmasi `--siyoh`" qarori bekor qilindi.**
+*Sabab:* Prototip auditi: o'sha qaror prototipdagi `primary` ni `--siyoh` deb noto'g'ri o'qigan; prototip README'si "Lime is the primary CTA" deydi. Prototip ustun (2026-09-21 umumiy qoida).
+
+**2026-09-23 · Qorong'i mavzu tokenlari prototipga moslandi: `--matn-2` #A6A6AD, `--matn-3` #85858C, karta chegarasi ikkala mavzuda 1px `--chegara`; yangi tokenlar `--on-siyoh`, `--karta-press`, `text-belgi` (11/500).**
+*Sabab:* Prototip kontrast uchun ikkilamchi matnni ko'targan (4.5:1 dan past edi); SPRINT-2 dagi "qorong'ida karta chegarasi shaffof" qoidasi prototipga zid edi.
+
+**2026-09-23 · F6 "Yordam" ekrani (admin bilan ilova ichidagi suhbat) qurilmaydi. Profildagi "Yordam" qatori admin bilan Telegram chatini ochadi (`ADMIN_TELEGRAM`, W1 bilan bitta manba — `/api/tariflar`); admin sozlanmagan bo'lsa qator chizilmaydi.**
+*Sabab:* Foydalanuvchi qarori — admin bilan aloqa Telegram'da, alohida suhbat tizimi kerak emas.
+
+**2026-09-23 · F4 "Obunani bekor qilish" tugmasi va tasdiq varag'i qurilmaydi.**
+*Sabab:* Foydalanuvchi qarori — avtomatik takroriy to'lov yo'q, PRO muddat oxirida o'zi yopiladi (huquqiy hujjatlar 2026-09-23 qarori bilan mos).
+
+**2026-09-23 · Prototipda yo'q, ilovada bor qo'shimchalar qoladi: E10 "Vaqt" maydoni, Jurnalda kun strelkalari va ovqat turi guruhi kaloriyasi, yozuv qatoridagi makro satri, F3 Afzalliklar/Odatlar varag'i, F5 2-qadamdagi "Bekor qilish", ilovaning qo'shimcha xato holatlari.**
+*Sabab:* Foydalanuvchi qarori — foydali funksiya, prototip tuzilmasini buzmaydi.
+
+**2026-09-23 · Audit farqlaridan ataylab qoldirilganlar: E8 doirasi oldingi jamidan yangisiga to'ladi (Home'da 0 dan — prototipdagidek); E6 qadamlari 1.5 s va "biroz cho'zilmoqda" 10 s da (haqiqiy AI kechikishi, prototip vaqtlari soxta); E1 xato holatida butun blok bitta kartaga almashadi (ma'lumot bitta API'dan keladi); E7 dagi "AI taxmini" belgisi bosilmaydi (saqlanmagan natijadan chiqib ketmaslik uchun); pastki panel oraliqlari `px-2 gap-1` (360 px da ruscha "Статистика" sig'ishi uchun); "{0}gacha faol" qo'shib yoziladi (o'zbek imlosi); huquqiy havolalar 44 px bosish maydonida; P1 haftalik o'zgarish ikonasi ishoraga qarab; F4 qo'lda berilgan obunada "Tarif" qatori yo'q (tarif ma'lumoti yo'q); P2 oraliq xatosi birlikka qarab ("Vazn {0}–{1} {2}").**
+*Sabab:* Haqiqiy ma'lumot va qurilma cheklovlari prototip soxta holatidan farq qiladi; har biri foydalanuvchiga ko'rinadigan buzilish emas.
+
+**2026-09-23 · Tarjimalar prototip lug'atiga moslandi, kontekst boshqa bo'lgan kalitlar bundan mustasno: "Afzalliklar" (F3 da "Предпочтения/Preferences"), "Yangilash" (obunani "Продлить/Renew"), Score darajalari "Yaxshi/O'rtacha/Past" (prototipda "Past" retsept murakkabligi — "Легко/Easy"), hujjat nomlari "Terms of Use / Privacy Policy", ruscha "Измерений: {0}" (son bilan kelishadi).**
+*Sabab:* Prototip lug'atida bir kalit ikki kontekstda ishlatilgan; ilovada har kalitning bitta ma'nosi bor.
 
 ## OCHIQ SAVOLLAR
 

@@ -16,10 +16,12 @@ export function KunTanlagich({ sana, bugun, til }: { sana: string; bugun: string
   return (
     <nav aria-label={t("Hafta kunlari")} className="flex gap-2">
       {haftaKunlari(sana, til).map((kun) => {
+        const tanlangan = kun.sana === sana;
+        // Prototip `DayPicker`: kun nomi --type-badge, tanlanganda 0.7 shaffof, aks holda --matn-2.
         const mazmun = (
           <>
-            <span className="text-[11px] leading-none">{kun.nomi}</span>
-            <span className="text-izoh font-medium">{kun.kun}</span>
+            <span className={`text-belgi ${tanlangan ? "opacity-70" : "text-matn-2"}`}>{kun.nomi}</span>
+            <span className="text-izoh font-medium tabular-nums">{kun.kun}</span>
           </>
         );
 
@@ -36,9 +38,8 @@ export function KunTanlagich({ sana, bugun, til }: { sana: string; bugun: string
           );
         }
 
-        const tanlangan = kun.sana === sana;
         const rang = tanlangan
-          ? "border-siyoh bg-siyoh text-fon"
+          ? "border-siyoh bg-siyoh text-on-siyoh"
           : kun.sana === bugun
             ? "border-siyoh bg-karta text-siyoh"
             : "border-karta-chegara bg-karta text-siyoh";

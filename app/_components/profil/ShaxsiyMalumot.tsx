@@ -17,6 +17,8 @@ import {
   JOYLAR,
   MAHALLAR,
   MAQSADLAR,
+  YOSH_OGOHLANTIRISH_YOSHI,
+  YOSH_XATOSI,
 } from "@/lib/services/onboarding-hisob";
 import type { Profil } from "@/lib/services/profil-hisob";
 import { raqam } from "@/lib/services/taom-hisob";
@@ -128,11 +130,18 @@ export function ShaxsiyMalumot({ profil }: { profil: Profil }) {
           />
         </div>
 
+        {/* 18 dan kichik yosh saqlashni to'smaydi, faqat qizil izoh — O5 bilan bir xil (DECISIONS 2026-09-22). */}
         <OnboardingMaydoni
           nomi={t("Yosh")}
+          birlik={t("yosh")}
           turi="butun"
           qiymat={forma.yosh}
-          xato={xatoMatni(tekshiruv.yosh)}
+          xato={
+            xatoMatni(tekshiruv.yosh) ??
+            (Number(forma.yosh) > 0 && Number(forma.yosh) < YOSH_OGOHLANTIRISH_YOSHI
+              ? t(YOSH_XATOSI)
+              : undefined)
+          }
           onChange={(yosh) => setForma({ ...forma, yosh })}
         />
 

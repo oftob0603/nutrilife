@@ -75,7 +75,7 @@ const YOLLAR: Record<ProImkoniyati["id"], React.ReactNode> = {
 /** PRO imkoniyatining belgisi — PRO tusidagi kichik katakda (W1 imkoniyatlar ro'yxati). */
 export function ProImkoniyatBelgisi({ id }: { id: ProImkoniyati["id"] }) {
   return (
-    <span className="flex size-8 shrink-0 items-center justify-center rounded-chip bg-pro-tint text-pro-ink">
+    <span className="flex size-8 shrink-0 items-center justify-center rounded-[10px] bg-pro-tint text-pro-ink">
       <svg
         viewBox="0 0 24 24"
         width="16"

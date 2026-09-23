@@ -14,20 +14,22 @@ function Aylanma() {
   return (
     <span
       aria-hidden="true"
-      className="size-8 animate-spin rounded-full border-2 border-white border-t-transparent"
+      className="size-8 animate-spin rounded-full border-2 border-[#f2f2f3] border-t-transparent"
     />
   );
 }
 
+// Prototip: orqaga 24 px, galereya 20 px.
 function Ikona({ nomi }: { nomi: "orqaga" | "galereya" }) {
+  const olcham = nomi === "orqaga" ? 24 : 20;
   return (
     <svg
       viewBox="0 0 24 24"
-      width="24"
-      height="24"
+      width={olcham}
+      height={olcham}
       fill="none"
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth="1.75"
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
@@ -145,76 +147,80 @@ export function Kamera() {
   }
 
   return (
-    <main className="fixed inset-0 flex flex-col bg-black pt-[var(--xavfsiz-tepa)] text-white">
-      <video
-        ref={video}
-        playsInline
-        muted
-        className={`absolute inset-0 size-full object-cover ${holat === "jonli" ? "" : "invisible"}`}
-      />
-
-      {holat === "korish" && surat && (
-        <Image
-          src={surat.manzil}
-          alt={t("Olingan rasm")}
-          fill
-          unoptimized
-          className="object-contain"
-        />
-      )}
-
-      {/* Prototip `CameraScreen`: chapda orqaga, markazda holat yozuvi, o'ngda bo'sh o'rin. */}
-      <header className="relative flex items-center justify-between p-2">
+    // Prototip `CameraScreen` (data-theme="dark"): qorong'i fon, ko'rinish maydoni chetdan
+    // 16 px ichkarida yumaloq karta, ichida 260 px ramka va pastida ko'rsatma.
+    <main className="fixed inset-0 flex flex-col bg-[#0b0b0c] pt-[var(--xavfsiz-tepa)] text-[#f2f2f3]">
+      <header className="flex items-center justify-between px-4 py-4">
         <OrqagaTugma
           nomi={t("Orqaga")}
           href="/"
-          className="flex size-11 items-center justify-center rounded-full bg-black/40"
+          className="-ml-3 flex size-11 items-center justify-center"
           joyTutsin
         >
           <Ikona nomi="orqaga" />
         </OrqagaTugma>
-        <span className="text-izoh text-white/70">
+        <span className="text-izoh opacity-70">
           {holat === "korish" ? t("Rasmni ko'rib chiqing") : t("Kamera")}
         </span>
         <span aria-hidden="true" className="size-11" />
       </header>
 
-      <div className="relative flex flex-1 flex-col items-center justify-center gap-4 px-8 text-center">
-        {holat === "yuklanmoqda" && <Aylanma />}
+      <div className="relative mx-4 min-h-0 flex-1 overflow-hidden rounded-karta bg-[#161618]">
+        <video
+          ref={video}
+          playsInline
+          muted
+          className={`absolute inset-0 size-full object-cover ${holat === "jonli" ? "" : "invisible"}`}
+        />
 
-        {holat === "jonli" && (
-          <>
-            <div className="aspect-square w-full max-w-xs rounded-panel border-2 border-white/50" />
-            <p className="rounded-full bg-black/40 px-3 py-1 text-izoh">
-              {t("Taomni tepadan, to'liq ko'rinishda oling")}
-            </p>
-          </>
+        {holat === "korish" && surat && (
+          <Image
+            src={surat.manzil}
+            alt={t("Olingan rasm")}
+            fill
+            unoptimized
+            className="object-contain"
+          />
         )}
 
-        {holat === "xato" && (
-          <>
-            <p className="text-karta-sarlavha">{t("Kamerani ocholmadik")}</p>
-            <p className="text-izoh text-white/70">
-              {t("Brauzer sozlamalarida kameraga ruxsat bering yoki tayyor rasmni tanlang.")}
-            </p>
-          </>
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 px-6 text-center">
+          {holat === "yuklanmoqda" && <Aylanma />}
+
+          {holat === "jonli" && (
+            <div className="aspect-square w-full max-w-[260px] rounded-karta border border-[rgba(242,242,243,0.35)]" />
+          )}
+
+          {holat === "xato" && (
+            <>
+              <p className="text-karta-sarlavha">{t("Kamerani ocholmadik")}</p>
+              <p className="text-izoh opacity-70">
+                {t("Brauzer sozlamalarida kameraga ruxsat bering yoki tayyor rasmni tanlang.")}
+              </p>
+            </>
+          )}
+        </div>
+
+        {holat === "jonli" && (
+          <p className="absolute inset-x-6 bottom-6 text-center text-izoh text-[rgba(242,242,243,0.7)]">
+            {t("Taomni tepadan, to'liq ko'rinishda oling")}
+          </p>
         )}
       </div>
 
-      <footer className="relative flex flex-col gap-3 px-4 pt-4 pb-[max(1.5rem,var(--xavfsiz-past))]">
+      <footer className="flex flex-col gap-3 px-4 pt-6 pb-[max(2rem,var(--xavfsiz-past))]">
         {xato && (
-          <p role="alert" className="rounded-chip bg-black/60 px-3 py-2 text-center text-izoh">
+          <p role="alert" className="rounded-chip bg-[#161618] px-3 py-2 text-center text-izoh">
             {xato}
           </p>
         )}
 
         {holat === "jonli" && (
-          <div className="grid grid-cols-3 items-center">
+          <div className="flex items-center justify-between">
             <button
               type="button"
               onClick={() => tanlagich.current?.click()}
               aria-label={t("Galereyadan tanlash")}
-              className="flex size-11 items-center justify-center justify-self-start rounded-full bg-black/40"
+              className="flex size-11 items-center justify-center rounded-chip border border-[rgba(242,242,243,0.25)]"
             >
               <Ikona nomi="galereya" />
             </button>
@@ -222,8 +228,9 @@ export function Kamera() {
               type="button"
               onClick={suratgaOl}
               aria-label={t("Rasmga olish")}
-              className="size-18 justify-self-center rounded-full border-4 border-white/50 bg-white bg-clip-padding transition-transform active:scale-[0.98]"
+              className="size-18 rounded-full border-4 border-[rgba(242,242,243,0.35)] bg-[#f2f2f3] bg-clip-padding transition-transform active:scale-[0.98]"
             />
+            <span aria-hidden="true" className="size-11" />
           </div>
         )}
 
@@ -249,7 +256,7 @@ export function Kamera() {
               type="button"
               onClick={qaytaOl}
               disabled={yuborilmoqda}
-              className={`${TUGMA} bg-transparent text-white`}
+              className={`${TUGMA} bg-transparent text-[#f2f2f3]`}
             >
               {t("Qayta olish")}
             </button>
@@ -264,14 +271,14 @@ export function Kamera() {
                 setHolat("yuklanmoqda");
                 setUrinish((son) => son + 1);
               }}
-              className={`${TUGMA} bg-white text-black`}
+              className={`${TUGMA} bg-[#f2f2f3] text-[#0b0b0c]`}
             >
               {t("Qayta urinish")}
             </button>
             <button
               type="button"
               onClick={() => tanlagich.current?.click()}
-              className={`${TUGMA} border border-white/40 text-white`}
+              className={`${TUGMA} border border-[rgba(242,242,243,0.25)] text-[#f2f2f3]`}
             >
               {t("Galereyadan tanlash")}
             </button>

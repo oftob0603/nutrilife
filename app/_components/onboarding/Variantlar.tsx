@@ -56,7 +56,7 @@ export function Variantlar({
             aria-checked={faol}
             onClick={() => onTanla(variant.qiymat)}
             className={`flex min-h-11 w-full items-center gap-3 rounded-karta border p-4 text-left transition-[transform,background-color,color] duration-150 active:scale-[0.98] ${
-              faol ? "border-siyoh bg-siyoh text-fon" : "border-chegara bg-karta text-siyoh"
+              faol ? "border-siyoh bg-siyoh text-on-siyoh" : "border-chegara bg-karta text-siyoh"
             }`}
           >
             <span className="flex min-w-0 flex-1 flex-col gap-1">

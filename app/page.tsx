@@ -18,7 +18,7 @@ import type { QulfJavobi, TaklifJavobi } from "@/lib/services/taklif-hisob";
 import {
   bugunSana,
   qoshniSana,
-  sanaMatni,
+  sanaToliq,
   sanaYaroqli,
   type Jami,
   type Yozuv,
@@ -105,9 +105,9 @@ export default async function HomeSahifasi({ searchParams }: PageProps<"/">) {
   return (
     <>
       <OflaynChizigi />
-      <main className="mx-auto w-full max-w-md px-4 pb-32">
+      <main className="mx-auto w-full max-w-md px-4 pb-[140px]">
         <header className="flex flex-col gap-1 py-4">
-          <p className="text-izoh text-matn-2">{sanaMatni(sana, til)}</p>
+          <p className="text-izoh text-matn-2">{sanaToliq(sana)}</p>
           <h1 className="text-sarlavha">
             {bugunmi
               ? ism
@@ -126,7 +126,7 @@ export default async function HomeSahifasi({ searchParams }: PageProps<"/">) {
             // E1 xato holati: doira o'rnida karta, "+" tugmasi faolligicha qoladi.
             <XatoKartasi
               sarlavha={t("Ma'lumotni yuklab bo'lmadi")}
-              izoh={t("Hisobot serveriga ulanolmadik. Internetni tekshirib, qayta urinib ko'ring.")}
+              izoh={t("Hisobot serveriga ulanolmadik.")}
             >
               <QaytaUrinish />
             </XatoKartasi>

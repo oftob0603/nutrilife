@@ -58,6 +58,7 @@ avtomatik takroriy to'lov · admin paneli.
 - 2026-09-23: F5 hisobni o'chirish tasdig'i matn yozdirmaydi — "Hisobni o'chirishni tasdiqlaysizmi?" savoli va "Ha, o'chirilsin" tugmasi (app/_components/profil/HisobniOchirish.tsx, lib/lugat/sozlar.ts)
 - 2026-09-23: onboarding O1 dagi Ommaviy oferta havolasi ilova ichida ochiladigan qilindi, orqaga qaytganda O1 joyida qoladi (app/_components/onboarding/OnboardingOqimi.tsx)
 - 2026-09-23: profil sozlamalarida huquqiy hujjatlar va rasm mualliflari mayda havolalar qatoriga aylandi (doimiy chiziq bilan), "Rasm mualliflari" kartasi va birlik haqidagi izoh olib tashlandi (app/_components/profil/Sozlamalar.tsx, lib/lugat/sozlar.ts)
+- 2026-09-23: prototip auditi — ~75 farq, ~30 tasi ataylab; tuzatildi: asosiy tugma lime, qorong'i matn/karta tokenlari (on-siyoh, karta-press, text-belgi), sarlavha shrifti Inter Tight, orqaga 24 px, E2 qatorlari va panel, E3 kamera ramkasi, E7 tavsiya joyi, E9 jami kartasi, E10 sarlavhasi, P1 streak/vazn formati/sanalar, P2 xato va xabar, P3 farq joyi, ProQulfi butunicha bosiladi, F3 18+ izohi, Profil Yordam (admin Telegram chati), skeletlar, O13/F1 matnlari, ~50 ru/en tarjima (app/_components/*, app/globals.css, lib/lugat/sozlar.ts, DESIGN.md, DECISIONS.md)
 
 ## Handoff
 
@@ -68,10 +69,12 @@ Telefonda jonli sinov va bot webhook o'rnatish bajarildi (2026-09-22); Vercel'da
 Prototip auditidan S5'ga qolgan eslatmalar (2026-09-22):
 - F4 (obuna sahifasi): to'lovlar tarixi ro'yxati — har to'lov uchun summa, `sana · usul` va holat belgisi (prototip `screens-profile.jsx:291-307`); hozir faqat "Hozircha to'lov yo'q". To'lov integratsiyasi taskida qurish.
 - F5 (hisobni o'chirish, 2-qadam): izoh matni prototipda "O'chirilgach Telegramga qaytariladi va bot orqali bitta xabar yuboriladi." — ilovada vaqtincha "Hisob darhol o'chadi. Ilovani qayta ochsangiz, yangi hisob yaratiladi." Mini App SDK va bot ulangach prototip matniga qaytarish, o'chirishdan keyin ilovani yopish va bot xabari.
-- F4 "Obunani bekor qilish" tugmasi va tasdiq varag'i (S4 Handoff'idan).
-- Privacy/Terms matnida "18+" bandi: onboarding endi 18 dan kichik yoshni to'smaydi (DECISIONS 2026-09-22) — hujjat matni shunga mos yozilsin yoki qaror qayta ko'rilsin.
+- ~~F4 "Obunani bekor qilish" tugmasi va tasdiq varag'i~~ — qurilmaydi (DECISIONS 2026-09-23).
+- ~~Privacy/Terms matnida "18+" bandi~~ — yopildi (DECISIONS 2026-09-23: onboarding to'smaydi, hujjatda foydalanuvchi o'zi tasdiqlaydi).
 
 W1 orqaga tugmasi: telefonda jonli sinovda tasdiqlandi (2026-09-22).
+
+Prototip auditi (2026-09-23, S5 yopilgach): ~75 farq, ~30 tasi ataylab. Tuzatildi — asosiy tugma lime, qorong'i matn/karta tokenlari, sarlavha shrifti, orqaga 24 px, E2 qatorlari, E3 kamera ramkasi, E7 tavsiya joyi, E9 jami kartasi, P1 streak/vazn formati/sanalar, P2 xato va xabar, P3 farq joyi, ProQulfi butunicha bosiladi, F3 18+ izohi, Profil "Yordam" (admin Telegram chati), skeletlar, O13/F1 matnlari, ~50 ta ru/en tarjima. Qoldirilganlar va sabablari — DECISIONS 2026-09-23 "prototip auditi". Telefonda jonli ko'rish: asosiy tugmalar lime bo'lgani (E5, E8, E10, F3, P2, onboarding) va jonli kamera ramkasi.
 
 Keyingi: S5 yakuni — qolgan tasklar (to'lov, bildirishnomalar) keyinga qoldirilgan. 3-task jonli sinovi: deploydan keyin telefonda /start → til → Boshlash → ilova shu tilda ochilishi; Railway'da APP_URL Vercel https domeni bo'lishi shart (aks holda Boshlash tugmasi chiqmaydi).
 

@@ -207,17 +207,17 @@ export function Tariflar({
           ) : !tayyor ? (
             <div role="alert" className="rounded-karta border-2 border-chegara bg-karta p-4">
               <p className="text-asosiy">{t("Tariflarni yuklab bo'lmadi")}</p>
-              <div className="mt-3">
-                <Tugma
-                  korinish="ikkilamchi"
-                  onClick={() => {
-                    setTariflar("yuklanmoqda");
-                    setUrinish((son) => son + 1);
-                  }}
-                >
-                  {t("Qayta urinish")}
-                </Tugma>
-              </div>
+              {/* Prototip: ikkilamchi ko'rinish, balandligi 44 px, butun enida. */}
+              <button
+                type="button"
+                onClick={() => {
+                  setTariflar("yuklanmoqda");
+                  setUrinish((son) => son + 1);
+                }}
+                className="mt-3 min-h-11 w-full rounded-full border border-chegara px-4 text-asosiy font-medium text-siyoh transition-transform active:scale-[0.98]"
+              >
+                {t("Qayta urinish")}
+              </button>
             </div>
           ) : (
             royxat.map((tarif) => (

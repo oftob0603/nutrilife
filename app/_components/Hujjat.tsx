@@ -73,7 +73,7 @@ export function Hujjat({
       <OrqagaSarlavha sarlavha={sarlavha} orqagaNomi={t("Orqaga")} onOrqaga={qayt} />
 
       <article className="flex flex-col gap-3">
-        <h1 className="font-display text-sarlavha leading-tight">{hujjat.nomi}</h1>
+        <h2 className="font-display text-sarlavha leading-tight">{hujjat.nomi}</h2>
 
         {(hujjat.sana || hujjat.versiya) && (
           <p className="text-izoh text-matn-2">

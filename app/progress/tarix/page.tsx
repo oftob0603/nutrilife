@@ -22,7 +22,7 @@ export default async function VaznTarixiSahifasi() {
     <>
       <OflaynChizigi />
       <main className="mx-auto w-full max-w-md px-4 pb-12">
-        <header className="flex items-center gap-2 py-4">
+        <header className="flex items-center gap-3 py-4">
           <OrqagaTugma
             nomi={t("Orqaga")}
             href="/progress"
@@ -30,8 +30,8 @@ export default async function VaznTarixiSahifasi() {
           >
             <svg
               viewBox="0 0 24 24"
-              width="20"
-              height="20"
+              width="24"
+              height="24"
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
@@ -46,10 +46,7 @@ export default async function VaznTarixiSahifasi() {
         </header>
 
         {progress === null ? (
-          <XatoKartasi
-            sarlavha={t("Ma'lumotni yuklab bo'lmadi")}
-            izoh={t("Serverga ulanolmadik. Internetni tekshirib, qayta urinib ko'ring.")}
-          >
+          <XatoKartasi sarlavha={t("Ma'lumotni yuklab bo'lmadi")}>
             <QaytaUrinish />
           </XatoKartasi>
         ) : (

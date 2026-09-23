@@ -10,7 +10,7 @@ import type { Yozuv } from "@/lib/services/yozuv-hisob";
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).
 export const dynamic = "force-dynamic";
 
-export const metadata = { title: "Yozuv tahriri — NutriLifer" };
+export const metadata = { title: "Yozuvni tahrirlash — NutriLifer" };
 
 async function yozuvniYukla(id: string): Promise<Yozuv | "sessiyasiz" | null> {
   const javob = await serverdanApi(`/api/ovqat-yozuvlari/${id}`);
@@ -46,7 +46,7 @@ export default async function YozuvSahifasi({
 
   return (
     <main className="mx-auto w-full max-w-md px-4 pb-8">
-      <header className="flex items-center gap-2 py-4">
+      <header className="flex items-center gap-3 py-4">
         <OrqagaTugma
           nomi={t("Orqaga")}
           href={qaytish}
@@ -54,8 +54,8 @@ export default async function YozuvSahifasi({
         >
           <svg
             viewBox="0 0 24 24"
-            width="20"
-            height="20"
+            width="24"
+            height="24"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
@@ -66,7 +66,7 @@ export default async function YozuvSahifasi({
             <path d="m15 18-6-6 6-6" />
           </svg>
         </OrqagaTugma>
-        <h1 className="min-w-0 flex-1 truncate text-sarlavha">{t("Yozuv tahriri")}</h1>
+        <h1 className="min-w-0 flex-1 truncate text-sarlavha">{t("Yozuvni tahrirlash")}</h1>
         {yozuv.manba === "ai" && <AiBelgisi />}
       </header>
 

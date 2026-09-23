@@ -53,9 +53,10 @@ export function Maydon({
         {nomi}
       </label>
       <div
-        className={`flex min-h-13 items-center gap-2 rounded-karta border px-4 ${
+        // Prototip `Input`: 44 px dan past emas, fokusda chegara --siyoh.
+        className={`flex min-h-11 items-center gap-2 rounded-karta border px-4 transition-colors ${
           ajratilgan ? "bg-aksent-fon" : "bg-karta"
-        } ${xato ? "border-xato" : ajratilgan ? "border-aksent" : "border-chegara"}`}
+        } ${xato ? "border-xato" : ajratilgan ? "border-aksent" : "border-chegara focus-within:border-siyoh"}`}
       >
         {ajratilgan && (
           <Ikona nomi="olov" olcham={14} className="-ml-1 shrink-0 text-aksent-yorliq" />
@@ -75,7 +76,7 @@ export function Maydon({
           aria-invalid={xato ? true : undefined}
           aria-describedby={izoh ? `${id}-xato` : undefined}
           onChange={(hodisa) => onChange(hodisa.target.value)}
-          className={`w-full min-w-0 bg-transparent text-asosiy tabular-nums outline-none disabled:opacity-60 ${
+          className={`w-full min-w-0 bg-transparent py-3 text-asosiy tabular-nums outline-none disabled:opacity-60 ${
             ajratilgan ? "font-semibold" : ""
           }`}
         />
@@ -186,7 +187,7 @@ export function YozuvFormasi({
       </div>
 
       <section className="flex flex-col gap-2">
-        <h2 className="text-izoh text-matn-2">{t("Ovqat turi")}</h2>
+        <h2 className="text-karta-sarlavha">{t("Ovqat turi")}</h2>
         <OvqatTuriTanlagich
           qiymat={forma.ovqatTuri}
           onChange={(ovqatTuri) => {

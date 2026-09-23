@@ -12,7 +12,7 @@ import {
   type Oraliq,
   type Progress,
 } from "@/lib/services/progress-hisob";
-import { kunOyMatni } from "@/lib/services/yozuv-hisob";
+import { kunOyMatni, sanaQisqa } from "@/lib/services/yozuv-hisob";
 import { Ikona } from "./Ikona";
 
 const BALANDLIK = 180;
@@ -228,7 +228,7 @@ export function VaznGrafigi({ progress }: { progress: Progress }) {
           ))}
         </div>
         {faol && (
-          <p className="mt-2 text-center text-izoh text-matn-2 tabular-nums">{kunOyMatni(faol.sana, til)}</p>
+          <p className="mt-2 text-center text-izoh text-matn-2 tabular-nums">{sanaQisqa(faol.sana)}</p>
         )}
       </div>
     );
@@ -256,9 +256,9 @@ export function VaznGrafigi({ progress }: { progress: Progress }) {
               />
               <span className="flex min-w-0 flex-col gap-1">
                 <span className="whitespace-nowrap text-asosiy font-semibold tabular-nums">
-                  {farqMatni(vaznQiymati(oxirgi.vazn - birinchi.vazn, birlik), til)} {birlikNomi}
+                  {farqMatni(vaznQiymati(oxirgi.vazn - birinchi.vazn, birlik), til, birlik === "kg")} {birlikNomi}
                 </span>
-                <span className="text-[11px] leading-none text-matn-2">
+                <span className="text-belgi text-matn-2">
                   {oraliq === "hammasi" ? t.t("Hammasi") : t.t("oxirgi {0} kunda", Number(oraliq))}
                 </span>
               </span>
@@ -272,7 +272,7 @@ export function VaznGrafigi({ progress }: { progress: Progress }) {
                     <span className="whitespace-nowrap text-asosiy font-semibold tabular-nums">
                       {t.t("Maqsad: {0}", vaznMatni(maqsadVazn, birlik, t))}
                     </span>
-                    <span className="text-[11px] leading-none text-matn-2 tabular-nums">
+                    <span className="text-belgi text-matn-2 tabular-nums">
                       {t.t("Yana {0}", vaznMatni(Math.abs(oxirgi.vazn - maqsadVazn), birlik, t))}
                     </span>
                   </span>

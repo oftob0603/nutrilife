@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useTarjima } from "@/app/_components/TilTaminoti";
 
 const ASOS =
-  "flex min-h-11 w-full items-center gap-3 px-4 py-3 text-left text-asosiy text-siyoh transition-[transform,background-color] duration-150 active:scale-[0.98] active:bg-fon disabled:opacity-40 disabled:active:scale-100 disabled:active:bg-transparent";
+  "flex min-h-11 w-full items-center gap-3 px-4 py-3 text-left text-asosiy text-siyoh transition-[transform,background-color] duration-150 active:scale-[0.98] active:bg-karta-press disabled:opacity-40 disabled:active:scale-100 disabled:active:bg-transparent";
 
 function Strelka() {
   return (

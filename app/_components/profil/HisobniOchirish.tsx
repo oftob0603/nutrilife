@@ -127,7 +127,7 @@ export function HisobniOchirish({ faolPro }: { faolPro: boolean }) {
               {t("O'chirib bo'lmadi. Qayta urinib ko'ring")}
             </p>
           )}
-          {/* Tasdiq tugmasi to'ldirilgan ("xavfli" — tiniq, qizil matn: profildagi kirish tugmasi uslubi). */}
+          {/* Tasdiq — prototipdagidek asosiy tugma (`primary`); qizil "Hisobni o'chirish" profilda qoladi. */}
           <Tugma yuklanmoqda={ochirilmoqda} onClick={() => void ochir()}>
             {t("Ha, o'chirilsin")}
           </Tugma>

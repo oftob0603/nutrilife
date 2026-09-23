@@ -67,7 +67,7 @@ export function TaklifKartasi({
         href={`/taomlar/${taom.id}`}
         className={`${KARTA} flex items-center gap-3 transition-transform active:scale-[0.98]`}
       >
-        <TaomRasmi rasm={taom.rasm} />
+        <TaomRasmi rasm={taom.rasm} olcham="orta" />
         <div className="min-w-0 flex-1">
           <p className="truncate text-karta-sarlavha">{taomNomi(taom, til)}</p>
           <p className="mt-1 text-izoh text-matn-2 tabular-nums">

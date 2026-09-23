@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ProBelgisi } from "@/app/_components/ProBelgisi";
-import { TugmaHavola } from "@/app/_components/Tugma";
+import { sinf } from "@/app/_components/Tugma";
 
 const PRO_HAVOLA = "/pro?manba=imkoniyat";
 
@@ -27,6 +27,8 @@ function QulfIkonasi() {
 /**
  * Yopiq PRO imkoniyati o'rnidagi karta (prototip `ProLock`): nima yopiqligi, qisqa izoh va
  * tariflar ekraniga (W1) yo'l. Matnlar tarjima qilingan holda beriladi.
+ *
+ * Prototipdagidek butun karta W1'ga havola; tugma — shu havolaning ko'rinishi.
  *
  * `zich` — prototip `ProLock compact`: bitta qatorli karta (qulf ikonasi, sarlavha, PRO
  * belgisi), butun qator W1'ga havola; izoh va tugma bo'lmaydi.
@@ -56,15 +58,14 @@ export function ProQulfi({
   }
 
   return (
-    <div className="flex flex-col items-start gap-3 rounded-karta border border-chegara bg-karta p-4">
+    <Link
+      href={PRO_HAVOLA}
+      className="flex flex-col items-start gap-3 rounded-karta border border-chegara bg-karta p-4 text-left"
+    >
       <ProBelgisi />
-      <p className="text-karta-sarlavha">{sarlavha}</p>
-      {izoh && <p className="text-izoh text-matn-2">{izoh}</p>}
-      {tugma && (
-        <TugmaHavola korinish="pro" href={PRO_HAVOLA}>
-          {tugma}
-        </TugmaHavola>
-      )}
-    </div>
+      <span className="text-karta-sarlavha">{sarlavha}</span>
+      {izoh && <span className="text-izoh text-matn-2">{izoh}</span>}
+      {tugma && <span className={sinf("pro")}>{tugma}</span>}
+    </Link>
   );
 }

@@ -8,6 +8,7 @@ import { PastkiVaraq } from "@/app/_components/PastkiVaraq";
 import { useTarjima, useTilniOrnat } from "@/app/_components/TilTaminoti";
 import { TugmaHavola } from "@/app/_components/Tugma";
 import { useOnlayn } from "@/app/_components/useOnlayn";
+import { telegramHavolaniOch } from "@/lib/telegram";
 import type { Kalit } from "@/lib/lugat/tarjima";
 import { MAVZU_NOMLARI, mavzuniTanla, tizimgaObuna, tizimQorongimi } from "@/lib/mavzu";
 import { apiSorov } from "@/lib/services/api-klient";
@@ -46,7 +47,14 @@ function variantNomi(kalit: SozlamaKaliti, qiymat: string): string {
  * bosilganda variantlar pastki panelda ochiladi, tanlov darhol saqlanadi. Har qator o'zi
  * saqlanadi va o'z xatosini ko'rsatadi; internet yo'q bo'lsa qatorlar faqat o'qish uchun.
  */
-export function Sozlamalar({ boshlangich }: { boshlangich: SozlamalarTuri }) {
+export function Sozlamalar({
+  boshlangich,
+  admin,
+}: {
+  boshlangich: SozlamalarTuri;
+  /** Admin Telegram username'i — "Yordam" qatori shu chatni ochadi; null bo'lsa qator yo'q. */
+  admin: string | null;
+}) {
   const router = useRouter();
   const { t, erkin } = useTarjima();
   const tilniOrnat = useTilniOrnat();
@@ -134,6 +142,16 @@ export function Sozlamalar({ boshlangich }: { boshlangich: SozlamalarTuri }) {
         )}
       </section>
 
+      {/* Prototip F1 "Yordam" — alohida F6 ekrani o'rniga admin bilan Telegram chati (DECISIONS 2026-09-23). */}
+      {admin && (
+        <div className="overflow-hidden rounded-karta border border-karta-chegara bg-karta">
+          <SozlamaQatori
+            nomi={t("Yordam")}
+            onClick={() => telegramHavolaniOch(`https://t.me/${admin}`)}
+          />
+        </div>
+      )}
+
       {/*
        * Huquqiy hujjatlar va rasm mualliflari — karta qatori emas, mayda havolalar
        * (foydalanuvchi qarori 2026-09-23). Chiziq doimiy: "Rasm mualliflari" sahifasidagi
@@ -153,7 +171,7 @@ export function Sozlamalar({ boshlangich }: { boshlangich: SozlamalarTuri }) {
         ))}
       </div>
 
-      <TugmaHavola korinish="xavfli" href="/profil/ochirish">
+      <TugmaHavola korinish="uchinchiXavfli" href="/profil/ochirish">
         {t("Hisobni o'chirish")}
       </TugmaHavola>
 

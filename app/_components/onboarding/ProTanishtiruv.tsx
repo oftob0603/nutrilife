@@ -67,7 +67,7 @@ export function ProTanishtiruv({
         <div className={`${KARTA} flex flex-col gap-2 p-4`}>
           <p className="text-karta-sarlavha">{t("FREE bilan ham ishlaydi")}</p>
           <p className="text-izoh text-matn-2">
-            {t("3 ta bepul AI skan · cheksiz qo'lda kiritish · kunlik doira")}
+            {t("3 ta bepul AI skan · kunlik doira · jurnal va progress")}
           </p>
         </div>
       </div>

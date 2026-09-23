@@ -12,13 +12,15 @@ Ekranlar va oqim: [dizayn-tz.md](dizayn-tz.md).
 
 | Token | Hex | Qayerda |
 |---|---|---|
-| `--siyoh` | `#0B0B0C` | Asosiy matn, katta raqamlar, asosiy tugma foni |
-| `--aksent` | `#C6F04C` | Kunlik doira yoyi, "AI taxmini" belgisi, faol holat |
+| `--siyoh` | `#0B0B0C` | Asosiy matn, katta raqamlar, tanlangan kun/variant va "+" tugmasi foni |
+| `--aksent` | `#C6F04C` | Asosiy tugma foni, kunlik doira yoyi, "AI taxmini" belgisi, faol holat |
 | `--fon` | `#F2F2F3` | Sahifa foni |
 | `--karta` | `#FFFFFF` | Karta va panel yuzasi |
+| `--karta-press` | `#F7F7F8` | Bosilgan sozlama qatori foni |
 | `--matn-2` | `#6B6B70` | Ikkilamchi matn, izoh, birlik ("kkal", "g") |
 | `--matn-3` | `#A1A1A6` | Placeholder, o'chgan holat |
-| `--chegara` | `#E3E3E5` | 1px hairline, doiraning to'lmagan qismi |
+| `--chegara` | `#E3E3E5` | 1px hairline (karta chegarasi ham), doiraning to'lmagan qismi |
+| `--on-siyoh` | `#FFFFFF` | `--siyoh` fonli element ustidagi matn |
 | `--xato` | `#D93A3A` | Xato matni va tekshiruv xatosi |
 
 Aksent ustidagi matn — `#2E3D07` (o'sha oilaning to'q soyasi). Qora ham, oq ham emas.
@@ -37,8 +39,10 @@ birlik `--matn-2`. Gradient yo'q. Faqat shu bitta maydonda.
 | `--aksent` | `#C6F04C` (o'zgarmaydi) |
 | `--fon` | `#0B0B0C` |
 | `--karta` | `#161618` |
-| `--matn-2` | `#8A8A8F` |
-| `--matn-3` | `#5C5C61` |
+| `--karta-press` | `#1E1E21` |
+| `--matn-2` | `#A6A6AD` (kontrast uchun ko'tarilgan, prototip) |
+| `--matn-3` | `#85858C` |
+| `--on-siyoh` | `#0B0B0C` |
 | `--chegara` | `#26262A` |
 | `--xato` | `#FF6B6B` |
 
@@ -47,8 +51,8 @@ qorong'i mavzu S2'da sinadi.
 
 ### Aksent qoidasi
 
-**Bitta ekranda bitta lime to'ldirilgan element.** Home'da bu — doira yoyi; E5 va E7'da —
-tasdiq tugmasi. Lime matn rangi sifatida ishlatilmaydi (oq fonda kontrast yetmaydi).
+**Bitta ekranda bitta lime to'ldirilgan element** — asosiy tugma yoki doira yoyi (prototip:
+"Lime is the primary CTA"; E1 bo'sh holatida doira va tugma birga turadi — prototipdagidek). Lime matn rangi sifatida ishlatilmaydi (oq fonda kontrast yetmaydi).
 
 Rang holatni yolg'iz o'zi bildirmaydi — yonida doim matn yoki belgi turadi
 (rang ko'rmaydigan foydalanuvchi uchun).
@@ -168,11 +172,15 @@ bo'yicha to'ladi. To'lmagan qismi `--chegara`. Markazda ikki qator: katta raqam 
 `2,190 dan` (13/400, `--matn-2`). Normadan oshsa yoy `--xato` rangiga o'tadi va tagida
 bitta qator izoh chiqadi — hech qanday ogohlantirish oynasi yo'q.
 
-**Tugmalar.** Asosiy — `--siyoh` fon, oq matn, radius 999, balandligi 52. Ikkilamchi —
-shaffof fon, 1px chegara. Uchinchi daraja — faqat matn. Ekranda bitta asosiy tugma.
-Bosilganda `scale(0.98)`.
+**Tugmalar.** Asosiy — `--aksent` (lime) fon, `#2E3D07` matn, radius 999, balandligi 52
+(prototip `--btn-primary-bg`, DECISIONS 2026-09-23). Ikkilamchi — shaffof fon, 1px chegara.
+Uchinchi daraja — faqat `--siyoh` matn, balandligi 44. Xavfli — shaffof, 1px chegara, `--xato`
+matn. Ekranda bitta asosiy tugma. Bosilganda `scale(0.98)`.
 
-**Kartalar.** `--karta` fon, radius 20, to'ldirish 16, chegara faqat yorug' mavzuda.
+**Kartalar.** `--karta` fon, radius 20, to'ldirish 16, 1px `--chegara` ikkala mavzuda (prototip `--hairline`).
+
+**Matn rollari.** Ekran sarlavhasi va katta raqam — Inter Tight (display); qolgani Inter.
+Mayda belgi va izohlar — `text-belgi` (11/500, qator 1.3, prototip `--type-badge`).
 
 **"AI taxmini" belgisi.** Lime fon, `#2E3D07` matn, radius 999, 11/500. AI chiqargan har
 qanday raqam yonida turadi — jurnalda ham, tahrir ekranida ham.

@@ -27,3 +27,17 @@ export async function skanLimitiniYukla(): Promise<SkanQoldigi | null> {
     return null;
   }
 }
+
+/**
+ * "Yordam" qatori uchun admin Telegram username'i (`ADMIN_TELEGRAM` backend'da). Alohida F6
+ * ekrani qurilmaydi — Yordam admin bilan Telegram chatini ochadi (DECISIONS 2026-09-23).
+ * Username W1 bilan bitta manbadan — `/api/tariflar`; olib bo'lmasa null, qator chizilmaydi.
+ */
+export async function adminniYukla(): Promise<string | null> {
+  try {
+    const javob = await serverdanApi("/api/tariflar");
+    return javob.ok ? ((await javob.json()) as { admin: string | null }).admin : null;
+  } catch {
+    return null;
+  }
+}

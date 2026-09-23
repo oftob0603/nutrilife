@@ -177,9 +177,13 @@ export function sonMatni(son: number, til: Til): string {
   return til === "en" ? matn : matn.replace(".", ",");
 }
 
-/** Ishorali farq: "+1,2" · "−0,8" · "0" (minus — chiziqcha emas, matematik belgi). */
-export function farqMatni(farq: number, til: Til): string {
+/**
+ * Ishorali farq: "+1,2" · "−3,0" · "0,0" (minus — chiziqcha emas, matematik belgi). kg'da doim
+ * bitta kasr xona (prototip `delta`); lb butun son bo'lgani uchun `kasrli: false` — "+2".
+ */
+export function farqMatni(farq: number, til: Til, kasrli = true): string {
   const yaxlit = Math.round(farq * 10) / 10;
   const belgi = yaxlit > 0 ? "+" : yaxlit < 0 ? "−" : "";
-  return belgi + sonMatni(Math.abs(yaxlit), til);
+  const matn = kasrli ? Math.abs(yaxlit).toFixed(1) : String(Math.abs(yaxlit));
+  return belgi + (til === "en" ? matn : matn.replace(".", ","));
 }

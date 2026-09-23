@@ -13,8 +13,8 @@ function ChapStrelka() {
   return (
     <svg
       viewBox="0 0 24 24"
-      width="20"
-      height="20"
+      width="24"
+      height="24"
       fill="none"
       stroke="currentColor"
       strokeWidth="2"
@@ -47,7 +47,7 @@ export function Tasvirlash({ boshlangich }: { boshlangich: string }) {
 
   return (
     <main className="mx-auto w-full max-w-md px-4 pb-8">
-      <header className="flex items-center gap-2 py-4">
+      <header className="flex items-center gap-3 py-4">
         <OrqagaTugma
           nomi={t("Orqaga")}
           href="/"

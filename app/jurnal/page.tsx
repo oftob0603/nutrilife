@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { OrqagaTugma } from "@/app/_components/OrqagaTugma";
 import { BoshHolat } from "@/app/_components/BoshHolat";
-import { MakroChizigi } from "@/app/_components/MakroChizigi";
 import { ProQulfi } from "@/app/_components/ProQulfi";
 import { QoshishPaneli, QoshishTugmasi } from "@/app/_components/QoshishPaneli";
 import { QaytaUrinish } from "@/app/_components/QaytaUrinish";
@@ -51,8 +50,8 @@ function Strelka({ yonalish }: { yonalish: "chap" | "ong" }) {
   return (
     <svg
       viewBox="0 0 24 24"
-      width="20"
-      height="20"
+      width="24"
+      height="24"
       fill="none"
       stroke="currentColor"
       strokeWidth="2"
@@ -107,12 +106,12 @@ function SanaTanlagich({
   );
 }
 
-/** Kunlik jami kartasi; makro chiziqlari — PRO (prototip `DailyTotals`), FREE'da faqat kkal. */
+/** Kunlik jami kartasi (prototip `DailyTotals`): kkal va normasi; makrolar matn bilan — PRO, FREE'da faqat kkal. */
 function KunlikJami({
   jami,
   reja,
   makroOchiq,
-  tarjimon: { t, til },
+  tarjimon: { t },
 }: {
   jami: Jami;
   reja: Reja;
@@ -122,20 +121,30 @@ function KunlikJami({
   return (
     <section
       aria-label={t("Kunlik jami")}
-      className="flex flex-col gap-4 rounded-karta border border-karta-chegara bg-karta p-4"
+      className="flex flex-col gap-3 rounded-karta border border-karta-chegara bg-karta p-4"
     >
       <p className="flex items-baseline gap-2">
-        <span className="font-display text-raqam tabular-nums">{raqam(jami.kaloriya)}</span>
+        <span className="font-display text-[28px] leading-none font-semibold tracking-[-0.02em] tabular-nums">
+          {raqam(jami.kaloriya)}
+        </span>
         <span className="text-izoh text-matn-2 tabular-nums">
-          {t("/ {0} kkal", raqam(reja.kaloriya))}
+          {t("kkal")} · {t("{0} dan", raqam(reja.kaloriya))}
         </span>
       </p>
       {makroOchiq && (
-        <div className="flex gap-4">
-          <MakroChizigi til={til} nomi="Oqsil" qiymat={jami.oqsil} maqsad={reja.oqsil} />
-          <MakroChizigi til={til} nomi="Yog'" qiymat={jami.yog} maqsad={reja.yog} />
-          <MakroChizigi til={til} nomi="Uglevod" qiymat={jami.uglevod} maqsad={reja.uglevod} />
-        </div>
+        <p className="flex flex-wrap gap-6 text-izoh text-matn-2 tabular-nums">
+          {(
+            [
+              ["Oqsil", jami.oqsil],
+              ["Yog'", jami.yog],
+              ["Uglevod", jami.uglevod],
+            ] as const
+          ).map(([nomi, qiymat]) => (
+            <span key={nomi}>
+              {t(nomi)} <span className="text-siyoh">{t("{0} g", raqam(qiymat))}</span>
+            </span>
+          ))}
+        </p>
       )}
     </section>
   );
@@ -175,7 +184,7 @@ export default async function JurnalSahifasi({ searchParams }: PageProps<"/jurna
   return (
     <>
       <main className="mx-auto w-full max-w-md px-4 pb-32">
-        <header className="flex items-center gap-2 py-4">
+        <header className="flex items-center gap-3 py-4">
           <OrqagaTugma
             nomi={t("Orqaga")}
             href="/"

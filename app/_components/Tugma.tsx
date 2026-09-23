@@ -1,25 +1,42 @@
 import Link from "next/link";
 
-type Korinish = "asosiy" | "aksent" | "ikkilamchi" | "uchinchi" | "xavfli" | "pro";
+type Korinish =
+  | "asosiy"
+  | "aksent"
+  | "ikkilamchi"
+  | "uchinchi"
+  | "uchinchiXavfli"
+  | "xavfli"
+  | "pro";
 
 // DESIGN.md, 6-bo'lim: balandligi 52, radius 999, bosilganda scale(0.98).
 const USLUB: Record<Korinish, string> = {
-  asosiy: "bg-siyoh text-fon",
-  // Faqat tasdiq tugmasi uchun — ekranda bitta lime to'ldirilgan element (DESIGN.md, aksent qoidasi).
+  // Prototip `--btn-primary-bg: var(--aksent)` — asosiy tugma lime (DECISIONS 2026-09-23).
+  asosiy: "bg-aksent text-aksent-matn",
   aksent: "bg-aksent text-aksent-matn",
   ikkilamchi: "border border-chegara bg-transparent text-siyoh",
-  uchinchi: "bg-transparent text-matn-2",
-  // Qaytarib bo'lmaydigan amal (o'chirish) — to'ldirilmagan, faqat xato rangidagi matn.
-  xavfli: "bg-transparent text-xato",
+  uchinchi: "bg-transparent text-siyoh",
+  // Prototipdagi `tertiary` + `color: var(--xato)` — "Hisobni o'chirish", o'lchovni o'chirish.
+  uchinchiXavfli: "bg-transparent text-xato",
+  // Qaytarib bo'lmaydigan amal (o'chirish) — to'ldirilmagan, chegarali, xato rangidagi matn.
+  xavfli: "border border-chegara bg-transparent text-xato",
   // PRO'ga chaqiruvchi tugma — o'z gradiyentida (DESIGN.md, "PRO ranglari").
   pro: "bg-(image:--pro-gradient) text-(--pro-fg)",
 };
 
 const UMUMIY =
   "flex items-center justify-center gap-2 rounded-full text-asosiy font-medium transition-transform active:scale-[0.98] disabled:opacity-40";
-const ASOS = `${UMUMIY} h-13 w-full`;
+const ASOS = `${UMUMIY} w-full px-6`;
 // Karta ichidagi yonma-yon tugmalar uchun (prototip `size="sm"`): balandligi 44, eni matnga qarab.
 const KICHIK = `${UMUMIY} h-11 px-4`;
+
+// Prototip: uchinchi darajali tugma doim 44 px (`minHeight: H.sm`), qolganlari 52 px.
+// Eksport — havola ichidagi tugma ko'rinishi uchun (masalan, butunicha bosiladigan ProQulfi).
+export function sinf(korinish: Korinish, kichik = false) {
+  if (kichik) return `${KICHIK} ${USLUB[korinish]}`;
+  const past = korinish === "uchinchi" || korinish === "uchinchiXavfli";
+  return `${ASOS} ${past ? "h-11" : "h-13"} ${USLUB[korinish]}`;
+}
 
 // W1 "Davom etish" (prototip pw-sweep): chiziq matn ortidan o'tadi, o'chiq tugmada va
 // "harakatni kamaytirish" yoqilganda yo'q.
@@ -64,7 +81,7 @@ export function Tugma({
       type="button"
       onClick={onClick}
       disabled={disabled || yuklanmoqda}
-      className={`${kichik ? KICHIK : ASOS} ${USLUB[korinish]}${yorugOtish ? ` ${YORUG_OTISH}` : ""}`}
+      className={`${sinf(korinish, kichik)}${yorugOtish ? ` ${YORUG_OTISH}` : ""}`}
     >
       {yorugOtish ? <span className="relative z-[2] flex items-center gap-2">{ichi}</span> : ichi}
     </button>
@@ -81,7 +98,7 @@ export function TugmaHavola({
   children: React.ReactNode;
 }) {
   return (
-    <Link href={href} className={`${ASOS} ${USLUB[korinish]}`}>
+    <Link href={href} className={sinf(korinish, false)}>
       {children}
     </Link>
   );

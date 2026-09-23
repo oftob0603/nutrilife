@@ -18,7 +18,7 @@ export function VaznKartasi({ progress, til }: { progress: Progress; til: Til })
         <span className="text-karta-sarlavha text-matn-2">{birlikNomi}</span>
         {ozgarish !== null && (
           <span className="ml-auto text-karta-sarlavha text-matn-2 tabular-nums">
-            {farqMatni(vaznQiymati(ozgarish, birlik), til)} {birlikNomi}
+            {farqMatni(vaznQiymati(ozgarish, birlik), til, birlik === "kg")} {birlikNomi}
           </span>
         )}
       </div>
@@ -28,7 +28,7 @@ export function VaznKartasi({ progress, til }: { progress: Progress; til: Til })
           <div className="h-2 overflow-hidden rounded-full bg-chegara">
             <div className="h-full rounded-full bg-aksent" style={{ width: `${maqsadFoizi}%` }} />
           </div>
-          <span className="text-[11px] leading-none text-matn-2 tabular-nums">
+          <span className="text-belgi text-matn-2 tabular-nums">
             {t.t("Yo'lning {0}% i bosib o'tildi", maqsadFoizi)}
           </span>
         </div>

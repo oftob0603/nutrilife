@@ -13,7 +13,7 @@ export function OflaynChizigi() {
   if (onlayn) return null;
 
   return (
-    <div role="status" className="bg-siyoh px-4 py-2 text-center text-izoh text-fon">
+    <div role="status" className="bg-siyoh px-4 py-2 text-center text-izoh text-on-siyoh">
       {t("Internet yo'q — oxirgi ma'lumot ko'rsatilmoqda")}
     </div>
   );

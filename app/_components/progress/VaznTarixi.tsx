@@ -7,11 +7,10 @@ import { useTarjima } from "@/app/_components/TilTaminoti";
 import { Tugma } from "@/app/_components/Tugma";
 import { apiSorov } from "@/lib/services/api-klient";
 import { vaznMatni } from "@/lib/services/profil-hisob";
+import { sanaToliq } from "@/lib/services/yozuv-hisob";
 import { farqMatni, vaznQiymati, type Progress, type VaznNuqtasi } from "@/lib/services/progress-hisob";
 import { vaznPaneliniOch } from "./vazn-hodisa";
 
-/** "12.08.2026" — tarix ro'yxatidagi to'liq sana (prototip `sanaToliq`). */
-const sanaToliq = (sana: string) => `${sana.slice(8, 10)}.${sana.slice(5, 7)}.${sana.slice(0, 4)}`;
 
 /**
  * P3 — vazn tarixi: yangidan eskiga, har qatorda oldingi o'lchovdan farq, tahrirlash va
@@ -64,13 +63,14 @@ export function VaznTarixi({ progress }: { progress: Progress }) {
             >
               {/* Prototipda tugmalar sarlavha bilan bir qatorda; 360 px da "15.09.2026 — 77,6 kg" sig'maydi —
                   shuning uchun tugmalar alohida qatorda, o'ngda. */}
-              <div className="flex items-baseline justify-between gap-3">
+              <div className="flex flex-col gap-1">
                 <span className="whitespace-nowrap text-karta-sarlavha tabular-nums">
                   {sanaToliq(olchov.sana)} — {vaznMatni(olchov.vazn, birlik, t)}
                 </span>
-                <span className="min-w-0 text-right text-izoh text-matn-2 tabular-nums">
+                {/* Prototipdagidek farq sarlavha ostida. */}
+                <span className="text-izoh text-matn-2 tabular-nums">
                   {oldingi
-                    ? `${farqMatni(vaznQiymati(olchov.vazn - oldingi.vazn, birlik), til)} ${birlikNomi}`
+                    ? `${farqMatni(vaznQiymati(olchov.vazn - oldingi.vazn, birlik), til, birlik === "kg")} ${birlikNomi}`
                     : t.t("boshlang'ich yozuv")}
                 </span>
               </div>
@@ -83,7 +83,7 @@ export function VaznTarixi({ progress }: { progress: Progress }) {
                   {t.t("Tahrirlash")}
                 </Tugma>
                 {!olchov.birinchi && (
-                  <Tugma korinish="xavfli" kichik onClick={() => setOchirilayotgan(olchov)}>
+                  <Tugma korinish="uchinchiXavfli" kichik onClick={() => setOchirilayotgan(olchov)}>
                     {t.t("O'chirish")}
                   </Tugma>
                 )}

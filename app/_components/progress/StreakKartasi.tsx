@@ -4,21 +4,14 @@ import type { Streak } from "@/lib/services/progress-hisob";
 import { Ikona } from "./Ikona";
 
 /**
- * P1 streak kartasi. Hali bitta ham kuzatilgan kun bo'lmasa — "boshlanmagan" holati va birinchi
- * ovqatni qo'shish tugmasi (E2 panelini ochadi). "Ertaga uziladi" ogohlantirishi yo'q (progress-tz).
+ * P1 streak kartasi. Joriy streak 0 bo'lsa (bugun yozuv yo'q, kecha ham uzilgan) — prototipdagidek
+ * "boshlanmagan" holati va birinchi ovqatni qo'shish tugmasi (E2 panelini ochadi), uzilgan eski
+ * streak uchun ham. "Ertaga uziladi" ogohlantirishi yo'q (progress-tz).
  */
-export function StreakKartasi({
-  streak,
-  kuzatilganJami,
-  til,
-}: {
-  streak: Streak;
-  kuzatilganJami: number;
-  til: Til;
-}) {
+export function StreakKartasi({ streak, til }: { streak: Streak; til: Til }) {
   const { t } = tarjimon(til);
 
-  if (kuzatilganJami === 0) {
+  if (streak.joriy === 0) {
     return (
       <section className="flex flex-col gap-3 rounded-karta border border-karta-chegara bg-karta p-4">
         <p className="text-karta-sarlavha">{t("Streak hali boshlanmagan")}</p>

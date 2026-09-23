@@ -18,10 +18,10 @@ import {
 } from "@/lib/services/progress-hisob";
 import { raqam } from "@/lib/services/taom-hisob";
 import { sonOqi } from "@/lib/services/yozuv-forma";
-import { kunOyMatni } from "@/lib/services/yozuv-hisob";
+import { sanaToliq } from "@/lib/services/yozuv-hisob";
 import { VAZN_PANELINI_OCH, vaznPaneliniOch, type VaznPaneliTafsiloti } from "./vazn-hodisa";
 
-const XABAR_MS = 5000;
+const XABAR_MS = 3200; // prototip normaToast
 
 /**
  * P2 — vazn kiritish paneli (progress-tz.md). Kuniga bitta yozuv: bugungisi bor bo'lsa
@@ -157,13 +157,17 @@ export function VaznPaneli({
         <div className="flex min-h-11 items-center gap-3 rounded-karta border border-chegara px-4 py-3">
           <span className="min-w-0 flex-1 text-asosiy">{t.t("Sana")}</span>
           <span className="text-izoh text-matn-2 tabular-nums">
-            {tahrir ? kunOyMatni(tahrir.sana, til) : t.t("{0} — bugun", kunOyMatni(bugun, til))}
+            {tahrir ? sanaToliq(tahrir.sana) : t.t("{0} — bugun", sanaToliq(bugun))}
           </span>
         </div>
+        {/* Prototip `ErrorState inline`: qizil ustki chiziq, matn va yonida "Qayta urinish". */}
         {xato && (
-          <p role="alert" className="text-center text-asosiy text-xato">
-            {t.t("Saqlanmadi. Qayta urinish")}
-          </p>
+          <div role="alert" className="flex items-center justify-between gap-3 border-t border-xato px-4 py-3">
+            <span className="min-w-0 text-izoh text-xato">{t.t("Saqlanmadi. Qayta urinish")}</span>
+            <Tugma korinish="uchinchi" kichik disabled={saqlanmoqda} onClick={saqla}>
+              {t.t("Qayta urinish")}
+            </Tugma>
+          </div>
         )}
         <Tugma disabled={yaroqsiz} yuklanmoqda={saqlanmoqda} onClick={saqla}>
           {sakrash && !tasdiq ? t.t("Ha, to'g'ri") : t.t("Saqlash")}
@@ -180,7 +184,7 @@ function Xabar({ xabar }: { xabar: NormaOzgarishi | null }) {
   return (
     <p
       role="status"
-      className="fixed inset-x-4 bottom-28 z-10 mx-auto max-w-sm rounded-full bg-siyoh px-4 py-2 text-center text-izoh text-fon tabular-nums shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
+      className="fixed inset-x-4 bottom-28 z-10 mx-auto max-w-md rounded-karta bg-siyoh px-4 py-3 text-izoh text-on-siyoh tabular-nums"
     >
       {t("Kunlik normangiz yangilandi: {0} → {1}", raqam(xabar.eski), raqam(xabar.yangi))}
     </p>

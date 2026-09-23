@@ -43,14 +43,14 @@ export function maqsadNomi(maqsad: string | null): Kalit | null {
   return MAQSADLAR.find((variant) => variant.qiymat === maqsad)?.nomi ?? null;
 }
 
-/** "84,5 kg" yoki "186 lb" — onboardingdagi bilan bir xil yaxlitlash. Inglizchada kasr nuqta bilan. */
+/** "84,5 kg", "85,0 kg" (prototip `kg1` — doim bitta kasr xona) yoki "186 lb". Inglizchada kasr nuqta bilan. */
 export function vaznMatni(
   kg: number,
   birlik: Sozlamalar["vaznBirligi"],
   { til, t }: Tarjimon,
 ): string {
   if (birlik === "lb") return `${kgdanLb(kg)} lb`;
-  const son = (Math.round(kg * 10) / 10).toString();
+  const son = kg.toFixed(1);
   return `${til === "en" ? son : son.replace(".", ",")} ${t("kg")}`;
 }
 

@@ -100,9 +100,9 @@ export const SOZLAR = {
   "Bugungi ovqatlar": { ru: "Приёмы пищи за сегодня", en: "Today's meals" },
   "Shu kungi ovqatlar": { ru: "Приёмы пищи за этот день", en: "Meals that day" },
   "Ma'lumotni yuklab bo'lmadi": { ru: "Не удалось загрузить данные", en: "Could not load the data" },
-  "Hisobot serveriga ulanolmadik. Internetni tekshirib, qayta urinib ko'ring.": {
-    ru: "Не удалось подключиться к серверу отчётов. Проверьте интернет и попробуйте ещё раз.",
-    en: "Could not reach the report server. Check your connection and try again.",
+  "Hisobot serveriga ulanolmadik.": {
+    ru: "Не удалось подключиться к серверу отчётов.",
+    en: "Could not reach the report server.",
   },
   "Bugun hali hech narsa qo'shilmadi": { ru: "Сегодня пока ничего не добавлено", en: "Nothing added today yet" },
   "Birinchi ovqatni qo'shsangiz, doira to'lishni boshlaydi.": {
@@ -131,9 +131,9 @@ export const SOZLAR = {
   },
   "Taom bazasidan tanlang — cheklovsiz": {
     ru: "Выберите из базы блюд — без ограничений",
-    en: "Pick from the dish database — unlimited",
+    en: "Pick from the dish database — no limit",
   },
-  "{0} tadan {1} ta skan qoldi": { ru: "Осталось сканирований: {1} из {0}", en: "{1} of {0} scans left" },
+  "{0} tadan {1} ta skan qoldi": { ru: "Осталось {1} из {0} сканирований", en: "{1} of {0} scans left" },
   "Bepul skanlar tugadi.": {
     ru: "Бесплатные сканирования закончились.",
     en: "Your free scans are used up.",
@@ -257,9 +257,9 @@ export const SOZLAR = {
   },
   "Tasdiqlash va qo'shish": { ru: "Подтвердить и добавить", en: "Confirm and add" },
   "Taomni aniq taniy olmadik": { ru: "Не удалось точно распознать блюдо", en: "We could not identify the dish" },
-  "Rasmda bir nechta taom bor yoki yorug'lik yetmagan bo'lishi mumkin. Qiymatni o'zimiz uydirmaymiz.": {
-    ru: "Возможно, на фото несколько блюд или не хватает света. Мы не выдумываем значения.",
-    en: "The photo may have several dishes or too little light. We do not invent values.",
+  "Rasmda bir nechta taom bor yoki yorug'lik yetmagan. Qiymatni o'zimiz uydirmaymiz.": {
+    ru: "На фото несколько блюд или не хватает света. Мы не выдумываем значения.",
+    en: "The photo has several dishes or too little light. We do not invent values.",
   },
   "Tasvir yetarli emas yoki bu ovqat emas. Qiymatni o'zimiz uydirmaymiz.": {
     ru: "Описания недостаточно, или это не еда. Мы не выдумываем значения.",
@@ -278,7 +278,7 @@ export const SOZLAR = {
   "Kaloriyani kiriting": { ru: "Введите калории", en: "Enter the calories" },
   "Kaloriya 0 dan kichik bo'lmaydi": { ru: "Калории не могут быть меньше 0", en: "Calories cannot be below 0" },
   "Qiymat noto'g'ri": { ru: "Неверное значение", en: "Invalid value" },
-  "Yozuv tahriri": { ru: "Изменить запись", en: "Edit entry" },
+  "Yozuvni tahrirlash": { ru: "Изменить запись", en: "Edit entry" },
   "Vaqt": { ru: "Время", en: "Time" },
   "Vaqtni kiriting": { ru: "Введите время", en: "Enter the time" },
   "Vaqt hozirgidan keyin bo'lmaydi": { ru: "Время не может быть позже текущего", en: "The time cannot be in the future" },
@@ -288,7 +288,7 @@ export const SOZLAR = {
   },
   "Bu yozuvni o'chiramizmi? Doira shu qiymatga kamayadi.": {
     ru: "Удалить эту запись? Круг уменьшится на это значение.",
-    en: "Delete this entry? The ring will drop by this amount.",
+    en: "Delete this entry? The ring drops by this amount.",
   },
 
   // ── Qo'shildi (E8) va jurnal (E9) ──────────────────────────────────────────
@@ -418,7 +418,9 @@ export const SOZLAR = {
   "Erkak": { ru: "Мужской", en: "Male" },
   "Ayol": { ru: "Женский", en: "Female" },
   "Aytishni xohlamayman": { ru: "Не хочу указывать", en: "Prefer not to say" },
+  "Yordam": { ru: "Поддержка", en: "Support" },
   "Yosh": { ru: "Возраст", en: "Age" },
+  "yosh": { ru: "лет", en: "yrs" },
   "Jins va yosh faqat kaloriya formulasi uchun ishlatiladi": {
     ru: "Пол и возраст используются только в формуле калорий",
     en: "Sex and age are only used in the calorie formula",
@@ -467,14 +469,14 @@ export const SOZLAR = {
   },
   "Boshlaymiz": { ru: "Начинаем", en: "Let's start" },
   "Kunlik norma": { ru: "Дневная норма", en: "Daily target" },
-  "Norma o'zgaradi": { ru: "Норма изменится", en: "Your target will change" },
+  "Norma o'zgaradi": { ru: "Норма изменится", en: "Your target changes" },
   "Kunlik normangiz {0} dan {1} ga o'zgaradi. Saqlansinmi?": {
     ru: "Ваша дневная норма изменится с {0} на {1}. Сохранить?",
-    en: "Your daily target will change from {0} to {1}. Save?",
+    en: "Your daily target changes from {0} to {1}. Save?",
   },
   "O'tgan kunlar qayta hisoblanmaydi — har kun o'sha kundagi norma bilan qoladi.": {
-    ru: "Прошедшие дни не пересчитываются — каждый день остаётся с нормой того дня.",
-    en: "Past days are not recalculated — each day keeps the target it had.",
+    ru: "Прошедшие дни не пересчитываются — каждый день остаётся со своей нормой.",
+    en: "Past days are not recomputed — each day keeps the target it had.",
   },
   "Raqamni to'g'rilash": { ru: "Исправить цифру", en: "Fix the number" },
   "Maqsadni o'zgartirish": { ru: "Изменить цель", en: "Change the goal" },
@@ -564,9 +566,9 @@ export const SOZLAR = {
     ru: "Срок PRO истёк · история остаётся открытой",
     en: "PRO has expired · your history stays open",
   },
-  "Jurnal, tarix va progress o'qish uchun ochiq. Faqat yangi AI skan va retseptlarning to'liq matni yopildi.": {
-    ru: "Журнал, история и прогресс открыты для чтения. Закрыты только новые ИИ-сканирования и полный текст рецептов.",
-    en: "Your journal, history and progress stay readable. Only new AI scans and full recipe text are locked.",
+  "Jurnal, tarix va progress o'qish uchun ochiq. Yangi AI skan va boshqa PRO imkoniyatlari yopildi.": {
+    ru: "Журнал, история и прогресс открыты для чтения. Новые ИИ-сканирования и другие возможности PRO закрыты.",
+    en: "Your journal, history and progress stay readable. New AI scans and other PRO features are locked.",
   },
 
   // ── Sozlama qatorlari (Profil sahifasida) ──────────────────────────────────
@@ -575,7 +577,7 @@ export const SOZLAR = {
   "Bo'y birligi": { ru: "Единица роста", en: "Height unit" },
   "lb": { ru: "фунт", en: "lb" },
   "ft": { ru: "фут", en: "ft" },
-  "Shaxsiy ma'lumot": { ru: "Личные данные", en: "Personal details" },
+  "Shaxsiy ma'lumot": { ru: "Личные данные", en: "Personal information" },
   "Hisobni o'chirishni tasdiqlaysizmi?": {
     ru: "Подтверждаете удаление аккаунта?",
     en: "Delete your account?",
@@ -596,15 +598,15 @@ export const SOZLAR = {
   },
 
   // ── Shaxsiy ma'lumot (F3) ──────────────────────────────────────────────────
-  "Aytmayman": { ru: "Не указывать", en: "Rather not say" },
+  "Aytmayman": { ru: "Не указывать", en: "Prefer not to say" },
   "Maqsad": { ru: "Цель", en: "Goal" },
   "Ovqat afzalliklari va odatlari": { ru: "Предпочтения и привычки в еде", en: "Food preferences and habits" },
   "Afzalliklar": { ru: "Предпочтения", en: "Preferences" },
   "Odatlar": { ru: "Привычки", en: "Habits" },
   "Tayyor": { ru: "Готово", en: "Done" },
   "Bu javoblar hozircha taom takliflari uchun saqlanadi.": {
-    ru: "Эти ответы пока сохраняются для подбора блюд.",
-    en: "For now these answers are kept for dish suggestions.",
+    ru: "Пока эти ответы сохраняются для подбора блюд.",
+    en: "For now these answers are kept for meal suggestions.",
   },
   "Joriy vazn bu yerda o'zgartirilmaydi — u tarix yozuvi.": {
     ru: "Текущий вес здесь не меняется — это запись в истории.",
@@ -623,19 +625,19 @@ export const SOZLAR = {
   // ── Hisobni o'chirish (F5) ─────────────────────────────────────────────────
   "Quyidagilar butunlay o'chadi:": { ru: "Будет удалено безвозвратно:", en: "The following will be deleted for good:" },
   "Profil va shaxsiy ma'lumot": { ru: "Профиль и личные данные", en: "Profile and personal details" },
-  "Butun ovqat jurnali": { ru: "Весь журнал питания", en: "Your entire food journal" },
+  "Butun ovqat jurnali": { ru: "Весь журнал питания", en: "The whole food journal" },
   "Barcha rasmlar": { ru: "Все фотографии", en: "All photos" },
   "Vazn tarixi": { ru: "История веса", en: "Weight history" },
   "Bu amalni qaytarib bo'lmaydi": { ru: "Это действие нельзя отменить", en: "This cannot be undone" },
   "PRO obunangiz tugaydi, pul qaytarilmaydi.": {
-    ru: "Ваша подписка PRO прекратится, деньги не возвращаются.",
-    en: "Your PRO subscription ends and is not refunded.",
+    ru: "Ваша подписка PRO закончится, деньги не возвращаются.",
+    en: "Your PRO subscription ends; payments are not refunded.",
   },
   "O'chirilgan ma'lumotni tiklash imkoni yo'q.": {
     ru: "Удалённые данные восстановить невозможно.",
     en: "Deleted data cannot be restored.",
   },
-  "Tasdiqlash": { ru: "Подтверждение", en: "Confirm" },
+  "Tasdiqlash": { ru: "Подтвердить", en: "Confirm" },
   "Hisob darhol o'chadi. Ilovani qayta ochsangiz, yangi hisob yaratiladi.": {
     ru: "Аккаунт удаляется сразу. Если открыть приложение снова, будет создан новый аккаунт.",
     en: "The account is deleted right away. Opening the app again creates a new account.",
@@ -653,10 +655,10 @@ export const SOZLAR = {
   "Oylik": { ru: "Месячный", en: "Monthly" },
   "6 oylik": { ru: "6 месяцев", en: "6 months" },
   "Yillik": { ru: "Годовой", en: "Yearly" },
-  "Boshlangan": { ru: "Начало", en: "Started" },
-  "Tugaydi": { ru: "Окончание", en: "Ends" },
+  "Boshlangan": { ru: "Начата", en: "Started" },
+  "Tugaydi": { ru: "Истекает", en: "Expires" },
   "Manba": { ru: "Источник", en: "Source" },
-  "Administrator tomonidan berilgan": { ru: "Выдана администратором", en: "Granted by an administrator" },
+  "Administrator tomonidan berilgan": { ru: "Выдана администратором", en: "Granted by an admin" },
   "To'lovlar tarixi": { ru: "История платежей", en: "Payment history" },
   "Hozircha to'lov yo'q": { ru: "Платежей пока нет", en: "No payments yet" },
   "Administrator tomonidan berilgan obuna — to'lov yozuvi yo'q.": {
@@ -670,21 +672,21 @@ export const SOZLAR = {
   "NutriLifer PRO": { ru: "NutriLifer PRO", en: "NutriLifer PRO" },
   "Bepul skanlar tugadi": { ru: "Бесплатные сканирования закончились", en: "Your free scans are used up" },
   "PRO ni tiklash": { ru: "Восстановить PRO", en: "Restore PRO" },
-  "Kuniga 20 tagacha AI skan": { ru: "До 20 ИИ-сканирований в день", en: "Up to 20 AI scans a day" },
-  "Retseptlarni to'liq ko'rish": { ru: "Полные тексты рецептов", en: "Full recipe text" },
+  "Kuniga 20 tagacha AI skan": { ru: "До 20 AI-сканирований в день", en: "Up to 20 AI scans a day" },
+  "Retseptlarni to'liq ko'rish": { ru: "Полный просмотр рецептов", en: "Full recipe access" },
   "Nutrition Score": { ru: "Nutrition Score", en: "Nutrition Score" },
   "Qolgan kaloriyaga mos taom takliflari": {
-    ru: "Подборка блюд под оставшиеся калории",
-    en: "Dish ideas that fit your remaining calories",
+    ru: "Блюда под остаток калорий",
+    en: "Meals that fit your remaining calories",
   },
   "Oqsil, yog' va uglevodlarni kuzatish": {
-    ru: "Учёт белков, жиров и углеводов",
-    en: "Protein, fat and carb tracking",
+    ru: "Отслеживание белков, жиров и углеводов",
+    en: "Track protein, fat and carbs",
   },
-  "Aqlli porsiya tavsiyalari": { ru: "Умные советы по размеру порции", en: "Smart portion advice" },
+  "Aqlli porsiya tavsiyalari": { ru: "Умные рекомендации порций", en: "Smart portion suggestions" },
   "Batafsil ovqatlanish statistikasi": { ru: "Подробная статистика питания", en: "Detailed nutrition statistics" },
   "Sevimli retseptlar": { ru: "Избранные рецепты", en: "Favourite recipes" },
-  "Haftalik ovqatlanish hisoboti": { ru: "Еженедельный отчёт о питании", en: "Weekly nutrition report" },
+  "Haftalik ovqatlanish hisoboti": { ru: "Недельный отчёт о питании", en: "Weekly nutrition report" },
   "PRO imkoniyatlari": { ru: "Возможности PRO", en: "PRO features" },
   "Tarif tanlang": { ru: "Выберите тариф", en: "Choose a plan" },
   "Tavsiya etiladi": { ru: "Рекомендуем", en: "Recommended" },
@@ -727,9 +729,9 @@ export const SOZLAR = {
     en: "Track your eating in more depth and get to a more precise result.",
   },
   "FREE bilan ham ishlaydi": { ru: "Работает и с FREE", en: "Works on FREE too" },
-  "3 ta bepul AI skan · cheksiz qo'lda kiritish · kunlik doira": {
-    ru: "3 бесплатных ИИ-сканирования · ручной ввод без ограничений · дневной круг",
-    en: "3 free AI scans · unlimited manual entry · the daily ring",
+  "3 ta bepul AI skan · kunlik doira · jurnal va progress": {
+    ru: "3 бесплатных ИИ-сканирования · дневной круг · журнал и прогресс",
+    en: "3 free AI scans · the daily ring · journal and progress",
   },
   "PRO ni ochish": { ru: "Открыть PRO", en: "Unlock PRO" },
   "PRO haqida": { ru: "О PRO", en: "About PRO" },
@@ -779,22 +781,22 @@ export const SOZLAR = {
   },
 
   // ── Qolgan kaloriyaga mos taklif (E1) va porsiya tavsiyasi (E5) ────────────
-  "Qolgan kaloriyaga mos": { ru: "Под оставшиеся калории", en: "Fits your remaining calories" },
+  "Qolgan kaloriyaga mos": { ru: "Под остаток калорий", en: "Fits your remaining calories" },
   "Qolgan kaloriyangizga sig'adigan taomlar tanlanadi.": {
-    ru: "Подбираем блюда, которые вписываются в оставшиеся калории.",
-    en: "We pick dishes that fit within your remaining calories.",
+    ru: "Подбираются блюда, которые уместятся в остаток калорий.",
+    en: "Picks dishes that fit your remaining calories.",
   },
   "Kunlik norma to'ldi — bugunga taklif yo'q.": {
     ru: "Дневная норма набрана — на сегодня предложений нет.",
     en: "You’ve reached today’s target — no suggestions for today.",
   },
   "Qolgan {0} kkal uchun mos taom topilmadi.": {
-    ru: "Под оставшиеся {0} ккал подходящего блюда не нашлось.",
-    en: "No dish fits the remaining {0} kcal.",
+    ru: "Для остатка {0} ккал подходящего блюда не нашлось.",
+    en: "No dish fits your remaining {0} kcal.",
   },
   "{0} · {1} kkal · qolgan {2} kkal ichida": {
-    ru: "{0} · {1} ккал · в пределах оставшихся {2} ккал",
-    en: "{0} · {1} kcal · within the remaining {2} kcal",
+    ru: "{0} · {1} ккал · в пределах остатка {2} ккал",
+    en: "{0} · {1} kcal · within your remaining {2} kcal",
   },
   "Aqlli porsiya tavsiyalari — PRO": {
     ru: "Умные советы по размеру порции — PRO",
@@ -806,8 +808,8 @@ export const SOZLAR = {
   },
   "Tavsiya: {0} g": { ru: "Совет: {0} г", en: "Suggested: {0} g" },
   "Qolgan {0} kkal ichida qoladi": {
-    ru: "Останется в пределах оставшихся {0} ккал",
-    en: "Stays within the remaining {0} kcal",
+    ru: "Останется в пределах {0} ккал",
+    en: "Stays within your remaining {0} kcal",
   },
   "Tavsiya: {0}": { ru: "Совет: {0}", en: "Suggested: {0}" },
   "{0} kkal — qolgan {1} kkal ichida": {
@@ -824,7 +826,7 @@ export const SOZLAR = {
   "Yorug'": { ru: "Светлая", en: "Light" },
   // Progress (P1–P3)
   "Yo'lning {0}% i bosib o'tildi": { ru: "Пройдено {0}% пути", en: "{0}% of the way there" },
-  "Vaznni qayd etish": { ru: "Записать вес", en: "Log weight" },
+  "Vaznni qayd etish": { ru: "Записать вес", en: "Record weight" },
   "Vazn grafigi": { ru: "График веса", en: "Weight chart" },
   "{0} kun": { ru: "{0} дн.", en: "{0} days" },
   "Ikkinchi o'lchovdan keyin grafik chiziladi": {
@@ -832,24 +834,24 @@ export const SOZLAR = {
     en: "The chart appears after your second weigh-in",
   },
   "Vazn qo'shish": { ru: "Добавить вес", en: "Add weight" },
-  "oxirgi {0} kunda": { ru: "за последние {0} дн.", en: "in the last {0} days" },
+  "oxirgi {0} kunda": { ru: "за последние {0} дн.", en: "last {0} days" },
   "Maqsad: {0}": { ru: "Цель: {0}", en: "Goal: {0}" },
   "Yana {0}": { ru: "Ещё {0}", en: "{0} to go" },
-  "Streak hali boshlanmagan": { ru: "Серия ещё не началась", en: "Your streak hasn't started yet" },
+  "Streak hali boshlanmagan": { ru: "Серия ещё не началась", en: "No streak yet" },
   "Birinchi ovqatni qo'shing": { ru: "Добавьте первый приём пищи", en: "Add your first meal" },
-  "{0} kunlik streak": { ru: "Серия: {0} дн.", en: "{0}-day streak" },
-  "Rekord: {0} kun": { ru: "Рекорд: {0} дн.", en: "Best: {0} days" },
+  "{0} kunlik streak": { ru: "серия {0} дн.", en: "{0}-day streak" },
+  "Rekord: {0} kun": { ru: "Рекорд: {0} дн.", en: "Record: {0} days" },
   "Kuzatilgan kunlar": { ru: "Отмеченные дни", en: "Tracked days" },
   "{0} / {1} kun": { ru: "{0} / {1} дн.", en: "{0} / {1} days" },
   "Oxirgi 30 kun. Kuzatilgan kunni bosing — o'sha kundagi jurnal ochiladi.": {
-    ru: "Последние 30 дней. Нажмите на отмеченный день — откроется журнал за этот день.",
-    en: "Last 30 days. Tap a tracked day to open that day's journal.",
+    ru: "Последние 30 дней. Нажмите на отмеченный день — откроется журнал за него.",
+    en: "The last 30 days. Tap a tracked day to open its journal.",
   },
   "Haftalik o'zgarish": { ru: "Изменение за неделю", en: "Weekly change" },
   "{0} / hafta": { ru: "{0} / нед.", en: "{0} / week" },
-  "{0} ta o'lchov": { ru: "Измерений: {0}", en: "{0} weigh-ins" },
+  "{0} ta o'lchov": { ru: "Измерений: {0}", en: "{0} measurements" },
   "Vazn": { ru: "Вес", en: "Weight" },
-  "Bugungi vaznni yangilash": { ru: "Обновить сегодняшний вес", en: "Update today's weight" },
+  "Bugungi vaznni yangilash": { ru: "Обновить вес за сегодня", en: "Update today’s weight" },
   "O'lchovni tahrirlash": { ru: "Изменить измерение", en: "Edit weigh-in" },
   "Vazn {0}–{1} {2} oralig'ida bo'lsin": {
     ru: "Вес должен быть от {0} до {1} {2}",
@@ -866,12 +868,12 @@ export const SOZLAR = {
     en: "Your daily target was updated: {0} → {1}",
   },
   "Tahrirlash": { ru: "Изменить", en: "Edit" },
-  "boshlang'ich yozuv": { ru: "начальная запись", en: "starting record" },
+  "boshlang'ich yozuv": { ru: "первая запись", en: "first record" },
   "Onboardingdagi birinchi yozuv o'chirilmaydi — u grafikning boshlang'ich nuqtasi.": {
     ru: "Первую запись из онбординга удалить нельзя — это начальная точка графика.",
     en: "The first record from onboarding can't be deleted — it's the chart's starting point.",
   },
-  "O'lchovni o'chirish": { ru: "Удалить измерение", en: "Delete weigh-in" },
+  "O'lchovni o'chirish": { ru: "Удалить измерение", en: "Delete measurement" },
   "{0} · {1} o'chiriladi. Kunlik norma qayta hisoblanadi.": {
     ru: "{0} · {1} будет удалено. Дневная норма пересчитается.",
     en: "{0} · {1} will be deleted. Your daily target will be recalculated.",
