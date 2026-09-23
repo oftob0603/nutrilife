@@ -60,12 +60,13 @@ avtomatik takroriy to'lov · admin paneli.
 - 2026-09-23: profil sozlamalarida huquqiy hujjatlar va rasm mualliflari mayda havolalar qatoriga aylandi (doimiy chiziq bilan), "Rasm mualliflari" kartasi va birlik haqidagi izoh olib tashlandi (app/_components/profil/Sozlamalar.tsx, lib/lugat/sozlar.ts)
 - 2026-09-23: prototip auditi — ~75 farq, ~30 tasi ataylab; tuzatildi: asosiy tugma lime, qorong'i matn/karta tokenlari (on-siyoh, karta-press, text-belgi), sarlavha shrifti Inter Tight, orqaga 24 px, E2 qatorlari va panel, E3 kamera ramkasi, E7 tavsiya joyi, E9 jami kartasi, E10 sarlavhasi, P1 streak/vazn formati/sanalar, P2 xato va xabar, P3 farq joyi, ProQulfi butunicha bosiladi, F3 18+ izohi, Profil Yordam (admin Telegram chati), skeletlar, O13/F1 matnlari, ~50 ru/en tarjima (app/_components/*, app/globals.css, lib/lugat/sozlar.ts, DESIGN.md, DECISIONS.md)
 - 2026-09-23: skan limiti tugaganda tez bosish xatosi tuzatildi — limit serverdan kelguncha E2 qatorlari, Tasvirlash tugmasi va kameradagi rasmga olish/galereya o'chiq; limit tugagan bo'lsa kamera yoqilmaydi, xabar va FREE'da PRO ni ochish chiqadi; server nazorati o'zgarmadi (app/_components/QoshishPaneli.tsx, Tasvirlash.tsx, Kamera.tsx)
+- 2026-09-23: O1 onboarding posteri uch tilda qo'shildi, til bo'yicha tanlanadi (public/onboarding/intro.png, public/onboarding/intro-ru.png, public/onboarding/intro-en.png, app/_components/onboarding/OnboardingOqimi.tsx)
 
 ## Handoff
 
 Deploy: frontend Vercel, backend Railway (DECISIONS 2026-09-16, amalga oshirildi 2026-09-22): bot webhook,
 eslatmalar va fon vazifalari Railway'dagi doimiy jarayonda ishlaydi. Paywall (W1) uchun paywall-tz.md tayyor.
-Telefonda jonli sinov va bot webhook o'rnatish bajarildi (2026-09-22); Vercel'da faqat BACKEND_URL qoldi.
+Telefonda jonli sinov va bot webhook o'rnatish bajarildi (2026-09-22); Vercel'da BACKEND_URL qo'shildi (2026-09-23).
 
 Prototip auditidan S5'ga qolgan eslatmalar (2026-09-22):
 - F4 (obuna sahifasi): to'lovlar tarixi ro'yxati — har to'lov uchun summa, `sana · usul` va holat belgisi (prototip `screens-profile.jsx:291-307`); hozir faqat "Hozircha to'lov yo'q". To'lov integratsiyasi taskida qurish.
@@ -75,19 +76,21 @@ Prototip auditidan S5'ga qolgan eslatmalar (2026-09-22):
 
 W1 orqaga tugmasi: telefonda jonli sinovda tasdiqlandi (2026-09-22).
 
-Prototip auditi (2026-09-23, S5 yopilgach): ~75 farq, ~30 tasi ataylab. Tuzatildi — asosiy tugma lime, qorong'i matn/karta tokenlari, sarlavha shrifti, orqaga 24 px, E2 qatorlari, E3 kamera ramkasi, E7 tavsiya joyi, E9 jami kartasi, P1 streak/vazn formati/sanalar, P2 xato va xabar, P3 farq joyi, ProQulfi butunicha bosiladi, F3 18+ izohi, Profil "Yordam" (admin Telegram chati), skeletlar, O13/F1 matnlari, ~50 ta ru/en tarjima. Qoldirilganlar va sabablari — DECISIONS 2026-09-23 "prototip auditi". Telefonda jonli ko'rish: asosiy tugmalar lime bo'lgani (E5, E8, E10, F3, P2, onboarding) va jonli kamera ramkasi.
+Prototip auditi (2026-09-23, S5 yopilgach): ~75 farq, ~30 tasi ataylab. Tuzatildi — asosiy tugma lime, qorong'i matn/karta tokenlari, sarlavha shrifti, orqaga 24 px, E2 qatorlari, E3 kamera ramkasi, E7 tavsiya joyi, E9 jami kartasi, P1 streak/vazn formati/sanalar, P2 xato va xabar, P3 farq joyi, ProQulfi butunicha bosiladi, F3 18+ izohi, Profil "Yordam" (admin Telegram chati), skeletlar, O13/F1 matnlari, ~50 ta ru/en tarjima. Qoldirilganlar va sabablari — DECISIONS 2026-09-23 "prototip auditi". Telefonda jonli ko'rish (lime tugmalar, jonli kamera ramkasi) — bajarildi (2026-09-23).
 
-Keyingi: S5 yakuni — qolgan tasklar (to'lov, bildirishnomalar) keyinga qoldirilgan. 3-task jonli sinovi: deploydan keyin telefonda /start → til → Boshlash → ilova shu tilda ochilishi; Railway'da APP_URL Vercel https domeni bo'lishi shart (aks holda Boshlash tugmasi chiqmaydi).
+Keyingi: S5 yakuni — qolgan tasklar (to'lov, bildirishnomalar) keyinga qoldirilgan. 3-task jonli sinovi (/start → til → Boshlash → ilova shu tilda ochilishi) — bajarildi (2026-09-23). Railway'da APP_URL Vercel https domeni bo'lishi shart (aks holda Boshlash tugmasi chiqmaydi).
 
 P1 haftalik hisobot: ustunli ko'rinish jonli ma'lumotda (bu haftada 3+ kun yozuv) ko'rib chiqilsin.
 
-Railway backend'ga ADMIN_TELEGRAM=NutrliLiferPro qo'shilishi kerak (foydalanuvchi qo'shadi) — aks holda W1 "Davom etish" "To'lov tez orada" varag'ini ochadi.
+Railway backend'ga ADMIN_TELEGRAM=NutrliLiferPro qo'shildi (2026-09-23) — bo'lmasa W1 "Davom etish" "To'lov tez orada" varag'ini ochadi.
 
 Fon vazifalari: Railway backend'da FON_VAZIFALARI=1 qo'shilgan (foydalanuvchi, 2026-09-22); deploydan keyin Railway logida "Fon vazifalari —" qatorlari chiqishini tekshirish. Dev foydalanuvchining telegram_id si soxta (1000000001) — bot sinovi uchun haqiqiy hisob kerak.
 
 Bot almashtirilsa: Railway va .env da TELEGRAM_BOT_TOKEN, keyin scripts/bot-webhook.mjs https://nutrilife-production-e0a5.up.railway.app va scripts/bot-tavsif.mjs; @BotFather'da menyu tugmasi (URL https://nutrilife-khaki.vercel.app, Title "Kirish") va avatar.
 
 Hujjat matni o'zgarsa: hujjatlar/<nom>.<til>.md ni tahrirlab, `node scripts/hujjat-yig.mjs` ni ishga tushirish shart (lib/hujjatlar.ts avtomatik yaratiladi).
+
+O1 posteri uch tilda (2026-09-23): intro.png / intro-ru.png / intro-en.png, til bo'yicha tanlanadi. Onboarding'ni tugatgan dev hisobda ekran brauzerda ko'rilmadi — telefonda uch tilda ko'rish.
 
 ---
 

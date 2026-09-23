@@ -12,7 +12,7 @@ import { QadamSarlavhasi } from "@/app/_components/onboarding/QadamSarlavhasi";
 import { ProTanishtiruv } from "@/app/_components/onboarding/ProTanishtiruv";
 import { RejaNatijasi } from "@/app/_components/onboarding/RejaNatijasi";
 import { SegmentTanlagich, Variantlar } from "@/app/_components/onboarding/Variantlar";
-import { k, type Kalit, type Tarjimon } from "@/lib/lugat/tarjima";
+import { k, type Kalit, type Tarjimon, type Til } from "@/lib/lugat/tarjima";
 import { apiSorov } from "@/lib/services/api-klient";
 import {
   afzallikBosildi,
@@ -75,6 +75,13 @@ type Saqlash =
 
 /** Jumlani havola atrofida ikkiga bo'lish uchun vaqtinchalik belgi — matnda uchramaydi. */
 const AJRATGICH = "§§";
+
+/** O1 posteri — rasm ichidagi yozuvlar tilga bog'liq, shuning uchun har til o'z rasmini oladi. */
+const INTRO_POSTER: Record<Til, string> = {
+  uz: "/onboarding/intro.png",
+  ru: "/onboarding/intro-ru.png",
+  en: "/onboarding/intro-en.png",
+};
 
 function saqlashMatni(saqlash: Saqlash, { t, erkin }: Tarjimon): string | null {
   switch (saqlash.holat) {
@@ -201,7 +208,7 @@ function Intro({
   xato: string | null;
   onBoshlash: () => void;
 }) {
-  const { t } = useTarjima();
+  const { t, til } = useTarjima();
   // Jumla ichidagi hujjat nomi havola bo'ladi: tarjima matni ajratgich bo'yicha ikkiga bo'linadi.
   const ofertaBolaklari = t("«Boshlash»ni bosish orqali {0} qabul qilasiz.", AJRATGICH).split(AJRATGICH);
   // Prototip O1: "Boshlash" bosilganda poster 320 ms da so'nib kattalashadi; saqlash
@@ -216,7 +223,7 @@ function Intro({
       }`}
     >
       <Image
-        src="/onboarding/intro.png"
+        src={INTRO_POSTER[til]}
         alt={t("Ozish, vazn olish, sog'lom turmush tarzi va vaznni saqlash")}
         fill
         priority
