@@ -43,8 +43,8 @@ foydalanaveradi.
 | 6 oylik | 170,000 so'm | "≈28,300 so'm / oy · 27% tejash" |
 | Yillik | 290,000 so'm | "≈24,200 so'm / oy · 38% tejash" · **"Tavsiya etiladi"** belgisi |
 
-4. Mayda matn: "Avtomatik yechish yo'q. Muddat tugagach o'zingiz uzaytirasiz."
-5. Havolalar: Foydalanish shartlari · Maxfiylik siyosati
+4. ~~Mayda matn "Avtomatik yechish yo'q..."~~ — olib tashlandi (DECISIONS 2026-09-23)
+5. Havola: Ommaviy oferta (ilova ichida `/oferta`)
 6. Asosiy tugma: "Davom etish" · Ikkinchi darajali: "Hozir emas"
 
 **Qoidalar:**

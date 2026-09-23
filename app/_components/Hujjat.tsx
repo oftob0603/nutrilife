@@ -1,13 +1,52 @@
 "use client";
 
 import { useCallback } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { OrqagaSarlavha } from "@/app/_components/profil/OrqagaSarlavha";
 import { useTarjima } from "@/app/_components/TilTaminoti";
 import { useTelegramOrqaga } from "@/app/_components/useTelegramOrqaga";
-import { hujjatniOqi, type Bolak } from "@/lib/services/hujjat-hisob";
+import { havolalargaBol, hujjatniOqi, type Bolak } from "@/lib/services/hujjat-hisob";
 
-function Bolaklar({ bolaklar }: { bolaklar: Bolak[] }) {
+/** Havola yonidagi kichik ↗ belgisi — boshqa hujjatga o'tishini bildiradi. */
+function BurchakStrelka() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="14"
+      height="14"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.25"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      className="ml-0.5 inline-block align-[-1px]"
+    >
+      <path d="M7 17 17 7M8 7h9v9" />
+    </svg>
+  );
+}
+
+/** Qator matni; boshqa hujjat nomi havola rangida, tagi chizilgan va ↗ belgili havola. */
+function Matn({ matn, ozi }: { matn: string; ozi: string }) {
+  return havolalargaBol(matn, ozi).map(({ matn: qism, href }, i) =>
+    href ? (
+      <Link
+        key={i}
+        href={href}
+        className="text-havola underline underline-offset-2 active:opacity-70"
+      >
+        {qism}
+        <BurchakStrelka />
+      </Link>
+    ) : (
+      qism
+    ),
+  );
+}
+
+function Bolaklar({ bolaklar, ozi }: { bolaklar: Bolak[]; ozi: string }) {
   return (
     <>
       {bolaklar.map((bolak, i) =>
@@ -28,13 +67,15 @@ function Bolaklar({ bolaklar }: { bolaklar: Bolak[] }) {
                 <span aria-hidden="true" className="text-matn-3">
                   •
                 </span>
-                <span className="min-w-0 flex-1">{qator}</span>
+                <span className="min-w-0 flex-1">
+                  <Matn matn={qator} ozi={ozi} />
+                </span>
               </li>
             ))}
           </ul>
         ) : (
           <p key={i} className="text-asosiy leading-relaxed">
-            {bolak.matn}
+            <Matn matn={bolak.matn} ozi={ozi} />
           </p>
         ),
       )}
@@ -48,10 +89,13 @@ function Bolaklar({ bolaklar }: { bolaklar: Bolak[] }) {
  * profil yoki onboardingdan yangi oynada ochilgan bo'lsa — zaxira `/profil`).
  */
 export function Hujjat({
+  manzil,
   sarlavha,
   matn,
   tarjimasiz,
 }: {
+  /** Shu hujjat sahifasining manzili — matndagi havolalar o'ziga qo'yilmaydi. */
+  manzil: string;
   /** Qisqa nom — ekran sarlavhasida; hujjatning rasmiy to'liq nomi matn ichida. */
   sarlavha: string;
   matn: string;
@@ -89,7 +133,7 @@ export function Hujjat({
           </p>
         )}
 
-        <Bolaklar bolaklar={hujjat.bolaklar} />
+        <Bolaklar bolaklar={hujjat.bolaklar} ozi={manzil} />
       </article>
     </main>
   );

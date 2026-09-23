@@ -108,7 +108,7 @@ function TarifKartasi({
  * har holatda ishlaydi — ekran hech qachon tupik emas; o'chadigan tugma — "Obuna bo'lish".
  * To'lov tizimlari ulanguncha (DECISIONS 2026-09-22) "Obuna bo'lish" admin bilan Telegram chatini
  * tanlangan tarif yozilgan tayyor xabar bilan ochadi; admin berilmagan bo'lsa — "To'lov tez
- * orada" varag'i. Shartlar va maxfiylik havolalari hujjat sahifalarini ochadi (S5 10-task).
+ * orada" varag'i. Kartalar ostida "Ommaviy oferta" havolasi — hujjat ilova ichida ochiladi.
  */
 export function Tariflar({
   manba,
@@ -145,19 +145,26 @@ export function Tariflar({
 
   // Eslatma chiqqach: kartalar pastki tugmalar ostida yoki ekrandan tepada qolgan bo'lsa, sahifa
   // ular tugmalar ustida to'liq ko'rinadigan joyga siljiydi; ko'rinib turgan bo'lsa qimirlamaydi.
+  // Hammasi sig'masa eslatma matni ustun — blok tepasi ko'rinadigan joyda to'xtaydi. O'lchov
+  // keyingi kadrda: eslatma qo'shilgach joylashuv to'liq o'rnashgan bo'ladi.
   useEffect(() => {
-    const blok = tanlovRef.current;
-    const past = pastRef.current;
-    if (!eslatma || !blok || !past) return;
-    const { top, bottom } = blok.getBoundingClientRect();
-    const tepa = 16;
-    const chegara = past.getBoundingClientRect().top - 16;
-    let siljish = 0;
-    if (top < tepa) siljish = top - tepa;
-    else if (bottom > chegara) siljish = Math.min(bottom - chegara, top - tepa);
-    if (!siljish) return;
-    const kamHarakat = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    window.scrollBy({ top: siljish, behavior: kamHarakat ? "auto" : "smooth" });
+    if (!eslatma) return;
+    const kadr = requestAnimationFrame(() => {
+      const blok = tanlovRef.current;
+      const past = pastRef.current;
+      if (!blok || !past) return;
+      const { top, bottom } = blok.getBoundingClientRect();
+      // Telegram to'liq ekranida tepadagi tugmalar ostiga kirmaslik uchun xavfsiz maydon ham.
+      const tepa = 16 + (parseFloat(getComputedStyle(document.body).paddingTop) || 0);
+      const chegara = past.getBoundingClientRect().top - 16;
+      let siljish = 0;
+      if (top < tepa) siljish = top - tepa;
+      else if (bottom > chegara) siljish = Math.min(bottom - chegara, top - tepa);
+      if (!siljish) return;
+      const kamHarakat = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollBy({ top: siljish, behavior: kamHarakat ? "auto" : "smooth" });
+    });
+    return () => cancelAnimationFrame(kadr);
   }, [eslatma]);
 
   // "Hozir emas" va Telegram orqaga tugmasi — kelgan sahifaga. Onboardingdan `replace` bilan
@@ -215,7 +222,9 @@ export function Tariflar({
           ))}
         </ul>
 
-        <div ref={tanlovRef} className="mt-5 flex flex-col gap-2">
+        {/* overflow-anchor: eslatma qo'shilganda brauzer sahifani o'zicha surib, matnni tepadan
+            chiqarib yubormasligi uchun. */}
+        <div ref={tanlovRef} className="mt-5 flex flex-col gap-2 [overflow-anchor:none]">
           {eslatma > 0 && !tanlangan && (
             <p role="alert" className="text-izoh text-xato">
               {t("Avval tarifni tanlang")}
@@ -262,17 +271,13 @@ export function Tariflar({
           </div>
         </div>
 
-        <p className="mt-4 text-izoh leading-snug text-matn-2">
-          {t("Avtomatik yechish yo'q. Muddat tugagach o'zingiz uzaytirasiz.")}
-        </p>
-
-        <div className="mt-1 flex flex-wrap items-center gap-x-2 text-izoh">
-          <Link href="/shartlar" className="min-h-11 content-center underline-offset-2 active:underline">
-            {t("Foydalanish shartlari")}
-          </Link>
-          <span className="text-matn-3">·</span>
-          <Link href="/maxfiylik" className="min-h-11 content-center underline-offset-2 active:underline">
-            {t("Maxfiylik siyosati")}
+        {/* Obuna admin orqali sotib olinadi — ekranda faqat oferta havolasi (DECISIONS 2026-09-23). */}
+        <div className="mt-3 flex justify-center text-izoh text-matn-2">
+          <Link
+            href="/oferta"
+            className="min-h-11 content-center underline decoration-chegara underline-offset-2 active:decoration-matn-2"
+          >
+            {t("Ommaviy oferta")}
           </Link>
         </div>
       </main>

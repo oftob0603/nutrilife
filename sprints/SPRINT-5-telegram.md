@@ -62,6 +62,10 @@ avtomatik takroriy to'lov · admin paneli.
 - 2026-09-23: skan limiti tugaganda tez bosish xatosi tuzatildi — limit serverdan kelguncha E2 qatorlari, Tasvirlash tugmasi va kameradagi rasmga olish/galereya o'chiq; limit tugagan bo'lsa kamera yoqilmaydi, xabar va FREE'da PRO ni ochish chiqadi; server nazorati o'zgarmadi (app/_components/QoshishPaneli.tsx, Tasvirlash.tsx, Kamera.tsx)
 - 2026-09-23: O1 onboarding posteri uch tilda qo'shildi, til bo'yicha tanlanadi (public/onboarding/intro.png, public/onboarding/intro-ru.png, public/onboarding/intro-en.png, app/_components/onboarding/OnboardingOqimi.tsx)
 - 2026-09-23: W1 paywall'da tarif oldindan tanlanmaydi, foydalanuvchi o'zi tanlaydi; tarifsiz "Obuna bo'lish" bosilsa "Avval tarifni tanlang" ogohlantirishi chiqadi va kartalar tugmalar ustida to'liq ko'rinadigan joyga siljiydi (app/_components/Tariflar.tsx, lib/services/tarif-hisob.ts, lib/lugat/sozlar.ts)
+- 2026-09-23: W1 paywall'dan "Avtomatik yechish yo'q..." matni olib tashlandi, o'rniga o'rtada bitta "Ommaviy oferta" havolasi qo'shildi (app/_components/Tariflar.tsx, lib/lugat/sozlar.ts)
+- 2026-09-23: W1 "Avval tarifni tanlang" avtomatik siljishi mustahkamlandi — o'lchov keyingi kadrda, xavfsiz maydon hisobga olinadi (app/_components/Tariflar.tsx)
+- 2026-09-23: huquqiy hujjatlar ichida boshqa hujjat nomi bosiladigan havolaga aylandi, ko'k rangda ↗ belgisi bilan (lib/services/hujjat-hisob.ts, app/_components/Hujjat.tsx, app/globals.css, DESIGN.md)
+- 2026-09-23: Ommaviy oferta §5 ga Foydalanish shartlariga havola qiluvchi jumla qo'shildi uch tilda (hujjatlar/oferta.*.md, lib/hujjatlar.ts)
 
 ## Handoff
 
@@ -92,6 +96,8 @@ Bot almashtirilsa: Railway va .env da TELEGRAM_BOT_TOKEN, keyin scripts/bot-webh
 Hujjat matni o'zgarsa: hujjatlar/<nom>.<til>.md ni tahrirlab, `node scripts/hujjat-yig.mjs` ni ishga tushirish shart (lib/hujjatlar.ts avtomatik yaratiladi).
 
 O1 posteri uch tilda (2026-09-23): intro.png / intro-ru.png / intro-en.png, til bo'yicha tanlanadi. Onboarding'ni tugatgan dev hisobda ekran brauzerda ko'rilmadi — telefonda uch tilda ko'rish.
+
+W1 "Avval tarifni tanlang" tepada kesilishi (2026-09-23) lokal qayta hosil qilinmadi, himoya tuzatishi qo'yildi — telefonda Telegram ichida qayta tekshirish.
 
 ---
 

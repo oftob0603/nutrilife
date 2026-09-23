@@ -17,6 +17,7 @@
   --matn-3: #a1a1a6;
   --chegara: #e3e3e5;
   --xato: #d93a3a;
+  --havola: #2563eb;
   /* Karta chegarasi ikkala mavzuda 1px --chegara (prototip --hairline). */
   --karta-chegara: var(--chegara);
   /* --siyoh to'ldirilgan element ustidagi matn: yorug'da oq, qorong'ida to'q (prototip). */
@@ -81,6 +82,7 @@
     --matn-3: #85858c;
     --chegara: #26262a;
     --xato: #ff6b6b;
+    --havola: #60a5fa;
     --on-siyoh: #0b0b0c;
     --pro-ink: #c4b5fd;
     --pro-tint: color-mix(in oklch, #c4b5fd 16%, transparent);
@@ -100,6 +102,7 @@
   --matn-3: #85858c;
   --chegara: #26262a;
   --xato: #ff6b6b;
+  --havola: #60a5fa;
   --on-siyoh: #0b0b0c;
   --pro-ink: #c4b5fd;
   --pro-tint: color-mix(in oklch, #c4b5fd 16%, transparent);
@@ -153,6 +156,7 @@
   --color-matn-3: var(--matn-3);
   --color-chegara: var(--chegara);
   --color-xato: var(--xato);
+  --color-havola: var(--havola);
   --color-karta-chegara: var(--karta-chegara);
   --color-on-siyoh: var(--on-siyoh);
   --color-parda: var(--parda);

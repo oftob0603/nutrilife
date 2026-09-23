@@ -67,6 +67,8 @@ not to interfere deliberately with the normal operation of the Service
 
 are accepted by the User.
 
+The rules for using the Service are described in more detail in the Terms of Use.
+
 6. Analysis with the help of AI
 
 NutriLifer uses AI technologies in performing certain functions.

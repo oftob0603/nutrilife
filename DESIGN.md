@@ -22,6 +22,7 @@ Ekranlar va oqim: [dizayn-tz.md](dizayn-tz.md).
 | `--chegara` | `#E3E3E5` | 1px hairline (karta chegarasi ham), doiraning to'lmagan qismi |
 | `--on-siyoh` | `#FFFFFF` | `--siyoh` fonli element ustidagi matn |
 | `--xato` | `#D93A3A` | Xato matni va tekshiruv xatosi |
+| `--havola` | `#2563EB` | Hujjat matni ichidagi havola (matn va ↗ belgisi) |
 
 Aksent ustidagi matn — `#2E3D07` (o'sha oilaning to'q soyasi). Qora ham, oq ham emas.
 
@@ -45,6 +46,7 @@ birlik `--matn-2`. Gradient yo'q. Faqat shu bitta maydonda.
 | `--on-siyoh` | `#0B0B0C` |
 | `--chegara` | `#26262A` |
 | `--xato` | `#FF6B6B` |
+| `--havola` | `#60A5FA` |
 
 Har rang faqat token orqali chaqiriladi. Kodda qotirilgan hex bo'lmaydi — aks holda
 qorong'i mavzu S2'da sinadi.

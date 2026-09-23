@@ -13,6 +13,7 @@ export default async function ShartlarSahifasi() {
 
   return (
     <Hujjat
+      manzil="/shartlar"
       sarlavha={t("Foydalanish shartlari")}
       matn={matn}
       tarjimasiz={!hujjatShuTildami("shartlar", til)}

@@ -13,6 +13,7 @@ export default async function MaxfiylikSahifasi() {
 
   return (
     <Hujjat
+      manzil="/maxfiylik"
       sarlavha={t("Maxfiylik siyosati")}
       matn={matn}
       tarjimasiz={!hujjatShuTildami("maxfiylik", til)}

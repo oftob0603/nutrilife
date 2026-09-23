@@ -592,6 +592,9 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-23 · W1 da tarif oldindan tanlanmaydi: ekran tanlovsiz ochiladi, "Obuna bo'lish" faol turadi; tarifsiz bosilsa kartalar tepasida "Avval tarifni tanlang" chiqadi va kartalar pastki tugmalar ostida bo'lsa ko'rinadigan joyga siljiydi. Yillikdagi "Tavsiya etiladi" belgisi qoladi (paywall-tz.md dagi "yillik oldindan tanlangan" qoidasi o'rniga).**
 *Sabab:* Foydalanuvchi qarori — to'lov tarifini odam o'zi ongli tanlashi kerak.
 
+**2026-09-23 · W1 kartalari ostida faqat "Ommaviy oferta" havolasi; "Avtomatik yechish yo'q..." matni va "Foydalanish shartlari · Maxfiylik siyosati" havolalari olib tashlandi.**
+*Sabab:* Foydalanuvchi qarori — obuna admin orqali sotib olinadi, avtomatik yechish haqidagi izoh ortiqcha; to'lov shartlari ofertada. Shartlar va maxfiylik Profil'da qoladi.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

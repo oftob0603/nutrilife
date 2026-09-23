@@ -695,10 +695,6 @@ export const SOZLAR = {
   "{0} so'm / oy": { ru: "{0} сум / мес.", en: "{0} UZS / mo" },
   "≈{0} so'm / oy": { ru: "≈{0} сум / мес.", en: "≈{0} UZS / mo" },
   "{0}% tejash": { ru: "экономия {0}%", en: "save {0}%" },
-  "Avtomatik yechish yo'q. Muddat tugagach o'zingiz uzaytirasiz.": {
-    ru: "Автосписаний нет. Когда срок закончится, вы продлеваете сами.",
-    en: "No automatic charges. When the term ends, you renew it yourself.",
-  },
   "Foydalanish shartlari": { ru: "Условия использования", en: "Terms of Use" },
   "Ommaviy oferta": { ru: "Публичная оферта", en: "Public Offer" },
   "Versiya: {0}": { ru: "Версия: {0}", en: "Version: {0}" },

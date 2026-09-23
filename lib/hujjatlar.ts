@@ -658,6 +658,8 @@ xizmatning normal ishlashiga qasddan xalaqit bermaslik
 
 majburiyatlarini qabul qiladi.
 
+Xizmatdan foydalanish qoidalari Foydalanish shartlarida batafsilroq yoritilgan.
+
 6. AI yordamida tahlil qilish
 
 NutriLifer ayrim funksiyalarni amalga oshirishda AI texnologiyalaridan foydalanadi.
@@ -920,6 +922,8 @@ NutriLifer предоставляет Пользователям цифровы�
 
 принимает на себя обязательства.
 
+Правила пользования Сервисом подробнее изложены в Условиях использования.
+
 6. Анализ с помощью AI
 
 NutriLifer при реализации отдельных функций использует технологии AI.
@@ -1181,6 +1185,8 @@ not to infringe the rights of other users;
 not to interfere deliberately with the normal operation of the Service
 
 are accepted by the User.
+
+The rules for using the Service are described in more detail in the Terms of Use.
 
 6. Analysis with the help of AI
 

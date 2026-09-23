@@ -65,6 +65,8 @@ xizmatning normal ishlashiga qasddan xalaqit bermaslik
 
 majburiyatlarini qabul qiladi.
 
+Xizmatdan foydalanish qoidalari Foydalanish shartlarida batafsilroq yoritilgan.
+
 6. AI yordamida tahlil qilish
 
 NutriLifer ayrim funksiyalarni amalga oshirishda AI texnologiyalaridan foydalanadi.

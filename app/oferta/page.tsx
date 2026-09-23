@@ -13,6 +13,7 @@ export default async function OfertaSahifasi() {
 
   return (
     <Hujjat
+      manzil="/oferta"
       sarlavha={t("Ommaviy oferta")}
       matn={matn}
       tarjimasiz={!hujjatShuTildami("oferta", til)}
