@@ -336,6 +336,15 @@ export const SOZLAR = {
   "Boshlash": { ru: "Начать", en: "Start" },
   // Bot chatidagi menyu tugmasi (setChatMenuButton) — qisqa bo'lsin.
   "Kirish": { ru: "Войти", en: "Open app" },
+  // Hisob o'chirilgach (F5) bot orqali bitta xabar.
+  "NutriLifer hisobingiz o'chirildi. Barcha ma'lumotlar o'chirildi.": {
+    ru: "Ваш аккаунт NutriLifer удалён. Все данные удалены.",
+    en: "Your NutriLifer account has been deleted. All data has been removed.",
+  },
+  "Qayta boshlash uchun /start bosing.": {
+    ru: "Чтобы начать заново, нажмите /start.",
+    en: "To start again, tap /start.",
+  },
   // ── Obuna muddati haqidagi bot xabarlari (S5 fon vazifalari) ─────────────
   "NutriLifer PRO obunangiz 7 kundan keyin tugaydi.": {
     ru: "Ваша подписка NutriLifer PRO закончится через 7 дней.",
@@ -638,9 +647,9 @@ export const SOZLAR = {
     en: "Deleted data cannot be restored.",
   },
   "Tasdiqlash": { ru: "Подтвердить", en: "Confirm" },
-  "Hisob darhol o'chadi. Ilovani qayta ochsangiz, yangi hisob yaratiladi.": {
-    ru: "Аккаунт удаляется сразу. Если открыть приложение снова, будет создан новый аккаунт.",
-    en: "The account is deleted right away. Opening the app again creates a new account.",
+  "O'chirilgach Telegramga qaytariladi va bot orqali bitta xabar yuboriladi.": {
+    ru: "После удаления вы вернётесь в Telegram, и бот отправит одно сообщение.",
+    en: "After deletion you'll return to Telegram and the bot will send one message.",
   },
   "O'chirib bo'lmadi. Qayta urinib ko'ring": { ru: "Не удалось удалить. Попробуйте ещё раз", en: "Could not delete. Try again" },
   "Hisobingiz o'chirildi": { ru: "Ваш аккаунт удалён", en: "Your account has been deleted" },

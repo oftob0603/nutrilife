@@ -98,6 +98,25 @@ export async function menyuTugmasiniOrnat(chatId: number, til: Til): Promise<voi
   }
 }
 
+/**
+ * Hisob o'chirilgach (F5) bot orqali bitta xabar — prototipdagi va'da. Hisob allaqachon yo'q,
+ * shuning uchun Telegram ID va til tashqaridan keladi. Xato o'chirishni buzmaydi: token yo'q
+ * (lokal dev) yoki foydalanuvchi botni bloklagan bo'lsa jim o'tadi.
+ */
+export async function hisobOchirildiXabari(telegramId: bigint | null, til: Til): Promise<void> {
+  if (telegramId === null) return;
+  const { t } = tarjimon(til);
+  const matn = [
+    `🗑 ${html(t("NutriLifer hisobingiz o'chirildi. Barcha ma'lumotlar o'chirildi."))}`,
+    `✨ ${html(t("Qayta boshlash uchun /start bosing."))}`,
+  ].join("\n\n");
+  try {
+    await xabarYubor(Number(telegramId), matn, { parse_mode: "HTML" });
+  } catch {
+    console.error("Bot: hisob o'chirildi xabari yuborilmadi");
+  }
+}
+
 /** Ilovada til o'zgarganda — shu foydalanuvchining bot chatidagi menyu tugmasi ham. */
 export async function foydalanuvchiMenyusiniYangila(foydalanuvchiId: string, til: Til): Promise<void> {
   const telegramId = await telegramIdniOl(foydalanuvchiId);

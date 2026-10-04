@@ -12,6 +12,7 @@ type WebApp = {
   isVersionAtLeast(versiya: string): boolean;
   ready(): void;
   expand(): void;
+  close(): void;
   disableVerticalSwipes(): void;
   openTelegramLink(url: string): void;
   setHeaderColor(rang: string): void;
@@ -80,6 +81,14 @@ export function ranglarniTenglashtir() {
     sdk.setBackgroundColor(fon);
   }
   if (sdk.isVersionAtLeast("7.10")) sdk.setBottomBarColor(fon);
+}
+
+/** Mini App'ni yopib, foydalanuvchini bot chatiga qaytaradi. Telegram'dan tashqarida false. */
+export function ilovaniYop(): boolean {
+  const sdk = webApp();
+  if (!sdk) return false;
+  sdk.close();
+  return true;
 }
 
 /**

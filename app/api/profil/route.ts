@@ -1,3 +1,4 @@
+import { hisobOchirildiXabari } from "@/lib/services/bot";
 import { hisobniOchirish } from "@/lib/services/foydalanuvchilar";
 import { joriyVazn, profilniOl, shaxsiyniSaqlash } from "@/lib/services/profil";
 import {
@@ -54,7 +55,10 @@ export async function DELETE(sorov: Request) {
   const tana = await tanaOqi(sorov);
   if (tana?.tasdiq !== "ochirish") return oqilmadi();
 
-  if (!(await hisobniOchirish(foydalanuvchiId))) return kirishKerak();
+  const ochirilgan = await hisobniOchirish(foydalanuvchiId);
+  if (!ochirilgan) return kirishKerak();
+  // Bot xabari o'chirishdan keyin — yuborilmasa ham hisob o'chgan, javob 204 qoladi.
+  await hisobOchirildiXabari(ochirilgan.telegramId, ochirilgan.til);
   return new Response(null, {
     status: 204,
     headers: { "Set-Cookie": sessiyaniOchirishCookie() },

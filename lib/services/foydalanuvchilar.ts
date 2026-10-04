@@ -8,7 +8,7 @@ import {
   type ObunaMuddati,
   type Rol,
 } from "./huquqlar.ts";
-import type { Til } from "../lugat/tarjima.ts";
+import { tilniOqi, type Til } from "../lugat/tarjima.ts";
 import { ombordanOchir } from "./ombor.ts";
 import type { Sozlamalar } from "./sozlamalar-hisob.ts";
 
@@ -158,17 +158,25 @@ export async function sozlamalarniSaqlash(
   return count > 0;
 }
 
+/** O'chirilgan hisobdan bot xabari uchun qolgan izi — Telegram'siz (dev) hisobda `telegramId` null. */
+export type OchirilganHisob = { telegramId: bigint | null; til: Til };
+
 /**
  * Hisobni butunlay o'chiradi (profil-tz.md, F5): qator o'chganda profil, jurnal, vazn tarixi,
  * rejalar, skan hisobi va obunalar kaskad bilan ketadi. Rasm fayllari omborda turadi —
  * ular bazadan keyin o'chiriladi: ombor o'chira olmasa fayl egasiz qoladi, lekin hisob
- * yarim o'chgan holatda qolmaydi.
+ * yarim o'chgan holatda qolmaydi. Hisob topilmasa null; topilsa — bot xabari uchun
+ * Telegram ID va til (qator o'chgach ularni olib bo'lmaydi).
  */
-export async function hisobniOchirish(id: string): Promise<boolean> {
-  const rasmlar = await db.rasm.findMany({ where: { foydalanuvchiId: id }, select: { kalit: true } });
+export async function hisobniOchirish(id: string): Promise<OchirilganHisob | null> {
+  const hisob = await db.foydalanuvchi.findUnique({
+    where: { id },
+    select: { telegramId: true, til: true, rasmlar: { select: { kalit: true } } },
+  });
+  if (!hisob) return null;
   const { count } = await db.foydalanuvchi.deleteMany({ where: { id } });
-  if (count === 0) return false;
+  if (count === 0) return null;
 
-  await Promise.allSettled(rasmlar.map((rasm) => ombordanOchir(rasm.kalit)));
-  return true;
+  await Promise.allSettled(hisob.rasmlar.map((rasm) => ombordanOchir(rasm.kalit)));
+  return { telegramId: hisob.telegramId, til: tilniOqi(hisob.til) };
 }

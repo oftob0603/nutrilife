@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTarjima } from "@/app/_components/TilTaminoti";
 import { Tugma, TugmaHavola } from "@/app/_components/Tugma";
 import type { Kalit } from "@/lib/lugat/tarjima";
+import { ilovaniYop } from "@/lib/telegram";
 import { OrqagaSarlavha } from "./OrqagaSarlavha";
 
 const OCHADIGANLAR: readonly Kalit[] = [
@@ -55,7 +56,9 @@ export function HisobniOchirish({ faolPro }: { faolPro: boolean }) {
         body: JSON.stringify({ tasdiq: "ochirish" }),
       });
       if (!javob.ok) throw new Error();
-      setQadam("ochirildi");
+      // Telegram ichida ilova yopiladi — foydalanuvchi bot chatiga qaytadi, xabar o'sha yerda.
+      // Oddiy brauzerda (dev) yopish yo'q, shuning uchun tasdiq ekrani ko'rsatiladi.
+      if (!ilovaniYop()) setQadam("ochirildi");
     } catch {
       setXato(true);
       setOchirilmoqda(false);
@@ -141,7 +144,7 @@ export function HisobniOchirish({ faolPro }: { faolPro: boolean }) {
         </div>
 
         <p className="text-izoh text-matn-2">
-          {t("Hisob darhol o'chadi. Ilovani qayta ochsangiz, yangi hisob yaratiladi.")}
+          {t("O'chirilgach Telegramga qaytariladi va bot orqali bitta xabar yuboriladi.")}
         </p>
       </div>
     </main>
