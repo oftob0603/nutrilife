@@ -67,6 +67,7 @@ avtomatik takroriy to'lov · admin paneli.
 - 2026-09-23: huquqiy hujjatlar ichida boshqa hujjat nomi bosiladigan havolaga aylandi, ko'k rangda ↗ belgisi bilan (lib/services/hujjat-hisob.ts, app/_components/Hujjat.tsx, app/globals.css, DESIGN.md)
 - 2026-09-23: Ommaviy oferta §5 ga Foydalanish shartlariga havola qiluvchi jumla qo'shildi uch tilda (hujjatlar/oferta.*.md, lib/hujjatlar.ts)
 - 2026-10-04: hisob o'chirilgach Telegram Mini App yopiladi va bot foydalanuvchi tilida bitta xabar yuboradi, izoh prototip matniga qaytdi (lib/telegram.ts, lib/services/bot.ts, lib/services/foydalanuvchilar.ts, app/api/profil/route.ts, app/_components/profil/HisobniOchirish.tsx, lib/lugat/sozlar.ts)
+- 2026-10-05: F5 (hisob o'chirilgach Mini App yopilishi va bot xabari) telefonda jonli sinovda tasdiqlandi
 
 ## Handoff
 

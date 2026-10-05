@@ -173,6 +173,15 @@
   --color-o1-matn-2: var(--o1-matn-2);
   --font-sans: var(--font-inter);
   --font-display: var(--font-inter-tight);
+
+  /* Admin paneli o'lchamlari — DESIGN.md 11-bo'lim (prototip/tokens/admin.css). */
+  --spacing-admin-yon: 240px;
+  --spacing-admin-ichki: 32px;
+  --container-admin: 1280px;
+  /* Statistika kartasidagi raqam — prototip --type-stat. */
+  --text-stat: 24px;
+  --text-stat--line-height: 1.15;
+  --text-stat--font-weight: 600;
 }
 
 body {
@@ -184,7 +193,8 @@ body {
 /* Ekran sarlavhasi va katta raqam display shriftida (prototip --type-screen-title, --type-ring). */
 @layer utilities {
   .text-sarlavha,
-  .text-raqam {
+  .text-raqam,
+  .text-stat {
     font-family: var(--font-display);
   }
 }

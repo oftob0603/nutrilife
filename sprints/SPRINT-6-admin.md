@@ -7,7 +7,7 @@ nazorat qilsin, xatolarni tuzatsin.
 
 ## Tasklar
 
-- [ ] Admin paneli va kirish nazorati: faqat admin roli ochadi, alohida bo'lim
+- [x] Admin paneli va kirish nazorati: faqat admin roli ochadi, alohida bo'lim
 - [ ] Foydalanuvchilar ro'yxati: qidiruv, filtr (FREE / PRO / bloklangan), bitta foydalanuvchi kartasi
 - [ ] Obunani qo'lda boshqarish: PRO berish, muddatini uzaytirish, olib qo'yish
 - [ ] Taom takliflari navbati: foydalanuvchi tuzatishlari ro'yxati, tasdiqlash yoki rad etish, tasdiqlangani umumiy `taomlar` bazasiga qo'shiladi
@@ -34,11 +34,21 @@ avtomatik takroriy to'lov.
 
 ## Hisobot
 
-<!-- hisobotchi to'ldiradi -->
+- 2026-10-05: A0 kirish/rad javobi — Telegram Login Widget, imzo sha256(token) bilan tekshiriladi, admin bo'lmaganga sessiya berilmaydi va hisob yaratilmaydi (lib/services/telegram-login.ts, app/admin/_components/AdminKirish.tsx, app/admin/layout.tsx)
+- 2026-10-05: admin qobig'i qurildi — chap panel 8 bo'lim, yorug'/qorong'i tugmasi, kim kirgani, chiqish, 1024px dan torda tasma; Mini App darvozasi /admin ga aralashmaydi (app/admin/_components/AdminQobiq.tsx, Belgi.tsx, StatKarta.tsx, AdminJadval.tsx, AdminSahifa.tsx, app/_components/KirishDarvozasi.tsx)
+- 2026-10-05: A1 boshqaruv paneli — to'rt raqam (bugungi yangi, kunlik faol, bugungi skanlar, faol PRO) va 7 kun ichida tugaydigan obunalar jonli ma'lumotda, takliflar/so'rovlar/jurnal "—" bilan joyida (lib/services/admin.ts, app/admin/page.tsx, app/admin/loading.tsx)
+- 2026-10-05: /api/admin/men, /boshqaruv, /kirish, /chiqish qo'shildi, har biri rolni bazadan qayta tekshiradi
+- 2026-10-05: admin paneli tokenlari qo'shildi — "siyoh" ko'rinishdagi Tugma, DESIGN.md 11-bo'lim "Admin paneli" (app/globals.css, DESIGN.md, app/_components/Tugma.tsx)
+- 2026-10-05: BotFather'da /setdomain nutrilife-khaki.vercel.app bajarildi, Login Widget shu domenga bog'landi
 
 ## Handoff
 
 Admin paneli ekranlari (A0-A12) uchun admin-tz.md tayyor, boshlashda shundan foydalan.
+
+Lokal dev'da /admin "ruxsat yo'q" ko'rsatadi — dev zaxirasi birinchi hisobni oddiy foydalanuvchi qilib kiritadi, admin
+ikkinchi yaratilgan hisobda; /admin sinovi uchun admin sessiyasini qo'lda berish kerak. A1 dagi takliflar/so'rovlar
+navbati va amallar jurnali keyingi tasklarda ulanadi (jurnal uchun `admin_amallari` jadvali 3-taskda qo'shiladi).
+Keyingi task — 2 (Foydalanuvchilar ro'yxati A2/A3, prototip ui_kits/admin/screens-users.jsx).
 
 ---
 

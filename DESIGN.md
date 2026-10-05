@@ -239,7 +239,32 @@ Har ekran topshirilishidan oldin:
 - [ ] Ekranda bitta lime to'ldirilgan element va bitta asosiy tugma
 - [ ] Kichik telefonda (360px) tekshirildi
 
-## 10. Ochiq savol
+## 11. Admin paneli
+
+`/admin` — alohida desktop sahifa, Telegram Mini App ichida emas (admin-tz.md §1). Ranglar,
+shriftlar va radiuslar ilovaniki bilan bir xil, faqat o'lchamlar yangi (prototip
+`tokens/admin.css`):
+
+| Token | Qiymat | Qayerda |
+|---|---|---|
+| `--admin-yon` | 240px | Chap panel eni |
+| `--admin-ichki` | 32px | Sahifa ichki bo'shlig'i |
+| `--admin` (container) | 1280px | Kontent eng katta eni |
+| `--text-stat` | 24/1.15, 600, display | Statistika kartasidagi raqam |
+
+- Asosiy tugma panelda **siyoh** to'ldiruvli (`--siyoh` / `--on-siyoh`) — lime faqat
+  foydalanuvchi ilovasida.
+- Chap panelning faol bandi `--fon` fonli, matni `--siyoh`; nofaol — `--matn-2`. Navbat
+  soni lime belgida (`--aksent` / `--aksent-matn`), nol bo'lsa chizilmaydi.
+- Statistika kartasi: `--karta` fon, 1px `--chegara`, radius 20, 16px ichki bo'shliq; yorliq
+  izoh shriftida `--matn-2`, raqam `--text-stat`, tabular raqamlar.
+- Jadval: ustun sarlavhalari 13/500 `--matn-2`, qatorlar 15/400, qator chegarasi 1px
+  `--chegara`, bosiladigan qator ustida `--fon`.
+- 1024px dan tor ekranda chap panel yuqoridagi aylantiriladigan tasmaga aylanadi, jadval
+  yonlama aylanadi — telefonda faqat o'qish uchun.
+- Panel interfeysi faqat o'zbekcha; kontent (taom, retsept) uch tilda kiritiladi.
+
+## 12. Ochiq savol
 
 Fon `#F2F2F3` sovuq kulrang. O'zbek taomi rasmlari (osh, somsa, non — sarg'ish va iliq)
 sovuq fonda kir ko'rinishi mumkin. S2'da haqiqiy rasmlar bilan tekshiriladi; kerak bo'lsa

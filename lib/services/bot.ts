@@ -98,6 +98,23 @@ export async function menyuTugmasiniOrnat(chatId: number, til: Til): Promise<voi
   }
 }
 
+let usernameSorovi: Promise<string | null> | null = null;
+
+/**
+ * Bot username'i (`getMe`) — admin paneli A0 dagi Login Widget uchun. Jarayon davomida bir
+ * marta so'raladi; token yo'q yoki Bot API javob bermasa null (widget chizilmaydi, sabab logda).
+ */
+export function botUsername(): Promise<string | null> {
+  usernameSorovi ??= botSorov<{ username?: string }>("getMe")
+    .then((bot) => bot.username ?? null)
+    .catch((xato: unknown) => {
+      console.error("Bot: username olinmadi —", xato instanceof Error ? xato.message : xato);
+      usernameSorovi = null;
+      return null;
+    });
+  return usernameSorovi;
+}
+
 /**
  * Hisob o'chirilgach (F5) bot orqali bitta xabar — prototipdagi va'da. Hisob allaqachon yo'q,
  * shuning uchun Telegram ID va til tashqaridan keladi. Xato o'chirishni buzmaydi: token yo'q

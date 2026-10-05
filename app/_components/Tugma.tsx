@@ -7,7 +7,8 @@ type Korinish =
   | "uchinchi"
   | "uchinchiXavfli"
   | "xavfli"
-  | "pro";
+  | "pro"
+  | "siyoh";
 
 // DESIGN.md, 6-bo'lim: balandligi 52, radius 999, bosilganda scale(0.98).
 const USLUB: Record<Korinish, string> = {
@@ -22,6 +23,9 @@ const USLUB: Record<Korinish, string> = {
   xavfli: "border border-chegara bg-transparent text-xato",
   // PRO'ga chaqiruvchi tugma — o'z gradiyentida (DESIGN.md, "PRO ranglari").
   pro: "bg-(image:--pro-gradient) text-(--pro-fg)",
+  // Admin panelining asosiy tugmasi — siyoh to'ldiruv (prototip tokens/admin.css: lime faqat
+  // foydalanuvchi ilovasida, DESIGN.md 11-bo'lim).
+  siyoh: "bg-siyoh text-on-siyoh",
 };
 
 const UMUMIY =
