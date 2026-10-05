@@ -1,79 +1,18 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
 import { Tugma } from "@/app/_components/Tugma";
-
-declare global {
-  interface Window {
-    /** Login Widget `data-onauth` chaqiradigan global funksiya. */
-    nutriliferAdminKirish?: (malumot: unknown) => void;
-  }
-}
 
 type Holat = "sessiyasiz" | "ruxsat_yoq" | "xato";
 
 /**
- * A0 — kirish va rad javobi (admin-tz.md). Telegram Login Widget tugmasi, boshqa hech narsa;
- * rad javobida panel tuzilishi va bo'lim nomlari ko'rsatilmaydi. Widget — telegram.org
- * skripti, bot username'i serverdan keladi; BotFather'da sayt domeni (`/setdomain`) bog'langan
- * bo'lishi shart, aks holda tugma chizilmaydi.
+ * A0 — rad javobi (admin-tz.md). Panel Telegram ichida ochiladi, kirish Mini App darvozasi
+ * orqali initData bilan o'zi bo'ladi (DECISIONS 2026-10-05) — alohida kirish tugmasi yo'q.
+ * Rad javobida panel tuzilishi va bo'lim nomlari ko'rsatilmaydi. "sessiyasiz" — sahifa
+ * kirishdan oldin chizilgan: darvoza kirgach uni qayta so'raydi, ungacha parda ostida.
  */
-export function AdminKirish({ holat: boshlangich, bot }: { holat: Holat; bot: string | null }) {
+export function AdminKirish({ holat }: { holat: Holat }) {
   const router = useRouter();
-  const [holat, setHolat] = useState<Holat | "kirilmoqda">(boshlangich);
-  const [kirishXatosi, setKirishXatosi] = useState<string | null>(null);
-  const widgetJoyi = useRef<HTMLDivElement>(null);
-
-  const widgetKerak = holat === "sessiyasiz" && bot !== null;
-
-  useEffect(() => {
-    if (!widgetKerak || !widgetJoyi.current) return;
-    const joy = widgetJoyi.current;
-
-    window.nutriliferAdminKirish = async (malumot: unknown) => {
-      setHolat("kirilmoqda");
-      setKirishXatosi(null);
-      try {
-        const javob = await fetch("/api/admin/kirish", {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({ malumot }),
-        });
-        if (javob.ok) {
-          router.refresh();
-          return;
-        }
-        if (javob.status === 403) {
-          setHolat("ruxsat_yoq");
-          return;
-        }
-        setHolat("sessiyasiz");
-        setKirishXatosi(
-          javob.status === 401
-            ? "Telegram orqali kirish tasdiqlanmadi. Qayta urinib ko'ring"
-            : "Kirib bo'lmadi. Qayta urinib ko'ring",
-        );
-      } catch {
-        setHolat("sessiyasiz");
-        setKirishXatosi("Kirib bo'lmadi. Internetni tekshirib, qayta urinib ko'ring");
-      }
-    };
-
-    const skript = document.createElement("script");
-    skript.src = "https://telegram.org/js/telegram-widget.js?22";
-    skript.async = true;
-    skript.dataset.telegramLogin = bot;
-    skript.dataset.size = "large";
-    skript.dataset.radius = "26";
-    skript.dataset.onauth = "nutriliferAdminKirish(user)";
-    joy.replaceChildren(skript);
-
-    return () => {
-      joy.replaceChildren();
-      delete window.nutriliferAdminKirish;
-    };
-  }, [widgetKerak, bot, router]);
 
   return (
     <main className="flex min-h-dvh items-center justify-center bg-fon p-4" data-admin-page="">
@@ -83,17 +22,7 @@ export function AdminKirish({ holat: boshlangich, bot }: { holat: Holat; bot: st
         {holat === "ruxsat_yoq" ? (
           <>
             <p className="text-asosiy">{"Bu sahifaga ruxsatingiz yo'q"}</p>
-            <p className="text-izoh text-matn-2">
-              Panel faqat admin hisobiga ochiladi. Boshqa hisob bilan kirish uchun avval chiqing.
-            </p>
-            <Tugma
-              korinish="ikkilamchi"
-              onClick={() => {
-                void fetch("/api/admin/chiqish", { method: "POST" }).finally(() => router.refresh());
-              }}
-            >
-              Chiqish
-            </Tugma>
+            <p className="text-izoh text-matn-2">Panel faqat admin hisobiga ochiladi.</p>
           </>
         ) : holat === "xato" ? (
           <>
@@ -104,28 +33,7 @@ export function AdminKirish({ holat: boshlangich, bot }: { holat: Holat; bot: st
             </Tugma>
           </>
         ) : (
-          <>
-            <span className="text-izoh text-matn-2">/admin</span>
-            {holat === "kirilmoqda" ? (
-              <Tugma korinish="siyoh" yuklanmoqda>
-                Kirilmoqda
-              </Tugma>
-            ) : bot === null ? (
-              <p className="text-izoh text-xato">
-                Bot sozlanmagan — Telegram orqali kirish hozircha ishlamaydi.
-              </p>
-            ) : (
-              <div ref={widgetJoyi} className="flex min-h-11 w-full justify-center" />
-            )}
-            {kirishXatosi && (
-              <p role="alert" className="text-izoh text-xato">
-                {kirishXatosi}
-              </p>
-            )}
-            <span className="text-izoh text-matn-2">
-              Telegram orqali kirish · server imzoni tekshiradi va rolni qaraydi
-            </span>
-          </>
+          <span className="text-izoh text-matn-2">Kirilmoqda</span>
         )}
       </div>
     </main>

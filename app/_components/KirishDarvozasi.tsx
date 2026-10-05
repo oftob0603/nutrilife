@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState, useTransition } from "react";
 import {
   initDataBilanKirish,
@@ -77,20 +77,12 @@ function Parda({ children }: { children: React.ReactNode }) {
 }
 
 /**
- * Admin paneli (`/admin`) Telegram'dan tashqarida, brauzerda ochiladi — initData yo'q, o'z
- * darvozasi bor (app/admin/layout.tsx: Login Widget). Mini App darvozasi unga aralashmaydi.
- */
-export function KirishDarvozasi({ children }: { children: React.ReactNode }) {
-  const adminSahifasi = usePathname().startsWith("/admin");
-  return adminSahifasi ? <>{children}</> : <MiniAppDarvozasi>{children}</MiniAppDarvozasi>;
-}
-
-/**
  * Ilova ochilganda Telegram initData bilan kiradi va sessiya cookie'sini oladi; ungacha
  * sahifa kutish pardasi ostida turadi. Birinchi kirishda sahifa sessiyasiz chizilgan
- * bo'ladi — kirgach server ma'lumoti qayta so'raladi.
+ * bo'ladi — kirgach server ma'lumoti qayta so'raladi. Admin paneli (`/admin`) ham shu
+ * darvozadan o'tadi — u Telegram ichida Mini App sifatida ochiladi (DECISIONS 2026-10-05).
  */
-function MiniAppDarvozasi({ children }: { children: React.ReactNode }) {
+export function KirishDarvozasi({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { t } = useTarjima();
   const tilniOrnat = useTilniOrnat();

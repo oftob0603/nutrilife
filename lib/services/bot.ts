@@ -4,6 +4,7 @@
 
 import { tarjimon, tilniOqi, TILLAR, type Tarjimon, type Til } from "../lugat/tarjima.ts";
 import { BotApiXatosi, botSorov, tugmaniTasdiqla, xabarniTahrirla, xabarYubor } from "./bot-api.ts";
+import { telegramBoyichaAdmin } from "./admin.ts";
 import { botTiliniSaqlash, telegramIdniOl, telegramTili } from "./foydalanuvchilar.ts";
 
 /** Telegram `User` ning bizga kerak qismi. */
@@ -98,22 +99,11 @@ export async function menyuTugmasiniOrnat(chatId: number, til: Til): Promise<voi
   }
 }
 
-let usernameSorovi: Promise<string | null> | null = null;
-
 /**
- * Bot username'i (`getMe`) — admin paneli A0 dagi Login Widget uchun. Jarayon davomida bir
- * marta so'raladi; token yo'q yoki Bot API javob bermasa null (widget chizilmaydi, sabab logda).
+ * Admin paneliga kirish buyrug'i (S6, DECISIONS 2026-10-05). Menyuga qo'shilmaydi va
+ * hujjatlarda yozilmaydi — faqat egasi biladi; admin bo'lmaganga javob yo'q.
  */
-export function botUsername(): Promise<string | null> {
-  usernameSorovi ??= botSorov<{ username?: string }>("getMe")
-    .then((bot) => bot.username ?? null)
-    .catch((xato: unknown) => {
-      console.error("Bot: username olinmadi —", xato instanceof Error ? xato.message : xato);
-      usernameSorovi = null;
-      return null;
-    });
-  return usernameSorovi;
-}
+const ADMIN_BUYRUGI = "/add26";
 
 /**
  * Hisob o'chirilgach (F5) bot orqali bitta xabar — prototipdagi va'da. Hisob allaqachon yo'q,
@@ -181,6 +171,17 @@ async function xabarniQaytaIshla(xabar: BotXabar): Promise<void> {
 
   if (xabar.text === "/start" || xabar.text?.startsWith("/start ")) {
     await xabarYubor(xabar.chat.id, TIL_SAVOLI, { reply_markup: TIL_TUGMALARI });
+    return;
+  }
+
+  // Admin paneli Telegram ichida Mini App sifatida ochiladi, kirish initData bilan o'zi bo'ladi.
+  if (xabar.text === ADMIN_BUYRUGI && xabar.from) {
+    const admin = await telegramBoyichaAdmin(BigInt(xabar.from.id));
+    const manzil = ilovaManzili();
+    if (!admin || !manzil) return;
+    await xabarYubor(xabar.chat.id, "Admin paneli", {
+      reply_markup: { inline_keyboard: [[{ text: "Panelni ochish", web_app: { url: `${manzil}/admin` } }]] },
+    });
     return;
   }
 

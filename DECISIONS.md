@@ -595,8 +595,8 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-09-23 · W1 kartalari ostida faqat "Ommaviy oferta" havolasi; "Avtomatik yechish yo'q..." matni va "Foydalanish shartlari · Maxfiylik siyosati" havolalari olib tashlandi.**
 *Sabab:* Foydalanuvchi qarori — obuna admin orqali sotib olinadi, avtomatik yechish haqidagi izoh ortiqcha; to'lov shartlari ofertada. Shartlar va maxfiylik Profil'da qoladi.
 
-**2026-10-05 · Admin paneliga kirish Telegram Login Widget orqali, `/admin` alohida brauzer sahifasi; admin bo'lmagan foydalanuvchiga sessiya berilmaydi va yangi hisob yaratilmaydi.**
-*Sabab:* admin-tz.md dagi ochiq savol, foydalanuvchi tasdiqladi (2026-10-05).
+**2026-10-05 · Admin paneli Telegram ichida Mini App sifatida ochiladi, kirish ilovadagi darvoza orqali initData bilan; bot `/add26` yashirin buyrug'i "Panelni ochish" tugmasini beradi, admin bo'lmaganga javob yo'q. Telegram Desktop'da to'liq oyna (requestFullscreen), telefonda oddiy ko'rinish. admin-tz.md §1 "alohida desktop sahifa" va Login Widget bekor.**
+*Sabab:* Foydalanuvchi qarori 2026-10-05: Login Widget telefon raqami va tashqi skript talab qiladi, Mini App kirish allaqachon bor.
 
 **2026-10-05 · A1 boshqaruv paneli prototip tuzilishida to'liq chiziladi, takliflar navbati, so'rovlar navbati va admin amallari jurnali o'z tasklari kelmaguncha "—" ko'rsatadi.**
 *Sabab:* Foydalanuvchi qarori.

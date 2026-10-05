@@ -8,11 +8,15 @@ type Hodisa = "themeChanged" | "safeAreaChanged" | "contentSafeAreaChanged";
 type WebApp = {
   initData: string;
   version: string;
+  /** "android", "ios", "tdesktop", "macos", "web", "weba", "webk" va h.k. */
+  platform: string;
   colorScheme: "light" | "dark";
   isVersionAtLeast(versiya: string): boolean;
   ready(): void;
   expand(): void;
   close(): void;
+  requestFullscreen(): void;
+  exitFullscreen(): void;
   disableVerticalSwipes(): void;
   openTelegramLink(url: string): void;
   setHeaderColor(rang: string): void;
@@ -81,6 +85,20 @@ export function ranglarniTenglashtir() {
     sdk.setBackgroundColor(fon);
   }
   if (sdk.isVersionAtLeast("7.10")) sdk.setBottomBarColor(fon);
+}
+
+const DESKTOP_PLATFORMALAR = new Set(["tdesktop", "macos"]);
+
+/**
+ * Admin paneli uchun: Telegram Desktop'da Mini App oynasini to'liq ekranga kengaytiradi
+ * (Bot API 8.0) — chap panel va jadvallar sig'adi. Telefonda chaqirilmaydi: ilovadagidek
+ * oddiy ko'rinish qoladi (foydalanuvchi qarori 2026-10-05). Qaytgan funksiya chiqaradi.
+ */
+export function desktopdaToliqEkran(): () => void {
+  const sdk = webApp();
+  if (!sdk || !DESKTOP_PLATFORMALAR.has(sdk.platform) || !sdk.isVersionAtLeast("8.0")) return () => {};
+  sdk.requestFullscreen();
+  return () => sdk.exitFullscreen();
 }
 
 /** Mini App'ni yopib, foydalanuvchini bot chatiga qaytaradi. Telegram'dan tashqarida false. */

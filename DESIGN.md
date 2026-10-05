@@ -241,9 +241,10 @@ Har ekran topshirilishidan oldin:
 
 ## 11. Admin paneli
 
-`/admin` — alohida desktop sahifa, Telegram Mini App ichida emas (admin-tz.md §1). Ranglar,
-shriftlar va radiuslar ilovaniki bilan bir xil, faqat o'lchamlar yangi (prototip
-`tokens/admin.css`):
+`/admin` — Telegram ichida Mini App sifatida ochiladi (bot `/add26` → "Panelni ochish",
+DECISIONS 2026-10-05; admin-tz.md §1 dagi "alohida desktop sahifa" shu bilan almashdi).
+Telefonda tasma ko'rinishi, Telegram Desktop'da to'liq oyna va chap panel. Ranglar, shriftlar
+va radiuslar ilovaniki bilan bir xil, faqat o'lchamlar yangi (prototip `tokens/admin.css`):
 
 | Token | Qiymat | Qayerda |
 |---|---|---|

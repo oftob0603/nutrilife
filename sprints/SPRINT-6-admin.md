@@ -40,10 +40,15 @@ avtomatik takroriy to'lov.
 - 2026-10-05: /api/admin/men, /boshqaruv, /kirish, /chiqish qo'shildi, har biri rolni bazadan qayta tekshiradi
 - 2026-10-05: admin paneli tokenlari qo'shildi — "siyoh" ko'rinishdagi Tugma, DESIGN.md 11-bo'lim "Admin paneli" (app/globals.css, DESIGN.md, app/_components/Tugma.tsx)
 - 2026-10-05: BotFather'da /setdomain nutrilife-khaki.vercel.app bajarildi, Login Widget shu domenga bog'landi
+- 2026-10-05: admin paneliga kirish usuli Mini App'ga o'zgartirildi — bot /add26 yashirin buyrug'i "Panelni ochish" tugmasini beradi, /admin ilovadagi Mini App darvozasidan initData bilan avtomatik kiradi, admin bo'lmasa "ruxsat yo'q" (lib/services/bot.ts, app/_components/KirishDarvozasi.tsx, app/admin/_components/AdminKirish.tsx, app/admin/layout.tsx, app/admin/yukla.ts)
+- 2026-10-05: Telegram Login Widget va unga bog'liq /api/admin/kirish, /api/admin/chiqish, lib/services/telegram-login.ts olib tashlandi; Desktop/macOS'da Bot API 8.0+ bo'lsa to'liq oyna (requestFullscreen), telefonda tasma ko'rinishi (lib/telegram.ts, app/admin/_components/AdminQobiq.tsx)
 
 ## Handoff
 
 Admin paneli ekranlari (A0-A12) uchun admin-tz.md tayyor, boshlashda shundan foydalan.
+
+Panelga kirish — botga /add26 → "Panelni ochish"; Desktop'da to'liq oyna; deploy'dan keyin telefon va Telegram
+Desktop'da sinov kutilmoqda.
 
 Lokal dev'da /admin "ruxsat yo'q" ko'rsatadi — dev zaxirasi birinchi hisobni oddiy foydalanuvchi qilib kiritadi, admin
 ikkinchi yaratilgan hisobda; /admin sinovi uchun admin sessiyasini qo'lda berish kerak. A1 dagi takliflar/so'rovlar

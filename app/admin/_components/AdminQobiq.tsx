@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useState, useSyncExternalStore } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useSyncExternalStore } from "react";
 import { mavzugaObuna, mavzuniOqi, mavzuniTanla, tizimgaObuna, tizimQorongimi } from "@/lib/mavzu";
+import { desktopdaToliqEkran } from "@/lib/telegram";
 import { Belgi, type BelgiNomi } from "./Belgi";
 
 /**
@@ -44,21 +45,13 @@ function mavzuniKuzat(xabarBer: () => void): () => void {
  */
 export function AdminQobiq({ ism, children }: { ism: string | null; children: React.ReactNode }) {
   const yol = usePathname();
-  const router = useRouter();
   const qorongi = useSyncExternalStore(mavzuniKuzat, qorongimi, () => false);
-  const [chiqilmoqda, setChiqilmoqda] = useState(false);
+
+  // Telegram Desktop'da panel to'liq oynada — chap panel ko'rinadi; telefonda o'zgarmaydi.
+  useEffect(() => desktopdaToliqEkran(), []);
 
   function mavzuniAlmashtir() {
     mavzuniTanla(qorongi ? "yorug" : "qorongi");
-  }
-
-  async function chiq() {
-    setChiqilmoqda(true);
-    try {
-      await fetch("/api/admin/chiqish", { method: "POST" });
-    } finally {
-      router.refresh();
-    }
   }
 
   const tugmaSinfi =
@@ -118,16 +111,6 @@ export function AdminQobiq({ ism, children }: { ism: string | null; children: Re
           <span className="hidden min-w-0 flex-1 truncate text-izoh text-matn-3 lg:block">
             {ism ?? "admin"} · admin
           </span>
-          <button
-            type="button"
-            onClick={() => void chiq()}
-            disabled={chiqilmoqda}
-            title="Chiqish"
-            aria-label="Chiqish"
-            className="grid size-11 shrink-0 place-items-center rounded-chip text-matn-2 disabled:opacity-40"
-          >
-            <Belgi nomi="log-out" />
-          </button>
         </div>
       </nav>
       <main className="min-w-0 flex-1">{children}</main>

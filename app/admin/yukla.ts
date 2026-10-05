@@ -21,16 +21,6 @@ export async function adminHolatiniYukla(): Promise<AdminHolati> {
   }
 }
 
-/** A0 Login Widget uchun bot username'i; olib bo'lmasa null — widget chizilmaydi. */
-export async function botniYukla(): Promise<string | null> {
-  try {
-    const javob = await serverdanApi("/api/admin/kirish");
-    return javob.ok ? ((await javob.json()) as { bot: string | null }).bot : null;
-  } catch {
-    return null;
-  }
-}
-
 /** A1 raqamlari; olib bo'lmasa null — sahifa xato holatini ko'rsatadi. */
 export async function boshqaruvniYukla(): Promise<Boshqaruv | null> {
   try {
