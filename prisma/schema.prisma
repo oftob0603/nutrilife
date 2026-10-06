@@ -33,9 +33,59 @@ model Taom {
   porsiyalar    Int[]
   yaratilgan    DateTime @default(now())
 
-  yozuvlar OvqatYozuvi[]
+  yozuvlar  OvqatYozuvi[]
+  takliflar TaomTaklifi[]
 
   @@map("taomlar")
+}
+
+/// Taom takliflari navbati (PRD.md 7-bo'lim, admin-tz.md A4/A5, DECISIONS 2026-09-13): foydalanuvchi
+/// E7'da AI natijasini tuzatib tasdiqlasa — AI aytgani va foydalanuvchi yozgani yonma-yon shu
+/// yerga tushadi, admin ko'rib chiqadi. Umumiy `taomlar` bazasi faqat admin tasdig'i bilan
+/// o'zgaradi. Hisob o'chsa qator qoladi, bog'lanishlar bo'shaydi; rasm esa hisob bilan ketadi
+/// (`rasmlar` cascade) — shaxsiy ma'lumot navbatda qolmaydi.
+model TaomTaklifi {
+  id              String   @id @default(uuid())
+  foydalanuvchiId String?  @map("foydalanuvchi_id")
+  ovqatYozuviId   String?  @map("ovqat_yozuvi_id")
+  rasmId          String?  @map("rasm_id")
+  /// Tasdiqdan keyin: yangi yaratilgan yoki birlashtirilgan taom.
+  taomId          String?  @map("taom_id")
+  adminId         String?  @map("admin_id")
+
+  /// AI natijasi (lib/services/skan-hisob.ts `SkanNatija`): 100 g uchun qiymatlar.
+  aiTaomNomi      String   @map("ai_taom_nomi")
+  aiPorsiyaGramm  Int      @map("ai_porsiya_gramm")
+  aiKaloriya100   Float    @map("ai_kaloriya100")
+  aiOqsil100      Float    @map("ai_oqsil100")
+  aiYog100        Float    @map("ai_yog100")
+  aiUglevod100    Float    @map("ai_uglevod100")
+
+  /// Foydalanuvchi tasdiqlagan qiymatlar — kiritilgan porsiya uchun (yozuvdagi bilan bir xil).
+  taomNomi        String   @map("taom_nomi")
+  porsiyaGramm    Int      @map("porsiya_gramm")
+  kaloriya        Float
+  oqsil           Float
+  yog             Float
+  uglevod         Float
+  /// Foydalanuvchi interfeysi tili — nom shu tilda yozilgan (A5 shu til maydonini oldindan to'ldiradi).
+  til             String   @default("uz")
+
+  /// "yangi", "korilmoqda", "tasdiqlandi", "rad_etildi" (lib/services/taom-taklif-hisob.ts).
+  holat           String   @default("yangi")
+  radSababi       String?  @map("rad_sababi")
+  /// Admin qaror bergan vaqt.
+  korilgan        DateTime?
+  yaratilgan      DateTime @default(now())
+
+  foydalanuvchi Foydalanuvchi? @relation("taomTakliflari", fields: [foydalanuvchiId], references: [id], onDelete: SetNull)
+  ovqatYozuvi   OvqatYozuvi?   @relation(fields: [ovqatYozuviId], references: [id], onDelete: SetNull)
+  rasm          Rasm?          @relation(fields: [rasmId], references: [id], onDelete: SetNull)
+  taom          Taom?          @relation(fields: [taomId], references: [id], onDelete: SetNull)
+  admin         Foydalanuvchi? @relation("taomTaklifQarorlari", fields: [adminId], references: [id], onDelete: SetNull)
+
+  @@index([holat, yaratilgan])
+  @@map("taom_takliflari")
 }
 
 /// Jurnalga tushgan har bir ovqat (PRD.md, 7-bo'lim). Taom nomi va raqamlari yozuv
@@ -64,6 +114,7 @@ model OvqatYozuvi {
   foydalanuvchi Foydalanuvchi @relation(fields: [foydalanuvchiId], references: [id], onDelete: Cascade)
   taom         Taom?         @relation(fields: [taomId], references: [id], onDelete: SetNull)
   rasmlar       Rasm[]
+  takliflar     TaomTaklifi[]
 
   @@index([foydalanuvchiId, vaqt])
   @@map("ovqat_yozuvlari")
@@ -112,6 +163,8 @@ model Foydalanuvchi {
   hodisalar       Hodisa[]
   adminAmallari   AdminAmali[] @relation("adminAmallari")
   amallar         AdminAmali[] @relation("foydalanuvchiAmallari")
+  taomTakliflari  TaomTaklifi[] @relation("taomTakliflari")
+  taklifQarorlari TaomTaklifi[] @relation("taomTaklifQarorlari")
 
   @@map("foydalanuvchilar")
 }
@@ -191,6 +244,7 @@ model Rasm {
 
   foydalanuvchi Foydalanuvchi @relation(fields: [foydalanuvchiId], references: [id], onDelete: Cascade)
   ovqatYozuvi   OvqatYozuvi?  @relation(fields: [ovqatYozuviId], references: [id], onDelete: SetNull)
+  takliflar     TaomTaklifi[]
 
   @@index([foydalanuvchiId])
   @@index([ovqatYozuviId])

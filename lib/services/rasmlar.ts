@@ -93,3 +93,12 @@ export async function rasmHavolasi(foydalanuvchiId: string, id: string): Promise
   });
   return rasm ? oqishHavolasi(rasm.kalit) : null;
 }
+
+/**
+ * Admin uchun rasm havolasi — egasiga qaramay (A4/A5 takliflar navbati; rasm panelda faqat shu
+ * yerda ko'rinadi, admin-tz.md §4). Chaqiruvchi admin ekanini oldin tekshiradi.
+ */
+export async function rasmHavolasiAdmin(id: string): Promise<string | null> {
+  const rasm = await db.rasm.findUnique({ where: { id }, select: { kalit: true } });
+  return rasm ? oqishHavolasi(rasm.kalit) : null;
+}

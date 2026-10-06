@@ -6,9 +6,12 @@ import type {
   FoydalanuvchilarSahifasi,
 } from "@/lib/services/admin";
 import type { FoydalanuvchiFiltri } from "@/lib/services/admin-hisob";
+import type { TaklifFiltri } from "@/lib/services/taom-taklif-hisob";
+import type { TaklifKartasi, TakliflarSahifasi } from "@/lib/services/taom-takliflari";
+import type { Navbatlar } from "./_components/AdminQobiq";
 
 export type AdminHolati =
-  | { holat: "admin"; ism: string | null }
+  | { holat: "admin"; ism: string | null; navbatlar: Navbatlar }
   | { holat: "sessiyasiz" }
   | { holat: "ruxsat_yoq" }
   | { holat: "xato" };
@@ -20,8 +23,11 @@ export async function adminHolatiniYukla(): Promise<AdminHolati> {
     if (javob.status === 401) return { holat: "sessiyasiz" };
     if (javob.status === 403) return { holat: "ruxsat_yoq" };
     if (!javob.ok) return { holat: "xato" };
-    const { admin } = (await javob.json()) as { admin: { ism: string | null } };
-    return { holat: "admin", ism: admin.ism };
+    const { admin, navbatlar } = (await javob.json()) as {
+      admin: { ism: string | null };
+      navbatlar?: Partial<Navbatlar>;
+    };
+    return { holat: "admin", ism: admin.ism, navbatlar: { takliflar: navbatlar?.takliflar ?? 0 } };
   } catch {
     return { holat: "xato" };
   }
@@ -66,5 +72,30 @@ export async function boshqaruvniYukla(): Promise<BoshqaruvSahifasi | null> {
     return javob.ok ? ((await javob.json()) as BoshqaruvSahifasi) : null;
   } catch {
     return null;
+  }
+}
+
+/** A4 ro'yxati; olib bo'lmasa null — sahifa xato holatini ko'rsatadi. */
+export async function takliflarniYukla(holat: TaklifFiltri, sahifa: number): Promise<TakliflarSahifasi | null> {
+  const params = new URLSearchParams({ holat, sahifa: String(sahifa) });
+  try {
+    const javob = await serverdanApi(`/api/admin/takliflar?${params}`);
+    return javob.ok ? ((await javob.json()) as TakliflarSahifasi) : null;
+  } catch {
+    return null;
+  }
+}
+
+/** A5 kartasi: topilmasa "topilmadi", olib bo'lmasa "xato". */
+export async function taklifniYukla(
+  id: string,
+): Promise<{ karta: TaklifKartasi } | { holat: "topilmadi" | "xato" }> {
+  try {
+    const javob = await serverdanApi(`/api/admin/takliflar/${encodeURIComponent(id)}`);
+    if (javob.status === 404) return { holat: "topilmadi" };
+    if (!javob.ok) return { holat: "xato" };
+    return (await javob.json()) as { karta: TaklifKartasi };
+  } catch {
+    return { holat: "xato" };
   }
 }

@@ -25,9 +25,9 @@ const JURNAL_USTUNLARI = [
 ];
 
 /**
- * A1 — boshqaruv paneli. To'rt raqam, "7 kun ichida tugaydigan obunalar" va admin amallari
- * jurnali jonli; takliflar va so'rovlar navbati o'z tasklari (S6 4- va 9-task) bilan ulanadi —
- * joyi prototipdagidek turadi.
+ * A1 — boshqaruv paneli. To'rt raqam, takliflar navbati, "7 kun ichida tugaydigan obunalar" va
+ * admin amallari jurnali jonli; so'rovlar navbati o'z taski (S6 9-task) bilan ulanadi — joyi
+ * prototipdagidek turadi.
  */
 export default async function BoshqaruvSahifasi() {
   const sahifa = await boshqaruvniYukla();
@@ -88,7 +88,12 @@ export default async function BoshqaruvSahifasi() {
       <section className="flex flex-col gap-3">
         <h2 className="text-karta-sarlavha">Ish navbatlari</h2>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <StatKarta nomi="Tasdiq kutayotgan takliflar" belgi="inbox" qiymat="—" izoh="Navbat hali ulanmagan" />
+          <StatKarta
+            nomi="Tasdiq kutayotgan takliflar"
+            belgi="inbox"
+            qiymat={boshqaruv ? son(boshqaruv.kutayotganTakliflar) : null}
+            href="/admin/takliflar"
+          />
           <StatKarta nomi="Ko'rilmagan so'rovlar" belgi="message-square-warning" qiymat="—" izoh="Navbat hali ulanmagan" />
           <StatKarta
             nomi="7 kun ichida tugaydigan obunalar"

@@ -271,6 +271,8 @@ function Tasdiq({
           porsiya: `${miqdor} g`,
           manba: natija ? "ai" : "qolda",
           rasmId,
+          // AI'ning asl javobi — foydalanuvchi tuzatgan bo'lsa server admin navbatiga qo'yadi (S6).
+          aiNatija: natija,
         }),
       });
       if (!javob.ok) throw new Error("Saqlanmadi");

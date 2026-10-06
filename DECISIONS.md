@@ -607,6 +607,9 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-10-06 · Admin bergan obuna `obunalar.manba = qolda` bilan belgilanadi (tanlangan tarif saqlanadi), `tarif = qolda` faqat tarifsiz muddat (uzaytirish, boshqa muddat) uchun; har admin amali `admin_amallari` jurnaliga yoziladi, jurnal tahrirlanmaydi. PRO olib qo'yilganda qatorlar o'chirilmaydi — tugash hozirga qisqaradi va bot xabar bosqichi oxiriga qo'yiladi.**
 *Sabab:* admin-tz.md A3 `manba = qolda` va §4 jurnal talabi; sxemada ikkalasi yo'q edi, tarix saqlanishi kerak.
 
+**2026-10-06 · Taom taklifining yagona manbai E7 (AI natijasi tuzatilganda); nom o'zgargan yoki 100 g zichligi 3 % dan ko'p farq qilsa navbatga tushadi, porsiya o'zgarishi va E10 tahriri taklif emas. Holat nomlari prototipdan: `yangi`, `korilmoqda`, `tasdiqlandi`, `rad_etildi`. Tasdiqlashda sabab so'ralmaydi (admin-tz §4 faqat PRO/bloklash/o'chirishda majburiy), rad etishda sabab bor. Tarjimani admin qo'lda kiritadi, AI taklif qilmaydi.**
+*Sabab:* mayda farqlar navbatni to'ldirmasin; admin-tz.md 6-bo'lim 4-savol hal bo'ldi.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

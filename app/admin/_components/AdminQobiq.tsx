@@ -9,12 +9,15 @@ import { Belgi, type BelgiNomi } from "./Belgi";
 
 /**
  * Chap paneldagi bo'limlar (admin-tz.md §2). `href` yo'q — bo'lim hali qurilmagan (S6 keyingi
- * tasklari): nomi ko'rinadi, bosilmaydi. `soni` — navbatda kutayotganlar, nol bo'lsa chizilmaydi.
+ * tasklari): nomi ko'rinadi, bosilmaydi. `navbat` — bo'lim yonida kutayotganlar soni
+ * (`/api/admin/men` dan), nol bo'lsa chizilmaydi.
  */
-const BOLIMLAR: readonly { nomi: string; belgi: BelgiNomi; href?: string; soni?: number }[] = [
+export type Navbatlar = { takliflar: number };
+
+const BOLIMLAR: readonly { nomi: string; belgi: BelgiNomi; href?: string; navbat?: keyof Navbatlar }[] = [
   { nomi: "Boshqaruv paneli", belgi: "layout-dashboard", href: "/admin" },
   { nomi: "Foydalanuvchilar", belgi: "users", href: "/admin/foydalanuvchilar" },
-  { nomi: "Takliflar navbati", belgi: "inbox" },
+  { nomi: "Takliflar navbati", belgi: "inbox", href: "/admin/takliflar", navbat: "takliflar" },
   { nomi: "Taomlar bazasi", belgi: "utensils" },
   { nomi: "Retseptlar", belgi: "book-open" },
   { nomi: "Statistika", belgi: "chart-line" },
@@ -43,7 +46,15 @@ function mavzuniKuzat(xabarBer: () => void): () => void {
  * chiqish; o'ngda aylanadigan kontent. 1024px dan tor ekranda panel yuqoridagi tasmaga aylanadi.
  * Mavzu ilovaniki bilan bitta (lib/mavzu.ts) — brauzer xotirasida saqlanadi.
  */
-export function AdminQobiq({ ism, children }: { ism: string | null; children: React.ReactNode }) {
+export function AdminQobiq({
+  ism,
+  navbatlar,
+  children,
+}: {
+  ism: string | null;
+  navbatlar: Navbatlar;
+  children: React.ReactNode;
+}) {
   const yol = usePathname();
   const qorongi = useSyncExternalStore(mavzuniKuzat, qorongimi, () => false);
 
@@ -69,13 +80,14 @@ export function AdminQobiq({ ism, children }: { ism: string | null; children: Re
           const faol =
             bolim.href !== undefined &&
             (yol === bolim.href || (bolim.href !== "/admin" && yol.startsWith(`${bolim.href}/`)));
+          const soni = bolim.navbat ? navbatlar[bolim.navbat] : 0;
           const ichi = (
             <>
               <Belgi nomi={bolim.belgi} />
               <span className="min-w-0 flex-1 truncate whitespace-nowrap">{bolim.nomi}</span>
-              {bolim.soni !== undefined && bolim.soni > 0 && (
+              {soni > 0 && (
                 <span className="min-w-5 rounded-full bg-aksent px-2 text-center text-belgi text-aksent-matn tabular-nums">
-                  {bolim.soni}
+                  {soni}
                 </span>
               )}
             </>

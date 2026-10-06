@@ -210,7 +210,7 @@ eksport (PDF, CSV) · ikkinchi admin qo'shish · A/B testlar.
 | 1 | Admin kirishi Telegram Login Widget bilanmi yoki panel Mini App ichida bo'lsinmi | S6'dan oldin, PRD'ga yozilishi kerak |
 | 2 | `admin_amallari` jadvali S2 migratsiyasiga qo'shilsinmi yoki S6'da alohidami | S2'dan oldin |
 | 3 | Ikkinchi admin (yordamchi) kerak bo'lsa, huquqlari cheklanadimi — masalan kontent kirita oladi, lekin o'chira olmaydi | v2 |
-| 4 | Taklif tasdiqlanganda taom nomini uch tilga admin qo'lda tarjima qiladimi yoki AI taklif qiladimi | S6 |
+| 4 | Taklif tasdiqlanganda taom nomini uch tilga admin qo'lda tarjima qiladimi yoki AI taklif qiladimi | Hal qilindi 2026-10-06: admin qo'lda kiritadi, AI taklif qilmaydi |
 | 5 | Foydalanuvchi ma'lumotini o'chirish qonun bo'yicha necha kun ichida bajarilishi shart | Huquqiy tekshiruv bilan birga (SAVALA 3-sharti) |
 
 ---
