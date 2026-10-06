@@ -1,12 +1,9 @@
-import { AdminJadval } from "./_components/AdminJadval";
+import Link from "next/link";
+import { amalNomi, kunOyVaqt, son } from "@/lib/services/admin-hisob";
+import { AdminJadval, type Qator } from "./_components/AdminJadval";
 import { AdminSahifa } from "./_components/AdminSahifa";
 import { StatKarta } from "./_components/StatKarta";
 import { boshqaruvniYukla } from "./yukla";
-
-/** "1 870" — raqamlar o'zbekcha guruhlanadi. */
-function son(qiymat: number): string {
-  return new Intl.NumberFormat("uz-Latn-UZ").format(qiymat);
-}
 
 /** "5-oktabr, dushanba" — prototipdagi sarlavha izohi, Toshkent kuni. */
 function bugunMatni(): string {
@@ -28,12 +25,35 @@ const JURNAL_USTUNLARI = [
 ];
 
 /**
- * A1 — boshqaruv paneli. To'rt raqam va "7 kun ichida tugaydigan obunalar" jonli; takliflar
- * va so'rovlar navbati hamda admin amallari jurnali o'z tasklari (S6 4-, 9- va 3-task) bilan
- * ulanadi — joyi prototipdagidek turadi.
+ * A1 — boshqaruv paneli. To'rt raqam, "7 kun ichida tugaydigan obunalar" va admin amallari
+ * jurnali jonli; takliflar va so'rovlar navbati o'z tasklari (S6 4- va 9-task) bilan ulanadi —
+ * joyi prototipdagidek turadi.
  */
 export default async function BoshqaruvSahifasi() {
-  const boshqaruv = await boshqaruvniYukla();
+  const sahifa = await boshqaruvniYukla();
+  const boshqaruv = sahifa?.boshqaruv ?? null;
+
+  // Prototip: "PRO berildi — Kamola Tosheva"; ism bosilsa foydalanuvchi kartasi ochiladi.
+  const amallar: Qator[] = (sahifa?.amallar ?? []).map((a) => ({
+    id: a.id,
+    sana: kunOyVaqt(a.vaqt),
+    kim: a.admin ?? "admin",
+    amal: (
+      <>
+        {amalNomi(a.tur)}
+        {a.foydalanuvchi && (
+          <>
+            {" — "}
+            <Link href={`/admin/foydalanuvchilar/${a.foydalanuvchi.id}`} className="underline underline-offset-2">
+              {a.foydalanuvchi.ism ?? "Ismsiz"}
+            </Link>
+          </>
+        )}
+        <span className="text-matn-2">{` · ${a.tafsilot}`}</span>
+      </>
+    ),
+    sabab: a.sabab,
+  }));
 
   return (
     <AdminSahifa sarlavha="Boshqaruv paneli" izoh={bugunMatni()}>
@@ -80,7 +100,7 @@ export default async function BoshqaruvSahifasi() {
 
       <section className="flex flex-col gap-3">
         <h2 className="text-karta-sarlavha">Oxirgi amallar</h2>
-        <AdminJadval ustunlar={JURNAL_USTUNLARI} qatorlar={[]} bosh="Hali amal yo'q" />
+        <AdminJadval ustunlar={JURNAL_USTUNLARI} qatorlar={amallar} bosh="Hali amal yo'q" />
         <p className="text-izoh text-matn-2">{"Jurnal tahrirlanmaydi va o'chirilmaydi"}</p>
       </section>
     </AdminSahifa>

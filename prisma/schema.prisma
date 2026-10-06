@@ -110,6 +110,8 @@ model Foydalanuvchi {
   skanHisoblari   SkanHisobi[]
   obunalar        Obuna[]
   hodisalar       Hodisa[]
+  adminAmallari   AdminAmali[] @relation("adminAmallari")
+  amallar         AdminAmali[] @relation("foydalanuvchiAmallari")
 
   @@map("foydalanuvchilar")
 }
@@ -236,8 +238,11 @@ model SkanHisobi {
 model Obuna {
   id              String   @id @default(uuid())
   foydalanuvchiId String   @map("foydalanuvchi_id")
-  /// "oylik", "yarim_yillik", "yillik" yoki "qolda" (admin bergan).
+  /// "oylik", "yarim_yillik", "yillik" yoki "qolda" (tarifsiz muddat — admin uzaytirgan yoki
+  /// boshqa muddat bergan).
   tarif           String
+  /// "tolov" yoki "qolda" (admin paneldan bergan — daromad statistikasiga kirmaydi, admin-tz.md A3).
+  manba           String   @default("tolov")
   boshlanish      DateTime @default(now())
   tugash          DateTime
   /// Bot orqali yuborilgan oxirgi muddat xabari bosqichi (lib/services/obuna-xabar-hisob.ts):
@@ -267,4 +272,28 @@ model Hodisa {
   @@unique([foydalanuvchiId, tur, sana])
   @@index([tur, sana])
   @@map("hodisalar")
+}
+
+/// Admin amallari jurnali (admin-tz.md §1, §4): ma'lumotni o'zgartiradigan har amal — kim, kimga,
+/// nima, sabab. Tahrirlanmaydi va o'chirilmaydi. Admin yoki foydalanuvchi hisobi o'chsa qator
+/// qoladi, bog'lanish bo'shaydi.
+model AdminAmali {
+  id              String   @id @default(uuid())
+  adminId         String?  @map("admin_id")
+  foydalanuvchiId String?  @map("foydalanuvchi_id")
+  /// "pro_berish", "muddat_uzaytirish", "pro_olish"; keyingi tasklar o'z turlarini qo'shadi.
+  tur             String
+  /// Jadvalda ko'rinadigan qisqa izoh: "Yillik, 2027-10-06 gacha".
+  tafsilot        String
+  sabab           String
+  eski            Json?
+  yangi           Json?
+  vaqt            DateTime @default(now())
+
+  admin         Foydalanuvchi? @relation("adminAmallari", fields: [adminId], references: [id], onDelete: SetNull)
+  foydalanuvchi Foydalanuvchi? @relation("foydalanuvchiAmallari", fields: [foydalanuvchiId], references: [id], onDelete: SetNull)
+
+  @@index([vaqt])
+  @@index([foydalanuvchiId, vaqt])
+  @@map("admin_amallari")
 }

@@ -10,11 +10,12 @@ import {
   tilMatni,
   tugashKuni,
 } from "@/lib/services/admin-hisob";
-import type { Tarif } from "@/lib/services/huquqlar";
+import type { ObunaManbai } from "@/lib/services/admin-hisob";
 import { bugunSana } from "@/lib/services/yozuv-hisob";
 import { AdminJadval } from "../../_components/AdminJadval";
 import { AdminSahifa } from "../../_components/AdminSahifa";
 import { Maydon } from "../../_components/Maydon";
+import { ObunaAmallari } from "../../_components/ObunaAmallari";
 import { XatoHolati } from "../../_components/XatoHolati";
 import { HolatYorligi, Yorliq } from "../../_components/Yorliq";
 import { foydalanuvchiniYukla } from "../../yukla";
@@ -36,18 +37,6 @@ const OBUNA_USTUNLARI = [
   { kalit: "manba", nomi: "Manba", eni: "140px" },
 ] as const;
 
-/**
- * Amallar tasmasi (prototip): PRO berish, muddat, olib qo'yish — S6 3-task; bloklash va
- * o'chirish — 8-task. Joyi prototipdagidek turadi, tugmalar o'sha tasklar kelguncha o'chiq.
- */
-const AMALLAR = [
-  { nomi: "PRO berish", korinish: "siyoh", task: "3-taskda ulanadi" },
-  { nomi: "Muddatni uzaytirish", korinish: "ikkilamchi", task: "3-taskda ulanadi" },
-  { nomi: "PRO ni olib qo'yish", korinish: "ikkilamchi", task: "3-taskda ulanadi" },
-  { nomi: "Bloklash", korinish: "ikkilamchi", task: "8-taskda ulanadi" },
-  { nomi: "Ma'lumotini o'chirish", korinish: "uchinchiXavfli", task: "8-taskda ulanadi" },
-] as const;
-
 function Karta({ sarlavha, children }: { sarlavha: string; children: React.ReactNode }) {
   return (
     <section className="flex flex-col gap-3 rounded-karta border border-karta-chegara bg-karta p-4">
@@ -58,8 +47,8 @@ function Karta({ sarlavha, children }: { sarlavha: string; children: React.React
 }
 
 /** Obuna kartasidagi "Manba": qo'lda berilgan muddat belgilanadi (daromad statistikasiga kirmaydi). */
-function manbaBelgisi(tarif: Tarif) {
-  return tarif === "qolda" ? <Yorliq>{"qo'lda berilgan"}</Yorliq> : "to'lov";
+function manbaBelgisi(manba: ObunaManbai) {
+  return manba === "qolda" ? <Yorliq>{"qo'lda berilgan"}</Yorliq> : "to'lov";
 }
 
 /** A3 — bitta foydalanuvchi kartasi (admin-tz.md): profil, obuna, faollik va amallar tasmasi. */
@@ -120,9 +109,9 @@ export default async function FoydalanuvchiSahifasi({ params }: { params: Promis
             <Maydon nomi="Tugash sanasi">
               {karta.obuna.holat === "free" ? "—" : tugashKuni(karta.obuna.tugash)}
             </Maydon>
-            <Maydon nomi="Manba">{karta.obuna.holat === "pro" ? manbaBelgisi(karta.obuna.tarif) : "—"}</Maydon>
+            <Maydon nomi="Manba">{karta.obuna.holat === "pro" ? manbaBelgisi(karta.obuna.manba) : "—"}</Maydon>
           </div>
-          {karta.obuna.holat === "pro" && karta.obuna.tarif === "qolda" && (
+          {karta.obuna.holat === "pro" && karta.obuna.manba === "qolda" && (
             <p className="text-izoh text-matn-2">{"Qo'lda berilgan obuna daromad statistikasiga kirmaydi"}</p>
           )}
           <AdminJadval
@@ -132,7 +121,7 @@ export default async function FoydalanuvchiSahifasi({ params }: { params: Promis
               tarif: tarifMatni(o.tarif),
               boshlanish: sanaMatni(o.boshlanish),
               tugash: tugashKuni(o.tugash),
-              manba: manbaBelgisi(o.tarif),
+              manba: manbaBelgisi(o.manba),
             }))}
             bosh="Obuna tarixi bo'sh"
           />
@@ -160,24 +149,11 @@ export default async function FoydalanuvchiSahifasi({ params }: { params: Promis
         />
       </Karta>
 
-      <div className="flex flex-col gap-2">
-        <div className="flex flex-wrap items-center gap-2">
-          {AMALLAR.map((amal) => (
-            <button
-              key={amal.nomi}
-              type="button"
-              disabled
-              title={amal.task}
-              className={sinf(amal.korinish, true)}
-            >
-              {amal.nomi}
-            </button>
-          ))}
-        </div>
-        <p className="text-izoh text-matn-2">
-          {"Amallar keyingi tasklarda ulanadi: obuna — 3-task, bloklash va o'chirish — 8-task."}
-        </p>
-      </div>
+      <ObunaAmallari
+        foydalanuvchiId={karta.id}
+        pro={pro}
+        tugash={karta.obuna.holat === "free" ? null : tugashKuni(karta.obuna.tugash)}
+      />
     </AdminSahifa>
   );
 }

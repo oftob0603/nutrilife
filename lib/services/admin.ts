@@ -5,9 +5,11 @@ import { db } from "../db.ts";
 import type { Prisma } from "../generated/prisma/client.ts";
 import {
   foydalanuvchiHolati,
+  manbaniOqi,
   SAHIFA_HAJMI,
   type FoydalanuvchiFiltri,
   type FoydalanuvchiHolati,
+  type ObunaManbai,
 } from "./admin-hisob.ts";
 import {
   faolMuddat,
@@ -241,6 +243,7 @@ export async function foydalanuvchilarRoyxati(
 export type ObunaQatoriKorinishi = {
   id: string;
   tarif: Tarif;
+  manba: ObunaManbai;
   boshlanish: string;
   tugash: string;
 };
@@ -264,10 +267,10 @@ export type FoydalanuvchiKartasi = {
   holat: FoydalanuvchiHolati;
   admin: boolean;
   bloklangan: string | null;
-  /** Obuna holati: FREE, faol PRO (tarif va tugash) yoki muddati tugagan (tugash). */
+  /** Obuna holati: FREE, faol PRO (joriy qatorning tarifi va manbasi, tugash) yoki muddati tugagan. */
   obuna:
     | { holat: "free" }
-    | { holat: "pro"; tarif: Tarif; tugash: string }
+    | { holat: "pro"; tarif: Tarif; manba: ObunaManbai; tugash: string }
     | { holat: "tugagan"; tugash: string };
   obunalar: ObunaQatoriKorinishi[];
   skanlar: number;
@@ -303,7 +306,7 @@ export async function foydalanuvchiKartasi(
       ...QATOR_MAYDONLARI,
       til: true,
       obunalar: {
-        select: { id: true, tarif: true, boshlanish: true, tugash: true },
+        select: { id: true, tarif: true, manba: true, boshlanish: true, tugash: true },
         orderBy: { boshlanish: "desc" },
       },
     },
@@ -322,6 +325,8 @@ export async function foydalanuvchiKartasi(
 
   const obuna = obunaHolati(h.obunalar, hozir);
   const muddat = faolMuddat(h.obunalar, hozir);
+  // Hozir ishlab turgan qator — manba shundan (faolMuddat tarifni ham shu qatordan oladi).
+  const joriy = h.obunalar.find((o) => o.boshlanish <= hozir && o.tugash > hozir);
   const rol = rolniOqi(h.rol);
   const jamiSkan = skanlar.get(id) ?? 0;
 
@@ -337,13 +342,19 @@ export async function foydalanuvchiKartasi(
     bloklangan: h.bloklangan?.toISOString() ?? null,
     obuna:
       obuna.holat === "pro" && muddat
-        ? { holat: "pro", tarif: muddat.tarif, tugash: obuna.tugash.toISOString() }
+        ? {
+            holat: "pro",
+            tarif: muddat.tarif,
+            manba: manbaniOqi(joriy?.manba ?? "tolov"),
+            tugash: obuna.tugash.toISOString(),
+          }
         : obuna.holat === "tugagan"
           ? { holat: "tugagan", tugash: obuna.tugash.toISOString() }
           : { holat: "free" },
     obunalar: h.obunalar.map((o) => ({
       id: o.id,
       tarif: tarifniOqi(o.tarif),
+      manba: manbaniOqi(o.manba),
       boshlanish: o.boshlanish.toISOString(),
       tugash: o.tugash.toISOString(),
     })),
@@ -356,4 +367,46 @@ export async function foydalanuvchiKartasi(
     oxirgiFaollik: faollik.get(id) ?? null,
     yozuvlar,
   };
+}
+
+// ——— A1 admin amallari jurnali ———
+
+export type AdminAmaliQatori = {
+  id: string;
+  vaqt: string;
+  /** Amalni bajargan admin ismi; hisobi o'chgan bo'lsa null. */
+  admin: string | null;
+  tur: string;
+  tafsilot: string;
+  sabab: string;
+  /** Kimga nisbatan: ism va karta uchun ID; hisobi o'chgan bo'lsa null. */
+  foydalanuvchi: { id: string; ism: string | null } | null;
+};
+
+/** A1 "Oxirgi amallar" — jurnaldan oxirgi 10 ta (admin-tz.md A1). */
+export async function oxirgiAmallar(soni = 10): Promise<AdminAmaliQatori[]> {
+  const amallar = await db.adminAmali.findMany({
+    orderBy: { vaqt: "desc" },
+    take: soni,
+    select: {
+      id: true,
+      vaqt: true,
+      tur: true,
+      tafsilot: true,
+      sabab: true,
+      admin: { select: { profil: { select: { ism: true } } } },
+      foydalanuvchi: { select: { id: true, profil: { select: { ism: true } } } },
+    },
+  });
+  return amallar.map((a) => ({
+    id: a.id,
+    vaqt: a.vaqt.toISOString(),
+    admin: a.admin?.profil?.ism ?? null,
+    tur: a.tur,
+    tafsilot: a.tafsilot,
+    sabab: a.sabab,
+    foydalanuvchi: a.foydalanuvchi
+      ? { id: a.foydalanuvchi.id, ism: a.foydalanuvchi.profil?.ism ?? null }
+      : null,
+  }));
 }

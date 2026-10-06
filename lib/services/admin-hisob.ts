@@ -50,7 +50,25 @@ export const HOLAT_NOMLARI: Record<FoydalanuvchiHolati, string> = {
   bloklangan: "Bloklangan",
 };
 
-/** Tarifning paneldagi nomi; admin qo'lda bergan muddat — "Qo'lda". */
+/** `obunalar.manba`: to'lov orqali yoki admin paneldan qo'lda. */
+export type ObunaManbai = "tolov" | "qolda";
+
+export function manbaniOqi(qiymat: string): ObunaManbai {
+  return qiymat === "qolda" ? "qolda" : "tolov";
+}
+
+/** A1 jurnalidagi amal nomi (prototip: "PRO berildi — Kamola Tosheva"). */
+export const AMAL_NOMLARI: Record<string, string> = {
+  pro_berish: "PRO berildi",
+  muddat_uzaytirish: "Muddat uzaytirildi",
+  pro_olish: "PRO olib qo'yildi",
+};
+
+export function amalNomi(tur: string): string {
+  return AMAL_NOMLARI[tur] ?? tur;
+}
+
+/** Tarifning paneldagi nomi; tarifsiz muddat (uzaytirish, boshqa muddat) — "Qo'lda". */
 export function tarifMatni(tarif: Tarif | string): string {
   switch (tarif) {
     case "oylik":

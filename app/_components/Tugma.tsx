@@ -8,7 +8,8 @@ type Korinish =
   | "uchinchiXavfli"
   | "xavfli"
   | "pro"
-  | "siyoh";
+  | "siyoh"
+  | "xatoToldiruv";
 
 // DESIGN.md, 6-bo'lim: balandligi 52, radius 999, bosilganda scale(0.98).
 const USLUB: Record<Korinish, string> = {
@@ -26,6 +27,8 @@ const USLUB: Record<Korinish, string> = {
   // Admin panelining asosiy tugmasi — siyoh to'ldiruv (prototip tokens/admin.css: lime faqat
   // foydalanuvchi ilovasida, DESIGN.md 11-bo'lim).
   siyoh: "bg-siyoh text-on-siyoh",
+  // Admin oynasidagi xavfli tasdiq (prototip Modal `danger`): xato rangida to'ldiruv, oq matn.
+  xatoToldiruv: "bg-xato text-white",
 };
 
 const UMUMIY =

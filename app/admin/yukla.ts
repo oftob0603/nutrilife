@@ -1,5 +1,10 @@
 import { serverdanApi } from "@/lib/api-asos";
-import type { Boshqaruv, FoydalanuvchiKartasi, FoydalanuvchilarSahifasi } from "@/lib/services/admin";
+import type {
+  AdminAmaliQatori,
+  Boshqaruv,
+  FoydalanuvchiKartasi,
+  FoydalanuvchilarSahifasi,
+} from "@/lib/services/admin";
 import type { FoydalanuvchiFiltri } from "@/lib/services/admin-hisob";
 
 export type AdminHolati =
@@ -52,11 +57,13 @@ export async function foydalanuvchiniYukla(
   }
 }
 
-/** A1 raqamlari; olib bo'lmasa null — sahifa xato holatini ko'rsatadi. */
-export async function boshqaruvniYukla(): Promise<Boshqaruv | null> {
+export type BoshqaruvSahifasi = { boshqaruv: Boshqaruv; amallar: AdminAmaliQatori[] };
+
+/** A1 raqamlari va oxirgi amallar; olib bo'lmasa null — sahifa xato holatini ko'rsatadi. */
+export async function boshqaruvniYukla(): Promise<BoshqaruvSahifasi | null> {
   try {
     const javob = await serverdanApi("/api/admin/boshqaruv");
-    return javob.ok ? ((await javob.json()) as { boshqaruv: Boshqaruv }).boshqaruv : null;
+    return javob.ok ? ((await javob.json()) as BoshqaruvSahifasi) : null;
   } catch {
     return null;
   }

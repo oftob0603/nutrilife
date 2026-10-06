@@ -604,6 +604,9 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-10-06 · `foydalanuvchilar.username` initData'dan saqlanadi (admin qidiruvi uchun) va `foydalanuvchilar.bloklangan` ustuni bloklash amalidan oldin qo'shildi — A2 filtri shu ustunga tayanadi.**
 *Sabab:* admin-tz.md A2 username bo'yicha qidiruv va bloklangan filtrini talab qiladi, sxemada ikkalasi yo'q edi.
 
+**2026-10-06 · Admin bergan obuna `obunalar.manba = qolda` bilan belgilanadi (tanlangan tarif saqlanadi), `tarif = qolda` faqat tarifsiz muddat (uzaytirish, boshqa muddat) uchun; har admin amali `admin_amallari` jurnaliga yoziladi, jurnal tahrirlanmaydi. PRO olib qo'yilganda qatorlar o'chirilmaydi — tugash hozirga qisqaradi va bot xabar bosqichi oxiriga qo'yiladi.**
+*Sabab:* admin-tz.md A3 `manba = qolda` va §4 jurnal talabi; sxemada ikkalasi yo'q edi, tarix saqlanishi kerak.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |
