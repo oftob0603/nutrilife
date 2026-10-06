@@ -84,9 +84,15 @@ model Foydalanuvchi {
   vaznBirligi   String    @default("kg") @map("vazn_birligi")
   /// "sm" yoki "ft". Faqat ko'rsatish — bazada bo'y doim santimetrda.
   boyBirligi    String    @default("sm") @map("boy_birligi")
+  /// Telegram username (initData `username`), @siz; har kirishda yangilanadi. Admin paneli
+  /// qidiruvi uchun (admin-tz.md A2) — foydalanuvchi uni yashirgan bo'lsa bo'sh.
+  username      String?
   /// "foydalanuvchi" yoki "admin". FREE/PRO bu yerda emas — `obunalar` dan hisoblanadi
   /// (lib/services/huquqlar.ts).
   rol           String    @default("foydalanuvchi")
+  /// Admin bloklagan sana va vaqt; bo'sh — bloklanmagan. Bloklash amali S6 8-taskda,
+  /// A2 ro'yxatidagi "Bloklangan" filtri shu ustunga qaraydi.
+  bloklangan    DateTime?
   /// Onboardingda "Boshlash" bosilgan sana va vaqt — Ommaviy oferta shu bilan qabul qilinadi.
   shartlarQabul DateTime? @map("shartlar_qabul")
   /// Qabul qilingan hujjat versiyasi (lib/shartlar.ts).

@@ -65,6 +65,7 @@ export async function POST(sorov: Request) {
     tekshiruv.til,
     tekshiruv.ism,
     tekshiruv.avatarUrl,
+    tekshiruv.username,
   );
 
   let cookie: string;

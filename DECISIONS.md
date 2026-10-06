@@ -601,6 +601,9 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-10-05 · A1 boshqaruv paneli prototip tuzilishida to'liq chiziladi, takliflar navbati, so'rovlar navbati va admin amallari jurnali o'z tasklari kelmaguncha "—" ko'rsatadi.**
 *Sabab:* Foydalanuvchi qarori.
 
+**2026-10-06 · `foydalanuvchilar.username` initData'dan saqlanadi (admin qidiruvi uchun) va `foydalanuvchilar.bloklangan` ustuni bloklash amalidan oldin qo'shildi — A2 filtri shu ustunga tayanadi.**
+*Sabab:* admin-tz.md A2 username bo'yicha qidiruv va bloklangan filtrini talab qiladi, sxemada ikkalasi yo'q edi.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

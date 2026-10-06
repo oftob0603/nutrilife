@@ -19,6 +19,7 @@ const FOYDALANUVCHI_MAYDONLARI = {
   vaznBirligi: true,
   boyBirligi: true,
   avatarUrl: true,
+  username: true,
   rol: true,
   obunalar: { select: { boshlanish: true, tugash: true } },
   profil: { select: { onboardingTugadi: true } },
@@ -31,6 +32,7 @@ export type Foydalanuvchi = {
   vaznBirligi: string;
   boyBirligi: string;
   avatarUrl: string | null;
+  username: string | null;
   rol: Rol;
   /** FREE, faol PRO yoki muddati tugagan PRO — obuna qatorlaridan hisoblanadi. */
   obuna: ObunaHolati;
@@ -77,29 +79,30 @@ export async function foydalanuvchiHuquqlari(id: string): Promise<Huquqlar | nul
  * Telegram ID bo'yicha hisobni topadi, bo'lmasa yaratadi. `til` va `ism` faqat yangi
  * hisobga yoziladi — mavjud foydalanuvchining o'z tanlovi ustidan yozilmaydi. Ism
  * profilga tushadi: onboardingdagi ism maydoni shu bilan oldindan to'ldirilgan bo'ladi.
- * `avatarUrl` esa har kirishda Telegram'dagi holatga tenglashtiriladi (rasm almashgan
- * yoki yashirilgan bo'lishi mumkin).
+ * `avatarUrl` va `username` esa har kirishda Telegram'dagi holatga tenglashtiriladi (rasm
+ * yoki username almashgan, yashirilgan bo'lishi mumkin).
  */
 export async function telegramBoyichaTopYokiYarat(
   telegramId: bigint,
   til: Til,
   ism: string | null,
   avatarUrl: string | null,
+  username: string | null = null,
 ): Promise<{ foydalanuvchi: Foydalanuvchi; yangi: boolean }> {
   const mavjud = await db.foydalanuvchi.findUnique({
     where: { telegramId },
     select: FOYDALANUVCHI_MAYDONLARI,
   });
   if (mavjud) {
-    if (mavjud.avatarUrl !== avatarUrl) {
-      await db.foydalanuvchi.update({ where: { id: mavjud.id }, data: { avatarUrl } });
+    if (mavjud.avatarUrl !== avatarUrl || mavjud.username !== username) {
+      await db.foydalanuvchi.update({ where: { id: mavjud.id }, data: { avatarUrl, username } });
     }
-    return { foydalanuvchi: korinishgaOtkaz({ ...mavjud, avatarUrl }), yangi: false };
+    return { foydalanuvchi: korinishgaOtkaz({ ...mavjud, avatarUrl, username }), yangi: false };
   }
 
   try {
     const foydalanuvchi = await db.foydalanuvchi.create({
-      data: { telegramId, til, avatarUrl, profil: { create: { ism } } },
+      data: { telegramId, til, avatarUrl, username, profil: { create: { ism } } },
       select: FOYDALANUVCHI_MAYDONLARI,
     });
     return { foydalanuvchi: korinishgaOtkaz(foydalanuvchi), yangi: true };

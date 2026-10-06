@@ -13,7 +13,7 @@ import { Belgi, type BelgiNomi } from "./Belgi";
  */
 const BOLIMLAR: readonly { nomi: string; belgi: BelgiNomi; href?: string; soni?: number }[] = [
   { nomi: "Boshqaruv paneli", belgi: "layout-dashboard", href: "/admin" },
-  { nomi: "Foydalanuvchilar", belgi: "users" },
+  { nomi: "Foydalanuvchilar", belgi: "users", href: "/admin/foydalanuvchilar" },
   { nomi: "Takliflar navbati", belgi: "inbox" },
   { nomi: "Taomlar bazasi", belgi: "utensils" },
   { nomi: "Retseptlar", belgi: "book-open" },
@@ -65,7 +65,10 @@ export function AdminQobiq({ ism, children }: { ism: string | null; children: Re
       >
         <span className="shrink-0 px-3 font-display text-karta-sarlavha lg:mb-6">NutriLifer</span>
         {BOLIMLAR.map((bolim) => {
-          const faol = bolim.href !== undefined && yol === bolim.href;
+          // Bo'lim ichki sahifasida (masalan, foydalanuvchi kartasi) ham band faol turadi.
+          const faol =
+            bolim.href !== undefined &&
+            (yol === bolim.href || (bolim.href !== "/admin" && yol.startsWith(`${bolim.href}/`)));
           const ichi = (
             <>
               <Belgi nomi={bolim.belgi} />
