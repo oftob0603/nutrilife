@@ -42,7 +42,7 @@ export function olchovIzohi(taom: Taom, { t, miqdor }: Tarjimon): string {
  * Qidiruv uchun matnni tekislaydi: kichik harf, tutuq belgisi va tinish belgilarisiz.
  * Shunda "lagmon" so'rovi "Lag'mon" ni, "shorva" esa "Sho'rva" ni topadi.
  */
-export function tekisla(matn: string): string {
+function tekisla(matn: string): string {
   return matn.toLowerCase().replace(/['’ʻʼ`\-\s]/g, "");
 }
 

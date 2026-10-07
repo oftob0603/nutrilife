@@ -22,7 +22,6 @@ import {
   type Tarif,
 } from "./huquqlar.ts";
 import { joriyFoydalanuvchiId, kirishKerak, ruxsatYoq } from "./sessiya.ts";
-import { kutayotganTakliflarSoni } from "./taom-takliflari.ts";
 import { bugunSana, sanaOraligi } from "./yozuv-hisob.ts";
 import { FAOL_HOLATLAR } from "./yozuv-holati.ts";
 
@@ -73,8 +72,6 @@ export type Boshqaruv = {
   faolPro: number;
   /** Oxirgi obunasi 7 kun ichida tugaydigan foydalanuvchilar (uzaytirganlar sanalmaydi). */
   tugayotganObunalar: number;
-  /** Takliflar navbatida kutayotganlar: yangi va ko'rib chiqilmoqda (S6 4-task). */
-  kutayotganTakliflar: number;
 };
 
 /** A1 boshqaruv paneli raqamlari — hammasi mavjud jadvallardan, bitta so'rov to'plamida. */
@@ -84,7 +81,7 @@ export async function boshqaruvRaqamlari(hozir: Date = new Date()): Promise<Bosh
   const sana = new Date(`${bugun}T00:00:00.000Z`);
   const yettiKunKeyin = new Date(hozir.getTime() + 7 * KUN_MS);
 
-  const [bugungiYangi, kunlikFaol, skanlar, faolObunalar, tugayotganlar, kutayotganTakliflar] = await Promise.all([
+  const [bugungiYangi, kunlikFaol, skanlar, faolObunalar, tugayotganlar] = await Promise.all([
     db.foydalanuvchi.count({ where: { yaratilgan: { gte: boshi, lt: oxiri } } }),
     db.hodisa.count({ where: { tur: "kunlik_faollik", sana } }),
     db.skanHisobi.aggregate({ _sum: { soni: true }, where: { sana } }),
@@ -98,7 +95,6 @@ export async function boshqaruvRaqamlari(hozir: Date = new Date()): Promise<Bosh
       _max: { tugash: true },
       having: { tugash: { _max: { gt: hozir, lte: yettiKunKeyin } } },
     }),
-    kutayotganTakliflarSoni(),
   ]);
 
   return {
@@ -107,7 +103,6 @@ export async function boshqaruvRaqamlari(hozir: Date = new Date()): Promise<Bosh
     bugungiSkanlar: skanlar._sum.soni ?? 0,
     faolPro: faolObunalar.length,
     tugayotganObunalar: tugayotganlar.length,
-    kutayotganTakliflar,
   };
 }
 

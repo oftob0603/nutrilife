@@ -18,9 +18,5 @@ export const metadata: Metadata = {
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const holat = await adminHolatiniYukla();
   if (holat.holat !== "admin") return <AdminKirish holat={holat.holat} />;
-  return (
-    <AdminQobiq ism={holat.ism} navbatlar={holat.navbatlar}>
-      {children}
-    </AdminQobiq>
-  );
+  return <AdminQobiq ism={holat.ism}>{children}</AdminQobiq>;
 }

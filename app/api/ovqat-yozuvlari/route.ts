@@ -14,8 +14,6 @@ import {
   type QulfJavobi,
   type TaklifJavobi,
 } from "@/lib/services/taklif-hisob";
-import { aiNatijaniOqi, porsiyaGrammi } from "@/lib/services/taom-taklif-hisob";
-import { taklifniNavbatgaQoy } from "@/lib/services/taom-takliflari";
 import { taomlarniOl } from "@/lib/services/taomlar";
 import { bugunSana, kunlikJami, sanaYaroqli } from "@/lib/services/yozuv-hisob";
 import { yozuvKirishiniTekshir } from "@/lib/services/yozuv-kirish";
@@ -88,28 +86,12 @@ export async function POST(sorov: Request) {
   }
 
   try {
-    const manba = tana.manba === "ai" ? "ai" : "qolda";
     const yozuv = await yozuvYaratish(foydalanuvchiId, {
       taomId,
       ...tekshiruv.kirish,
-      manba,
+      manba: tana.manba === "ai" ? "ai" : "qolda",
       rasmId,
     });
-
-    // E7'da AI natijasi tuzatilgan bo'lsa — admin navbatiga (DECISIONS 2026-09-13). Yozuv
-    // allaqachon saqlangan: navbat xatosi foydalanuvchini to'xtatmaydi.
-    const aiNatija = manba === "ai" ? aiNatijaniOqi(tana.aiNatija) : null;
-    const porsiyaGramm = porsiyaGrammi(tekshiruv.kirish.porsiya);
-    if (aiNatija && porsiyaGramm) {
-      const { taomNomi, kaloriya, oqsil, yog, uglevod } = tekshiruv.kirish;
-      await taklifniNavbatgaQoy(
-        foydalanuvchiId,
-        yozuv.id,
-        rasmId,
-        aiNatija,
-        { taomNomi, porsiyaGramm, kaloriya, oqsil, yog, uglevod },
-      ).catch((xato: unknown) => console.error("Taklif navbatga tushmadi:", xato));
-    }
     return Response.json({ yozuv }, { status: 201 });
   } catch (xato) {
     if (xato instanceof RasmBoglanmadi) {

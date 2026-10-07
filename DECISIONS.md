@@ -60,7 +60,7 @@ uydirilmaydi.**
 *Sabab:* Mahsulot talabi — noto'g'ri tanish to'g'ridan-to'g'ri jurnalga kirmasligi kerak.
 
 **2026-09-13 · Foydalanuvchi tuzatishlari admin tasdiqlaydigan navbatga tushadi,
-avtomatik umumiy bazaga qo'shilmaydi.**
+avtomatik umumiy bazaga qo'shilmaydi.** *(bekor — 2026-10-07)*
 *Sabab:* Blok 2 — AI vaqt o'tib aniqlashadi, lekin noto'g'ri ma'lumot bazaga kirmaydi.
 
 **2026-09-13 · Internet yo'q yoki AI javob bermasa — xato ekrani va qayta urinish. Oflayn
@@ -609,6 +609,10 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 
 **2026-10-06 · Taom taklifining yagona manbai E7 (AI natijasi tuzatilganda); nom o'zgargan yoki 100 g zichligi 3 % dan ko'p farq qilsa navbatga tushadi, porsiya o'zgarishi va E10 tahriri taklif emas. Holat nomlari prototipdan: `yangi`, `korilmoqda`, `tasdiqlandi`, `rad_etildi`. Tasdiqlashda sabab so'ralmaydi (admin-tz §4 faqat PRO/bloklash/o'chirishda majburiy), rad etishda sabab bor. Tarjimani admin qo'lda kiritadi, AI taklif qilmaydi.**
 *Sabab:* mayda farqlar navbatni to'ldirmasin; admin-tz.md 6-bo'lim 4-savol hal bo'ldi.
+*(bekor — 2026-10-07)*
+
+**2026-10-07 · Taom takliflari navbati butunlay olib tashlandi: foydalanuvchi E7'da AI natijasini tuzatsa, tuzatish faqat o'z yozuvida qoladi, adminga ketmaydi va admin tasdiqlamaydi. `taom_takliflari` jadvali, A4/A5 ekranlari va `/api/admin/takliflar` yo'q; umumiy `taomlar` bazasini faqat admin A6/A7 orqali to'ldiradi. 2026-09-13 "tuzatishlar navbatga tushadi" va 2026-10-06 "taklifning yagona manbai E7" qarorlari bekor.**
+*Sabab:* Foydalanuvchi qarori — navbatni ko'rib chiqish egasiga ortiqcha ish, baza admin kiritgan kontent bilan to'ladi. Panelda foydalanuvchi rasmi endi hech qayerda ko'rinmaydi (admin-tz §4).
 
 ## OCHIQ SAVOLLAR
 

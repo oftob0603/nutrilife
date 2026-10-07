@@ -40,7 +40,7 @@ maqsad emas. Butun mahsulot shu doira atrofida quriladi.
 |-----|---------|------------|
 | **FREE foydalanuvchi** | O'z Home doirasi, o'z jurnali, o'z progressi, retsept sarlavhalari | Umr davomida jami 3 ta AI skan; to'liq tarixni ko'rish; qo'lda matn bilan cheklovsiz ovqat qo'shish; o'z yozuvini tahrirlash va o'chirish; profil va sozlamalarni o'zgartirish |
 | **PRO foydalanuvchi** | Yuqoridagilar + retseptlarning to'liq matni + Nutrition Score + qolgan kaloriyaga mos taom takliflari | Kuniga 20 tagacha AI skan; obunani bekor qilish |
-| **Admin** | Umumiy statistika, foydalanuvchilar ro'yxati, obunalar, taom takliflari navbati, shikoyatlar | Obunani qo'lda berish va olib qo'yish; taom va retsept bazasini tahrirlash; AI xato tanigan natijalarni tuzatish; foydalanuvchini bloklash va ma'lumotini o'chirish; narxlarni o'zgartirish |
+| **Admin** | Umumiy statistika, foydalanuvchilar ro'yxati, obunalar, shikoyatlar | Obunani qo'lda berish va olib qo'yish; taom va retsept bazasini tahrirlash; AI xato tanigan natijalarni tuzatish; foydalanuvchini bloklash va ma'lumotini o'chirish; narxlarni o'zgartirish |
 
 Kirish: Telegram initData orqali avtomatik. Telefon, email, parol so'ralmaydi.
 18+ chegarasi: Terms of Use'da yoziladi va onboardingda yosh kiritilganda tekshiriladi —
@@ -99,7 +99,6 @@ Faqat jadval nomlari va vazifasi. Ustun, tip va migratsiya S2'da yoziladi.
 | `rejalar` | Hisoblangan kunlik kaloriya va makro maqsadlari, hisoblangan sana |
 | `ovqat_yozuvlari` | Jurnalga tushgan har bir ovqat: taom, porsiya, kaloriya, makrolar, vaqt, ovqat turi |
 | `taomlar` | Umumiy taom bazasi — nomi uch tilda, taxminiy kaloriya va makrolar |
-| `taom_takliflari` | Foydalanuvchi tuzatishlari, admin tasdiqlash navbati |
 | `rasmlar` | Ovqat rasmlari va ular qaysi yozuvga tegishli ekani |
 | `skan_hisobi` | AI skan sarfi: FREE umumiy limiti va PRO kunlik limiti |
 | `obunalar` | PRO holati, tarif, boshlanish va tugash sanasi |
@@ -133,7 +132,6 @@ Bu axborot xarakteridagi ball, tibbiy baho emas.
 - AI tahlil: `yuborildi` -> `natija tayyor` yoki `tanib bo'lmadi` yoki `xato`.
 - Obuna: `yo'q (FREE)` -> `faol` -> `muddati tugadi`.
 - To'lov: `boshlandi` -> `to'landi` yoki `bekor qilindi` / `xato`.
-- Taom taklifi: `yuborildi` -> `ko'rib chiqilmoqda` -> `tasdiqlandi` yoki `rad etildi`.
 
 **Oflayn va xato:** internet yo'q yoki AI javob bermasa — xato ekrani va "Qayta urinish".
 Rasm oflayn navbatga olinmaydi. Yuklangan rasm AI xatosida o'chirilmaydi — "Qayta urinish"

@@ -29,7 +29,7 @@ async function xatoMatni(javob: Response): Promise<string> {
 /**
  * A3 amallar tasmasi (admin-tz.md A3, prototip screens-users.jsx): PRO berish, muddatni
  * uzaytirish, PRO ni olib qo'yish — har biri tasdiq oynasi va majburiy sabab bilan. Bloklash va
- * o'chirish S6 8-taskda ulanadi, hozircha o'chiq. Muvaffaqiyatda karta serverdan qayta so'raladi.
+ * o'chirish S6 7-taskda ulanadi, hozircha o'chiq. Muvaffaqiyatda karta serverdan qayta so'raladi.
  */
 export function ObunaAmallari({
   foydalanuvchiId,
@@ -138,17 +138,17 @@ export function ObunaAmallari({
         <Tugma korinish="ikkilamchi" kichik disabled={!pro} onClick={() => och("olish")}>
           {"PRO ni olib qo'yish"}
         </Tugma>
-        <button type="button" disabled title="8-taskda ulanadi" className="h-11 rounded-full border border-chegara px-4 text-asosiy font-medium text-siyoh opacity-40">
+        <button type="button" disabled title="7-taskda ulanadi" className="h-11 rounded-full border border-chegara px-4 text-asosiy font-medium text-siyoh opacity-40">
           Bloklash
         </button>
-        <button type="button" disabled title="8-taskda ulanadi" className="h-11 rounded-full px-4 text-asosiy font-medium text-xato opacity-40">
+        <button type="button" disabled title="7-taskda ulanadi" className="h-11 rounded-full px-4 text-asosiy font-medium text-xato opacity-40">
           {"Ma'lumotini o'chirish"}
         </button>
       </div>
       <p className="text-izoh text-matn-2">
         {pro
           ? "Qo'lda berilgan obuna daromad statistikasiga kirmaydi"
-          : "Uzaytirish va olib qo'yish faqat faol PRO'da; bloklash va o'chirish — 8-task"}
+          : "Uzaytirish va olib qo'yish faqat faol PRO'da; bloklash va o'chirish — 7-task"}
       </p>
 
       {oyna === "berish" && (

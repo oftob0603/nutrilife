@@ -33,14 +33,16 @@ Chap tomonda doimiy panel:
 |---|---|---|
 | Boshqaruv paneli | A1 | Kunlik holat, navbatda nima turibdi |
 | Foydalanuvchilar | A2 → A3 | Qidirish, obuna berish, bloklash |
-| Takliflar navbati | A4 → A5 | AI xatolarini tuzatish |
 | Taomlar bazasi | A6 → A7 | Kontent kiritish |
 | Retseptlar | A8 → A9 | PRO kontenti |
 | Statistika | A10 | Mahsulot qanday ketyapti |
 | Shikoyatlar | A11 | Foydalanuvchi murojaatlari |
 | Narxlar | A12 | Tarif o'zgartirish |
 
-Navbatda kutayotgan element bo'lsa, bo'lim yonida son turadi (masalan "Takliflar 7").
+Navbatda kutayotgan element bo'lsa, bo'lim yonida son turadi (masalan "Shikoyatlar 7").
+
+A4/A5 taom takliflari navbati olib tashlangan (DECISIONS 2026-10-07): foydalanuvchi tuzatishi
+faqat o'z jurnalida qoladi, admin ko'rmaydi.
 
 ## 3. Ekranlar
 
@@ -57,8 +59,8 @@ Navbatda kutayotgan element bo'lsa, bo'lim yonida son turadi (masalan "Takliflar
 
 - Yuqorida to'rt raqam: bugungi yangi foydalanuvchilar · kunlik faol · bugungi skanlar ·
   faol PRO obunalar
-- Ish navbatlari: tasdiq kutayotgan takliflar soni · ko'rilmagan shikoyatlar soni ·
-  7 kun ichida tugaydigan obunalar soni — har biri bosiladigan
+- Ish navbatlari: ko'rilmagan shikoyatlar soni · 7 kun ichida tugaydigan obunalar soni —
+  har biri bosiladigan
 - Oxirgi 10 ta admin amali (jurnaldan)
 
 **Holatlar:** yuklanmoqda — skelet raqamlar · xato — "Statistikani yuklab bo'lmadi" +
@@ -101,31 +103,10 @@ bajarish.
 O'chirishda tasdiq oynasi: oqibat matni + foydalanuvchi ismini qo'lda yozish talab
 qilinadi. Ikkala amal ham jurnalga tushadi.
 
-### A4 — Taom takliflari navbati
+### A4 / A5 — olib tashlandi
 
-**Vazifasi:** Foydalanuvchilar tuzatgan AI natijalarini ko'rib chiqish.
-
-- Ro'yxat: rasm mitti, AI nima degan, foydalanuvchi nimaga tuzatgan, sana, kim yuborgan
-- Filtr: yangi · ko'rib chiqilmoqda · tasdiqlangan · rad etilgan
-- Saralash: eng eskisi birinchi (navbat unutilmasin)
-
-**Holatlar:** bo'sh — "Navbat bo'sh. Yangi tuzatishlar shu yerda paydo bo'ladi" (bu
-yaxshi xabar, xato emas).
-
-### A5 — Taklifni ko'rib chiqish
-
-- Yonma-yon uch ustun: **AI natijasi** · **Foydalanuvchi tuzatishi** · **Bazadagi taom**
-  (agar o'xshashi topilsa)
-- Rasm to'liq ko'rinishda
-- Admin qarori:
-
-| Tugma | Natija |
-|---|---|
-| Tasdiqlash — yangi taom | Tuzatish `taomlar` bazasiga yangi yozuv bo'lib qo'shiladi |
-| Tasdiqlash — mavjudiga birlashtirish | Ko'rsatilgan taom yozuvi yangilanadi |
-| Rad etish | Sabab tanlanadi, taklif yopiladi, baza o'zgarmaydi |
-
-Tasdiqlashda taom nomi uch tilda so'raladi (foydalanuvchi bitta tilda yozgan bo'ladi).
+Taom takliflari navbati va taklifni ko'rib chiqish ekranlari 2026-10-07 qarori bilan olib
+tashlandi. Raqamlash qolgan ekranlar uchun o'zgarmaydi.
 
 ### A6 — Taomlar bazasi
 
@@ -193,7 +174,7 @@ uchala metrika ham teng ko'rsatiladi.
 | Xavfli amal | Qaytarib bo'lmaydigan har amal (o'chirish, narx, PRO olib qo'yish) tasdiq oynasi bilan; oynada oqibat yozilgan bo'ladi |
 | Jurnal | Ma'lumotni o'zgartiradigan har amal `admin_amallari` ga yoziladi. Jurnal tahrirlanmaydi va o'chirilmaydi |
 | Sabab maydoni | PRO berish, bloklash va o'chirishda sabab majburiy — keyin o'zingiz eslay olasiz |
-| Shaxsiy ma'lumot | Panelda foydalanuvchi rasmlari faqat taklif navbatida ko'rinadi. Jurnal rasmlarini ko'rish kerak emas |
+| Shaxsiy ma'lumot | Panelda foydalanuvchi rasmlari ko'rinmaydi. Jurnal rasmlarini ko'rish kerak emas |
 | Bo'sh holat | Har ro'yxatda bo'sh holat matni bor; bo'sh navbat — muvaffaqiyat, xato emas |
 | Yuklanmoqda | Jadvallarda skelet qatorlar |
 | Xato | "Yuklab bo'lmadi" + qayta urinish; bitta bo'lim ishlamasa qolgani ishlayveradi |
@@ -210,7 +191,7 @@ eksport (PDF, CSV) · ikkinchi admin qo'shish · A/B testlar.
 | 1 | Admin kirishi Telegram Login Widget bilanmi yoki panel Mini App ichida bo'lsinmi | S6'dan oldin, PRD'ga yozilishi kerak |
 | 2 | `admin_amallari` jadvali S2 migratsiyasiga qo'shilsinmi yoki S6'da alohidami | S2'dan oldin |
 | 3 | Ikkinchi admin (yordamchi) kerak bo'lsa, huquqlari cheklanadimi — masalan kontent kirita oladi, lekin o'chira olmaydi | v2 |
-| 4 | Taklif tasdiqlanganda taom nomini uch tilga admin qo'lda tarjima qiladimi yoki AI taklif qiladimi | Hal qilindi 2026-10-06: admin qo'lda kiritadi, AI taklif qilmaydi |
+| 4 | Taklif tasdiqlanganda taom nomini uch tilga admin qo'lda tarjima qiladimi yoki AI taklif qiladimi | Bekor: navbat olib tashlandi 2026-10-07 |
 | 5 | Foydalanuvchi ma'lumotini o'chirish qonun bo'yicha necha kun ichida bajarilishi shart | Huquqiy tekshiruv bilan birga (SAVALA 3-sharti) |
 
 ---
