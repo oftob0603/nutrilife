@@ -49,7 +49,7 @@ export async function PATCH(sorov: Request) {
  * yerda ishlamaydi. Tana `{ tasdiq: "ochirish" }` bo'lishi shart: tasodifiy DELETE o'tmaydi.
  */
 export async function DELETE(sorov: Request) {
-  const foydalanuvchiId = sessiyaEgasiId(sorov);
+  const foydalanuvchiId = await sessiyaEgasiId(sorov);
   if (!foydalanuvchiId) return kirishKerak();
 
   const tana = await tanaOqi(sorov);

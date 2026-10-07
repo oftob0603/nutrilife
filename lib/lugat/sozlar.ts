@@ -76,6 +76,12 @@ export const SOZLAR = {
     en: "Check your connection and try again.",
   },
   "Ilovani qayta oching": { ru: "Откройте приложение заново", en: "Reopen the app" },
+  "Hisobingiz bloklangan": { ru: "Ваш аккаунт заблокирован", en: "Your account is blocked" },
+  "Kirish admin tomonidan yopilgan. Savol bo'lsa adminga yozing.": {
+    ru: "Доступ закрыт администратором. Если есть вопросы, напишите администратору.",
+    en: "Access has been closed by the admin. If you have questions, message the admin.",
+  },
+  "Adminga yozish": { ru: "Написать администратору", en: "Message the admin" },
   "Kirish muddati tugadi. Ilovani yopib, Telegram'dan qaytadan oching.": {
     ru: "Срок входа истёк. Закройте приложение и откройте его снова из Telegram.",
     en: "Your session has expired. Close the app and open it again from Telegram.",

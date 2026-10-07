@@ -159,8 +159,8 @@ model Foydalanuvchi {
   /// "foydalanuvchi" yoki "admin". FREE/PRO bu yerda emas — `obunalar` dan hisoblanadi
   /// (lib/services/huquqlar.ts).
   rol           String    @default("foydalanuvchi")
-  /// Admin bloklagan sana va vaqt; bo'sh — bloklanmagan. Bloklash amali S6 8-taskda,
-  /// A2 ro'yxatidagi "Bloklangan" filtri shu ustunga qaraydi.
+  /// Admin bloklagan sana va vaqt; bo'sh — bloklanmagan. Sessiya tekshiruvi (lib/services/sessiya.ts)
+  /// shu ustunga qaraydi — to'ldirilgan hisob kira olmaydi; A2 "Bloklangan" filtri ham shu.
   bloklangan    DateTime?
   /// Onboardingda "Boshlash" bosilgan sana va vaqt — Ommaviy oferta shu bilan qabul qilinadi.
   shartlarQabul DateTime? @map("shartlar_qabul")

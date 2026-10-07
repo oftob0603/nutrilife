@@ -9,15 +9,18 @@ import {
 } from "@/lib/services/api-klient";
 import { tilniOqi, type Til } from "@/lib/lugat/tarjima";
 import { MAVZULAR, mavzuniOqi, mavzuniTanla, type Mavzu } from "@/lib/mavzu";
+import { telegramHavolaniOch } from "@/lib/telegram";
 import { useTarjima, useTilniOrnat } from "./TilTaminoti";
 import { Tugma } from "./Tugma";
 
-type Holat = "kirilmoqda" | "tayyor" | "xato" | "qayta_oching" | "telegram_emas";
+type Holat = "kirilmoqda" | "tayyor" | "xato" | "qayta_oching" | "telegram_emas" | "bloklangan";
 
 /** true — sahifa shu hisob sessiyasi bilan chizilgan, qayta yuklash shart emas. */
 type KirishNatijasi =
   | { holat: "tayyor"; sessiyaBorEdi: boolean; onboardingTugadi: boolean; til: Til; mavzu: Mavzu }
-  | { holat: "xato" | "qayta_oching" | "telegram_emas" };
+  | { holat: "xato" | "qayta_oching" | "telegram_emas" }
+  /** Admin bloklagan hisob; `admin` — yordam uchun Telegram username (@siz), sozlanmagan bo'lsa null. */
+  | { holat: "bloklangan"; admin: string | null };
 
 type KirishJavobi = {
   foydalanuvchi: { onboardingTugadi: boolean; til: string; mavzu: string };
@@ -44,6 +47,10 @@ async function kirish(): Promise<KirishNatijasi> {
           til: tilniOqi(foydalanuvchi.til),
           mavzu: mavzuniAniqla(foydalanuvchi.mavzu),
         };
+      }
+      if (javob.status === 403) {
+        const tana = (await javob.json().catch(() => null)) as { xato?: string; admin?: string | null } | null;
+        if (tana?.xato === "bloklangan") return { holat: "bloklangan", admin: tana.admin ?? null };
       }
       if (javob.status !== 401) return { holat: "xato" };
       // initData eskirgan (ilova uzoq ochiq turgan) — avvalgi sessiya hali yaroqlidir.
@@ -87,6 +94,7 @@ export function KirishDarvozasi({ children }: { children: React.ReactNode }) {
   const { t } = useTarjima();
   const tilniOrnat = useTilniOrnat();
   const [holat, setHolat] = useState<Holat>("kirilmoqda");
+  const [adminUsername, setAdminUsername] = useState<string | null>(null);
   const [yangilanmoqda, yangila] = useTransition();
 
   const natijaniQolla = useCallback(
@@ -113,6 +121,7 @@ export function KirishDarvozasi({ children }: { children: React.ReactNode }) {
           });
         }
       }
+      if (natija.holat === "bloklangan") setAdminUsername(natija.admin);
       setHolat(natija.holat);
     },
     [router, tilniOrnat],
@@ -171,6 +180,22 @@ export function KirishDarvozasi({ children }: { children: React.ReactNode }) {
                 {t("Kirish muddati tugadi. Ilovani yopib, Telegram'dan qaytadan oching.")}
               </p>
             </div>
+          ) : holat === "bloklangan" ? (
+            <>
+              <div className="flex flex-col gap-2">
+                <h1 className="text-sarlavha">{t("Hisobingiz bloklangan")}</h1>
+                <p className="text-asosiy text-matn-2">
+                  {t("Kirish admin tomonidan yopilgan. Savol bo'lsa adminga yozing.")}
+                </p>
+              </div>
+              {adminUsername && (
+                <div className="w-full max-w-xs">
+                  <Tugma korinish="ikkilamchi" onClick={() => telegramHavolaniOch(`https://t.me/${adminUsername}`)}>
+                    {t("Adminga yozish")}
+                  </Tugma>
+                </div>
+              )}
+            </>
           ) : holat === "telegram_emas" ? (
             <div className="flex flex-col gap-2">
               <h1 className="text-sarlavha">{t("Ilovani Telegram orqali oching")}</h1>

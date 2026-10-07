@@ -21,6 +21,7 @@ const FOYDALANUVCHI_MAYDONLARI = {
   avatarUrl: true,
   username: true,
   rol: true,
+  bloklangan: true,
   obunalar: { select: { boshlanish: true, tugash: true } },
   profil: { select: { onboardingTugadi: true } },
 } as const;
@@ -34,22 +35,32 @@ export type Foydalanuvchi = {
   avatarUrl: string | null;
   username: string | null;
   rol: Rol;
+  /** Admin bloklagan — kirish yopiq (lib/services/sessiya.ts), kirish yo'li 403 qaytaradi. */
+  bloklangan: boolean;
   /** FREE, faol PRO yoki muddati tugagan PRO — obuna qatorlaridan hisoblanadi. */
   obuna: ObunaHolati;
   /** Yolg'on bo'lsa ilova Home o'rniga onboardingni ochadi. */
   onboardingTugadi: boolean;
 };
 
-type BazaFoydalanuvchisi = Omit<Foydalanuvchi, "rol" | "obuna" | "onboardingTugadi"> & {
+type BazaFoydalanuvchisi = Omit<Foydalanuvchi, "rol" | "bloklangan" | "obuna" | "onboardingTugadi"> & {
   rol: string;
+  bloklangan: Date | null;
   obunalar: ObunaMuddati[];
   profil: { onboardingTugadi: Date | null } | null;
 };
 
-function korinishgaOtkaz({ profil, rol, obunalar, ...foydalanuvchi }: BazaFoydalanuvchisi): Foydalanuvchi {
+function korinishgaOtkaz({
+  profil,
+  rol,
+  bloklangan,
+  obunalar,
+  ...foydalanuvchi
+}: BazaFoydalanuvchisi): Foydalanuvchi {
   return {
     ...foydalanuvchi,
     rol: rolniOqi(rol),
+    bloklangan: bloklangan !== null,
     obuna: obunaHolati(obunalar),
     onboardingTugadi: Boolean(profil?.onboardingTugadi),
   };

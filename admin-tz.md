@@ -36,13 +36,14 @@ Chap tomonda doimiy panel:
 | Taomlar bazasi | A6 → A7 | Kontent kiritish |
 | Retseptlar | A8 → A9 | PRO kontenti |
 | Statistika | A10 | Mahsulot qanday ketyapti |
-| Shikoyatlar | A11 | Foydalanuvchi murojaatlari |
 | Narxlar | A12 | Tarif o'zgartirish |
 
-Navbatda kutayotgan element bo'lsa, bo'lim yonida son turadi (masalan "Shikoyatlar 7").
+Navbatda kutayotgan element bo'lsa, bo'lim yonida son turadi.
 
 A4/A5 taom takliflari navbati olib tashlangan (DECISIONS 2026-10-07): foydalanuvchi tuzatishi
-faqat o'z jurnalida qoladi, admin ko'rmaydi.
+faqat o'z jurnalida qoladi, admin ko'rmaydi. A11 shikoyatlar bo'limi ham olib tashlangan
+(DECISIONS 2026-10-07): murojaatlar ilovadagi "Yordam" orqali admin Telegram lichkasiga keladi,
+panelda alohida navbat yo'q.
 
 ## 3. Ekranlar
 
@@ -59,8 +60,8 @@ faqat o'z jurnalida qoladi, admin ko'rmaydi.
 
 - Yuqorida to'rt raqam: bugungi yangi foydalanuvchilar · kunlik faol · bugungi skanlar ·
   faol PRO obunalar
-- Ish navbatlari: ko'rilmagan shikoyatlar soni · 7 kun ichida tugaydigan obunalar soni —
-  har biri bosiladigan
+- Ish navbatlari: 7 kun ichida tugaydigan obunalar soni (shikoyatlar navbati yo'q — A11
+  olib tashlangan)
 - Oxirgi 10 ta admin amali (jurnaldan)
 
 **Holatlar:** yuklanmoqda — skelet raqamlar · xato — "Statistikani yuklab bo'lmadi" +
@@ -86,7 +87,7 @@ bajarish.
 - Obuna: joriy holat, tarif, tugash sanasi, to'lovlar tarixi
 - Faollik: jami skanlar, qolgan limit, oxirgi 10 ta ovqat yozuvi
 - Amallar: **PRO berish** · **Muddatni uzaytirish** · **PRO ni olib qo'yish** ·
-  **Bloklash** · **Ma'lumotini o'chirish**
+  **Bloklash** (bloklanganda — **Blokni yechish**) · **Ma'lumotini o'chirish**
 
 **PRO berish oynasi:** tarif (oylik / 6 oy / yillik / boshqa muddat) + sabab maydoni
 (majburiy: "test", "kompensatsiya", "sovg'a"). Qo'lda berilgan obuna `obunalar` da
@@ -101,7 +102,11 @@ bajarish.
 | Ma'lumotini o'chirish | Profil, jurnal, rasmlar o'chadi | **yo'q** |
 
 O'chirishda tasdiq oynasi: oqibat matni + foydalanuvchi ismini qo'lda yozish talab
-qilinadi. Ikkala amal ham jurnalga tushadi.
+qilinadi (ismsiz hisobda — Telegram ID). Ikkala amal ham jurnalga tushadi, sabab majburiy.
+Bloklangan hisob: sessiyasi darhol kuchdan qoladi (har so'rovda `bloklangan` tekshiriladi),
+ilova "Hisobingiz bloklangan" ekranini admin Telegram havolasi bilan ko'rsatadi. O'chirilgan
+foydalanuvchiga bot orqali "hisobingiz o'chirildi" xabari ketadi (o'zi o'chirgandagi xabar).
+Admin hisobini bloklab yoki o'chirib bo'lmaydi — na o'zini, na boshqa adminni.
 
 ### A4 / A5 — olib tashlandi
 
@@ -156,10 +161,11 @@ tashlandi. Raqamlash qolgan ekranlar uchun o'zgarmaydi.
 North star — 7-kun retention (DECISIONS 2026-09-21); kunlik faol va PRO obunachilar yordamchi,
 sarlavha izohida shu yoziladi.
 
-### A11 — Shikoyatlar
+### A11 — olib tashlandi
 
-- Ro'yxat: kim, qachon, matn, holat (yangi / ko'rildi / yopildi)
-- Amallar: ko'rildi deb belgilash · yopish · foydalanuvchi kartasiga o'tish
+Shikoyatlar navbati 2026-10-07 qarori bilan olib tashlandi: ilovada alohida suhbat tizimi
+yo'q (F6 "Yordam" ekrani qurilmaydi, DECISIONS 2026-09-23), murojaatlar admin Telegram
+lichkasiga keladi. Raqamlash qolgan ekranlar uchun o'zgarmaydi.
 
 ### A12 — Narxlar
 

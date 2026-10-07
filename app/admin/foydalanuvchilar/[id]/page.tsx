@@ -15,7 +15,7 @@ import { bugunSana } from "@/lib/services/yozuv-hisob";
 import { AdminJadval } from "../../_components/AdminJadval";
 import { AdminSahifa } from "../../_components/AdminSahifa";
 import { Maydon } from "../../_components/Maydon";
-import { ObunaAmallari } from "../../_components/ObunaAmallari";
+import { HisobAmallari } from "../../_components/HisobAmallari";
 import { XatoHolati } from "../../_components/XatoHolati";
 import { HolatYorligi, Yorliq } from "../../_components/Yorliq";
 import { foydalanuvchiniYukla } from "../../yukla";
@@ -149,9 +149,13 @@ export default async function FoydalanuvchiSahifasi({ params }: { params: Promis
         />
       </Karta>
 
-      <ObunaAmallari
+      <HisobAmallari
         foydalanuvchiId={karta.id}
+        ism={karta.ism}
+        telegramId={karta.telegramId}
+        admin={karta.admin}
         pro={pro}
+        bloklangan={karta.bloklangan !== null}
         tugash={karta.obuna.holat === "free" ? null : tugashKuni(karta.obuna.tugash)}
       />
     </AdminSahifa>

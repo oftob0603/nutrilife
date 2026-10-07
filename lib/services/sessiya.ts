@@ -101,14 +101,29 @@ export function sessiyadagiId(sorov: Request): string | null {
 }
 
 /**
+ * Hisob hozir kira oladimi: bazada bor va admin bloklamagan (`bloklangan` bo'sh). Token bazada
+ * saqlanmagani uchun bloklash tokenni bekor qila olmaydi — shuning uchun har so'rovda shu ustun
+ * o'qiladi va bloklangan hisobning yaroqli cookie'si ham darhol kuchdan qoladi (admin-tz.md A3:
+ * "Kirish yopiladi, ma'lumot joyida qoladi").
+ */
+async function hisobOchiqmi(foydalanuvchiId: string): Promise<boolean> {
+  const hisob = await db.foydalanuvchi.findUnique({
+    where: { id: foydalanuvchiId },
+    select: { bloklangan: true },
+  });
+  return hisob !== null && hisob.bloklangan === null;
+}
+
+/**
  * So'rov egasining `foydalanuvchilar.id` si; aniqlanmasa null. API yo'llari egani faqat
- * shu yerdan oladi — servislarga ID tayyor holda uzatiladi.
+ * shu yerdan oladi — servislarga ID tayyor holda uzatiladi. Bloklangan yoki o'chirilgan
+ * hisobning sessiyasi egasiz hisoblanadi.
  */
 export async function joriyFoydalanuvchiId(sorov: Request): Promise<string | null> {
   if (begonaManba(sorov)) return null;
 
   const sessiyadagi = sessiyadagiId(sorov);
-  if (sessiyadagi) return sessiyadagi;
+  if (sessiyadagi) return (await hisobOchiqmi(sessiyadagi)) ? sessiyadagi : null;
 
   // Lokal ishlab chiqish: Telegram'dan tashqarida initData yo'q, shuning uchun sessiyasiz
   // so'rov bazadagi birinchi hisob (birinchi admin) nomidan o'tadi. Production'da bu yo'l yopiq.
@@ -127,8 +142,10 @@ export async function joriyFoydalanuvchiId(sorov: Request): Promise<string | nul
  * amallar (hisobni o'chirish) shundan foydalanadi: dev rejimida sessiyasiz so'rov birinchi
  * admin hisobini o'chirib yubormasin.
  */
-export function sessiyaEgasiId(sorov: Request): string | null {
-  return begonaManba(sorov) ? null : sessiyadagiId(sorov);
+export async function sessiyaEgasiId(sorov: Request): Promise<string | null> {
+  if (begonaManba(sorov)) return null;
+  const sessiyadagi = sessiyadagiId(sorov);
+  return sessiyadagi && (await hisobOchiqmi(sessiyadagi)) ? sessiyadagi : null;
 }
 
 /**

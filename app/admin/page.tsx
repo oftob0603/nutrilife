@@ -26,8 +26,8 @@ const JURNAL_USTUNLARI = [
 
 /**
  * A1 — boshqaruv paneli. To'rt raqam, "7 kun ichida tugaydigan obunalar" va admin amallari
- * jurnali jonli; so'rovlar navbati o'z taski (S6 7-task) bilan ulanadi — joyi prototipdagidek
- * turadi. Taom takliflari navbati yo'q (DECISIONS 2026-10-07), ish navbatlarida ikki karta.
+ * jurnali jonli. Taom takliflari navbati va so'rovlar (shikoyatlar) navbati yo'q (DECISIONS
+ * 2026-10-07: murojaatlar admin Telegram'ida), ish navbatlarida bitta karta.
  */
 export default async function BoshqaruvSahifasi() {
   const sahifa = await boshqaruvniYukla();
@@ -89,7 +89,6 @@ export default async function BoshqaruvSahifasi() {
       <section className="flex flex-col gap-3">
         <h2 className="text-karta-sarlavha">Ish navbatlari</h2>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          <StatKarta nomi="Ko'rilmagan so'rovlar" belgi="message-square-warning" qiymat="—" izoh="Navbat hali ulanmagan" />
           <StatKarta
             nomi="7 kun ichida tugaydigan obunalar"
             belgi="clock"

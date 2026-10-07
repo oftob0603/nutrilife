@@ -12,6 +12,7 @@ import {
   sessiyaniOchirishCookie,
   SessiyaSiriYoq,
 } from "@/lib/services/sessiya";
+import { adminUsername } from "@/lib/services/tarif-hisob";
 import { initDataniTekshir } from "@/lib/services/telegram-initdata";
 import { tilCookie } from "@/lib/lugat/server";
 
@@ -67,6 +68,15 @@ export async function POST(sorov: Request) {
     tekshiruv.avatarUrl,
     tekshiruv.username,
   );
+
+  // Admin bloklagan hisob: sessiya berilmaydi, ilova "Hisobingiz bloklangan" ekranini ko'rsatadi
+  // va yordam uchun admin Telegram'iga yo'naltiradi (W1 va Yordam bilan bitta manba — ADMIN_TELEGRAM).
+  if (foydalanuvchi.bloklangan) {
+    return Response.json(
+      { xato: "bloklangan", admin: adminUsername(process.env.ADMIN_TELEGRAM) },
+      { status: 403, headers: { "Set-Cookie": sessiyaniOchirishCookie() } },
+    );
+  }
 
   let cookie: string;
   try {
