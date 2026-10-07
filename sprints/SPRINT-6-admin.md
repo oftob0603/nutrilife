@@ -53,6 +53,7 @@ avtomatik takroriy to'lov.
 - 2026-10-07: retseptlar xizmati va API — qoralama faqat o'zbekcha nom bilan, chop etish uchun to'liqlik tekshiruvi, chop etilgan qayta saqlanganda chop etilgan qoladi, rasm R2'ga `retseptlar/<id>/...`, ochiq /api/retsept-rasmlari/[id], jurnal retsept_qoshish / retsept_tahrir / retsept_chop_etish (lib/services/retsept-admin.ts, lib/services/retsept-admin-hisob.ts, app/api/admin/retseptlar/route.ts, app/api/admin/retseptlar/[id]/route.ts, app/api/retsept-rasmlari/[id]/route.ts)
 - 2026-10-07: A8 retseptlar ro'yxati (kategoriya tanlovi, chiplar Hammasi / Chop etilgan / Qoralama, sahifalash) va A9 retsept muharriri (til segmenti, "FREE ga ko'rinadi" va "PRO ostida" kartalari, rasm, Bekor · Saqlash · Chop etish); prototipda yo'q yog' va uglevod maydonlari qo'shildi; yon panelda "Retseptlar" ulandi (app/admin/retseptlar/page.tsx, app/admin/_components/RetseptShakli.tsx, RetseptFiltri.tsx, AdminQobiq.tsx)
 - 2026-10-07: A7 dan umumiy bo'laklar chiqarildi — KategoriyaTanlovi va ShaklMaydonlari, TaomShakli ularni ishlatadi, xatti-harakati o'zgarmadi (app/admin/_components/KategoriyaTanlovi.tsx, ShaklMaydonlari.tsx, TaomShakli.tsx)
+- 2026-10-07: A9 retsept muharririda AI tarjima — o'zbekcha nom, masalliqlar va qadamlar ruscha va inglizchaga o'giriladi, natija shaklga tushadi va admin ko'rib saqlaydi, bazaga o'zi yozilmaydi (lib/services/ai.ts, lib/services/retsept-admin-hisob.ts, app/api/admin/tarjima/route.ts, app/admin/_components/RetseptShakli.tsx)
 
 ## Handoff
 
@@ -67,6 +68,7 @@ Keyingi task — 6 (Retseptlar sahifasi foydalanuvchi tomonida: prototip ui_kits
 4-task A6/A7 jonli sinovi deploy'dan keyin Telegram Desktop'da: ro'yxat va filtrlar, yangi taom (slug, kategoriya, rasm yuklash → /api/taom-rasmlari/<id> ko'rinishi, E5 kartasida ham), mavjud taomni tahrirlash, A1 jurnalida "Taom qo'shildi / tahrirlandi". Lokal sinov: build, API 403/404 javoblari va sof hisob funksiyalari (slug, porsiyalar, shakl tekshiruvi) node bilan o'tdi.
 Dev hisobga ikkita sinov yozuvi qo'shilgan: "Toshkent oshi" 950 kkal va "Somsa" 435 kkal. 2- va 3-task jonli sinovi deploy'dan keyin Telegram Desktop'da kutilmoqda (PRO berish → kartada Faol · qo'lda berilgan, limit 20/kun; uzaytirish; olib qo'yish → FREE; A1 jurnali). Lokal admin sessiyasini qo'lda yasash ruxsat tizimi tomonidan rad etiladi — lokal sinov uchun foydalanuvchi admin sessiyasini o'zi beradi. `bloklangan` ustuni bor, bloklash amali 7-taskda.
 5-task A8/A9 jonli sinovi deploy'dan keyin Telegram Desktop'da: ro'yxat va filtrlar, yangi retsept qoralama → chop etish (yetishmayotgan maydonlar xabari), rasm yuklash → /api/retsept-rasmlari/<id>, mavjudni tahrirlash, A1 jurnalida «Retsept chop etildi». Lokal sinov: build, API 403/404 va sof hisob funksiyalari node bilan o'tdi.
+A9 AI tarjimasi (tugma «Ruscha va inglizchaga tarjima qilish», POST /api/admin/tarjima) jonli sinovi deploy'dan keyin Telegram Desktop'da: o'zbekcha nom + masalliqlar → ruscha/inglizcha maydonlar to'ladi. Lokal .env dagi AI_API_KEY 401 qaytaradi (skan ham) — lokal AI sinovlari uchun kalitni yangilash kerak.
 
 ---
 

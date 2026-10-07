@@ -25,6 +25,7 @@ import {
   TIL_NOMLARI,
   TIL_QOSHIMCHASI,
   TILLAR,
+  type TarjimaJavobi,
   type Til,
 } from "@/lib/services/retsept-admin-hisob";
 import type { Kategoriya } from "@/lib/services/taom-admin";
@@ -148,6 +149,10 @@ export function RetseptShakli({
   const [xato, setXato] = useState<string | null>(null);
   const [yuborilayotgan, setYuborilayotgan] = useState<Amal | null>(null);
 
+  // AI tarjimasi (o'zbekchadan ruscha va inglizchaga) — natija faqat shaklga tushadi, admin saqlaydi.
+  const [tarjimaKetmoqda, setTarjimaKetmoqda] = useState(false);
+  const [tarjimaXatosi, setTarjimaXatosi] = useState<string | null>(null);
+
   // Rasm: tanlangan fayl (siqilgan) va uning ko'rinishi; tanlanmagan bo'lsa bazadagi rasm.
   const [rasm, setRasm] = useState<Blob | null>(null);
   const [korinish, setKorinish] = useState<string | null>(null);
@@ -252,6 +257,39 @@ export function RetseptShakli({
     }
   }
 
+  async function tarjimaQil() {
+    if (tarjimaKetmoqda || !v.nomi.uz.trim()) return;
+    setTarjimaXatosi(null);
+    setTarjimaKetmoqda(true);
+    try {
+      const javob = await apiSorov("/api/admin/tarjima", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          nomi: v.nomi.uz.trim(),
+          masalliqlar: qatorlargaBol(v.masalliqlar.uz),
+          qadamlar: qatorlargaBol(v.qadamlar.uz),
+        }),
+      });
+      if (!javob.ok) {
+        setTarjimaXatosi(await xatoMatni(javob));
+        return;
+      }
+      const { ru, en } = (await javob.json()) as TarjimaJavobi;
+      setV((s) => ({
+        ...s,
+        nomi: { ...s.nomi, ru: ru.nomi, en: en.nomi },
+        masalliqlar: { ...s.masalliqlar, ru: qatorlarMatni(ru.masalliqlar), en: qatorlarMatni(en.masalliqlar) },
+        qadamlar: { ...s.qadamlar, ru: qatorlarMatni(ru.qadamlar), en: qatorlarMatni(en.qadamlar) },
+      }));
+      setTil("ru");
+    } catch {
+      setTarjimaXatosi("Tarjima qilib bo'lmadi. Internetni tekshirib, qayta urinib ko'ring");
+    } finally {
+      setTarjimaKetmoqda(false);
+    }
+  }
+
   const rasmManzili = korinish ?? retsept?.rasm ?? null;
   const qadamlarSoni = qatorlargaBol(v.qadamlar[til]).length;
 
@@ -299,21 +337,41 @@ export function RetseptShakli({
         </span>
       }
     >
-      <div role="tablist" aria-label="Kontent tili" className="flex max-w-[360px] rounded-chip border border-chegara bg-karta p-1">
-        {TILLAR.map((t) => (
-          <button
-            key={t}
-            type="button"
-            role="tab"
-            aria-selected={til === t}
-            onClick={() => setTil(t)}
-            className={`min-h-10 flex-1 rounded-chip px-3 text-asosiy font-medium transition-colors ${
-              til === t ? "bg-siyoh text-on-siyoh" : "text-siyoh"
-            }`}
-          >
-            {TIL_NOMLARI[t]}
-          </button>
-        ))}
+      <div className="flex flex-wrap items-center gap-3">
+        <div role="tablist" aria-label="Kontent tili" className="flex w-full max-w-[360px] rounded-chip border border-chegara bg-karta p-1">
+          {TILLAR.map((t) => (
+            <button
+              key={t}
+              type="button"
+              role="tab"
+              aria-selected={til === t}
+              onClick={() => setTil(t)}
+              className={`min-h-10 flex-1 rounded-chip px-3 text-asosiy font-medium transition-colors ${
+                til === t ? "bg-siyoh text-on-siyoh" : "text-siyoh"
+              }`}
+            >
+              {TIL_NOMLARI[t]}
+            </button>
+          ))}
+        </div>
+        <Tugma
+          korinish="ikkilamchi"
+          kichik
+          disabled={!v.nomi.uz.trim() || yuborilayotgan !== null}
+          yuklanmoqda={tarjimaKetmoqda}
+          onClick={tarjimaQil}
+        >
+          <Belgi nomi="languages" olcham={16} />
+          Ruscha va inglizchaga tarjima qilish
+        </Tugma>
+        <span className="text-izoh text-matn-2">
+          {"O'zbekcha nom, masalliqlar va qadamlardan AI tarjima qiladi; ruscha va inglizcha maydonlar ustidan yoziladi — saqlashdan oldin ko'rib chiqing."}
+        </span>
+        {tarjimaXatosi && (
+          <p role="alert" className="w-full text-izoh text-xato">
+            {tarjimaXatosi}
+          </p>
+        )}
       </div>
 
       <Karta sarlavha="Sarlavha" yorliq={<Yorliq ton="neytral">{"FREE ga ko'rinadi"}</Yorliq>}>

@@ -281,3 +281,46 @@ export function sonMatni(son: number | null): string {
   if (son === null) return "";
   return Number.isInteger(son) ? String(son) : String(Math.round(son * 10) / 10);
 }
+
+/** A9 "Tarjima qilish" so'rovi: o'zbekcha nom majburiy, ro'yxatlar shakl chegaralarida. */
+export type TarjimaSorovi = { nomi: string; masalliqlar: string[]; qadamlar: string[] };
+
+export function tarjimaSoroviniOqi(tana: unknown): TarjimaSorovi | null {
+  if (!tana || typeof tana !== "object") return null;
+  const obyekt = tana as Record<string, unknown>;
+  const nomi = matnOqi(obyekt.nomi);
+  if (!nomi || nomi.length > NOM_CHEGARASI) return null;
+  const masalliqlar = qatorlarRoyxatiniOqi(obyekt.masalliqlar);
+  const qadamlar = qatorlarRoyxatiniOqi(obyekt.qadamlar);
+  if (!masalliqlar || !qadamlar) return null;
+  for (const royxat of [masalliqlar, qadamlar]) {
+    if (royxat.length > QATORLAR_SONI_CHEGARASI) return null;
+    if (royxat.some((q) => q.length > QATOR_CHEGARASI)) return null;
+  }
+  return { nomi, masalliqlar, qadamlar };
+}
+
+export type TilTarjimasi = { nomi: string; masalliqlar: string[]; qadamlar: string[] };
+export type TarjimaJavobi = { ru: TilTarjimasi; en: TilTarjimasi };
+
+function tilTarjimasiniOqi(qiymat: unknown, manba: TarjimaSorovi): TilTarjimasi | null {
+  if (!qiymat || typeof qiymat !== "object") return null;
+  const obyekt = qiymat as Record<string, unknown>;
+  const nomi = matnOqi(obyekt.nomi);
+  if (!nomi) return null;
+  const masalliqlar = qatorlarRoyxatiniOqi(obyekt.masalliqlar);
+  const qadamlar = qatorlarRoyxatiniOqi(obyekt.qadamlar);
+  // Har qator o'z o'rnida tarjima qilinishi shart — soni mos kelmasa javob ishonchsiz.
+  if (!masalliqlar || masalliqlar.length !== manba.masalliqlar.length) return null;
+  if (!qadamlar || qadamlar.length !== manba.qadamlar.length) return null;
+  return { nomi: nomi.slice(0, NOM_CHEGARASI), masalliqlar, qadamlar };
+}
+
+/** AI javobini tekshiradi: ikkala til bor, qatorlar soni manbaga mos; buzilgan bo'lsa null. */
+export function tarjimaJavobiniTekshir(xom: unknown, manba: TarjimaSorovi): TarjimaJavobi | null {
+  if (!xom || typeof xom !== "object") return null;
+  const obyekt = xom as Record<string, unknown>;
+  const ru = tilTarjimasiniOqi(obyekt.ru, manba);
+  const en = tilTarjimasiniOqi(obyekt.en, manba);
+  return ru && en ? { ru, en } : null;
+}

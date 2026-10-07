@@ -620,6 +620,9 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-10-07 · Retseptlar admin A8/A9 orqali kiritiladi: `retseptlar` jadvali (uch tilda nom, kategoriya_id → umumiy `kategoriyalar`, kaloriya/oqsil/yog'/uglevod, porsiya matni, vaqt_daqiqa, murakkablik oson/orta/qiyin, holat qoralama/chop_etilgan, masalliqlar va qadamlar uch tilda JSON, rasm_kaliti). Qoralama faqat o'zbekcha nom bilan saqlanadi; chop etish uchun uch nom, kategoriya, kaloriya, vaqt, murakkablik va uch tilda kamida bittadan masalliq shart; qadamlar ixtiyoriy (bo'sh bo'lsa ilovada «Tayyorlash» bo'limi chiqmaydi). Chop etilgan retsept qayta saqlanganda chop etilgan qoladi va to'liq bo'lishi shart, qoralamaga qaytarish yo'q. Kaloriya va makrolar bitta porsiya uchun. Yog' va uglevod prototip A9 da yo'q bo'lsa ham qo'shildi, chunki mobil retsept ekrani ularni ko'rsatadi. Rasm R2'da `retseptlar/<id>/<vaqt>.<ext>`, ochiq yo'l `/api/retsept-rasmlari/<id>` (imzoli havolaga yo'naltiradi). Jurnal turlari retsept_qoshish / retsept_tahrir / retsept_chop_etish, sabab so'ralmaydi.**
 *Sabab:* sprint 6 5-task matni; yarim tayyor retsept foydalanuvchiga chiqmasligi uchun chop etish alohida bosqich, qoralama esa tezkor saqlash uchun yengil; mobil ekran yog' va uglevodni ko'rsatadi, shuning uchun prototip A9 dan chetlanildi.
 
+**2026-10-07 · Retsept tarjimasi A9 da admin bosadigan tugma orqali AI bilan qilinadi (saqlashda avtomatik emas): o'zbekcha nom, masalliqlar va qadamlar ruscha va inglizchaga o'giriladi, natija faqat shaklga tushadi va admin ko'rib chiqib saqlaydi, bazaga o'zi yozilmaydi. Chop etish talablari o'zgarmaydi. Qatorlar soni manbaga mos kelmagan yoki bir til yetishmagan javob rad etiladi (yarim tarjima ko'rsatilmaydi).**
+*Sabab:* oziq-ovqat nomlari tarjimada adashishi mumkin, admin ko'rmagan matn foydalanuvchiga chiqmasin; tarjima qoralama ustida ishlaydi, chop etish admin qo'lida.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |
