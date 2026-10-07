@@ -98,7 +98,8 @@ Faqat jadval nomlari va vazifasi. Ustun, tip va migratsiya S2'da yoziladi.
 | `vazn_yozuvlari` | Vazn o'lchovlari tarixi va maqsad vazn |
 | `rejalar` | Hisoblangan kunlik kaloriya va makro maqsadlari, hisoblangan sana |
 | `ovqat_yozuvlari` | Jurnalga tushgan har bir ovqat: taom, porsiya, kaloriya, makrolar, vaqt, ovqat turi |
-| `taomlar` | Umumiy taom bazasi — nomi uch tilda, taxminiy kaloriya va makrolar |
+| `taomlar` | Umumiy taom bazasi — nomi uch tilda, taxminiy kaloriya va makrolar, kategoriya, rasm |
+| `kategoriyalar` | Taom va retsept kategoriyalari, admin paneldan to'ldiriladi |
 | `rasmlar` | Ovqat rasmlari va ular qaysi yozuvga tegishli ekani |
 | `skan_hisobi` | AI skan sarfi: FREE umumiy limiti va PRO kunlik limiti |
 | `obunalar` | PRO holati, tarif, boshlanish va tugash sanasi |

@@ -2,7 +2,9 @@ import Link from "next/link";
 import { sinf } from "@/app/_components/Tugma";
 import {
   faollikMatni,
+  FILTR_NOMLARI,
   filtrniOqi,
+  FOYDALANUVCHI_FILTRLARI,
   qidiruvniOqi,
   sahifalarSoni,
   sahifaMatni,
@@ -94,7 +96,15 @@ export default async function FoydalanuvchilarSahifasi({
 
   return (
     <AdminSahifa sarlavha="Foydalanuvchilar">
-      <QidiruvPaneli q={q ?? ""} filtr={filtr} />
+      <QidiruvPaneli
+        q={q ?? ""}
+        filtr={filtr}
+        asos="/admin/foydalanuvchilar"
+        filtrlar={FOYDALANUVCHI_FILTRLARI}
+        nomlar={FILTR_NOMLARI}
+        joyMatni="Telegram ID, ism yoki username"
+        yorliq="Foydalanuvchi qidirish"
+      />
       {royxat ? (
         <AdminJadval
           ustunlar={USTUNLAR}

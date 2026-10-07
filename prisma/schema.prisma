@@ -31,11 +31,27 @@ model Taom {
   yog           Float
   uglevod       Float
   porsiyalar    Int[]
+  /// Admin A7'dan yuklangan rasmning ombordagi (R2) kaliti; `rasm` esa uning `/api/taom-rasmlari/<id>` yo'li.
+  rasmKaliti    String?  @map("rasm_kaliti")
+  kategoriyaId  String?  @map("kategoriya_id")
   yaratilgan    DateTime @default(now())
 
-  yozuvlar OvqatYozuvi[]
+  kategoriya Kategoriya?   @relation(fields: [kategoriyaId], references: [id], onDelete: SetNull)
+  yozuvlar   OvqatYozuvi[]
 
   @@map("taomlar")
+}
+
+/// Taom va retsept kategoriyalari (admin-tz.md A7/A9, S6 4-task): admin A7'dagi "Yangi qo'shish"
+/// bilan qo'shadi, ro'yxat ikkala shaklda umumiy. Nomi takrorlanmaydi.
+model Kategoriya {
+  id         String   @id @default(uuid())
+  nomi       String   @unique
+  yaratilgan DateTime @default(now())
+
+  taomlar Taom[]
+
+  @@map("kategoriyalar")
 }
 
 /// Jurnalga tushgan har bir ovqat (PRD.md, 7-bo'lim). Taom nomi va raqamlari yozuv

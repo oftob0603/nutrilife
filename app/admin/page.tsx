@@ -52,7 +52,8 @@ export default async function BoshqaruvSahifasi() {
         <span className="text-matn-2">{` · ${a.tafsilot}`}</span>
       </>
     ),
-    sabab: a.sabab,
+    // Taom amallarida sabab so'ralmaydi (admin-tz §4) — bo'sh bo'lsa "—".
+    sabab: a.sabab || "—",
   }));
 
   return (

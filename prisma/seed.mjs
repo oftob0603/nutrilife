@@ -4,7 +4,8 @@
 // taxminiy — uy retsepti bo'yicha o'rtacha (PRD.md, 7-bo'lim: "taxminiy kaloriya").
 //
 // Ishga tushirish: npm run db:seed
-// Qayta ishga tushirilsa nusxa qo'shmaydi — mavjud yozuv yangilanadi.
+// Qayta ishga tushirilsa nusxa qo'shmaydi va mavjud yozuvga tegmaydi — S6'dan taom bazasini
+// admin A7'dan tahrirlaydi (DECISIONS 2026-10-07), seed faqat yo'q taomni qo'shadi.
 
 import { db } from '../lib/db.ts';
 
@@ -85,9 +86,14 @@ const TAOMLAR = [
   taom('tuxum', 'Qaynatilgan tuxum', 'Варёное яйцо', 'Boiled egg', 1, 'dona', 78, 6.3, 5.3, 0.6, [1, 2, 3]),
 ];
 
+// Kategoriyalar (admin-tz.md A7) — admin A7'dan yangisini qo'shadi, seed faqat boshlang'ichlarni beradi.
+const KATEGORIYALAR = ['Birinchi taom', 'Ikkinchi taom', 'Non', 'Salat', 'Shirinlik', 'Ichimlik'];
+for (const nomi of KATEGORIYALAR) {
+  await db.kategoriya.upsert({ where: { nomi }, update: {}, create: { nomi } });
+}
+
 for (const yozuv of TAOMLAR) {
-  const { id, ...maydonlar } = yozuv;
-  await db.taom.upsert({ where: { id }, update: maydonlar, create: yozuv });
+  await db.taom.upsert({ where: { id: yozuv.id }, update: {}, create: yozuv });
 }
 
 console.log(`Seed tayyor — ${TAOMLAR.length} ta taom.`);

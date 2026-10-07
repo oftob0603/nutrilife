@@ -10,7 +10,7 @@ nazorat qilsin, xatolarni tuzatsin.
 - [x] Admin paneli va kirish nazorati: faqat admin roli ochadi, alohida bo'lim
 - [x] Foydalanuvchilar ro'yxati: qidiruv, filtr (FREE / PRO / bloklangan), bitta foydalanuvchi kartasi
 - [x] Obunani qo'lda boshqarish: PRO berish, muddatini uzaytirish, olib qo'yish
-- [ ] Taom bazasini tahrirlash: yangi taom qo'shish, nomi uch tilda, taxminiy kaloriya va makrolar, shuningdek S1 modelidagi o'lchov miqdori va birligi (100 g yoki 1 dona), porsiya variantlari ro'yxati va rasm
+- [x] Taom bazasini tahrirlash: yangi taom qo'shish, nomi uch tilda, taxminiy kaloriya va makrolar, shuningdek S1 modelidagi o'lchov miqdori va birligi (100 g yoki 1 dona), porsiya variantlari ro'yxati va rasm
 - [ ] Retseptlar bo'limi (PRO ostida): `retseptlar` jadvali, admin panelidan kiritish — nomi, rasmi, kaloriya, oqsil, tayyorlash vaqti, murakkablik, kategoriya
 - [ ] Retseptlar sahifasi foydalanuvchi tomonida: qidiruv, kategoriyalar, filtr oynasi (tayyorlash vaqti, kaloriya, afzalliklar), retsept detali. FREE'ga sarlavha ko'rinadi, to'liq matn PRO'da. Pastki panel to'liq ko'rinishga o'tadi: Home · Retseptlar · [+] · Progress · Profil
 - [ ] Statistika: ro'yxatdan o'tganlar, kunlik faol foydalanuvchilar, skanlar soni, PRO obunachilar, 7-kun retention
@@ -45,6 +45,9 @@ avtomatik takroriy to'lov.
 - 2026-10-06: migratsiya s6_obuna_manba_admin_amallari — obunalar.manba (tolov/qolda, eski tarif=qolda qatorlari manba=qolda) va faqat yoziladigan admin_amallari jurnali jadvali (prisma/migrations/20261006113925_s6_obuna_manba_admin_amallari, prisma/schema.prisma)
 - 2026-10-06: A3 obunani qo'lda boshqarish — PRO berish, muddatni uzaytirish, PRO ni olib qo'yish (sabab majburiy, har amal jurnalga bitta tranzaksiyada), karta manbasi va A1 "Oxirgi amallar" jurnaldan (lib/services/obuna-admin.ts, lib/services/obuna-admin-hisob.ts, app/api/admin/foydalanuvchilar/[id]/obuna/route.ts, app/admin/_components/ObunaAmallari.tsx, AdminOyna.tsx, app/admin/page.tsx)
 - 2026-10-06: A4/A5 taom takliflari navbati — taom_takliflari jadvali, E7 tuzatishi (nom o'zgargan yoki zichlik >3 %) navbatga tushadi, uch qaror (yangi taom, birlashtirish, rad) jurnalga yoziladi (lib/services/taom-takliflari.ts, app/admin/takliflar/, app/api/admin/takliflar/)
+- 2026-10-07: migratsiya s6_kategoriyalar_taom_rasm_kaliti — kategoriyalar jadvali (6 ta boshlang'ich), taomlar.kategoriya_id va rasm_kaliti; seed mavjud taomni endi yangilamaydi (prisma/migrations/20261007100000_s6_kategoriyalar_taom_rasm_kaliti, prisma/schema.prisma, prisma/seed.mjs)
+- 2026-10-07: A6 taomlar bazasi — qidiruv uch tilda, filtr Hammasi / Tarjimasi yo'q / Rasmsiz, 50 tadan sahifalash, ustunlar uch til · o'lchov · kkal · makrolar · rasm · sana; QidiruvPaneli A2 va A6 uchun umumiy qilindi (app/admin/taomlar/page.tsx, loading.tsx, ustunlar.ts, app/admin/_components/QidiruvPaneli.tsx, lib/services/taom-admin.ts, lib/services/taom-admin-hisob.ts, app/api/admin/taomlar/route.ts)
+- 2026-10-07: A7 taom muharriri — yangi (/admin/taomlar/yangi, POST) va tahrir (/admin/taomlar/[id], PATCH, id o'zgarmaydi): uch nom majburiy, o'lchov miqdori + birlik chiplari, kaloriya va makrolar, 20 % makro ogohlantirishi (prototip Note warn), porsiya variantlari, kategoriya tanlovi va "Yangi kategoriya" oynasi, rasm yuklash (brauzerda siqiladi, R2'ga `taomlar/<id>/...`, ochiq /api/taom-rasmlari/[id]); har saqlash admin_amallari'ga taom_qoshish / taom_tahrir (app/admin/_components/TaomShakli.tsx, app/api/admin/taomlar/[id]/route.ts, app/api/admin/taomlar/shakl.ts, app/api/admin/kategoriyalar/route.ts, app/api/taom-rasmlari/[id]/route.ts)
 - 2026-10-07: taom takliflari navbati butunlay olib tashlandi (DECISIONS 2026-10-07) — E7 tuzatishi faqat o'z yozuvida qoladi; A4/A5 ekranlari, /api/admin/takliflar, /api/admin/rasmlar, taom-takliflari.ts va taom-taklif-hisob.ts o'chirildi, yon paneldan "Takliflar navbati" bo'limi va A1 dan "Tasdiq kutayotgan takliflar" kartasi olib tashlandi; migratsiya s6_taom_takliflari_olib_tashlandi jadvalni tashladi (prisma/migrations/20261007090000_s6_taom_takliflari_olib_tashlandi)
 
 ## Handoff
@@ -56,7 +59,8 @@ Desktop'da sinov kutilmoqda.
 
 Lokal dev'da /admin "ruxsat yo'q" ko'rsatadi — dev zaxirasi birinchi hisobni oddiy foydalanuvchi qilib kiritadi, admin
 ikkinchi yaratilgan hisobda; /admin sinovi uchun admin sessiyasini qo'lda berish kerak. A1 dagi so'rovlar navbati 7-taskda (bloklash va shikoyatlar) ulanadi; takliflar navbati yo'q (2026-10-07 qarori), yon panelda 7 bo'lim; amallar jurnali (`admin_amallari`) ulangan.
-Keyingi task — 4 (Taom bazasini tahrirlash A6/A7, prototip ui_kits/admin/screens-content.jsx).
+Keyingi task — 5 (Retseptlar bo'limi admin tomonida A8/A9, prototip ui_kits/admin/screens-content.jsx va shared/recipes.js; `kategoriyalar` jadvali va /api/admin/kategoriyalar tayyor, A9 shu tanlovni ishlatadi).
+4-task A6/A7 jonli sinovi deploy'dan keyin Telegram Desktop'da: ro'yxat va filtrlar, yangi taom (slug, kategoriya, rasm yuklash → /api/taom-rasmlari/<id> ko'rinishi, E5 kartasida ham), mavjud taomni tahrirlash, A1 jurnalida "Taom qo'shildi / tahrirlandi". Lokal sinov: build, API 403/404 javoblari va sof hisob funksiyalari (slug, porsiyalar, shakl tekshiruvi) node bilan o'tdi.
 Dev hisobga ikkita sinov yozuvi qo'shilgan: "Toshkent oshi" 950 kkal va "Somsa" 435 kkal. 2- va 3-task jonli sinovi deploy'dan keyin Telegram Desktop'da kutilmoqda (PRO berish → kartada Faol · qo'lda berilgan, limit 20/kun; uzaytirish; olib qo'yish → FREE; A1 jurnali). Lokal admin sessiyasini qo'lda yasash ruxsat tizimi tomonidan rad etiladi — lokal sinov uchun foydalanuvchi admin sessiyasini o'zi beradi. `bloklangan` ustuni bor, bloklash amali 7-taskda.
 
 ---

@@ -62,6 +62,8 @@ export const AMAL_NOMLARI: Record<string, string> = {
   pro_berish: "PRO berildi",
   muddat_uzaytirish: "Muddat uzaytirildi",
   pro_olish: "PRO olib qo'yildi",
+  taom_qoshish: "Taom qo'shildi",
+  taom_tahrir: "Taom tahrirlandi",
 };
 
 export function amalNomi(tur: string): string {

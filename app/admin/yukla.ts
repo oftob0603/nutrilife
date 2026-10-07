@@ -6,6 +6,8 @@ import type {
   FoydalanuvchilarSahifasi,
 } from "@/lib/services/admin";
 import type { FoydalanuvchiFiltri } from "@/lib/services/admin-hisob";
+import type { Kategoriya, TaomKartasi, TaomlarSahifasi } from "@/lib/services/taom-admin";
+import type { TaomFiltri } from "@/lib/services/taom-admin-hisob";
 
 export type AdminHolati =
   | { holat: "admin"; ism: string | null }
@@ -54,6 +56,46 @@ export async function foydalanuvchiniYukla(
     return (await javob.json()) as { karta: FoydalanuvchiKartasi };
   } catch {
     return { holat: "xato" };
+  }
+}
+
+/** A6 ro'yxati; olib bo'lmasa null — sahifa xato holatini ko'rsatadi. */
+export async function taomlarniYukla(
+  q: string | null,
+  filtr: TaomFiltri,
+  sahifa: number,
+): Promise<TaomlarSahifasi | null> {
+  const params = new URLSearchParams({ filtr, sahifa: String(sahifa) });
+  if (q) params.set("q", q);
+  try {
+    const javob = await serverdanApi(`/api/admin/taomlar?${params}`);
+    return javob.ok ? ((await javob.json()) as TaomlarSahifasi) : null;
+  } catch {
+    return null;
+  }
+}
+
+/** A7 kartasi: topilmasa "topilmadi", olib bo'lmasa "xato". */
+export async function taomniYukla(
+  id: string,
+): Promise<{ karta: TaomKartasi } | { holat: "topilmadi" | "xato" }> {
+  try {
+    const javob = await serverdanApi(`/api/admin/taomlar/${encodeURIComponent(id)}`);
+    if (javob.status === 404) return { holat: "topilmadi" };
+    if (!javob.ok) return { holat: "xato" };
+    return (await javob.json()) as { karta: TaomKartasi };
+  } catch {
+    return { holat: "xato" };
+  }
+}
+
+/** A7 kategoriya tanlovi; olib bo'lmasa null. */
+export async function kategoriyalarniYukla(): Promise<Kategoriya[] | null> {
+  try {
+    const javob = await serverdanApi("/api/admin/kategoriyalar");
+    return javob.ok ? ((await javob.json()) as { kategoriyalar: Kategoriya[] }).kategoriyalar : null;
+  } catch {
+    return null;
   }
 }
 

@@ -614,6 +614,9 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-10-07 · Taom takliflari navbati butunlay olib tashlandi: foydalanuvchi E7'da AI natijasini tuzatsa, tuzatish faqat o'z yozuvida qoladi, adminga ketmaydi va admin tasdiqlamaydi. `taom_takliflari` jadvali, A4/A5 ekranlari va `/api/admin/takliflar` yo'q; umumiy `taomlar` bazasini faqat admin A6/A7 orqali to'ldiradi. 2026-09-13 "tuzatishlar navbatga tushadi" va 2026-10-06 "taklifning yagona manbai E7" qarorlari bekor.**
 *Sabab:* Foydalanuvchi qarori — navbatni ko'rib chiqish egasiga ortiqcha ish, baza admin kiritgan kontent bilan to'ladi. Panelda foydalanuvchi rasmi endi hech qayerda ko'rinmaydi (admin-tz §4).
 
+**2026-10-07 · Taom bazasi admin A7'dan tahrirlanadi: `kategoriyalar` jadvali (taom va retsept uchun umumiy, A7 "Yangi qo'shish" bilan to'ladi), `taomlar.kategoriya_id` va `taomlar.rasm_kaliti`. Admin yuklagan rasm R2'da `taomlar/<id>/<vaqt>.<ext>` kaliti bilan, `taom.rasm` esa hamma uchun ochiq `/api/taom-rasmlari/<id>` yo'li (imzoli havolaga yo'naltiradi); seed'dagi `public/taomlar/*.webp` rasmlar joyida qoladi. Yangi taom id'si o'zbekcha nomdan slug (`qovurma-lagmon`), band bo'lsa `-2`; tahrirda id o'zgarmaydi. A7 maydonlari prototipdagi bitta "standart porsiya" o'rniga S1 modeli: o'lchov miqdori + birligi (g · ml · dona · six · bo'lak), shu o'lchov uchun kaloriya va makrolar, porsiya variantlari (1–5 ta). A6 filtri: Hammasi · Tarjimasi yo'q · Rasmsiz — prototipdagi til chiplari hech narsani filtrlamagani uchun qo'yilmadi. Seed endi mavjud taomni yangilamaydi (`update: {}`) — admin tahriri manba.**
+*Sabab:* sprint 6 4-task matni S1 maydonlarini talab qiladi; R2 bucket yopiq, umumiy baza rasmi esa sessiyasiz ko'rinishi kerak; seed qayta ishlaganda admin kiritgan qiymatlar yo'qolmasin.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |
