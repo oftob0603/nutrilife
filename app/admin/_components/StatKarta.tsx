@@ -10,6 +10,7 @@ export function StatKarta({
   qiymat,
   izoh,
   belgi,
+  seriya,
   href,
   yuklanmoqda = false,
 }: {
@@ -17,6 +18,8 @@ export function StatKarta({
   qiymat?: string | null;
   izoh?: string;
   belgi?: BelgiNomi;
+  /** Belgi o'rniga seriya rangidagi nuqta (prototip `RevenueTile`) — grafik bilan bir rangda. */
+  seriya?: 1 | 2 | 3 | 4 | 5;
   href?: string;
   yuklanmoqda?: boolean;
 }) {
@@ -24,6 +27,9 @@ export function StatKarta({
     <>
       <span className="flex items-center gap-2 text-izoh text-matn-2">
         {belgi && <Belgi nomi={belgi} olcham={16} />}
+        {seriya && (
+          <span aria-hidden="true" className="size-2 shrink-0 rounded-full" style={{ background: `var(--metrika-${seriya})` }} />
+        )}
         <span className="min-w-0 flex-1 truncate">{nomi}</span>
         {href && (
           <span className="text-matn-3">

@@ -147,11 +147,14 @@ tashlandi. Raqamlash qolgan ekranlar uchun o'zgarmaydi.
 - Vaqt oralig'i tanlagich: 7 kun · 30 kun · 90 kun
 - Grafiklar: yangi foydalanuvchilar · kunlik faol · skanlar soni · PRO obunachilar ·
   7-kun retention
-- Skan tannarxi bo'limi: davr ichidagi skanlar soni va taxminiy xarajat
-  (SAVALA 2-sharti — birlik iqtisodiyoti shu yerdan kuzatiladi)
+- Daromad bo'limi: umumiy · bugungi · so'nggi 7 kun · joriy oy kartalari, oylik va kunlik
+  ustunlar. Summalar obunalar jadvalidan tarif narxi bo'yicha, admin qo'lda bergan PRO ham
+  sanaladi (DECISIONS 2026-10-07); to'lov API'lari kelganda to'lov jurnaliga o'tadi
+- Skan tannarxi bo'limi (davr ichidagi skanlar soni va taxminiy xarajat, SAVALA 2-sharti) —
+  keyinga qoldirildi, egasi hozircha kerak emas dedi (DECISIONS 2026-10-07)
 
-PRD 9-bo'limidagi 1-ochiq savol (north star metrika tanlanmagan) hal bo'lmaguncha
-uchala metrika ham teng ko'rsatiladi.
+North star — 7-kun retention (DECISIONS 2026-09-21); kunlik faol va PRO obunachilar yordamchi,
+sarlavha izohida shu yoziladi.
 
 ### A11 — Shikoyatlar
 

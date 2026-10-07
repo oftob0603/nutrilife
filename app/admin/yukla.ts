@@ -9,6 +9,8 @@ import type { FoydalanuvchiFiltri } from "@/lib/services/admin-hisob";
 import type { Kategoriya, TaomKartasi, TaomlarSahifasi } from "@/lib/services/taom-admin";
 import type { RetseptKartasi, RetseptlarSahifasi } from "@/lib/services/retsept-admin";
 import type { HolatFiltri } from "@/lib/services/retsept-admin-hisob";
+import type { Statistika } from "@/lib/services/admin-statistika";
+import type { Davr } from "@/lib/services/admin-statistika-hisob";
 import type { TaomFiltri } from "@/lib/services/taom-admin-hisob";
 
 export type AdminHolati =
@@ -138,6 +140,16 @@ export async function boshqaruvniYukla(): Promise<BoshqaruvSahifasi | null> {
   try {
     const javob = await serverdanApi("/api/admin/boshqaruv");
     return javob.ok ? ((await javob.json()) as BoshqaruvSahifasi) : null;
+  } catch {
+    return null;
+  }
+}
+
+/** A10 statistika — davr bo'yicha; olib bo'lmasa null — sahifa xato holatini ko'rsatadi. */
+export async function statistikaniYukla(davr: Davr): Promise<Statistika | null> {
+  try {
+    const javob = await serverdanApi(`/api/admin/statistika?davr=${davr}`);
+    return javob.ok ? ((await javob.json()) as Statistika) : null;
   } catch {
     return null;
   }

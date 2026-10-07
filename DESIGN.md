@@ -264,6 +264,18 @@ va radiuslar ilovaniki bilan bir xil, faqat o'lchamlar yangi (prototip `tokens/a
 - 1024px dan tor ekranda chap panel yuqoridagi aylantiriladigan tasmaga aylanadi, jadval
   yonlama aylanadi — telefonda faqat o'qish uchun.
 - Panel interfeysi faqat o'zbekcha; kontent (taom, retsept) uch tilda kiritiladi.
+- Statistika grafiklari (A10): har metrika o'z seriya rangida — yangi rang emas, mavjudlarining
+  taxallusi (prototip `colors.css --metrika-*`). Chiziq 1.5px, ostida 10% soya, hover'da
+  vertikal `--chegara` chizig'i va `--karta` to'ldiruvli nuqta. Daromad ustunlari — chiziq
+  emas: oy va kun alohida chelaklar, hover'da boshqalari 35% xiralashadi.
+
+| Token | Qiymat | Qayerda |
+|---|---|---|
+| `--metrika-1` | `--makro-oqsil` | Yangi foydalanuvchilar · bugungi daromad |
+| `--metrika-2` | `--makro-norma` | Kunlik faol · umumiy daromad |
+| `--metrika-3` | `--makro-uglevod` | Skanlar soni · 7 kunlik daromad |
+| `--metrika-4` | `--makro-yog` | PRO obunachilar · oylik daromad |
+| `--metrika-5` | `--xato` | 7-kun retention |
 
 ## 12. Ochiq savol
 

@@ -13,7 +13,7 @@ nazorat qilsin, xatolarni tuzatsin.
 - [x] Taom bazasini tahrirlash: yangi taom qo'shish, nomi uch tilda, taxminiy kaloriya va makrolar, shuningdek S1 modelidagi o'lchov miqdori va birligi (100 g yoki 1 dona), porsiya variantlari ro'yxati va rasm
 - [x] Retseptlar bo'limi (PRO ostida): `retseptlar` jadvali, admin panelidan kiritish — nomi, rasmi, kaloriya, oqsil, tayyorlash vaqti, murakkablik, kategoriya
 - [x] Retseptlar sahifasi foydalanuvchi tomonida: qidiruv, kategoriyalar, filtr oynasi (tayyorlash vaqti, kaloriya, afzalliklar), retsept detali. FREE'ga sarlavha ko'rinadi, to'liq matn PRO'da. Pastki panel to'liq ko'rinishga o'tadi: Home · Retseptlar · [+] · Progress · Profil
-- [ ] Statistika: ro'yxatdan o'tganlar, kunlik faol foydalanuvchilar, skanlar soni, PRO obunachilar, 7-kun retention
+- [x] Statistika: ro'yxatdan o'tganlar, kunlik faol foydalanuvchilar, skanlar soni, PRO obunachilar, 7-kun retention
 - [ ] Foydalanuvchini bloklash va ma'lumotini o'chirish, shikoyatlarni ko'rish
 - [ ] Narxlarni panel orqali o'zgartirish
 
@@ -58,6 +58,10 @@ avtomatik takroriy to'lov.
 - 2026-10-07: retseptlar foydalanuvchi xizmati va API — faqat chop etilganlar, PRO'ga masalliq va qadamlar, FREE'ga faqat soni (yopiq: true), sevimliga qo'shish/olish (PRO bo'lmasa 403), til nl_til cookie'dan, qoralama 404 (lib/services/retsept-hisob.ts, lib/services/retseptlar.ts, app/api/retseptlar/route.ts, app/api/retseptlar/[id]/route.ts, app/api/retseptlar/[id]/sevimli/route.ts)
 - 2026-10-07: R1 ro'yxat (chiplar Sevimli · Hammasi · kategoriyalar, 2 ustunli kartalar, optimistik yurak, uch bo'sh holat, skelet) va R2/R3 detal (FREE paywall xira rasm ustida, PRO'da "Bir porsiyada", makro chiziqlari, Masalliqlar, qadam bo'lsa "Tayyorlash"); pastki panel to'liq ko'rinishga o'tdi, lug'atga 25 kalit uch tilda (app/retseptlar/page.tsx, app/retseptlar/[id]/page.tsx, app/_components/retseptlar/RetseptKartasi.tsx, SevimliTugmasi.tsx, app/_components/QoshishPaneli.tsx, app/_components/BoshHolat.tsx, lib/lugat/sozlar.ts)
 - 2026-10-07: sprint matnidagi qidiruv va filtr oynasi (vaqt, kaloriya, afzalliklar) prototipda yo'qligi uchun qurilmadi, R1 da faqat kategoriya chiplari (DECISIONS 2026-10-07); build, tsc, eslint toza, brauzerda PRO va FREE sinovi o'tdi
+- 2026-10-07: A10 /admin/statistika — davr 7 · 30 · 90 kun (?davr=), beshta kunlik metrika (yangi foydalanuvchilar, kunlik faol, skanlar, PRO obunachilar, 7-kun retention), xizmat, sof hisob va GET /api/admin/statistika (app/admin/statistika/page.tsx, lib/services/admin-statistika.ts, admin-statistika-hisob.ts, app/api/admin/statistika/route.ts, app/admin/yukla.ts)
+- 2026-10-07: MetrikaGrafigi (SVG chiziq, hover, retention uzilishlari), DavrTanlovi, --metrika-1..5 ranglari globals.css va DESIGN.md ga; yon panelda Statistika ulandi (app/admin/_components/MetrikaGrafigi.tsx, DavrTanlovi.tsx, AdminQobiq.tsx, app/globals.css)
+- 2026-10-07: Daromad bo'limi — umumiy, bugungi, 7 kun, joriy oy kartalari va oylik/kunlik ustunlar, tarif narxi bo'yicha, skan tannarxi qo'yilmadi (app/admin/_components/StatKarta.tsx, DaromadUstunlari.tsx, admin-tz.md)
+- 2026-10-07: tsc, eslint, build toza; xizmat Railway bazasida 7/30/90 da ishladi, API sessiyasiz 403, grafiklar brauzerda ko'rildi; raqam hidratsiya xatosi qo'lda guruhlash bilan hal bo'ldi
 
 ## Handoff
 
@@ -68,12 +72,13 @@ Desktop'da sinov kutilmoqda.
 
 Lokal dev'da /admin "ruxsat yo'q" ko'rsatadi — dev zaxirasi birinchi hisobni oddiy foydalanuvchi qilib kiritadi, admin
 ikkinchi yaratilgan hisobda; /admin sinovi uchun admin sessiyasini qo'lda berish kerak. A1 dagi so'rovlar navbati 7-taskda (bloklash va shikoyatlar) ulanadi; takliflar navbati yo'q (2026-10-07 qarori), yon panelda 7 bo'lim; amallar jurnali (`admin_amallari`) ulangan.
-Keyingi task — 7 (Statistika A10: ro'yxatdan o'tganlar, kunlik faol, skanlar soni, PRO obunachilar, 7-kun retention; prototip ui_kits/admin/screens-dash.jsx, admin-tz.md A10; vaqt oralig'i 7 · 30 · 90 kun; skan tannarxi bo'limi).
+Keyingi task — 8 (Foydalanuvchini bloklash va ma'lumotini o'chirish, shikoyatlarni ko'rish — A11; prototip ui_kits/admin/screens-users.jsx va screens-queue.jsx, admin-tz.md A11; `bloklangan` ustuni tayyor; A1 "Ko'rilmagan so'rovlar" kartasi va yon panel «So'rovlar» soni shu taskda ulanadi).
 4-task A6/A7 jonli sinovi deploy'dan keyin Telegram Desktop'da: ro'yxat va filtrlar, yangi taom (slug, kategoriya, rasm yuklash → /api/taom-rasmlari/<id> ko'rinishi, E5 kartasida ham), mavjud taomni tahrirlash, A1 jurnalida "Taom qo'shildi / tahrirlandi". Lokal sinov: build, API 403/404 javoblari va sof hisob funksiyalari (slug, porsiyalar, shakl tekshiruvi) node bilan o'tdi.
 Dev hisobga ikkita sinov yozuvi qo'shilgan: "Toshkent oshi" 950 kkal va "Somsa" 435 kkal. 2- va 3-task jonli sinovi deploy'dan keyin Telegram Desktop'da kutilmoqda (PRO berish → kartada Faol · qo'lda berilgan, limit 20/kun; uzaytirish; olib qo'yish → FREE; A1 jurnali). Lokal admin sessiyasini qo'lda yasash ruxsat tizimi tomonidan rad etiladi — lokal sinov uchun foydalanuvchi admin sessiyasini o'zi beradi. `bloklangan` ustuni bor, bloklash amali 7-taskda.
 5-task A8/A9 jonli sinovi deploy'dan keyin Telegram Desktop'da: ro'yxat va filtrlar, yangi retsept qoralama → chop etish (yetishmayotgan maydonlar xabari), rasm yuklash → /api/retsept-rasmlari/<id>, mavjudni tahrirlash, A1 jurnalida «Retsept chop etildi». Lokal sinov: build, API 403/404 va sof hisob funksiyalari node bilan o'tdi.
 A9 AI tarjimasi (tugma «Ruscha va inglizchaga tarjima qilish», POST /api/admin/tarjima) jonli sinovi deploy'dan keyin Telegram Desktop'da: o'zbekcha nom + masalliqlar → ruscha/inglizcha maydonlar to'ladi. Lokal .env dagi AI_API_KEY 401 qaytaradi (skan ham) — lokal AI sinovlari uchun kalitni yangilash kerak.
 6-task R1–R3 jonli sinovi deploy'dan keyin Telegramda: FREE'da kartalar xira va R2 paywall, PRO'da R3 va sevimli; A9 dan rasm yuklab kartada ko'rinishi. Bazada 4 sinov retsepti (3 chop etilgan, 1 qoralama) rasmsiz turibdi — egasi yangilaydi yoki o'chirtiradi.
+7-task A10 jonli sinovi deploy'dan keyin Telegram Desktop'da: davr tugmalari, beshta grafik va hover, Daromad kartalari (hozir 1 obuna 39 000 so'm), yon paneldagi Statistika bandi.
 
 ---
 

@@ -47,6 +47,16 @@
   --makro-yog: #facc15;
   --makro-uglevod: #ec4899;
   --makro-norma: #22c55e;
+  /*
+   * Admin grafik seriyalari (prototip colors.css --metrika-*, DESIGN.md 11-bo'lim) — yangi rang
+   * emas, mavjudlarining taxallusi: besh chiziq bir ekranda ajralib tursin. Bog'langan rang
+   * mavzuga qarab o'zgarsa taxallus ham ergashadi, shuning uchun bir marta yoziladi.
+   */
+  --metrika-1: var(--makro-oqsil);
+  --metrika-2: var(--makro-norma);
+  --metrika-3: var(--makro-uglevod);
+  --metrika-4: var(--makro-yog);
+  --metrika-5: var(--xato);
   /* Brauzerning o'z elementlari (vaqt maydoni, scroll chizig'i) ham mavzuga ergashsin. */
   color-scheme: light;
   /*
@@ -166,6 +176,11 @@
   --color-makro-yog: var(--makro-yog);
   --color-makro-uglevod: var(--makro-uglevod);
   --color-makro-norma: var(--makro-norma);
+  --color-metrika-1: var(--metrika-1);
+  --color-metrika-2: var(--metrika-2);
+  --color-metrika-3: var(--metrika-3);
+  --color-metrika-4: var(--metrika-4);
+  --color-metrika-5: var(--metrika-5);
   --color-o1-fon: var(--o1-fon);
   --color-o1-panel: var(--o1-panel);
   --color-o1-chegara: var(--o1-chegara);
