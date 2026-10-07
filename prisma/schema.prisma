@@ -313,6 +313,9 @@ model Obuna {
   tarif           String
   /// "tolov" yoki "qolda" (admin paneldan bergan — daromad statistikasiga kirmaydi, admin-tz.md A3).
   manba           String   @default("tolov")
+  /// Obuna olingan paytdagi tarif narxi, so'mda (A12: narx o'zgarishi mavjud obunalarga ta'sir
+  /// qilmaydi — daromad shu ustundan). Tarifsiz "qolda" muddatda bo'sh.
+  narx            Int?
   boshlanish      DateTime @default(now())
   tugash          DateTime
   /// Bot orqali yuborilgan oxirgi muddat xabari bosqichi (lib/services/obuna-xabar-hisob.ts):
@@ -324,6 +327,24 @@ model Obuna {
 
   @@index([foydalanuvchiId, tugash])
   @@map("obunalar")
+}
+
+/// PRO tariflari va narxlari (A12, admin-tz.md). Uch qator: oylik, yarim_yillik, yillik — admin
+/// paneldan faqat narx o'zgaradi; muddat (oylar) va "tavsiya" belgisi o'zgarmaydi. Narx tarixi
+/// `admin_amallari` jurnalida (narx_ozgartirish). W1 ekrani `GET /api/tariflar` orqali shu jadvalni oladi.
+model TarifNarxi {
+  /// "oylik", "yarim_yillik", "yillik" (lib/services/huquqlar.ts `Tarif`, "qolda"siz).
+  id          String   @id
+  /// So'mda, butun son.
+  narx        Int
+  oylar       Int
+  /// W1 da oldindan tanlangan va "Tavsiya etiladi" belgisi bilan chiqadi (PRD 8-bo'lim).
+  tavsiya     Boolean  @default(false)
+  /// Ekranda ko'rsatish tartibi.
+  tartib      Int
+  yangilangan DateTime @default(now())
+
+  @@map("tariflar")
 }
 
 /// Analitika hodisalari (lib/services/hodisalar.ts): "royxat", "onboarding_tugadi",

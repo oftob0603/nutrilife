@@ -3,6 +3,7 @@
 
 import { db } from "../db.ts";
 import type { Prisma } from "../generated/prisma/client.ts";
+import { tarifIdmi } from "../tariflar.ts";
 import { obunaHolati } from "./huquqlar.ts";
 import {
   berishTafsiloti,
@@ -31,7 +32,8 @@ async function hisobObunalari(tx: Prisma.TransactionClient, foydalanuvchiId: str
 
 /**
  * PRO berish: yangi qator `manba = qolda` bilan. Foydalanuvchi allaqachon PRO bo'lsa muddat
- * joriy tugashdan davom etadi — to'langan kunlar yo'qolmaydi.
+ * joriy tugashdan davom etadi — to'langan kunlar yo'qolmaydi. Qatorga joriy tarif narxi
+ * yoziladi (daromad shundan, DECISIONS 2026-10-07); "qolda" muddat narxsiz.
  */
 export async function proBerish(
   adminId: string,
@@ -46,8 +48,11 @@ export async function proBerish(
     const holat = obunaHolati(hisob.obunalar, hozir);
     const boshlanish = holat.holat === "pro" ? holat.tugash : hozir;
     const tugash = muddatOxiri(boshlanish, muddat);
+    const narx = tarifIdmi(tarif)
+      ? ((await tx.tarifNarxi.findUnique({ where: { id: tarif }, select: { narx: true } }))?.narx ?? null)
+      : null;
 
-    await tx.obuna.create({ data: { foydalanuvchiId, tarif, manba: "qolda", boshlanish, tugash } });
+    await tx.obuna.create({ data: { foydalanuvchiId, tarif, manba: "qolda", narx, boshlanish, tugash } });
     await tx.adminAmali.create({
       data: {
         adminId,

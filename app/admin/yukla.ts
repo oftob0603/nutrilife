@@ -12,6 +12,7 @@ import type { HolatFiltri } from "@/lib/services/retsept-admin-hisob";
 import type { Statistika } from "@/lib/services/admin-statistika";
 import type { Davr } from "@/lib/services/admin-statistika-hisob";
 import type { TaomFiltri } from "@/lib/services/taom-admin-hisob";
+import type { TarifNarxi } from "@/lib/tariflar";
 
 export type AdminHolati =
   | { holat: "admin"; ism: string | null }
@@ -150,6 +151,16 @@ export async function statistikaniYukla(davr: Davr): Promise<Statistika | null> 
   try {
     const javob = await serverdanApi(`/api/admin/statistika?davr=${davr}`);
     return javob.ok ? ((await javob.json()) as Statistika) : null;
+  } catch {
+    return null;
+  }
+}
+
+/** A12 narxlar — joriy tariflar; olib bo'lmasa null — sahifa xato holatini ko'rsatadi. */
+export async function narxlarniYukla(): Promise<TarifNarxi[] | null> {
+  try {
+    const javob = await serverdanApi("/api/admin/narxlar");
+    return javob.ok ? ((await javob.json()) as { tariflar: TarifNarxi[] }).tariflar : null;
   } catch {
     return null;
   }

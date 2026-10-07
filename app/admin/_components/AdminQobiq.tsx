@@ -8,9 +8,9 @@ import { desktopdaToliqEkran } from "@/lib/telegram";
 import { Belgi, type BelgiNomi } from "./Belgi";
 
 /**
- * Chap paneldagi bo'limlar (admin-tz.md §2). `href` yo'q — bo'lim hali qurilmagan (S6 keyingi
- * tasklari): nomi ko'rinadi, bosilmaydi. `soni` — navbatda kutayotganlar, nol bo'lsa chizilmaydi.
- * Taom takliflari va so'rovlar (shikoyatlar) navbati yo'q (DECISIONS 2026-10-07).
+ * Chap paneldagi bo'limlar (admin-tz.md §2). `soni` — navbatda kutayotganlar, nol bo'lsa
+ * chizilmaydi; hozir navbatli bo'lim yo'q (taom takliflari va so'rovlar olib tashlangan,
+ * DECISIONS 2026-10-07). `href`siz bo'lim nomi ko'rinadi, bosilmaydi.
  */
 const BOLIMLAR: readonly { nomi: string; belgi: BelgiNomi; href?: string; soni?: number }[] = [
   { nomi: "Boshqaruv paneli", belgi: "layout-dashboard", href: "/admin" },
@@ -18,7 +18,7 @@ const BOLIMLAR: readonly { nomi: string; belgi: BelgiNomi; href?: string; soni?:
   { nomi: "Taomlar bazasi", belgi: "utensils", href: "/admin/taomlar" },
   { nomi: "Retseptlar", belgi: "book-open", href: "/admin/retseptlar" },
   { nomi: "Statistika", belgi: "chart-line", href: "/admin/statistika" },
-  { nomi: "Narxlar", belgi: "tag" },
+  { nomi: "Narxlar", belgi: "tag", href: "/admin/narxlar" },
 ];
 
 /** Hozir ekranda qorong'i mavzu turibdimi (tanlov yoki tizim bo'yicha). */

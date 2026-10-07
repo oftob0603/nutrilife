@@ -3,7 +3,6 @@
 // mintaqaga ko'chira olmaydi), qolgan hisob statistika-hisob.ts'da.
 
 import { db } from "../db.ts";
-import { Prisma } from "../generated/prisma/client.ts";
 import {
   daromadHisobi,
   davrBoshi,
@@ -12,7 +11,6 @@ import {
   kogortaYetilgan,
   kunlargaYoy,
   METRIKALAR,
-  NARXLI_TARIFLAR,
   retentionFoizi,
   type Daromad,
   type DaromadQatori,
@@ -113,14 +111,14 @@ async function retentionKogortalari(boshi: string, bugun: string): Promise<Kogor
     GROUP BY r.sana`;
 }
 
-/** Daromad qatorlari: obuna yaratilgan Toshkent kuni · tarif · soni, faqat narxli tariflar. */
+/** Daromad qatorlari: obuna yaratilgan Toshkent kuni · narx yig'indisi · soni, faqat narxli qatorlar. */
 async function daromadQatorlari(): Promise<DaromadQatori[]> {
-  const qatorlar = await db.$queryRaw<{ sana: Date; tarif: string; soni: number }[]>`
-    SELECT (yaratilgan + interval '5 hours')::date AS sana, tarif, count(*)::int AS soni
+  const qatorlar = await db.$queryRaw<{ sana: Date; summa: number; soni: number }[]>`
+    SELECT (yaratilgan + interval '5 hours')::date AS sana, sum(narx)::int AS summa, count(*)::int AS soni
     FROM obunalar
-    WHERE tarif IN (${Prisma.join([...NARXLI_TARIFLAR])})
-    GROUP BY 1, 2`;
-  return qatorlar.map((q) => ({ sana: sanaMatni(q.sana), tarif: q.tarif, soni: Number(q.soni) }));
+    WHERE narx IS NOT NULL
+    GROUP BY 1`;
+  return qatorlar.map((q) => ({ sana: sanaMatni(q.sana), summa: Number(q.summa), soni: Number(q.soni) }));
 }
 
 /** A10 — davr bo'yicha metrikalar va daromad, bitta so'rov to'plamida. */

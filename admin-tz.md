@@ -169,12 +169,15 @@ lichkasiga keladi. Raqamlash qolgan ekranlar uchun o'zgarmaydi.
 
 ### A12 — Narxlar
 
-- Uch tarif: oylik, 6 oylik, yillik — narx so'mda
-- Saqlashda tasdiq oynasi
+- Uch tarif: oylik, 6 oylik, yillik — narx so'mda (`tariflar` jadvali; muddat va "Tavsiya
+  etiladi" belgisi o'zgarmaydi, faqat narx)
+- Saqlashda tasdiq oynasi: har tarif uchun eski → yangi, o'zgarmagani xira; sabab so'ralmaydi
 - **Qoida: narx o'zgarishi mavjud obunalarga ta'sir qilmaydi.** Faol obuna o'z narxi
   bilan muddati tugaguncha ishlaydi, yangi narx faqat yangi to'lovlarga qo'llanadi.
-  Bu tasdiq oynasida ochiq yoziladi.
-- Har o'zgarish jurnalga tushadi: eski narx, yangi narx, sana
+  Bu tasdiq oynasida ochiq yoziladi. Texnik: obuna qatori olingan paytdagi narxni
+  (`obunalar.narx`) saqlaydi, daromad (A10) shu ustundan hisoblanadi.
+- Har o'zgarish jurnalga tushadi: eski narx, yangi narx, sana (`narx_ozgartirish`)
+- Chegara: 1 000 dan 99 999 999 so'mgacha, butun son; hech biri o'zgarmagan bo'lsa saqlanmaydi
 
 ## 4. Umumiy qoidalar
 

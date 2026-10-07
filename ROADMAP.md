@@ -9,7 +9,7 @@
 | **S3 — auth** ✅ 2026-09-21 | Kim kirdi? | Telegram initData orqali kirish; FREE, PRO va admin rollari; har foydalanuvchi faqat o'z jurnalini ko'radi; himoyalangan API yo'llari |
 | **S4 — chuqurlik** ✅ 2026-09-22 | Haqiqiy hayotda chidaydimi? | Mifflin-St Jeor normasi; Nutrition Score formulasi; skan limitlari (FREE 3, PRO kuniga 20); holatlar zanjiri; AI ishonchi past bo'lgan holat; chegaraviy holatlar |
 | **S5 — telegram** | Qo'lda turadimi? | Mini App sifatida to'liq ishlashi; bot kirish nuqtasi va til tanlash; ovqat eslatmalari; fon vazifalari — obuna muddati va kunlik limit yangilanishi |
-| **S6 — admin** | Boshqarib bo'ladimi? | Admin paneli; retsept kiritish; obunani qo'lda berish; statistika; foydalanuvchini bloklash |
+| **S6 — admin** ✅ 2026-10-07 | Boshqarib bo'ladimi? | Admin paneli; retsept kiritish; obunani qo'lda berish; statistika; foydalanuvchini bloklash |
 
 ## 2. Tarmoqlar
 

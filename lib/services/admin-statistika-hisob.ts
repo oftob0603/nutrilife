@@ -1,7 +1,6 @@
 // A10 statistika (admin-tz.md) uchun sof hisob: davr, kunlar ro'yxati, grafik yorliqlari,
 // retention foizi va daromad summasi. Bazaga tegmaydi — node bilan alohida sinaladi.
 
-import { TARIF_NARXLARI } from "../tariflar.ts";
 import { haftaKuniNomi, kunOyMatni, qoshniSana, sanaQisqa } from "./yozuv-hisob.ts";
 
 export const DAVRLAR = [7, 30, 90] as const;
@@ -128,18 +127,6 @@ export function qiymatMatni(qiymat: number | null, birlik: MetrikaTavsifi["birli
 
 // ——— Daromad ———
 
-/**
- * Obuna qatorining daromadi — tarif narxi (lib/tariflar.ts). Manbadan qat'i nazar: hozircha
- * to'lov yo'q, admin qo'lda bergan PRO ham narxi bilan sanaladi (DECISIONS 2026-10-07).
- * "qolda" tarif (muddat uzaytirish) narxsiz — 0.
- */
-export function tarifNarxi(tarif: string): number {
-  return TARIF_NARXLARI.find((t) => t.id === tarif)?.narx ?? 0;
-}
-
-/** Narxi bor tariflar — daromad so'rovi faqat shularni oladi. */
-export const NARXLI_TARIFLAR: readonly string[] = TARIF_NARXLARI.map((t) => t.id);
-
 /** "290 000 so'm" — minglar bo'sh joy bilan, tiyin yo'q. */
 export function som(summa: number): string {
   return `${minglar(summa)} so'm`;
@@ -177,7 +164,13 @@ export function oylarOraligi(boshi: string, oxiri: string): string[] {
   return natija;
 }
 
-export type DaromadQatori = { sana: string; tarif: string; soni: number };
+/**
+ * Bir kunning daromadi: `obunalar.narx` yig'indisi (obuna olingan paytdagi narx — A12 qoidasi:
+ * keyingi narx o'zgarishi eski obunaga ta'sir qilmaydi). Manbadan qat'i nazar: hozircha to'lov
+ * yo'q, admin qo'lda bergan PRO ham narxi bilan sanaladi (DECISIONS 2026-10-07); narxsiz "qolda"
+ * muddat qatorlari so'rovga kirmaydi.
+ */
+export type DaromadQatori = { sana: string; summa: number; soni: number };
 
 export type Daromad = {
   jami: number;
@@ -191,7 +184,7 @@ export type Daromad = {
   joriyOy: number;
 };
 
-/** Kun · tarif · soni qatorlaridan daromad kartalari va ustunlari. */
+/** Kun · summa · soni qatorlaridan daromad kartalari va ustunlari. */
 export function daromadHisobi(qatorlar: DaromadQatori[], bugun: string): Daromad {
   let jami = 0;
   let jamiSoni = 0;
@@ -202,7 +195,7 @@ export function daromadHisobi(qatorlar: DaromadQatori[], bugun: string): Daromad
   let birinchiOy: string | null = null;
 
   for (const q of qatorlar) {
-    const summa = tarifNarxi(q.tarif) * q.soni;
+    const summa = q.summa;
     jami += summa;
     jamiSoni += q.soni;
     if (q.sana === bugun) {

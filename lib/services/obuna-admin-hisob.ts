@@ -1,7 +1,7 @@
 // Admin paneldan obunani qo'lda boshqarish (S6 3-task, admin-tz.md A3) uchun sof hisob —
 // so'rovni tekshirish va muddat hisoblash. Bazaga bog'lanmagan, klient komponent ham import qiladi.
 
-import { TARIF_NARXLARI } from "../tariflar.ts";
+import { TARIF_OYLARI, tarifIdmi } from "../tariflar.ts";
 import { tarifMatni, sanaMatni } from "./admin-hisob.ts";
 import type { Tarif } from "./huquqlar.ts";
 
@@ -46,9 +46,9 @@ function kunlarniOqi(qiymat: unknown): number | null {
   return Number.isInteger(kunlar) && kunlar >= 1 && kunlar <= KUN_CHEGARASI ? kunlar : null;
 }
 
-/** Tarifning muddati oylarda — narxlar jadvalidan (lib/tariflar.ts); "qolda" tarifsiz. */
+/** Tarifning muddati oylarda (lib/tariflar.ts, o'zgarmas); "qolda" tarifsiz. */
 export function tarifOylari(tarif: Tarif): number | null {
-  return TARIF_NARXLARI.find((t) => t.id === tarif)?.oylar ?? null;
+  return tarifIdmi(tarif) ? TARIF_OYLARI[tarif] : null;
 }
 
 /** `POST …/obuna` tanasi: `{ tarif, kunlar?, sabab }` — "qolda" tarifda kunlar shart. */

@@ -65,6 +65,7 @@ export const AMAL_NOMLARI: Record<string, string> = {
   bloklash: "Bloklandi",
   blok_yechish: "Blok yechildi",
   hisob_ochirish: "Hisob o'chirildi",
+  narx_ozgartirish: "Narxlar o'zgartirildi",
   taom_qoshish: "Taom qo'shildi",
   taom_tahrir: "Taom tahrirlandi",
   retsept_qoshish: "Retsept qo'shildi",
