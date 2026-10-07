@@ -135,10 +135,6 @@ export const SOZLAR = {
     ru: "Напишите, что вы ели — ИИ посчитает",
     en: "Write what you ate — the AI will count it",
   },
-  "Taom bazasidan tanlang — cheklovsiz": {
-    ru: "Выберите из базы блюд — без ограничений",
-    en: "Pick from the dish database — no limit",
-  },
   "{0} tadan {1} ta skan qoldi": { ru: "Осталось {1} из {0} сканирований", en: "{1} of {0} scans left" },
   "Bepul skanlar tugadi.": {
     ru: "Бесплатные сканирования закончились.",
@@ -197,20 +193,13 @@ export const SOZLAR = {
     en: "Could not save the photo. Try again",
   },
 
-  // ── Taom sahifasi va porsiya (E5) ─────────────────────────────────────────
-  "Baza hozircha bo'sh.": { ru: "База пока пуста.", en: "The database is empty for now." },
+  // ── Progress va yozuv (eski E5 kalitlari olib tashlangan) ────────────────────
   "Progress bo'limida vazn qo'shish": {
     ru: "Добавить вес в разделе «Статистика»",
     en: "Add weight in Statistics",
   },
-  "Boshqa nom bilan qidirib ko'ring yoki taomni AI yordamida qo'shing.": {
-    ru: "Попробуйте другое название или добавьте блюдо с помощью ИИ.",
-    en: "Try another name, or add the dish with AI.",
-  },
   "Matn bilan tasvirlash": { ru: "Описать текстом", en: "Describe in text" },
-  "Boshqa miqdor": { ru: "Другое количество", en: "Other amount" },
   "Boshqa": { ru: "Другое", en: "Other" },
-  "Jurnalga qo'shish": { ru: "Добавить в журнал", en: "Add to journal" },
   "Saqlanmadi. Qayta urinib ko'ring": { ru: "Не сохранено. Попробуйте ещё раз", en: "Not saved. Try again" },
   "Nima yedingiz? Taom nomi va og'irligini (grammda) yozing.": {
     ru: "Что вы ели? Напишите название блюда и вес (в граммах).",
@@ -599,11 +588,6 @@ export const SOZLAR = {
   },
   "Ha, o'chirilsin": { ru: "Да, удалить", en: "Yes, delete" },
   "Hisobni o'chirish": { ru: "Удалить аккаунт", en: "Delete account" },
-  "Rasm mualliflari": { ru: "Авторы фотографий", en: "Photo credits" },
-  "Taom rasmlari Wikimedia Commons'dan olingan. Har biri kesilgan va WebP formatiga o'girilgan — boshqa o'zgarish kiritilmagan.": {
-    ru: "Фотографии блюд взяты с Wikimedia Commons. Каждая обрезана и преобразована в формат WebP — других изменений нет.",
-    en: "Dish photos come from Wikimedia Commons. Each one was cropped and converted to WebP — no other changes were made.",
-  },
   "Muallif: {0}": { ru: "Автор: {0}", en: "Author: {0}" },
   "saqlanmoqda…": { ru: "сохраняется…", en: "saving…" },
   "Saqlanmadi. Qayta urinish": { ru: "Не сохранено. Повторить", en: "Not saved. Try again" },
@@ -690,9 +674,9 @@ export const SOZLAR = {
   "Kuniga 20 tagacha AI skan": { ru: "До 20 AI-сканирований в день", en: "Up to 20 AI scans a day" },
   "Retseptlarni to'liq ko'rish": { ru: "Полный просмотр рецептов", en: "Full recipe access" },
   "Nutrition Score": { ru: "Nutrition Score", en: "Nutrition Score" },
-  "Qolgan kaloriyaga mos taom takliflari": {
-    ru: "Блюда под остаток калорий",
-    en: "Meals that fit your remaining calories",
+  "Qolgan kaloriyaga mos retsept takliflari": {
+    ru: "Рецепты под остаток калорий",
+    en: "Recipes that fit your remaining calories",
   },
   "Oqsil, yog' va uglevodlarni kuzatish": {
     ru: "Отслеживание белков, жиров и углеводов",
@@ -792,19 +776,20 @@ export const SOZLAR = {
     en: "Shows your daily nutrition balance on a 0–100 scale.",
   },
 
-  // ── Qolgan kaloriyaga mos taklif (E1) va porsiya tavsiyasi (E5) ────────────
+  // ── Qolgan kaloriyaga mos retsept taklifi (E1) ───────────────────────────────
   "Qolgan kaloriyaga mos": { ru: "Под остаток калорий", en: "Fits your remaining calories" },
-  "Qolgan kaloriyangizga sig'adigan taomlar tanlanadi.": {
-    ru: "Подбираются блюда, которые уместятся в остаток калорий.",
-    en: "Picks dishes that fit your remaining calories.",
+  "Qolgan kaloriyangizga sig'adigan retseptlar tanlanadi.": {
+    ru: "Подбираются рецепты, которые уместятся в остаток калорий.",
+    en: "Picks recipes that fit your remaining calories.",
   },
+  "1 porsiya": { ru: "1 порция", en: "1 serving" },
   "Kunlik norma to'ldi — bugunga taklif yo'q.": {
     ru: "Дневная норма набрана — на сегодня предложений нет.",
     en: "You’ve reached today’s target — no suggestions for today.",
   },
-  "Qolgan {0} kkal uchun mos taom topilmadi.": {
-    ru: "Для остатка {0} ккал подходящего блюда не нашлось.",
-    en: "No dish fits your remaining {0} kcal.",
+  "Qolgan {0} kkal uchun mos retsept topilmadi.": {
+    ru: "Для остатка {0} ккал подходящего рецепта не нашлось.",
+    en: "No recipe fits your remaining {0} kcal.",
   },
   "{0} · {1} kkal · qolgan {2} kkal ichida": {
     ru: "{0} · {1} ккал · в пределах остатка {2} ккал",

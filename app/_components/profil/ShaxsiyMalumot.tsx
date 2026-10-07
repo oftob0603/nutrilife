@@ -21,7 +21,7 @@ import {
   YOSH_XATOSI,
 } from "@/lib/services/onboarding-hisob";
 import type { Profil } from "@/lib/services/profil-hisob";
-import { raqam } from "@/lib/services/taom-hisob";
+import { raqam } from "@/lib/services/raqam";
 import {
   shaxsiyFormaYarat,
   shaxsiyniTayyorla,

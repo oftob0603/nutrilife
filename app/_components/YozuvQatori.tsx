@@ -2,7 +2,7 @@ import Link from "next/link";
 import { AiBelgisi } from "@/app/_components/AiBelgisi";
 import { TaomRasmi } from "@/app/_components/TaomRasmi";
 import { tarjimon, type Til } from "@/lib/lugat/tarjima";
-import { raqam } from "@/lib/services/taom-hisob";
+import { raqam } from "@/lib/services/raqam";
 import { vaqtMatni, type Yozuv } from "@/lib/services/yozuv-hisob";
 
 /**

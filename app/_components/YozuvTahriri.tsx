@@ -153,7 +153,6 @@ export function YozuvTahriri({ yozuv, qaytish }: { yozuv: Yozuv; qaytish: string
         method: "POST",
         headers: SARLAVHA,
         body: JSON.stringify({
-          taomId: yozuv.taomId,
           taomNomi: yozuv.taomNomi,
           porsiya: yozuv.porsiya,
           kaloriya: yozuv.kaloriya,

@@ -31,8 +31,6 @@ const HUJJAT_HAVOLALARI: readonly { href: string; nomi: Kalit }[] = [
   { href: "/shartlar", nomi: "Foydalanish shartlari" },
   { href: "/maxfiylik", nomi: "Maxfiylik siyosati" },
   { href: "/oferta", nomi: "Ommaviy oferta" },
-  // CC BY / BY-SA rasm litsenziyalari muallifni ko'rsatishni talab qiladi — sahifa shu uchun.
-  { href: "/profil/mualliflar", nomi: "Rasm mualliflari" },
 ];
 
 /** Variantning ekrandagi nomi: til o'z tilida, mavzu va birliklar lug'at orqali. */
@@ -153,9 +151,8 @@ export function Sozlamalar({
       )}
 
       {/*
-       * Huquqiy hujjatlar va rasm mualliflari — karta qatori emas, mayda havolalar
-       * (foydalanuvchi qarori 2026-09-23). Chiziq doimiy: "Rasm mualliflari" sahifasidagi
-       * havolalar uslubi — bosilmasdan ham havola ekani ko'rinib turadi.
+       * Huquqiy hujjatlar — karta qatori emas, mayda havolalar
+       * (foydalanuvchi qarori 2026-09-23). Chiziq doimiy — bosilmasdan ham havola ekani ko'rinib turadi.
        */}
       <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-izoh text-matn-2">
         {HUJJAT_HAVOLALARI.map(({ href, nomi }, i) => (

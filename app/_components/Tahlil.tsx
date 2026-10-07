@@ -17,7 +17,7 @@ import { apiSorov } from "@/lib/services/api-klient";
 import { rasmManzili } from "@/lib/services/rasm-yuklash";
 import { skanJami, type SkanJavobi, type SkanNatija } from "@/lib/services/skan-hisob";
 import { sigadiganGramm } from "@/lib/services/taklif-hisob";
-import { raqam } from "@/lib/services/taom-hisob";
+import { raqam } from "@/lib/services/raqam";
 import {
   boshForma,
   formaQiymatlari,
@@ -267,7 +267,6 @@ function Tasdiq({
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           ...qiymatlar,
-          taomId: null,
           porsiya: `${miqdor} g`,
           manba: natija ? "ai" : "qolda",
           rasmId,

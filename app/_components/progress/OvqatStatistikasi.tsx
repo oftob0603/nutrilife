@@ -12,7 +12,7 @@ import {
   type HaftalikHisobot,
   type StatistikaOraligi,
 } from "@/lib/services/statistika-hisob";
-import { raqam } from "@/lib/services/taom-hisob";
+import { raqam } from "@/lib/services/raqam";
 import { haftaKuniNomi, sanaQisqa } from "@/lib/services/yozuv-hisob";
 
 const KARTA = "flex flex-col gap-4 rounded-karta border border-karta-chegara bg-karta p-4";

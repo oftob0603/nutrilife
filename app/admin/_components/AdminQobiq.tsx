@@ -15,7 +15,6 @@ import { Belgi, type BelgiNomi } from "./Belgi";
 const BOLIMLAR: readonly { nomi: string; belgi: BelgiNomi; href?: string; soni?: number }[] = [
   { nomi: "Boshqaruv paneli", belgi: "layout-dashboard", href: "/admin" },
   { nomi: "Foydalanuvchilar", belgi: "users", href: "/admin/foydalanuvchilar" },
-  { nomi: "Taomlar bazasi", belgi: "utensils", href: "/admin/taomlar" },
   { nomi: "Retseptlar", belgi: "book-open", href: "/admin/retseptlar" },
   { nomi: "Statistika", belgi: "chart-line", href: "/admin/statistika" },
   { nomi: "Narxlar", belgi: "tag", href: "/admin/narxlar" },

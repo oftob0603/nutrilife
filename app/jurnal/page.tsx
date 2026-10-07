@@ -11,7 +11,7 @@ import { serverTarjimoni } from "@/lib/lugat/server";
 import type { Tarjimon } from "@/lib/lugat/tarjima";
 import type { Reja } from "@/lib/services/norma-hisob";
 import type { QulfJavobi } from "@/lib/services/taklif-hisob";
-import { raqam } from "@/lib/services/taom-hisob";
+import { raqam } from "@/lib/services/raqam";
 import {
   bugunSana,
   qoshniSana,

@@ -1,8 +1,7 @@
 import { adminTekshiruvi } from "@/lib/services/admin";
-import { kategoriyalarRoyxati, kategoriyaQoshish } from "@/lib/services/taom-admin";
-import { kategoriyaNominiOqi } from "@/lib/services/taom-admin-hisob";
+import { kategoriyalarRoyxati, kategoriyaNominiOqi, kategoriyaQoshish } from "@/lib/services/kategoriya-admin";
 
-/** A7/A9 kategoriya tanlovi. */
+/** A9 kategoriya tanlovi. */
 export async function GET(sorov: Request) {
   const tekshiruv = await adminTekshiruvi(sorov);
   if ("javob" in tekshiruv) return tekshiruv.javob;

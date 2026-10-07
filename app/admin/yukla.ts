@@ -6,12 +6,11 @@ import type {
   FoydalanuvchilarSahifasi,
 } from "@/lib/services/admin";
 import type { FoydalanuvchiFiltri } from "@/lib/services/admin-hisob";
-import type { Kategoriya, TaomKartasi, TaomlarSahifasi } from "@/lib/services/taom-admin";
+import type { Kategoriya } from "@/lib/services/kategoriya-admin";
 import type { RetseptKartasi, RetseptlarSahifasi } from "@/lib/services/retsept-admin";
 import type { HolatFiltri } from "@/lib/services/retsept-admin-hisob";
 import type { Statistika } from "@/lib/services/admin-statistika";
 import type { Davr } from "@/lib/services/admin-statistika-hisob";
-import type { TaomFiltri } from "@/lib/services/taom-admin-hisob";
 import type { TarifNarxi } from "@/lib/tariflar";
 
 export type AdminHolati =
@@ -64,36 +63,6 @@ export async function foydalanuvchiniYukla(
   }
 }
 
-/** A6 ro'yxati; olib bo'lmasa null — sahifa xato holatini ko'rsatadi. */
-export async function taomlarniYukla(
-  q: string | null,
-  filtr: TaomFiltri,
-  sahifa: number,
-): Promise<TaomlarSahifasi | null> {
-  const params = new URLSearchParams({ filtr, sahifa: String(sahifa) });
-  if (q) params.set("q", q);
-  try {
-    const javob = await serverdanApi(`/api/admin/taomlar?${params}`);
-    return javob.ok ? ((await javob.json()) as TaomlarSahifasi) : null;
-  } catch {
-    return null;
-  }
-}
-
-/** A7 kartasi: topilmasa "topilmadi", olib bo'lmasa "xato". */
-export async function taomniYukla(
-  id: string,
-): Promise<{ karta: TaomKartasi } | { holat: "topilmadi" | "xato" }> {
-  try {
-    const javob = await serverdanApi(`/api/admin/taomlar/${encodeURIComponent(id)}`);
-    if (javob.status === 404) return { holat: "topilmadi" };
-    if (!javob.ok) return { holat: "xato" };
-    return (await javob.json()) as { karta: TaomKartasi };
-  } catch {
-    return { holat: "xato" };
-  }
-}
-
 /** A8 ro'yxati; olib bo'lmasa null — sahifa xato holatini ko'rsatadi. */
 export async function retseptlarniYukla(
   kategoriyaId: string | null,
@@ -124,7 +93,7 @@ export async function retseptniYukla(
   }
 }
 
-/** A7/A9 kategoriya tanlovi; olib bo'lmasa null. */
+/** A9 kategoriya tanlovi; olib bo'lmasa null. */
 export async function kategoriyalarniYukla(): Promise<Kategoriya[] | null> {
   try {
     const javob = await serverdanApi("/api/admin/kategoriyalar");

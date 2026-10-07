@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ProQulfi } from "@/app/_components/ProQulfi";
 import { TaomRasmi } from "@/app/_components/TaomRasmi";
 import { tarjimon, type Til } from "@/lib/lugat/tarjima";
-import { raqam, taomNomi } from "@/lib/services/taom-hisob";
+import { raqam } from "@/lib/services/raqam";
 import type { TaklifJavobi } from "@/lib/services/taklif-hisob";
 
 const KARTA = "rounded-karta border border-karta-chegara bg-karta p-4";
@@ -28,9 +28,9 @@ function OngStrelka() {
 
 /**
  * E1 — "Qolgan kaloriyaga mos" bo'limi (prototip `screens-home.jsx`). PRO'da qolgan
- * kaloriyaga sig'adigan taom kartasi (bosilsa E5), mos taom yo'q bo'lsa izoh; PRO
- * bo'lmaganlarga qulf kartasi. Taklif "hozir nima yeysiz" haqida — faqat bugun chiqadi,
- * o'tgan kunda bo'lim ko'rsatilmaydi (chaqiruvchi hal qiladi).
+ * kaloriyaga sig'adigan retsept kartasi (bosilsa R2/R3 retsept detali), mos retsept yo'q
+ * bo'lsa izoh; PRO bo'lmaganlarga qulf kartasi. Taklif "hozir nima yeysiz" haqida — faqat
+ * bugun chiqadi, o'tgan kunda bo'lim ko'rsatilmaydi (chaqiruvchi hal qiladi).
  */
 export function TaklifKartasi({
   til,
@@ -41,14 +41,14 @@ export function TaklifKartasi({
   qoldi: number;
   taklif: TaklifJavobi;
 }) {
-  const { t, miqdor } = tarjimon(til);
+  const { t } = tarjimon(til);
 
   let mazmun: React.ReactNode;
   if (taklif.yopiq) {
     mazmun = (
       <ProQulfi
-        sarlavha={t("Qolgan kaloriyaga mos taom takliflari")}
-        izoh={t("Qolgan kaloriyangizga sig'adigan taomlar tanlanadi.")}
+        sarlavha={t("Qolgan kaloriyaga mos retsept takliflari")}
+        izoh={t("Qolgan kaloriyangizga sig'adigan retseptlar tanlanadi.")}
         tugma={t("PRO ni ochish")}
       />
     );
@@ -57,24 +57,24 @@ export function TaklifKartasi({
       <p className={`${KARTA} text-izoh text-matn-2 tabular-nums`}>
         {qoldi <= 0
           ? t("Kunlik norma to'ldi — bugunga taklif yo'q.")
-          : t("Qolgan {0} kkal uchun mos taom topilmadi.", raqam(qoldi))}
+          : t("Qolgan {0} kkal uchun mos retsept topilmadi.", raqam(qoldi))}
       </p>
     );
   } else {
-    const { taom, porsiya } = taklif.taklif;
+    const retsept = taklif.taklif;
     mazmun = (
       <Link
-        href={`/taomlar/${taom.id}`}
+        href={`/retseptlar/${retsept.id}`}
         className={`${KARTA} flex items-center gap-3 transition-transform active:scale-[0.98]`}
       >
-        <TaomRasmi rasm={taom.rasm} olcham="orta" />
+        <TaomRasmi rasm={retsept.rasm} olcham="orta" />
         <div className="min-w-0 flex-1">
-          <p className="truncate text-karta-sarlavha">{taomNomi(taom, til)}</p>
+          <p className="truncate text-karta-sarlavha">{retsept.nomi}</p>
           <p className="mt-1 text-izoh text-matn-2 tabular-nums">
             {t(
               "{0} · {1} kkal · qolgan {2} kkal ichida",
-              miqdor(taklif.taklif.miqdor, taom.olchovBirligi),
-              raqam(porsiya.kaloriya),
+              retsept.porsiya || t("1 porsiya"),
+              raqam(retsept.kaloriya),
               raqam(qoldi),
             )}
           </p>

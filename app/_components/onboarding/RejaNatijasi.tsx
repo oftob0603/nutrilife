@@ -8,7 +8,7 @@ import type { Kalit } from "@/lib/lugat/tarjima";
 import { normaHisobi } from "@/lib/services/norma-hisob";
 import type { Forma } from "@/lib/services/onboarding-forma";
 import { NATIJA_QADAMI } from "@/lib/services/onboarding-hisob";
-import { raqam } from "@/lib/services/taom-hisob";
+import { raqam } from "@/lib/services/raqam";
 
 const KARTA = "w-full rounded-karta border border-karta-chegara bg-karta p-4";
 

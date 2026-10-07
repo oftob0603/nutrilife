@@ -10,7 +10,6 @@ export type OvqatTuri = (typeof OVQAT_TURLARI)[number];
 
 export type Yozuv = {
   id: string;
-  taomId: string | null;
   taomNomi: string;
   porsiya: string;
   kaloriya: number;

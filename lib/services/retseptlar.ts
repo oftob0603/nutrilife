@@ -4,6 +4,7 @@
 import type { Til } from "../lugat/tarjima.ts";
 import { db } from "../db.ts";
 import type { Huquqlar } from "./huquqlar.ts";
+import type { TaklifRetsepti } from "./taklif-hisob.ts";
 import { uchTildaOqi } from "./retsept-admin-hisob.ts";
 import {
   kategoriyalarRoyxati,
@@ -154,4 +155,23 @@ export async function sevimligaQosh(foydalanuvchiId: string, retseptId: string):
 /** Sevimlidan olib tashlash; bo'lmasa ham xato emas. */
 export async function sevimlidanOl(foydalanuvchiId: string, retseptId: string): Promise<void> {
   await db.sevimliRetsept.deleteMany({ where: { foydalanuvchiId, retseptId } });
+}
+
+/**
+ * Home taklifi uchun (E1, PRO): chop etilgan, kaloriyasi bor retseptlar — nom foydalanuvchi
+ * tilida, kaloriya bitta porsiya uchun, yangisi oldinda (teng kelganda u tanlanadi).
+ */
+export async function taklifUchunRetseptlar(til: Til): Promise<TaklifRetsepti[]> {
+  const qatorlar = await db.retsept.findMany({
+    where: { holat: "chop_etilgan", kaloriya: { gt: 0 } },
+    orderBy: [{ chopEtilgan: "desc" }, { yaratilgan: "desc" }],
+    select: { id: true, nomi: true, nomiRu: true, nomiEn: true, porsiya: true, kaloriya: true, rasmKaliti: true, yangilangan: true },
+  });
+  return qatorlar.map((r) => ({
+    id: r.id,
+    nomi: matnTilda(r.nomi, r.nomiRu, r.nomiEn, til),
+    rasm: r.rasmKaliti ? retseptRasmYoli(r.id, r.yangilangan.getTime()) : null,
+    porsiya: r.porsiya.trim(),
+    kaloriya: r.kaloriya ?? 0,
+  }));
 }

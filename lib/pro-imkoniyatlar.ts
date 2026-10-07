@@ -23,7 +23,7 @@ export const PRO_IMKONIYATLARI: ProImkoniyati[] = [
   { id: "skan", nomi: k("Kuniga 20 tagacha AI skan") },
   { id: "retsept", nomi: k("Retseptlarni to'liq ko'rish") },
   { id: "score", nomi: k("Nutrition Score") },
-  { id: "taklif", nomi: k("Qolgan kaloriyaga mos taom takliflari") },
+  { id: "taklif", nomi: k("Qolgan kaloriyaga mos retsept takliflari") },
   { id: "makro", nomi: k("Oqsil, yog' va uglevodlarni kuzatish") },
   { id: "porsiya", nomi: k("Aqlli porsiya tavsiyalari") },
   { id: "statistika", nomi: k("Batafsil ovqatlanish statistikasi") },

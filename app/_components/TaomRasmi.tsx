@@ -1,8 +1,7 @@
 import Image from "next/image";
 
 /**
- * Taom rasmi: ro'yxat va yozuv qatorida kichik kvadrat (48 px), taom taklifida 56 px,
- * taom sahifasida (E5) 4:3.
+ * Taom rasmi: yozuv qatorida kichik kvadrat (48 px), retsept taklifida 56 px, katta ko'rinishda 4:3.
  * Rasm yo'q bo'lsa prototipdagidek bo'sh o'rin turadi (DESIGN.md, 6-bo'lim).
  */
 export function TaomRasmi({

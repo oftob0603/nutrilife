@@ -6,7 +6,7 @@ import {
   HOLAT_FILTRLARI,
   type HolatFiltri,
 } from "@/lib/services/retsept-admin-hisob";
-import type { Kategoriya } from "@/lib/services/taom-admin";
+import type { Kategoriya } from "@/lib/services/kategoriya-admin";
 import { MAYDON_SINFI } from "./AdminOyna";
 
 /** Ro'yxat manzili: "hammasi" yozilmaydi, sahifa 1 dan boshlanadi. */

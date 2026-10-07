@@ -6,7 +6,7 @@ import { QoshishPaneli, QoshishTugmasi } from "@/app/_components/QoshishPaneli";
 import { TaomRasmi } from "@/app/_components/TaomRasmi";
 import { TugmaHavola } from "@/app/_components/Tugma";
 import type { Reja } from "@/lib/services/norma-hisob";
-import { raqam } from "@/lib/services/taom-hisob";
+import { raqam } from "@/lib/services/raqam";
 import type { Jami, Yozuv } from "@/lib/services/yozuv-hisob";
 import { serverdanApi } from "@/lib/api-asos";
 import { serverTarjimoni } from "@/lib/lugat/server";

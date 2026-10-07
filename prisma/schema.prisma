@@ -13,43 +13,13 @@ datasource db {
   provider = "postgresql"
 }
 
-/// Taom bazasi. Maydonlar prototipdagi FOODS tuzilmasidan olingan
-/// (prototip/ui_kits/mobile-app/data.jsx): taom yo 100 grammga, yo bitta donaga
-/// o'lchanadi, porsiya variantlari esa shu birlikda beriladi.
-model Taom {
-  id            String   @id
-  /// O'zbekcha nom — interfeysda va jurnal yozuvida shu ko'rinadi.
-  nomi          String
-  nomiRu        String   @map("nomi_ru")
-  nomiEn        String   @map("nomi_en")
-  /// `public/` ichidagi rasm yo'li, masalan `/taomlar/osh.webp`; rasm yo'q bo'lsa bo'sh.
-  rasm          String?
-  olchovMiqdori Int      @map("olchov_miqdori")
-  olchovBirligi String   @map("olchov_birligi")
-  kaloriya      Float
-  oqsil         Float
-  yog           Float
-  uglevod       Float
-  porsiyalar    Int[]
-  /// Admin A7'dan yuklangan rasmning ombordagi (R2) kaliti; `rasm` esa uning `/api/taom-rasmlari/<id>` yo'li.
-  rasmKaliti    String?  @map("rasm_kaliti")
-  kategoriyaId  String?  @map("kategoriya_id")
-  yaratilgan    DateTime @default(now())
-
-  kategoriya Kategoriya?   @relation(fields: [kategoriyaId], references: [id], onDelete: SetNull)
-  yozuvlar   OvqatYozuvi[]
-
-  @@map("taomlar")
-}
-
-/// Taom va retsept kategoriyalari (admin-tz.md A7/A9, S6 4-task): admin A7'dagi "Yangi qo'shish"
-/// bilan qo'shadi, ro'yxat ikkala shaklda umumiy. Nomi takrorlanmaydi.
+/// Retsept kategoriyalari (admin-tz.md A9): admin A9'dagi "Yangi qo'shish" bilan qo'shadi.
+/// Nomi takrorlanmaydi. Taomlar bazasi olib tashlangan (DECISIONS 2026-10-07).
 model Kategoriya {
   id         String   @id @default(uuid())
   nomi       String   @unique
   yaratilgan DateTime @default(now())
 
-  taomlar    Taom[]
   retseptlar Retsept[]
 
   @@map("kategoriyalar")
@@ -107,16 +77,14 @@ model SevimliRetsept {
 }
 
 
-/// Jurnalga tushgan har bir ovqat (PRD.md, 7-bo'lim). Taom nomi va raqamlari yozuv
-/// ichiga ko'chiriladi — baza yozuvi keyin o'zgarsa ham jurnal o'sha kungi holatini
-/// saqlaydi.
+/// Jurnalga tushgan har bir ovqat (PRD.md, 7-bo'lim). Taom nomi va raqamlari yozuvning
+/// o'zida turadi — tashqi taom bazasi yo'q (DECISIONS 2026-10-07).
 /// Jadvalga faqat tasdiqlangan yozuv tushadi — tasdiqlanmagan AI natijasi saqlanmaydi.
 /// O'chirilgan yozuv qatori qoladi (`holat = "ochirildi"`) — streak va Score tarixi halol
 /// qolsin; ekranlarda va kunlik jamida u ko'rinmaydi.
 model OvqatYozuvi {
   id              String   @id @default(uuid())
   foydalanuvchiId String   @map("foydalanuvchi_id")
-  taomId          String?  @map("taom_id")
   taomNomi        String   @map("taom_nomi")
   porsiya         String
   kaloriya        Float
@@ -131,7 +99,6 @@ model OvqatYozuvi {
   vaqt            DateTime @default(now())
 
   foydalanuvchi Foydalanuvchi @relation(fields: [foydalanuvchiId], references: [id], onDelete: Cascade)
-  taom         Taom?         @relation(fields: [taomId], references: [id], onDelete: SetNull)
   rasmlar       Rasm[]
 
   @@index([foydalanuvchiId, vaqt])

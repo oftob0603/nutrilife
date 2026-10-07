@@ -11,7 +11,7 @@ import { useTelegramOrqaga } from "@/app/_components/useTelegramOrqaga";
 import { PRO_IMKONIYATLARI } from "@/lib/pro-imkoniyatlar";
 import { apiSorov } from "@/lib/services/api-klient";
 import { tarifNomi } from "@/lib/services/obuna-hisob";
-import { raqam } from "@/lib/services/taom-hisob";
+import { raqam } from "@/lib/services/raqam";
 import {
   adminHavolasi,
   oyiga,

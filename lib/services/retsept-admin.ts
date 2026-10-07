@@ -17,7 +17,7 @@ import {
   type UchTilda,
 } from "./retsept-admin-hisob.ts";
 
-// Uzoqdagi bazaga har so'rov ~0,4 s — standart tranzaksiya chegarasi yetmaydi (taom-admin.ts kabi).
+// Uzoqdagi bazaga har so'rov ~0,4 s — standart tranzaksiya chegarasi yetmaydi (obuna-admin.ts kabi).
 const TRANZAKSIYA_VAQTI = { maxWait: 10_000, timeout: 20_000 };
 
 /** A8 jadval qatori. */

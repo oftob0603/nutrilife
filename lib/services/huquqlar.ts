@@ -74,10 +74,11 @@ export type Huquqlar = {
   /** R1 dagi yurak tugmasi va "Sevimli" chipi (prototip `sevimli`). */
   sevimliRetseptlar: boolean;
   nutritionScore: boolean;
-  taomTakliflari: boolean;
+  /** Home E1 dagi "Qolgan kaloriyaga mos" retsept kartasi (prototip `taklif`). */
+  retseptTakliflari: boolean;
   /** Home va Jurnaldagi kunlik oqsil/yog'/uglevod chiziqlari (prototip `makro`). */
   makroKuzatish: boolean;
-  /** E5 va E7'dagi qolgan kaloriyaga sig'adigan porsiya kartasi (prototip `porsiya`). */
+  /** E7'dagi qolgan kaloriyaga sig'adigan porsiya kartasi (prototip `porsiya`). */
   porsiyaTavsiyasi: boolean;
   /** P1'dagi "Batafsil ovqatlanish statistikasi" va "Haftalik ovqatlanish hisoboti". */
   ovqatStatistikasi: boolean;
@@ -106,7 +107,7 @@ export function huquqlar(rol: Rol, obuna: ObunaHolati): Huquqlar {
     retseptToliqMatni: pro,
     sevimliRetseptlar: pro,
     nutritionScore: pro,
-    taomTakliflari: pro,
+    retseptTakliflari: pro,
     makroKuzatish: pro,
     porsiyaTavsiyasi: pro,
     ovqatStatistikasi: pro,

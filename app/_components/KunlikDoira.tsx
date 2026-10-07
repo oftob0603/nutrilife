@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTarjima } from "@/app/_components/TilTaminoti";
-import { raqam } from "@/lib/services/taom-hisob";
+import { raqam } from "@/lib/services/raqam";
 import { qolganKaloriya } from "@/lib/services/taklif-hisob";
 
 const OLCHAM = 202; // 224 dan 10% kichik (foydalanuvchi so'rovi)

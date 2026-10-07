@@ -5,7 +5,6 @@ import { sanaOraligi, toshkentSanasi, type Yozuv } from "./yozuv-hisob.ts";
 import { FAOL_HOLATLAR, keyingiHolat } from "./yozuv-holati.ts";
 
 export type YangiYozuv = {
-  taomId: string | null;
   taomNomi: string;
   porsiya: string;
   kaloriya: number;
@@ -24,17 +23,8 @@ const TRANZAKSIYA_VAQTI = { maxWait: 10_000, timeout: 20_000 };
 /** Rasm topilmadi yoki allaqachon boshqa yozuvga tegishli — yozuv yaratilmaydi. */
 export class RasmBoglanmadi extends Error {}
 
-/** `taomId` bazada yo'q (o'chirilgan yoki uydirilgan) — yozuv yaratilmaydi. */
-export class TaomTopilmadi extends Error {}
-
-/** Prisma: tashqi kalit buzildi. Bu yerda yagona tashqi kalit kirishdan keladi — `taomId`. */
-function tashqiKalitXatosi(xato: unknown): boolean {
-  return typeof xato === "object" && xato !== null && (xato as { code?: unknown }).code === "P2003";
-}
-
 const YOZUV_MAYDONLARI = {
   id: true,
-  taomId: true,
   taomNomi: true,
   porsiya: true,
   kaloriya: true,
@@ -44,19 +34,17 @@ const YOZUV_MAYDONLARI = {
   ovqatTuri: true,
   manba: true,
   vaqt: true,
-  taom: { select: { rasm: true } },
   rasmlar: { select: { id: true }, orderBy: { yaratilgan: "asc" }, take: 1 },
 } as const;
 
 type BazaYozuvi = Omit<Yozuv, "vaqt" | "rasm"> & {
   vaqt: Date;
-  taom: { rasm: string | null } | null;
   rasmlar: { id: string }[];
 };
 
-/** Yuklangan rasm bazadagi taom rasmidan ustun: foydalanuvchi o'z ovqatini ko'rsin. */
-function korinishgaOtkaz({ taom, rasmlar, ...yozuv }: BazaYozuvi): Yozuv {
-  const rasm = rasmlar[0] ? `/api/rasmlar/${rasmlar[0].id}` : (taom?.rasm ?? null);
+/** Yozuv rasmi — foydalanuvchi yuklagan rasm; bo'lmasa bo'sh o'rin. */
+function korinishgaOtkaz({ rasmlar, ...yozuv }: BazaYozuvi): Yozuv {
+  const rasm = rasmlar[0] ? `/api/rasmlar/${rasmlar[0].id}` : null;
   return { ...yozuv, rasm, vaqt: yozuv.vaqt.toISOString() };
 }
 
@@ -70,11 +58,10 @@ export async function yozuvYaratish(
   { rasmId, ...kirish }: YangiYozuv,
 ): Promise<Yozuv> {
   const yozuv = await db.$transaction(async (tx) => {
-    const { id, vaqt } = await tx.ovqatYozuvi
-      .create({ data: { ...kirish, foydalanuvchiId }, select: { id: true, vaqt: true } })
-      .catch((xato: unknown) => {
-        throw tashqiKalitXatosi(xato) ? new TaomTopilmadi() : xato;
-      });
+    const { id, vaqt } = await tx.ovqatYozuvi.create({
+      data: { ...kirish, foydalanuvchiId },
+      select: { id: true, vaqt: true },
+    });
     if (rasmId) {
       const { count } = await tx.rasm.updateMany({
         where: { id: rasmId, foydalanuvchiId, ovqatYozuviId: null },
@@ -112,7 +99,7 @@ export async function yozuvniOl(foydalanuvchiId: string, id: string): Promise<Yo
   return yozuv ? korinishgaOtkaz(yozuv) : null;
 }
 
-export type YozuvOzgarishi = Omit<YangiYozuv, "taomId" | "manba" | "rasmId"> & {
+export type YozuvOzgarishi = Omit<YangiYozuv, "manba" | "rasmId"> & {
   /** Berilmasa yozuv vaqti o'zgarmaydi. */
   vaqt?: Date;
 };

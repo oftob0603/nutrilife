@@ -16,7 +16,7 @@ import {
   type NormaOzgarishi,
   type Progress,
 } from "@/lib/services/progress-hisob";
-import { raqam } from "@/lib/services/taom-hisob";
+import { raqam } from "@/lib/services/raqam";
 import { sonOqi } from "@/lib/services/yozuv-forma";
 import { sanaToliq } from "@/lib/services/yozuv-hisob";
 import { VAZN_PANELINI_OCH, vaznPaneliniOch, type VaznPaneliTafsiloti } from "./vazn-hodisa";

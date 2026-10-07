@@ -15,7 +15,7 @@ import {
   vaznMatni,
   type Profil,
 } from "@/lib/services/profil-hisob";
-import { raqam } from "@/lib/services/taom-hisob";
+import { raqam } from "@/lib/services/raqam";
 import { adminniYukla, profilniYukla, skanLimitiniYukla } from "./yukla";
 
 // Sahifa bazaga to'g'ridan-to'g'ri emas, o'z API yo'li orqali murojaat qiladi (STACK.md).

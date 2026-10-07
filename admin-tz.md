@@ -1,5 +1,4 @@
 # ADMIN TZ — boshqaruv paneli
-
 Mahsulot egasi kod yozmasdan boshqarishi uchun kerak bo'lgan ekranlar. Manba:
 PRD 4-bo'lim (rollar jadvali) va [SPRINT-6-admin.md](sprints/SPRINT-6-admin.md).
 
@@ -33,7 +32,6 @@ Chap tomonda doimiy panel:
 |---|---|---|
 | Boshqaruv paneli | A1 | Kunlik holat, navbatda nima turibdi |
 | Foydalanuvchilar | A2 → A3 | Qidirish, obuna berish, bloklash |
-| Taomlar bazasi | A6 → A7 | Kontent kiritish |
 | Retseptlar | A8 → A9 | PRO kontenti |
 | Statistika | A10 | Mahsulot qanday ketyapti |
 | Narxlar | A12 | Tarif o'zgartirish |
@@ -113,21 +111,10 @@ Admin hisobini bloklab yoki o'chirib bo'lmaydi — na o'zini, na boshqa adminni.
 Taom takliflari navbati va taklifni ko'rib chiqish ekranlari 2026-10-07 qarori bilan olib
 tashlandi. Raqamlash qolgan ekranlar uchun o'zgarmaydi.
 
-### A6 — Taomlar bazasi
+### A6 / A7 — olib tashlandi
 
-- Jadval: nomi (uch til ustuni), porsiya grammi, kaloriya, makrolar, rasm bor-yo'qligi,
-  qo'shilgan sana
-- Qidiruv va til bo'yicha filtr: "tarjimasi yo'q" filtri alohida
-- "Yangi taom" tugmasi
-
-### A7 — Taom tahrirlash
-
-- Nomi: o'zbekcha, ruscha, inglizcha — **uchalasi ham majburiy**
-- Standart porsiya (gramm), 100 g uchun kaloriya, oqsil, yog', uglevod
-- Rasm yuklash
-- Kategoriya (birinchi taom, ikkinchi taom, non, salat, shirinlik, ichimlik)
-- Tekshiruv: makrolardan hisoblangan kaloriya kiritilgan kaloriyadan 20% dan ko'p farq
-  qilsa ogohlantirish — `4×oqsil + 9×yog' + 4×uglevod` taxminan to'g'ri kelishi kerak
+Taomlar bazasi va taom muharriri 2026-10-07 qarori bilan olib tashlandi: Home taklifi retseptlardan
+olinadi, admin kontentni faqat A8/A9 orqali kiritadi. Raqamlash qolgan ekranlar uchun o'zgarmaydi.
 
 ### A8 — Retseptlar ro'yxati
 

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { apiSorov } from "@/lib/services/api-klient";
-import type { Kategoriya } from "@/lib/services/taom-admin";
+import type { Kategoriya } from "@/lib/services/kategoriya-admin";
 import { AdminOyna, MAYDON_SINFI, OynaYorligi } from "./AdminOyna";
 import { Belgi } from "./Belgi";
 import { xatoMatni } from "./ShaklMaydonlari";
@@ -94,7 +94,7 @@ export function KategoriyaTanlovi({
       {oyna && (
         <AdminOyna
           sarlavha="Yangi kategoriya"
-          izoh="Kategoriya barcha taom va retsept shakllarida darhol paydo bo'ladi."
+          izoh="Kategoriya retsept shakllarida darhol paydo bo'ladi."
           tasdiqMatni="Qo'shish"
           tasdiqOchiq={nomi.trim().length >= 2}
           yuborilmoqda={yuborilmoqda}

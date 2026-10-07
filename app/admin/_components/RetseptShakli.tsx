@@ -28,7 +28,7 @@ import {
   type TarjimaJavobi,
   type Til,
 } from "@/lib/services/retsept-admin-hisob";
-import type { Kategoriya } from "@/lib/services/taom-admin";
+import type { Kategoriya } from "@/lib/services/kategoriya-admin";
 import { MAYDON_SINFI, OynaChiplar, OynaYorligi } from "./AdminOyna";
 import { AdminSahifa } from "./AdminSahifa";
 import { Belgi } from "./Belgi";
