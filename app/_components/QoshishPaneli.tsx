@@ -124,7 +124,7 @@ function Qator({
 
 /**
  * Pastki paneldagi bitta bo'lim: nishon va ostida yozuv. Faol bo'lim ostida --fon rangli joy.
- * `href` berilmasa bo'lim o'chiq — sahifasi hali qurilmagan (Retseptlar — S6).
+ * `href` berilmasa bo'lim o'chiq — sahifasi hali qurilmagan.
  */
 function Bolim({
   href,
@@ -190,7 +190,7 @@ function Bolim({
  * `faol` berilmasa pastki panel chizilmaydi, faqat E2 varag'i `QoshishTugmasi` bilan ochiladi —
  * E8'dagi "Yana qo'shish" shunday ishlaydi (prototip `openSheet`).
  */
-export function QoshishPaneli({ faol }: { faol?: "asosiy" | "statistika" | "profil" }) {
+export function QoshishPaneli({ faol }: { faol?: "asosiy" | "retseptlar" | "statistika" | "profil" }) {
   const router = useRouter();
   const { t, erkin } = useTarjima();
   const [ochiq, setOchiq] = useState(false);
@@ -302,7 +302,7 @@ export function QoshishPaneli({ faol }: { faol?: "asosiy" | "statistika" | "prof
             <circle cx="12" cy="12" r="2" />
             <path d="M13.4 10.6 19 5" />
           </Bolim>
-          <Bolim nomi={t("Retseptlar")}>
+          <Bolim href="/retseptlar" nomi={t("Retseptlar")} faol={faol === "retseptlar"}>
             <path d="M12 7v14" />
             <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
           </Bolim>

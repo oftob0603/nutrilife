@@ -71,6 +71,8 @@ export type Huquqlar = {
   /** AI taomni taniy olmagan urinishlar — kuniga shuncha; limitdan yeyilmaydi. */
   tanilmaganLimiti: number;
   retseptToliqMatni: boolean;
+  /** R1 dagi yurak tugmasi va "Sevimli" chipi (prototip `sevimli`). */
+  sevimliRetseptlar: boolean;
   nutritionScore: boolean;
   taomTakliflari: boolean;
   /** Home va Jurnaldagi kunlik oqsil/yog'/uglevod chiziqlari (prototip `makro`). */
@@ -102,6 +104,7 @@ export function huquqlar(rol: Rol, obuna: ObunaHolati): Huquqlar {
       : { davr: "umr", soni: FREE_SKAN_LIMITI },
     tanilmaganLimiti: pro ? PRO_TANILMAGAN_LIMITI : FREE_TANILMAGAN_LIMITI,
     retseptToliqMatni: pro,
+    sevimliRetseptlar: pro,
     nutritionScore: pro,
     taomTakliflari: pro,
     makroKuzatish: pro,

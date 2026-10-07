@@ -86,10 +86,24 @@ model Retsept {
   yaratilgan   DateTime  @default(now())
   yangilangan  DateTime  @default(now()) @updatedAt
 
-  kategoriya Kategoriya? @relation(fields: [kategoriyaId], references: [id], onDelete: SetNull)
+  kategoriya Kategoriya?      @relation(fields: [kategoriyaId], references: [id], onDelete: SetNull)
+  sevimlilar SevimliRetsept[]
 
   @@index([holat, chopEtilgan])
   @@map("retseptlar")
+}
+
+/// Sevimli retseptlar (R1 yurak tugmasi, PRO imkoniyati "sevimli"). Juftlik bitta marta.
+model SevimliRetsept {
+  foydalanuvchiId String   @map("foydalanuvchi_id")
+  retseptId       String   @map("retsept_id")
+  yaratilgan      DateTime @default(now())
+
+  foydalanuvchi Foydalanuvchi @relation(fields: [foydalanuvchiId], references: [id], onDelete: Cascade)
+  retsept       Retsept       @relation(fields: [retseptId], references: [id], onDelete: Cascade)
+
+  @@id([foydalanuvchiId, retseptId])
+  @@map("sevimli_retseptlar")
 }
 
 
@@ -167,6 +181,7 @@ model Foydalanuvchi {
   hodisalar       Hodisa[]
   adminAmallari   AdminAmali[] @relation("adminAmallari")
   amallar         AdminAmali[] @relation("foydalanuvchiAmallari")
+  sevimliRetseptlar SevimliRetsept[]
 
   @@map("foydalanuvchilar")
 }

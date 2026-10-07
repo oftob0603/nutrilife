@@ -623,6 +623,9 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-10-07 · Retsept tarjimasi A9 da admin bosadigan tugma orqali AI bilan qilinadi (saqlashda avtomatik emas): o'zbekcha nom, masalliqlar va qadamlar ruscha va inglizchaga o'giriladi, natija faqat shaklga tushadi va admin ko'rib chiqib saqlaydi, bazaga o'zi yozilmaydi. Chop etish talablari o'zgarmaydi. Qatorlar soni manbaga mos kelmagan yoki bir til yetishmagan javob rad etiladi (yarim tarjima ko'rsatilmaydi).**
 *Sabab:* oziq-ovqat nomlari tarjimada adashishi mumkin, admin ko'rmagan matn foydalanuvchiga chiqmasin; tarjima qoralama ustida ishlaydi, chop etish admin qo'lida.
 
+**2026-10-07 · Retseptlar foydalanuvchi tomonida: faqat chop etilganlar ko'rinadi. FREE'ga sarlavha, rasm, kaloriya, vaqt, murakkablik va masalliq/qadam soni beriladi, masalliq va qadam matni FREE javobiga umuman kirmaydi. Sevimlilar `sevimli_retseptlar` jadvalida (foydalanuvchi_id + retsept_id), huquq PRO (`sevimliRetseptlar`). R1 filtri faqat kategoriya chiplari — sprint matnidagi qidiruv va filtr oynasi (vaqt, kaloriya, afzalliklar) prototipda yo'qligi uchun qurilmadi. Kontent foydalanuvchi tilida, tarjimasi bo'sh bo'lsa o'zbekcha. Pastki panel to'liq ko'rinishga o'tdi: Home · Retseptlar · [+] · Progress · Profil (2026-09-21 qarori yopildi).**
+*Sabab:* prototip ustun; PRD 4-bo'lim FREE'ga retsept sarlavhalarini beradi.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

@@ -922,6 +922,42 @@ export const SOZLAR = {
     en: "Each week: average calories, comparison with last week and per-day bars.",
   },
 
+  // ── Retseptlar (R1–R3) ─────────────────────────────────────────────────────
+  "{0} ta retsept": { ru: "Рецептов: {0}", en: "{0} recipes" },
+  "Kategoriyalar": { ru: "Категории", en: "Categories" },
+  "Sevimli": { ru: "Избранное", en: "Favourites" },
+  "Sevimlilarga qo'shish": { ru: "В избранное", en: "Add to favourites" },
+  "Sevimlilardan olib tashlash": { ru: "Убрать из избранного", en: "Remove from favourites" },
+  "Oson": { ru: "Легко", en: "Easy" },
+  "O'rta": { ru: "Средне", en: "Medium" },
+  "Qiyin": { ru: "Сложно", en: "Hard" },
+  "{0} daq": { ru: "{0} мин", en: "{0} min" },
+  "Hozircha retsept yo'q": { ru: "Рецептов пока нет", en: "No recipes yet" },
+  "Yangi retseptlar qo'shilgach shu yerda ko'rinadi.": {
+    ru: "Новые рецепты появятся здесь.",
+    en: "New recipes will appear here.",
+  },
+  "Sevimli retsept yo'q": { ru: "Нет избранных рецептов", en: "No favourite recipes" },
+  "Retsept ustidagi yurakni bossangiz, shu yerda yig'iladi.": {
+    ru: "Нажмите сердечко на рецепте — он появится здесь.",
+    en: "Tap the heart on a recipe to collect it here.",
+  },
+  "«{0}» bo'yicha retsept yo'q": { ru: "В категории «{0}» рецептов нет", en: "No recipes in “{0}”" },
+  "Retseptlarni yuklab bo'lmadi": { ru: "Не удалось загрузить рецепты", en: "Couldn't load recipes" },
+  "Retsept topilmadi": { ru: "Рецепт не найден", en: "Recipe not found" },
+  "Retseptlarga qaytish": { ru: "К рецептам", en: "Back to recipes" },
+  "Bir porsiyada": { ru: "На порцию", en: "Per serving" },
+  "Masalliqlar": { ru: "Ингредиенты", en: "Ingredients" },
+  "Tayyorlash": { ru: "Приготовление", en: "Preparation" },
+  "Bu retsept PRO obunada": { ru: "Этот рецепт — в подписке PRO", en: "This recipe is in PRO" },
+  "To'liq retseptni ko'rish uchun PRO obuna kerak.": {
+    ru: "Чтобы открыть полный рецепт, нужна подписка PRO.",
+    en: "A PRO subscription is needed to view the full recipe.",
+  },
+  "{0} ta masalliq": { ru: "Ингредиентов: {0}", en: "{0} ingredients" },
+  "{0} ta tayyorlash qadami": { ru: "Шагов приготовления: {0}", en: "{0} preparation steps" },
+  "Barcha retseptlar ochiladi": { ru: "Откроются все рецепты", en: "All recipes unlock" },
+
   // ── Telegram bot (/start) — lib/services/bot.ts ────────────────────────────
   "NutriLifer — ovqatlanishingizni aqlli nazorat qiling!": {
     ru: "NutriLifer — умный контроль вашего питания!",
