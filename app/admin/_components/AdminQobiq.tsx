@@ -16,7 +16,7 @@ const BOLIMLAR: readonly { nomi: string; belgi: BelgiNomi; href?: string; soni?:
   { nomi: "Boshqaruv paneli", belgi: "layout-dashboard", href: "/admin" },
   { nomi: "Foydalanuvchilar", belgi: "users", href: "/admin/foydalanuvchilar" },
   { nomi: "Taomlar bazasi", belgi: "utensils", href: "/admin/taomlar" },
-  { nomi: "Retseptlar", belgi: "book-open" },
+  { nomi: "Retseptlar", belgi: "book-open", href: "/admin/retseptlar" },
   { nomi: "Statistika", belgi: "chart-line" },
   { nomi: "So'rovlar", belgi: "message-square-warning" },
   { nomi: "Narxlar", belgi: "tag" },

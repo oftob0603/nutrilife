@@ -49,10 +49,49 @@ model Kategoriya {
   nomi       String   @unique
   yaratilgan DateTime @default(now())
 
-  taomlar Taom[]
+  taomlar    Taom[]
+  retseptlar Retsept[]
 
   @@map("kategoriyalar")
 }
+
+/// Retsept kutubxonasi (PRD 7-bo'lim, admin-tz.md A8/A9). Admin paneldan qo'lda kiritiladi
+/// (DECISIONS 2026-09-13). `qoralama` foydalanuvchiga ko'rinmaydi, faqat `chop_etilgan`.
+/// Sarlavha, rasm, kaloriya va vaqt FREE'ga ochiq; masalliqlar va qadamlar PRO ostida.
+model Retsept {
+  id           String    @id @default(uuid())
+  nomi         String
+  nomiRu       String    @map("nomi_ru")
+  nomiEn       String    @map("nomi_en")
+  kategoriyaId String?   @map("kategoriya_id")
+  /// Bitta porsiya uchun.
+  kaloriya     Float?
+  oqsil        Float?
+  yog          Float?
+  uglevod      Float?
+  /// Porsiya matni, masalan "300 g".
+  porsiya      String    @default("")
+  vaqtDaqiqa   Int?      @map("vaqt_daqiqa")
+  /// "oson" | "orta" | "qiyin"
+  murakkablik  String?
+  /// "qoralama" | "chop_etilgan"
+  holat        String    @default("qoralama")
+  chopEtilgan  DateTime? @map("chop_etilgan")
+  /// `{ uz: string[], ru: string[], en: string[] }` — har qatorda bitta masalliq.
+  masalliqlar  Json      @default("{\"uz\":[],\"ru\":[],\"en\":[]}")
+  /// Shu shaklda; bo'sh bo'lsa ilovada "Tayyorlash" bo'limi chiqmaydi.
+  qadamlar     Json      @default("{\"uz\":[],\"ru\":[],\"en\":[]}")
+  /// Admin yuklagan rasmning ombordagi (R2) kaliti; yo'li `/api/retsept-rasmlari/<id>`.
+  rasmKaliti   String?   @map("rasm_kaliti")
+  yaratilgan   DateTime  @default(now())
+  yangilangan  DateTime  @default(now()) @updatedAt
+
+  kategoriya Kategoriya? @relation(fields: [kategoriyaId], references: [id], onDelete: SetNull)
+
+  @@index([holat, chopEtilgan])
+  @@map("retseptlar")
+}
+
 
 /// Jurnalga tushgan har bir ovqat (PRD.md, 7-bo'lim). Taom nomi va raqamlari yozuv
 /// ichiga ko'chiriladi — baza yozuvi keyin o'zgarsa ham jurnal o'sha kungi holatini

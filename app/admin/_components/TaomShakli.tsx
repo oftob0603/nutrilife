@@ -13,16 +13,17 @@ import {
   MAKRO_FARQ_CHEGARASI,
   makroFarqi,
   makroKaloriyasi,
-  NOM_CHEGARASI,
   PORSIYA_SONI_CHEGARASI,
   porsiyalarMatni,
   porsiyalarniOqi,
   sonMatni,
   type Birlik,
 } from "@/lib/services/taom-admin-hisob";
-import { AdminOyna, MAYDON_SINFI, OynaChiplar, OynaYorligi } from "./AdminOyna";
+import { OynaChiplar } from "./AdminOyna";
 import { AdminSahifa } from "./AdminSahifa";
 import { Belgi } from "./Belgi";
+import { KategoriyaTanlovi } from "./KategoriyaTanlovi";
+import { Karta, Maydon, son, xatoMatni } from "./ShaklMaydonlari";
 
 type Qiymatlar = {
   nomi: string;
@@ -72,73 +73,6 @@ function boshlangich(taom: TaomKartasi | null): Qiymatlar {
   };
 }
 
-/** "12,5" ham o'qiladi; bo'sh yoki son emas — NaN. */
-function son(matn: string): number {
-  const toza = matn.trim().replace(",", ".");
-  return toza === "" ? NaN : Number(toza);
-}
-
-/** Server xatosi matni; o'qilmasa umumiy matn (DESIGN.md 7-bo'lim: texnik matn ko'rsatilmaydi). */
-async function xatoMatni(javob: Response): Promise<string> {
-  try {
-    const tana = (await javob.json()) as { xato?: unknown };
-    if (typeof tana.xato === "string") return tana.xato;
-  } catch {
-    // tana bo'sh yoki JSON emas
-  }
-  return "Saqlab bo'lmadi. Qayta urinib ko'ring";
-}
-
-function Karta({ sarlavha, children }: { sarlavha: string; children: React.ReactNode }) {
-  return (
-    <section className="flex flex-col gap-4 rounded-karta border border-karta-chegara bg-karta p-4">
-      <h2 className="text-karta-sarlavha">{sarlavha}</h2>
-      {children}
-    </section>
-  );
-}
-
-/** Matn/son maydoni (prototip `Input`): yorliq, ixtiyoriy birlik, xato matni ostida. */
-function Maydon({
-  nomi,
-  qiymat,
-  onChange,
-  birlik,
-  raqam = false,
-  majburiy = false,
-  xato,
-}: {
-  nomi: string;
-  qiymat: string;
-  onChange: (qiymat: string) => void;
-  birlik?: string;
-  raqam?: boolean;
-  majburiy?: boolean;
-  xato?: string;
-}) {
-  return (
-    <OynaYorligi nomi={nomi} majburiy={majburiy}>
-      <span className="relative block">
-        <input
-          type="text"
-          inputMode={raqam ? "decimal" : undefined}
-          value={qiymat}
-          maxLength={raqam ? 12 : NOM_CHEGARASI}
-          onChange={(e) => onChange(e.target.value)}
-          aria-invalid={xato ? true : undefined}
-          className={`${MAYDON_SINFI}${raqam ? " tabular-nums" : ""}${birlik ? " pr-12" : ""}${xato ? " border-xato" : ""}`}
-        />
-        {birlik && (
-          <span className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-izoh text-matn-3">
-            {birlik}
-          </span>
-        )}
-      </span>
-      {xato && <span className="text-izoh text-xato">{xato}</span>}
-    </OynaYorligi>
-  );
-}
-
 /**
  * A7 — taom muharriri (admin-tz.md, prototip screens-content.jsx): nomi uch tilda (uchalasi
  * majburiy), S1 modelidagi o'lchov (miqdor + birlik) va shu o'lchov uchun kaloriya/makrolar,
@@ -166,12 +100,6 @@ export function TaomShakli({
   const [rasmXatosi, setRasmXatosi] = useState<string | null>(null);
   const faylMaydoni = useRef<HTMLInputElement>(null);
   useEffect(() => () => void (korinish && URL.revokeObjectURL(korinish)), [korinish]);
-
-  // "Yangi kategoriya" oynasi
-  const [katOyna, setKatOyna] = useState(false);
-  const [katNomi, setKatNomi] = useState("");
-  const [katXato, setKatXato] = useState<string | null>(null);
-  const [katYuborilmoqda, setKatYuborilmoqda] = useState(false);
 
   const set = (kalit: keyof Qiymatlar) => (qiymat: string) => setV((s) => ({ ...s, [kalit]: qiymat }));
 
@@ -235,32 +163,6 @@ export function TaomShakli({
       setXato("Saqlab bo'lmadi. Internetni tekshirib, qayta urinib ko'ring");
     } finally {
       setYuborilmoqda(false);
-    }
-  }
-
-  async function kategoriyaQosh() {
-    const nomi = katNomi.trim();
-    if (!nomi || katYuborilmoqda) return;
-    setKatXato(null);
-    setKatYuborilmoqda(true);
-    try {
-      const javob = await apiSorov("/api/admin/kategoriyalar", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ nomi }),
-      });
-      if (!javob.ok) {
-        setKatXato(await xatoMatni(javob));
-        return;
-      }
-      const { kategoriya } = (await javob.json()) as { kategoriya: Kategoriya };
-      setKategoriyalar((k) => [...k, kategoriya].sort((a, b) => a.nomi.localeCompare(b.nomi, "uz")));
-      setV((s) => ({ ...s, kategoriyaId: kategoriya.id }));
-      setKatOyna(false);
-    } catch {
-      setKatXato("Qo'shib bo'lmadi. Qayta urinib ko'ring");
-    } finally {
-      setKatYuborilmoqda(false);
     }
   }
 
@@ -340,28 +242,12 @@ export function TaomShakli({
 
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
         <Karta sarlavha="Kategoriya">
-          <OynaYorligi nomi="Kategoriya">
-            <select value={v.kategoriyaId} onChange={(e) => set("kategoriyaId")(e.target.value)} className={MAYDON_SINFI}>
-              <option value="">Tanlanmagan</option>
-              {kategoriyalar.map((k) => (
-                <option key={k.id} value={k.id}>
-                  {k.nomi}
-                </option>
-              ))}
-            </select>
-          </OynaYorligi>
-          <button
-            type="button"
-            onClick={() => {
-              setKatNomi("");
-              setKatXato(null);
-              setKatOyna(true);
-            }}
-            className="inline-flex min-h-11 items-center gap-2 self-start text-asosiy font-medium text-siyoh"
-          >
-            <Belgi nomi="plus" olcham={16} />
-            {"Yangi qo'shish"}
-          </button>
+          <KategoriyaTanlovi
+            kategoriyalar={kategoriyalar}
+            qiymat={v.kategoriyaId}
+            onTanla={set("kategoriyaId")}
+            onRoyxat={setKategoriyalar}
+          />
         </Karta>
 
         <Karta sarlavha="Rasm">
@@ -402,32 +288,6 @@ export function TaomShakli({
         </p>
       )}
 
-      {katOyna && (
-        <AdminOyna
-          sarlavha="Yangi kategoriya"
-          izoh="Kategoriya barcha taom va retsept shakllarida darhol paydo bo'ladi."
-          tasdiqMatni="Qo'shish"
-          tasdiqOchiq={katNomi.trim().length >= 2}
-          yuborilmoqda={katYuborilmoqda}
-          onTasdiq={kategoriyaQosh}
-          onYop={() => setKatOyna(false)}
-        >
-          <OynaYorligi nomi="Nomi" majburiy>
-            <input
-              type="text"
-              value={katNomi}
-              maxLength={40}
-              autoFocus
-              onChange={(e) => {
-                setKatNomi(e.target.value);
-                setKatXato(null);
-              }}
-              className={MAYDON_SINFI}
-            />
-          </OynaYorligi>
-          {katXato && <p className="text-izoh text-xato">{katXato}</p>}
-        </AdminOyna>
-      )}
     </AdminSahifa>
   );
 }

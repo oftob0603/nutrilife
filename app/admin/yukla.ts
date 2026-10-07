@@ -7,6 +7,8 @@ import type {
 } from "@/lib/services/admin";
 import type { FoydalanuvchiFiltri } from "@/lib/services/admin-hisob";
 import type { Kategoriya, TaomKartasi, TaomlarSahifasi } from "@/lib/services/taom-admin";
+import type { RetseptKartasi, RetseptlarSahifasi } from "@/lib/services/retsept-admin";
+import type { HolatFiltri } from "@/lib/services/retsept-admin-hisob";
 import type { TaomFiltri } from "@/lib/services/taom-admin-hisob";
 
 export type AdminHolati =
@@ -89,7 +91,37 @@ export async function taomniYukla(
   }
 }
 
-/** A7 kategoriya tanlovi; olib bo'lmasa null. */
+/** A8 ro'yxati; olib bo'lmasa null — sahifa xato holatini ko'rsatadi. */
+export async function retseptlarniYukla(
+  kategoriyaId: string | null,
+  holat: HolatFiltri,
+  sahifa: number,
+): Promise<RetseptlarSahifasi | null> {
+  const params = new URLSearchParams({ holat, sahifa: String(sahifa) });
+  if (kategoriyaId) params.set("kategoriya", kategoriyaId);
+  try {
+    const javob = await serverdanApi(`/api/admin/retseptlar?${params}`);
+    return javob.ok ? ((await javob.json()) as RetseptlarSahifasi) : null;
+  } catch {
+    return null;
+  }
+}
+
+/** A9 kartasi: topilmasa "topilmadi", olib bo'lmasa "xato". */
+export async function retseptniYukla(
+  id: string,
+): Promise<{ karta: RetseptKartasi } | { holat: "topilmadi" | "xato" }> {
+  try {
+    const javob = await serverdanApi(`/api/admin/retseptlar/${encodeURIComponent(id)}`);
+    if (javob.status === 404) return { holat: "topilmadi" };
+    if (!javob.ok) return { holat: "xato" };
+    return (await javob.json()) as { karta: RetseptKartasi };
+  } catch {
+    return { holat: "xato" };
+  }
+}
+
+/** A7/A9 kategoriya tanlovi; olib bo'lmasa null. */
 export async function kategoriyalarniYukla(): Promise<Kategoriya[] | null> {
   try {
     const javob = await serverdanApi("/api/admin/kategoriyalar");
