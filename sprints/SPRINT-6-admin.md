@@ -17,6 +17,7 @@ nazorat qilsin, xatolarni tuzatsin.
 - [x] Foydalanuvchini bloklash va ma'lumotini o'chirish, shikoyatlarni ko'rish (shikoyatlar bo'limi A11 qurilmadi — DECISIONS 2026-10-07, murojaatlar admin Telegram lichkasida)
 - [x] Narxlarni panel orqali o'zgartirish
 - [x] Taomlar bazasini olib tashlash: Home taklifi retseptlardan, `taomlar` jadvali, E5, admin A6/A7 va Wikimedia rasmlari o'chirildi (egasining qarori 2026-10-07, DECISIONS)
+- [x] A9 kategoriya tanlovida kategoriyani o'chirish: xavfli oyna bog'langan retseptlar soni bilan, `DELETE /api/admin/kategoriyalar/[id]`, jurnal `kategoriya_ochirish` (egasining so'rovi 2026-10-07)
 
 ## Qabul mezoni
 
@@ -76,6 +77,9 @@ avtomatik takroriy to'lov.
 - 2026-10-07: o'chirildi (55 fayl): E5 taom sahifasi app/taomlar/[id] va PorsiyaTanlagich, /api/taomlar/[id], /api/taom-rasmlari/[id], admin A6/A7 (app/admin/taomlar/*, app/api/admin/taomlar/*, TaomShakli.tsx), lib/services/taomlar.ts, taom-hisob.ts, taom-admin.ts, taom-admin-hisob.ts, public/taomlar dagi 36 Wikimedia rasmi va MUALLIFLAR.md, lib/taom-rasm-mualliflari.ts va «Rasm mualliflari» sahifasi app/profil/mualliflar (Sozlamalar.tsx dagi havolasi bilan); jurnal yozuvi endi faqat foydalanuvchi yuklagan rasmni ko'rsatadi (lib/services/ovqat-yozuvlari.ts, yozuv-hisob.ts, Tahlil.tsx, YozuvTahriri.tsx da taomId yo'q)
 - 2026-10-07: kategoriyalar kodi lib/services/kategoriya-admin.ts ga, `raqam` yordamchisi lib/services/raqam.ts ga ko'chdi; admin yon panelida 5 bo'lim (AdminQobiq.tsx, yukla.ts, app/api/admin/kategoriyalar/route.ts); admin-tz A6/A7 «olib tashlandi», PRD jadvalidan `taomlar` qatori olib tashlandi, DECISIONS'ga qaror yozildi
 - 2026-10-07: tsc, eslint, production build toza; brauzerda PRO hisobda Home kartasi «Yengil mastava · 300 g · 180 kkal» ni uchta retsept ichidan to'g'ri tanladi va bosilganda retsept sahifasi ochildi; yozuv POST/DELETE API ishladi
+- 2026-10-08: A9 kategoriya tanlovida «O'chirish» tugmasi (tanlanmagan bo'lsa o'chiq) va xavfli oyna: avval GET bilan bog'langan retseptlar soni yuklanadi va oynada ko'rsatiladi, tasdiq shundan keyin ochiladi; o'chirilgach ro'yxatdan chiqadi va tanlov «Tanlanmagan» ga qaytadi (app/admin/_components/KategoriyaTanlovi.tsx, Belgi.tsx ga trash-2 belgisi)
+- 2026-10-08: GET/DELETE /api/admin/kategoriyalar/[id] (admin tekshiruvi, UUID bo'lmagan id 404), servis kategoriyaOqibati va kategoriyaOchirish — bog'langan retseptlar kategoriyasiz qoladi (kategoriya_id SetNull), jurnalga kategoriya_ochirish bitta tranzaksiyada (tafsilot: nom · N retsept), sabab so'ralmaydi; AMAL_NOMLARI ga «Kategoriya o'chirildi» (app/api/admin/kategoriyalar/[id]/route.ts, lib/services/kategoriya-admin.ts, lib/services/admin-hisob.ts)
+- 2026-10-08: tsc, eslint, production build toza; lokal dev'da admin bo'lmagan hisobdan GET/DELETE 403; admin ekrani lokal ko'rilmadi (dev hisob admin emas) — deploy'dan keyin Telegram Desktop'da sinov
 
 ## Handoff
 
@@ -95,6 +99,7 @@ A9 AI tarjimasi (tugma «Ruscha va inglizchaga tarjima qilish», POST /api/admin
 7-task A10 jonli sinovi deploy'dan keyin Telegram Desktop'da: davr tugmalari, beshta grafik va hover, Daromad kartalari (hozir 1 obuna 39 000 so'm), yon paneldagi Statistika bandi.
 8-task jonli sinovi deploy'dan keyin Telegram Desktop'da: oddiy foydalanuvchini bloklash → uning ilovasida «Hisobingiz bloklangan» ekrani va «Adminga yozish» tugmasi (ADMIN_TELEGRAM sozlangan bo'lsa), ish o'rtasida bloklansa «Ilovani qayta oching» pardasi; blokni yechish → qayta kiradi; sinov hisobni o'chirish → ism yozib tasdiqlash, bot xabari kelishi, ro'yxatga qaytish, A1 jurnalida «Hisob o'chirildi · ism · Telegram ID»; admin kartasida Bloklash va O'chirish o'chiq. Lokal: tsc, eslint, build, node sinovi va API 403 o'tdi.
 9-task jonli sinovi deploy'dan keyin Telegram Desktop'da: /admin/narxlar da bitta narxni o'zgartirib saqlash → tasdiq oynasida eski → yangi, A1 jurnalida «Narxlar o'zgartirildi · Oylik 39 000 → … so'm»; W1 paywall'da yangi narx; A10 daromadida eski obunalar summasi o'zgarmasligi; o'zgarishsiz saqlash tugmasi o'chiq. Narx tarixi admin_amallari jurnalida (narx_ozgartirish, eski/yangi JSON). Lokal: tsc, eslint, build, node sinovi, /api/tariflar bazadan, admin API 403 o'tdi.
+11-task jonli sinovi deploy'dan keyin Telegram Desktop'da: A9 da kategoriya tanlab «O'chirish» → oynada bog'langan retseptlar soni, tasdiqdan keyin tanlov «Tanlanmagan», A8 filtrida kategoriya yo'q, A1 jurnalida «Kategoriya o'chirildi · nom · N retsept»; bog'langan chop etilgan retsept ilovada «Hammasi» chipida qoladi.
 
 ---
 

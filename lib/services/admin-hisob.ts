@@ -71,6 +71,7 @@ export const AMAL_NOMLARI: Record<string, string> = {
   retsept_qoshish: "Retsept qo'shildi",
   retsept_tahrir: "Retsept tahrirlandi",
   retsept_chop_etish: "Retsept chop etildi",
+  kategoriya_ochirish: "Kategoriya o'chirildi",
 };
 
 export function amalNomi(tur: string): string {

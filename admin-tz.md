@@ -127,7 +127,9 @@ olinadi, admin kontentni faqat A8/A9 orqali kiritadi. Raqamlash qolgan ekranlar 
 
 ### A9 — Retsept tahrirlash
 
-- Nomi uch tilda, rasm, kategoriya
+- Nomi uch tilda, rasm, kategoriya. Kategoriya tanlovida "Yangi qo'shish" va tanlangan kategoriyani
+  "O'chirish" (xavfli oyna bog'langan retseptlar sonini ko'rsatadi; retseptlar kategoriyasiz qoladi,
+  jurnalga `kategoriya_ochirish`; egasining so'rovi 2026-10-07)
 - Kaloriya, oqsil, tayyorlash vaqti (daqiqa), murakkablik (oson / o'rta / qiyin)
 - Masalliqlar ro'yxati va tayyorlash qadamlari — uch tilda
 - **Sarlavha va tayyorlash vaqti FREE'ga ko'rinadi, qolgani PRO ostida** — tahrirlash
