@@ -658,12 +658,6 @@ export const SOZLAR = {
   "Tugaydi": { ru: "Истекает", en: "Expires" },
   "Manba": { ru: "Источник", en: "Source" },
   "Administrator tomonidan berilgan": { ru: "Выдана администратором", en: "Granted by an admin" },
-  "To'lovlar tarixi": { ru: "История платежей", en: "Payment history" },
-  "Hozircha to'lov yo'q": { ru: "Платежей пока нет", en: "No payments yet" },
-  "Administrator tomonidan berilgan obuna — to'lov yozuvi yo'q.": {
-    ru: "Подписка выдана администратором — записей об оплате нет.",
-    en: "This subscription was granted by an administrator — there are no payment records.",
-  },
   "Obunani yuklab bo'lmadi": { ru: "Не удалось загрузить подписку", en: "Could not load the subscription" },
 
   // ── Tariflar (W1) va onboarding oxiri (O13) ────────────────────────────────

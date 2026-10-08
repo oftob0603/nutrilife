@@ -650,6 +650,9 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-10-08 · 7 kunlik bot xabarlari PRO olmagan foydalanuvchilarga (`lib/services/marketing-xabar-hisob.ts`, yuborish `fon-vazifalari.ts` daqiqalik aylanishida). Boshlanish nuqtasi hisob yaratilgan vaqt (bot yoki ilova). 1-kun startdan 1 soat keyin, 22:00–09:00 oralig'iga tushsa ertasi 10:00 va keyingi kunlar ham shu ankor kundan sanaladi; 2–7-kunlar Toshkent vaqti 11:30 · 19:00 · 20:00 · 12:00 · 19:30 · 19:00. Belgilangan vaqtdan 6 soat o'tsa o'sha kun o'tkaziladi; hisobi 9 kundan eski foydalanuvchi nomzod emas (mavjud hisoblar zanjir olmaydi). Segment har xabar oldidan: A — skan yoki yozuv 3+, B — 1–2, C — 0; matn uch tilda foydalanuvchi tilida, rasm har kunga bitta (`public/bot/7kun/<til>-<kun>.jpg`, Wikimedia emas, egasi bergan), `sendPhoto` bilan. To'xtash: faol PRO (zanjir butunlay yopiladi), bloklangan, admin, Telegram «Forbidden»; holat `marketing_bosqichi` (0–7). Xabarda bitta tugma — to'xtatish tugmasi qo'yilmadi (egasining qarori), `marketing_toxtatildi` ustuni ilovadagi kelajak sozlama uchun zaxira. Matnlar lug'atda emas, modulning o'zida uch tilda — 21 xabar lug'atni shishirmasin. Ko'rib chiqish: `scripts/marketing-xabar-sinov.mjs`.**
 *Sabab:* egasining 2026-10-08 topshirig'i — onboarding + odat + konversiya voronkasi.
 
+**2026-10-08 · F4 obuna ekranida «To'lovlar tarixi» bo'limi ko'rsatilmaydi: bo'lim va faqat unga tegishli uch tildagi lug'at yozuvlari olib tashlandi. To'lov API'lari (Click/Payme/Stars) keyinga qoldirilgan; bo'lim kerak bo'lsa, ular bilan birga qaytadi.**
+*Sabab:* egasining qarori — to'lov bo'lmaguncha tarix ko'rsatadigan narsa yo'q.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |

@@ -39,7 +39,7 @@ function Qator({ nomi, qiymat }: { nomi: string; qiymat: string }) {
 /**
  * F4 — obuna ekrani: joriy holat, tarif va muddat. Bu yerga faqat faol PRO'dan kiriladi
  * (F1'dagi "Obunani boshqarish"); FREE va muddati tugagan hisob profilga qaytariladi.
- * To'lovlar tarixi va "Obunani bekor qilish" S5'da to'lov va eslatmalar bilan keladi.
+ * To'lovlar tarixi bo'limi egasining qaroriga ko'ra olib tashlangan (2026-10-08).
  */
 export default async function ObunaSahifasi() {
   const { t } = await serverTarjimoni();
@@ -68,24 +68,13 @@ export default async function ObunaSahifasi() {
           </TugmaHavola>
         </div>
       ) : (
-        <div className="flex flex-col gap-6">
-          <dl className="overflow-hidden rounded-karta border border-karta-chegara bg-karta">
-            <Qator nomi={t("Holat")} qiymat={t("Faol")} />
-            {tarif && <Qator nomi={t("Tarif")} qiymat={t(tarif)} />}
-            <Qator nomi={t("Boshlangan")} qiymat={nuqtaliSana(muddat.boshlanish)} />
-            <Qator nomi={t("Tugaydi")} qiymat={tugashSanasi(muddat.tugash)} />
-            {!tarif && <Qator nomi={t("Manba")} qiymat={t("Administrator tomonidan berilgan")} />}
-          </dl>
-
-          <section className="flex flex-col gap-2">
-            <h2 className="text-karta-sarlavha">{t("To'lovlar tarixi")}</h2>
-            <p className="rounded-karta border border-karta-chegara bg-karta p-4 text-izoh text-matn-2">
-              {tarif
-                ? t("Hozircha to'lov yo'q")
-                : t("Administrator tomonidan berilgan obuna — to'lov yozuvi yo'q.")}
-            </p>
-          </section>
-        </div>
+        <dl className="overflow-hidden rounded-karta border border-karta-chegara bg-karta">
+          <Qator nomi={t("Holat")} qiymat={t("Faol")} />
+          {tarif && <Qator nomi={t("Tarif")} qiymat={t(tarif)} />}
+          <Qator nomi={t("Boshlangan")} qiymat={nuqtaliSana(muddat.boshlanish)} />
+          <Qator nomi={t("Tugaydi")} qiymat={tugashSanasi(muddat.tugash)} />
+          {!tarif && <Qator nomi={t("Manba")} qiymat={t("Administrator tomonidan berilgan")} />}
+        </dl>
       )}
     </main>
   );
