@@ -76,7 +76,6 @@ model SevimliRetsept {
   @@map("sevimli_retseptlar")
 }
 
-
 /// Jurnalga tushgan har bir ovqat (PRD.md, 7-bo'lim). Taom nomi va raqamlari yozuvning
 /// o'zida turadi — tashqi taom bazasi yo'q (DECISIONS 2026-10-07).
 /// Jadvalga faqat tasdiqlangan yozuv tushadi — tasdiqlanmagan AI natijasi saqlanmaydi.
@@ -108,46 +107,51 @@ model OvqatYozuvi {
 /// Hisob egasi va butun ilovaga tegishli sozlamalar (PRD.md, 7-bo'lim;
 /// onboarding-tz.md, 4-bo'lim). Hisob Telegram initData bilan birinchi kirishda yaratiladi.
 model Foydalanuvchi {
-  id            String    @id @default(uuid())
-  telegramId    BigInt?   @unique @map("telegram_id")
+  id                  String    @id @default(uuid())
+  telegramId          BigInt?   @unique @map("telegram_id")
   /// Telegram profil rasmi (initData `photo_url`); har kirishda yangilanadi. Rasm yashirilgan
   /// yoki yo'q bo'lsa bo'sh — ekranda ismning bosh harfi turadi.
-  avatarUrl     String?   @map("avatar_url")
-  til           String    @default("uz")
+  avatarUrl           String?   @map("avatar_url")
+  til                 String    @default("uz")
   /// "yorug", "qorongi" yoki "tizim".
-  mavzu         String    @default("tizim")
+  mavzu               String    @default("tizim")
   /// "kg" yoki "lb". Faqat ko'rsatish — bazada vazn doim kilogrammda.
-  vaznBirligi   String    @default("kg") @map("vazn_birligi")
+  vaznBirligi         String    @default("kg") @map("vazn_birligi")
   /// "sm" yoki "ft". Faqat ko'rsatish — bazada bo'y doim santimetrda.
-  boyBirligi    String    @default("sm") @map("boy_birligi")
+  boyBirligi          String    @default("sm") @map("boy_birligi")
   /// Telegram username (initData `username`), @siz; har kirishda yangilanadi. Admin paneli
   /// qidiruvi uchun (admin-tz.md A2) — foydalanuvchi uni yashirgan bo'lsa bo'sh.
-  username      String?
+  username            String?
   /// "foydalanuvchi" yoki "admin". FREE/PRO bu yerda emas — `obunalar` dan hisoblanadi
   /// (lib/services/huquqlar.ts).
-  rol           String    @default("foydalanuvchi")
+  rol                 String    @default("foydalanuvchi")
   /// Admin bloklagan sana va vaqt; bo'sh — bloklanmagan. Sessiya tekshiruvi (lib/services/sessiya.ts)
   /// shu ustunga qaraydi — to'ldirilgan hisob kira olmaydi; A2 "Bloklangan" filtri ham shu.
-  bloklangan    DateTime?
+  bloklangan          DateTime?
   /// Onboardingda "Boshlash" bosilgan sana va vaqt — Ommaviy oferta shu bilan qabul qilinadi.
-  shartlarQabul DateTime? @map("shartlar_qabul")
+  shartlarQabul       DateTime? @map("shartlar_qabul")
   /// Qabul qilingan hujjat versiyasi (lib/shartlar.ts).
-  shartlarVersiyasi String?   @map("shartlar_versiyasi")
+  shartlarVersiyasi   String?   @map("shartlar_versiyasi")
   /// Onboardingda yosh qabul qilingan sana va vaqt — 18+ tasdig'i shu.
-  tasdiq18plus  DateTime? @map("tasdiq_18plus")
-  yaratilgan    DateTime  @default(now())
+  tasdiq18plus        DateTime? @map("tasdiq_18plus")
+  /// 7 kunlik bot xabarlari (lib/services/marketing-xabar-hisob.ts): yuborilgan oxirgi kun, 0 — hali yo'q,
+  /// 7 — zanjir tugagan yoki to'xtatilgan (PRO olindi, bloklandi, bot bloklangan).
+  marketingBosqichi   Int       @default(0) @map("marketing_bosqichi")
+  /// Marketing xabarlari to'xtatilgan vaqt — hozircha ilovada sozlama yo'q, zaxira (egasining qarori: xabarda bitta tugma).
+  marketingToxtatildi DateTime? @map("marketing_toxtatildi")
+  yaratilgan          DateTime  @default(now())
 
-  profil          Profil?
-  vaznYozuvlari   VaznYozuvi[]
-  rejalar         Reja[]
-  ovqatYozuvlari  OvqatYozuvi[]
-  rasmlar         Rasm[]
-  kunlikXulosalar KunlikXulosa[]
-  skanHisoblari   SkanHisobi[]
-  obunalar        Obuna[]
-  hodisalar       Hodisa[]
-  adminAmallari   AdminAmali[] @relation("adminAmallari")
-  amallar         AdminAmali[] @relation("foydalanuvchiAmallari")
+  profil            Profil?
+  vaznYozuvlari     VaznYozuvi[]
+  rejalar           Reja[]
+  ovqatYozuvlari    OvqatYozuvi[]
+  rasmlar           Rasm[]
+  kunlikXulosalar   KunlikXulosa[]
+  skanHisoblari     SkanHisobi[]
+  obunalar          Obuna[]
+  hodisalar         Hodisa[]
+  adminAmallari     AdminAmali[]     @relation("adminAmallari")
+  amallar           AdminAmali[]     @relation("foydalanuvchiAmallari")
   sevimliRetseptlar SevimliRetsept[]
 
   @@map("foydalanuvchilar")
@@ -157,8 +161,8 @@ model Foydalanuvchi {
 /// ustunlar bo'sh bo'lishi mumkin; `onboardingQadami` qayerda to'xtaganini saqlaydi.
 /// Vazn bu yerda emas, `vazn_yozuvlari` da turadi.
 model Profil {
-  id                String   @id @default(uuid())
-  foydalanuvchiId   String   @unique @map("foydalanuvchi_id")
+  id                String    @id @default(uuid())
+  foydalanuvchiId   String    @unique @map("foydalanuvchi_id")
   ism               String?
   jins              String?
   yosh              Int?
@@ -166,15 +170,15 @@ model Profil {
   boyi              Int?
   maqsad            String?
   faollik           String?
-  ovqatAfzalliklari String[] @map("ovqat_afzalliklari")
+  ovqatAfzalliklari String[]  @map("ovqat_afzalliklari")
   /// Kuniga necha mahal va asosan qayerda ovqatlanishi.
-  ovqatlanishOdati  Json?    @map("ovqatlanish_odati")
+  ovqatlanishOdati  Json?     @map("ovqatlanish_odati")
   motivatsiya       String?
-  onboardingQadami  Int      @default(0) @map("onboarding_qadami")
+  onboardingQadami  Int       @default(0) @map("onboarding_qadami")
   /// Onboarding yakunlangan vaqt; bo'sh — hali tugamagan, Home ochilmaydi. Qadam raqamiga
   /// bog'lanmagan: oqimga keyin ekran qo'shilsa ham tugatganlar qayta o'tmaydi.
   onboardingTugadi  DateTime? @map("onboarding_tugadi")
-  yangilangan       DateTime @updatedAt
+  yangilangan       DateTime  @updatedAt
 
   foydalanuvchi Foydalanuvchi @relation(fields: [foydalanuvchiId], references: [id], onDelete: Cascade)
 

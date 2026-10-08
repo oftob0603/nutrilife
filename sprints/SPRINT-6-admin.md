@@ -19,6 +19,7 @@ nazorat qilsin, xatolarni tuzatsin.
 - [x] Taomlar bazasini olib tashlash: Home taklifi retseptlardan, `taomlar` jadvali, E5, admin A6/A7 va Wikimedia rasmlari o'chirildi (egasining qarori 2026-10-07, DECISIONS)
 - [x] A9 kategoriya tanlovida kategoriyani o'chirish: xavfli oyna bog'langan retseptlar soni bilan, `DELETE /api/admin/kategoriyalar/[id]`, jurnal `kategoriya_ochirish` (egasining so'rovi 2026-10-07)
 - [x] Bot /start: til savoli faqat birinchi marta, hisobi bor foydalanuvchiga darhol salom xabari va "Boshlash" tugmasi (egasining so'rovi 2026-10-08)
+- [x] 7 kunlik bot xabarlari PRO olmagan foydalanuvchilarga: A/B/C segment, uch tilda matn va rasm, jadval va to'xtash shartlari, migratsiya s6_marketing_xabarlari, sinov skripti (egasining topshirig'i 2026-10-08)
 
 ## Qabul mezoni
 
@@ -82,6 +83,11 @@ avtomatik takroriy to'lov.
 - 2026-10-08: GET/DELETE /api/admin/kategoriyalar/[id] (admin tekshiruvi, UUID bo'lmagan id 404), servis kategoriyaOqibati va kategoriyaOchirish — bog'langan retseptlar kategoriyasiz qoladi (kategoriya_id SetNull), jurnalga kategoriya_ochirish bitta tranzaksiyada (tafsilot: nom · N retsept), sabab so'ralmaydi; AMAL_NOMLARI ga «Kategoriya o'chirildi» (app/api/admin/kategoriyalar/[id]/route.ts, lib/services/kategoriya-admin.ts, lib/services/admin-hisob.ts)
 - 2026-10-08: tsc, eslint, production build toza; lokal dev'da admin bo'lmagan hisobdan GET/DELETE 403; admin ekrani lokal ko'rilmadi (dev hisob admin emas) — deploy'dan keyin Telegram Desktop'da sinov
 - 2026-10-08: bot /start: Telegram ID bo'yicha hisob bor bo'lsa (`telegramTili` null emas) til savoli o'rniga darhol saqlangan tilda `salomXabari` va "Boshlash" tugmasi yuboriladi; hisobi yo'q foydalanuvchiga avvalgidek uch tilli savol; tsc va eslint toza, jonli sinov deploy'dan keyin Telegram'da (lib/services/bot.ts)
+- 2026-10-08: 7 kunlik bot xabarlari — sof hisob moduli: 7 kun × 3 segment (A — skan yoki yozuv 3+, B — 1–2, C — 0, har xabar oldidan qayta hisoblanadi) × 3 til, matnlar egasidan, ruscha va inglizcha tarjimalar modulda; jadval 1-kun startdan 1 soat keyin (22:00–09:00 bo'lsa ertasi 10:00, keyingi kunlar shu ankordan), 2–7-kun 11:30 · 19:00 · 20:00 · 12:00 · 19:30 · 19:00 Toshkent, 6 soatlik kechikish oynasi; node sinovi 15 holatda o'tdi, eng uzun izoh 461 belgi (lib/services/marketing-xabar-hisob.ts)
+- 2026-10-08: yuborish fon vazifasining daqiqalik aylanishida `marketingXabarlariniYubor`: nomzod — Telegram ID bor, bosqich < 7, bloklanmagan, admin emas, hisobi 9 kundan yangi; faol PRO bo'lsa zanjir yopiladi (bosqich 7), Telegram «Forbidden» ham; rasm `sendPhoto` (yangi `rasmYubor`) bilan, bitta tugma Mini App'ni kerakli sahifada ochadi (lib/services/fon-vazifalari.ts, lib/services/bot-api.ts)
+- 2026-10-08: migratsiya s6_marketing_xabarlari — foydalanuvchilar.marketing_bosqichi va marketing_toxtatildi (ikkinchisi zaxira, egasining qarori bilan to'xtatish tugmasi qo'yilmadi), Railway'ga migrate deploy bilan tushdi (prisma/migrations/20261008120000_s6_marketing_xabarlari, prisma/schema.prisma)
+- 2026-10-08: 21 ta rasm (uz/ru/en × 7 kun) 1280 px JPEG'ga siqildi, jami 3.7 MB, public/bot/7kun; asl PNG papka .gitignore'da; ko'rib chiqish skripti scripts/marketing-xabar-sinov.mjs (bitta kun/segment yoki 21 tasi ketma-ket)
+- 2026-10-08: tsc, eslint, production build toza; jonli xabar deploy'dan keyin (rasmlar production manzilidan olinadi)
 
 ## Handoff
 
@@ -103,6 +109,7 @@ A9 AI tarjimasi (tugma «Ruscha va inglizchaga tarjima qilish», POST /api/admin
 9-task jonli sinovi deploy'dan keyin Telegram Desktop'da: /admin/narxlar da bitta narxni o'zgartirib saqlash → tasdiq oynasida eski → yangi, A1 jurnalida «Narxlar o'zgartirildi · Oylik 39 000 → … so'm»; W1 paywall'da yangi narx; A10 daromadida eski obunalar summasi o'zgarmasligi; o'zgarishsiz saqlash tugmasi o'chiq. Narx tarixi admin_amallari jurnalida (narx_ozgartirish, eski/yangi JSON). Lokal: tsc, eslint, build, node sinovi, /api/tariflar bazadan, admin API 403 o'tdi.
 11-task jonli sinovi deploy'dan keyin Telegram Desktop'da: A9 da kategoriya tanlab «O'chirish» → oynada bog'langan retseptlar soni, tasdiqdan keyin tanlov «Tanlanmagan», A8 filtrida kategoriya yo'q, A1 jurnalida «Kategoriya o'chirildi · nom · N retsept»; bog'langan chop etilgan retsept ilovada «Hammasi» chipida qoladi.
 Bot /start jonli sinovi deploy'dan keyin: hisobi bor foydalanuvchi /start bosganda til savoli chiqmasligi, darhol salom xabari va «Boshlash» kelishi; yangi (hisobsiz) foydalanuvchida til savoli chiqishi.
+7 kunlik xabarlar jonli sinovi deploy'dan keyin: `node --env-file=.env scripts/marketing-xabar-sinov.mjs <telegram_id> hammasi uz` bilan 21 xabarni ko'rib chiqish (rasm, matn, tugma sahifasi); 9 kundan yangi sinov hisoblariga navbatdagi kun xabari o'zi kelishi mumkin, admin hisobga kelmaydi. Ilovada bildirishnoma sozlamasi yo'q — to'xtatish faqat kelajak.
 
 ---
 

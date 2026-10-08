@@ -47,3 +47,6 @@ lib/generated/
 
 # dizayn arxivi — ochilgani prototip/ papkasida
 *.zip
+
+# 7 kunlik bot xabarlari uchun asl PNG rasmlar (42 MB) — siqilgani public/bot/7kun da
+7kunlik rasmlar uz,eng,ru/

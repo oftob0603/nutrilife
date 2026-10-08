@@ -8,9 +8,16 @@
 
 import { db } from "../db.ts";
 import { tarjimon, tilniOqi } from "../lugat/tarjima.ts";
-import { BotApiXatosi, BotTokenYoq, xabarYubor } from "./bot-api.ts";
+import { BotApiXatosi, BotTokenYoq, rasmYubor, xabarYubor } from "./bot-api.ts";
 import { ilovaManzili } from "./bot.ts";
 import { ombordanOchir } from "./ombor.ts";
+import {
+  navbatdagiKun,
+  NOMZOD_OYNASI_MS,
+  OXIRGI_KUN,
+  segmentniAniqla,
+  xabarniTayyorla,
+} from "./marketing-xabar-hisob.ts";
 import {
   bosqichMatni,
   navbatdagiBosqich,
@@ -97,6 +104,70 @@ export async function obunaXabarlariniYubor(hozir = new Date()): Promise<number>
   return yuborildi;
 }
 
+/**
+ * 7 kunlik bot xabarlari PRO olmagan foydalanuvchilarga (marketing-xabar-hisob.ts, DECISIONS 2026-10-08).
+ * Nomzod: Telegram ID bor, zanjir tugamagan, to'xtatmagan, bloklanmagan, admin emas, hisobi 9 kundan
+ * yangi. Har xabar oldidan: faol PRO bo'lsa zanjir butunlay yopiladi (bosqich = 7); segment skan va
+ * yozuvlar soniga qarab qayta hisoblanadi. Telegram "Forbidden" (botni bloklagan) — zanjir yopiladi.
+ */
+export async function marketingXabarlariniYubor(hozir = new Date()): Promise<number> {
+  const nomzodlar = await db.foydalanuvchi.findMany({
+    where: {
+      telegramId: { not: null },
+      marketingBosqichi: { lt: OXIRGI_KUN },
+      marketingToxtatildi: null,
+      bloklangan: null,
+      rol: { not: "admin" },
+      yaratilgan: { gte: new Date(hozir.getTime() - NOMZOD_OYNASI_MS) },
+    },
+    select: { id: true, telegramId: true, til: true, yaratilgan: true, marketingBosqichi: true },
+  });
+
+  const manzil = ilovaManzili();
+  if (!manzil) return 0;
+  let yuborildi = 0;
+
+  for (const f of nomzodlar) {
+    const kun = navbatdagiKun(f.yaratilgan, hozir, f.marketingBosqichi);
+    if (!kun) continue;
+
+    const [obuna, skan, yozuvlar] = await Promise.all([
+      db.obuna.findFirst({ where: { foydalanuvchiId: f.id, tugash: { gt: hozir } }, select: { id: true } }),
+      db.skanHisobi.aggregate({ where: { foydalanuvchiId: f.id }, _sum: { soni: true } }),
+      db.ovqatYozuvi.count({ where: { foydalanuvchiId: f.id } }),
+    ]);
+    if (obuna) {
+      await db.foydalanuvchi.update({ where: { id: f.id }, data: { marketingBosqichi: OXIRGI_KUN } });
+      continue;
+    }
+
+    const til = tilniOqi(f.til);
+    const xabar = xabarniTayyorla(kun, segmentniAniqla(skan._sum.soni ?? 0, yozuvlar), til);
+    if (!xabar) continue;
+    const tugmalar = {
+      inline_keyboard: [[{ text: xabar.tugma, web_app: { url: `${manzil}${xabar.sahifa}` } }]],
+    };
+
+    let bosqich = kun;
+    try {
+      await rasmYubor(Number(f.telegramId), `${manzil}${xabar.rasm}`, xabar.izoh, {
+        parse_mode: "HTML",
+        reply_markup: tugmalar,
+      });
+      yuborildi += 1;
+    } catch (xato) {
+      if (xato instanceof BotTokenYoq) throw xato;
+      if (!doimiyXatomi(xato)) {
+        console.error("Fon: marketing xabari yuborilmadi, keyingi daqiqada qayta urinadi");
+        continue;
+      }
+      bosqich = OXIRGI_KUN;
+    }
+    await db.foydalanuvchi.update({ where: { id: f.id }, data: { marketingBosqichi: bosqich } });
+  }
+  return yuborildi;
+}
+
 /** Hech bir yozuvga bog'lanmagan eski rasmlarni ombordan va bazadan o'chiradi. */
 export async function yetimRasmlarniTozala(hozir = new Date()): Promise<number> {
   const yetimlar = await db.rasm.findMany({
@@ -133,6 +204,12 @@ export async function fonVazifalariniIshlat(): Promise<void> {
         if (yuborildi > 0) natija.push(`obuna xabarlari: ${yuborildi}`);
       } catch (xato) {
         console.error("Fon: obuna xabarlari to'xtadi", xato instanceof Error ? xato.message : "");
+      }
+      try {
+        const marketing = await marketingXabarlariniYubor();
+        if (marketing > 0) natija.push(`marketing xabarlari: ${marketing}`);
+      } catch (xato) {
+        console.error("Fon: marketing xabarlari to'xtadi", xato instanceof Error ? xato.message : "");
       }
       if (Date.now() - oxirgiTozalash >= SOAT_MS) {
         oxirgiTozalash = Date.now();

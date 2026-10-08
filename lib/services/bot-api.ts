@@ -70,3 +70,13 @@ export function xabarniTahrirla(
 export function tugmaniTasdiqla(tugmaId: string): Promise<unknown> {
   return botSorov("answerCallbackQuery", { callback_query_id: tugmaId });
 }
+
+/** Chatga rasm va izoh (caption, 1024 belgigacha). `rasm` — ochiq URL; `qoshimcha` — reply_markup, parse_mode. */
+export function rasmYubor(
+  chatId: number,
+  rasm: string,
+  izoh: string,
+  qoshimcha: Record<string, unknown> = {},
+): Promise<unknown> {
+  return botSorov("sendPhoto", { chat_id: chatId, photo: rasm, caption: izoh, ...qoshimcha });
+}

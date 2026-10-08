@@ -647,6 +647,9 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-10-08 · Bot /start: til faqat birinchi marta so'raladi. Telegram ID bo'yicha hisob bor bo'lsa (`telegramTili` null emas) /start darhol saqlangan tilda salom xabari va "Boshlash" tugmasini yuboradi; til savoli faqat hisobi yo'q foydalanuvchiga. Tilni keyin o'zgartirish ilovadagi Profil orqali (bot menyu tugmasi shu yerdan yangilanadi).**
 *Sabab:* egasining so'rovi — har /start da til savoli chiqishi ortiqcha; til allaqachon bazada.
 
+**2026-10-08 · 7 kunlik bot xabarlari PRO olmagan foydalanuvchilarga (`lib/services/marketing-xabar-hisob.ts`, yuborish `fon-vazifalari.ts` daqiqalik aylanishida). Boshlanish nuqtasi hisob yaratilgan vaqt (bot yoki ilova). 1-kun startdan 1 soat keyin, 22:00–09:00 oralig'iga tushsa ertasi 10:00 va keyingi kunlar ham shu ankor kundan sanaladi; 2–7-kunlar Toshkent vaqti 11:30 · 19:00 · 20:00 · 12:00 · 19:30 · 19:00. Belgilangan vaqtdan 6 soat o'tsa o'sha kun o'tkaziladi; hisobi 9 kundan eski foydalanuvchi nomzod emas (mavjud hisoblar zanjir olmaydi). Segment har xabar oldidan: A — skan yoki yozuv 3+, B — 1–2, C — 0; matn uch tilda foydalanuvchi tilida, rasm har kunga bitta (`public/bot/7kun/<til>-<kun>.jpg`, Wikimedia emas, egasi bergan), `sendPhoto` bilan. To'xtash: faol PRO (zanjir butunlay yopiladi), bloklangan, admin, Telegram «Forbidden»; holat `marketing_bosqichi` (0–7). Xabarda bitta tugma — to'xtatish tugmasi qo'yilmadi (egasining qarori), `marketing_toxtatildi` ustuni ilovadagi kelajak sozlama uchun zaxira. Matnlar lug'atda emas, modulning o'zida uch tilda — 21 xabar lug'atni shishirmasin. Ko'rib chiqish: `scripts/marketing-xabar-sinov.mjs`.**
+*Sabab:* egasining 2026-10-08 topshirig'i — onboarding + odat + konversiya voronkasi.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |
