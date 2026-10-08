@@ -107,39 +107,52 @@ model OvqatYozuvi {
 /// Hisob egasi va butun ilovaga tegishli sozlamalar (PRD.md, 7-bo'lim;
 /// onboarding-tz.md, 4-bo'lim). Hisob Telegram initData bilan birinchi kirishda yaratiladi.
 model Foydalanuvchi {
-  id                  String    @id @default(uuid())
-  telegramId          BigInt?   @unique @map("telegram_id")
+  id                    String    @id @default(uuid())
+  telegramId            BigInt?   @unique @map("telegram_id")
   /// Telegram profil rasmi (initData `photo_url`); har kirishda yangilanadi. Rasm yashirilgan
   /// yoki yo'q bo'lsa bo'sh — ekranda ismning bosh harfi turadi.
-  avatarUrl           String?   @map("avatar_url")
-  til                 String    @default("uz")
+  avatarUrl             String?   @map("avatar_url")
+  til                   String    @default("uz")
   /// "yorug", "qorongi" yoki "tizim".
-  mavzu               String    @default("tizim")
+  mavzu                 String    @default("tizim")
   /// "kg" yoki "lb". Faqat ko'rsatish — bazada vazn doim kilogrammda.
-  vaznBirligi         String    @default("kg") @map("vazn_birligi")
+  vaznBirligi           String    @default("kg") @map("vazn_birligi")
   /// "sm" yoki "ft". Faqat ko'rsatish — bazada bo'y doim santimetrda.
-  boyBirligi          String    @default("sm") @map("boy_birligi")
+  boyBirligi            String    @default("sm") @map("boy_birligi")
   /// Telegram username (initData `username`), @siz; har kirishda yangilanadi. Admin paneli
   /// qidiruvi uchun (admin-tz.md A2) — foydalanuvchi uni yashirgan bo'lsa bo'sh.
-  username            String?
+  username              String?
   /// "foydalanuvchi" yoki "admin". FREE/PRO bu yerda emas — `obunalar` dan hisoblanadi
   /// (lib/services/huquqlar.ts).
-  rol                 String    @default("foydalanuvchi")
+  rol                   String    @default("foydalanuvchi")
   /// Admin bloklagan sana va vaqt; bo'sh — bloklanmagan. Sessiya tekshiruvi (lib/services/sessiya.ts)
   /// shu ustunga qaraydi — to'ldirilgan hisob kira olmaydi; A2 "Bloklangan" filtri ham shu.
-  bloklangan          DateTime?
+  bloklangan            DateTime?
   /// Onboardingda "Boshlash" bosilgan sana va vaqt — Ommaviy oferta shu bilan qabul qilinadi.
-  shartlarQabul       DateTime? @map("shartlar_qabul")
+  shartlarQabul         DateTime? @map("shartlar_qabul")
   /// Qabul qilingan hujjat versiyasi (lib/shartlar.ts).
-  shartlarVersiyasi   String?   @map("shartlar_versiyasi")
+  shartlarVersiyasi     String?   @map("shartlar_versiyasi")
   /// Onboardingda yosh qabul qilingan sana va vaqt — 18+ tasdig'i shu.
-  tasdiq18plus        DateTime? @map("tasdiq_18plus")
+  tasdiq18plus          DateTime? @map("tasdiq_18plus")
   /// 7 kunlik bot xabarlari (lib/services/marketing-xabar-hisob.ts): yuborilgan oxirgi kun, 0 — hali yo'q,
   /// 7 — zanjir tugagan yoki to'xtatilgan (PRO olindi, bloklandi, bot bloklangan).
-  marketingBosqichi   Int       @default(0) @map("marketing_bosqichi")
+  marketingBosqichi     Int       @default(0) @map("marketing_bosqichi")
   /// Marketing xabarlari to'xtatilgan vaqt — hozircha ilovada sozlama yo'q, zaxira (egasining qarori: xabarda bitta tugma).
-  marketingToxtatildi DateTime? @map("marketing_toxtatildi")
-  yaratilgan          DateTime  @default(now())
+  marketingToxtatildi   DateTime? @map("marketing_toxtatildi")
+  /// PRO xabarlari zanjiri (lib/services/pro-xabar-hisob.ts): uzluksiz PRO davri boshlangan lahza —
+  /// ankor; bo'sh — zanjir yo'q (PRO yo'q yoki tugagan). Uzaytirish ankorni o'zgartirmaydi.
+  proXabarBoshi         DateTime? @map("pro_xabar_boshi")
+  /// Zanjir turi: "oylik", "yarim_yillik", "yillik" — PRO davrini boshlagan obuna tarifi
+  /// (tarifsiz "qolda" muddatda — muddat uzunligiga qarab).
+  proZanjir             String?   @map("pro_zanjir")
+  /// Yuborilgan oxirgi zanjir kuni (0 — PRO faollashtirildi xabari); bo'sh — hali yo'q.
+  proXabarKuni          Int?      @map("pro_xabar_kuni")
+  /// Reaktivatsiya bosqichi: 0 — faol, 1–3 — 7/10/14 kun faolsizlik xabarlari yuborilgan.
+  reaktivatsiyaBosqichi Int       @default(0) @map("reaktivatsiya_bosqichi")
+  /// Oxirgi muhim amal: skan, ovqat yozuvi, retsept, progress yoki statistika ochish
+  /// (lib/services/faollik.ts, soatiga bir marta yangilanadi).
+  oxirgiFaollik         DateTime? @map("oxirgi_faollik")
+  yaratilgan            DateTime  @default(now())
 
   profil            Profil?
   vaznYozuvlari     VaznYozuvi[]

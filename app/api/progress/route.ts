@@ -1,3 +1,5 @@
+import { after } from "next/server";
+import { faollikniBelgila } from "@/lib/services/faollik";
 import { progressniOl } from "@/lib/services/progress";
 import { joriyFoydalanuvchiId, kirishKerak } from "@/lib/services/sessiya";
 
@@ -5,5 +7,6 @@ import { joriyFoydalanuvchiId, kirishKerak } from "@/lib/services/sessiya";
 export async function GET(sorov: Request) {
   const foydalanuvchiId = await joriyFoydalanuvchiId(sorov);
   const progress = foydalanuvchiId ? await progressniOl(foydalanuvchiId) : null;
+  if (foydalanuvchiId && progress) after(() => faollikniBelgila(foydalanuvchiId));
   return progress ? Response.json({ progress }) : kirishKerak();
 }

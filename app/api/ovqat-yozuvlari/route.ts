@@ -1,3 +1,5 @@
+import { after } from "next/server";
+import { faollikniBelgila } from "@/lib/services/faollik";
 import { kunlikYozuvlar, RasmBoglanmadi, yozuvYaratish } from "@/lib/services/ovqat-yozuvlari";
 import { foydalanuvchiHuquqlari } from "@/lib/services/foydalanuvchilar";
 import { kunRejasi } from "@/lib/services/rejalar";
@@ -82,6 +84,7 @@ export async function POST(sorov: Request) {
       manba: tana.manba === "ai" ? "ai" : "qolda",
       rasmId,
     });
+    after(() => faollikniBelgila(foydalanuvchiId));
     return Response.json({ yozuv }, { status: 201 });
   } catch (xato) {
     if (xato instanceof RasmBoglanmadi) {

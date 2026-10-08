@@ -1,3 +1,5 @@
+import { after } from "next/server";
+import { faollikniBelgila } from "@/lib/services/faollik";
 import { ovqatStatistikasiniOl } from "@/lib/services/statistika";
 import { joriyFoydalanuvchiId, kirishKerak } from "@/lib/services/sessiya";
 
@@ -8,5 +10,6 @@ import { joriyFoydalanuvchiId, kirishKerak } from "@/lib/services/sessiya";
 export async function GET(sorov: Request) {
   const foydalanuvchiId = await joriyFoydalanuvchiId(sorov);
   const statistika = foydalanuvchiId ? await ovqatStatistikasiniOl(foydalanuvchiId) : null;
+  if (foydalanuvchiId && statistika) after(() => faollikniBelgila(foydalanuvchiId));
   return statistika ? Response.json({ statistika }) : kirishKerak();
 }

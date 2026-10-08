@@ -1,4 +1,6 @@
+import { after } from "next/server";
 import { sorovTili } from "@/lib/lugat/server";
+import { faollikniBelgila } from "@/lib/services/faollik";
 import { foydalanuvchiHuquqlari } from "@/lib/services/foydalanuvchilar";
 import { retseptDetali } from "@/lib/services/retseptlar";
 import { joriyFoydalanuvchiId, kirishKerak } from "@/lib/services/sessiya";
@@ -18,5 +20,6 @@ export async function GET(sorov: Request, { params }: { params: Promise<{ id: st
   const { id } = await params;
   const javob = ID_QOLIPI.test(id) ? await retseptDetali(id, foydalanuvchiId, sorovTili(sorov), huquq) : null;
   if (!javob) return Response.json({ xato: "Retsept topilmadi" }, { status: 404 });
+  after(() => faollikniBelgila(foydalanuvchiId));
   return Response.json(javob);
 }

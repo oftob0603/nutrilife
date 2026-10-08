@@ -23,6 +23,16 @@ import {
   navbatdagiBosqich,
   NOMZOD_OYNASI_KUN,
 } from "./obuna-xabar-hisob.ts";
+import {
+  kunXabari,
+  navbatdagiKun as navbatdagiProKuni,
+  navbatdagiReaktivatsiya,
+  proDavri,
+  reaktivatsiyaXabari,
+  segmentniAniqla as proSegmenti,
+  zanjirniOqi,
+  type TayyorXabar,
+} from "./pro-xabar-hisob.ts";
 
 const KUN_MS = 24 * 60 * 60 * 1000;
 /** Shundan eski, yozuvga bog'lanmagan rasm — tashlab ketilgan tahlil (DECISIONS 2026-09-20). */
@@ -168,6 +178,103 @@ export async function marketingXabarlariniYubor(hozir = new Date()): Promise<num
   return yuborildi;
 }
 
+/**
+ * PRO xabarlari zanjiri (pro-xabar-hisob.ts, DECISIONS 2026-10-08): PRO olgan foydalanuvchiga
+ * tarifga qarab onboarding va foydalanishga undovchi xabarlar, 7 kun faolsizlikda reaktivatsiya.
+ * Nomzod: faol obunasi bor, Telegram ID bor, bloklanmagan, admin emas. Zanjir ankori uzluksiz PRO
+ * davrining boshi — birinchi aylanishda yoziladi (0-kun xabari ankordan 6 soat ichida ketadi,
+ * ya'ni PRO berilgan zahoti); PRO tugagan foydalanuvchida zanjir tozalanadi — keyingi PRO yangi
+ * zanjir boshlaydi. Tugash xabarlari kunida jim. Telegram "Forbidden" — zanjir yopiladi (kun 9999).
+ */
+export async function proXabarlariniYubor(hozir = new Date()): Promise<number> {
+  // PRO tugagan yoki olib qo'yilganlarda zanjir holati tozalanadi.
+  await db.foydalanuvchi.updateMany({
+    where: { proXabarBoshi: { not: null }, obunalar: { none: { boshlanish: { lte: hozir }, tugash: { gt: hozir } } } },
+    data: { proXabarBoshi: null, proZanjir: null, proXabarKuni: null, reaktivatsiyaBosqichi: 0 },
+  });
+
+  const nomzodlar = await db.foydalanuvchi.findMany({
+    where: {
+      telegramId: { not: null },
+      bloklangan: null,
+      rol: { not: "admin" },
+      obunalar: { some: { boshlanish: { lte: hozir }, tugash: { gt: hozir } } },
+    },
+    select: {
+      id: true,
+      telegramId: true,
+      til: true,
+      proXabarBoshi: true,
+      proZanjir: true,
+      proXabarKuni: true,
+      reaktivatsiyaBosqichi: true,
+      oxirgiFaollik: true,
+      obunalar: { select: { tarif: true, boshlanish: true, tugash: true } },
+    },
+  });
+
+  const manzil = ilovaManzili();
+  if (!manzil) return 0;
+  let yuborildi = 0;
+
+  for (const f of nomzodlar) {
+    const davr = proDavri(f.obunalar, hozir);
+    if (!davr) continue;
+
+    let ankor = f.proXabarBoshi;
+    let zanjir = zanjirniOqi(f.proZanjir);
+    if (!ankor || !zanjir) {
+      ankor = davr.boshlanish;
+      zanjir = davr.zanjir;
+      await db.foydalanuvchi.update({
+        where: { id: f.id },
+        data: { proXabarBoshi: ankor, proZanjir: zanjir, proXabarKuni: null, reaktivatsiyaBosqichi: 0 },
+      });
+    }
+
+    const segment = proSegmenti(f.oxirgiFaollik, ankor, davr.tugash, hozir);
+    if (segment === "tugash_kuni") continue;
+
+    const til = tilniOqi(f.til);
+    let xabar: TayyorXabar | null = null;
+    let yangilanish: { proXabarKuni?: number; reaktivatsiyaBosqichi?: number } = {};
+
+    if (segment === "faol") {
+      // Qaytgan foydalanuvchi — reaktivatsiya qayta boshdan sanaladi.
+      if (f.reaktivatsiyaBosqichi > 0) {
+        await db.foydalanuvchi.update({ where: { id: f.id }, data: { reaktivatsiyaBosqichi: 0 } });
+      }
+      const kun = navbatdagiProKuni(zanjir, ankor, hozir, f.proXabarKuni);
+      if (kun === null) continue;
+      xabar = kunXabari(zanjir, kun, til);
+      yangilanish = { proXabarKuni: kun };
+    } else {
+      const bosqich = navbatdagiReaktivatsiya(f.oxirgiFaollik, ankor, hozir, f.reaktivatsiyaBosqichi);
+      if (bosqich === null) continue;
+      xabar = reaktivatsiyaXabari(zanjir, bosqich, til);
+      yangilanish = { reaktivatsiyaBosqichi: bosqich };
+    }
+    if (!xabar) continue;
+
+    try {
+      await xabarYubor(Number(f.telegramId), xabar.matn, {
+        parse_mode: "HTML",
+        reply_markup: { inline_keyboard: [[{ text: xabar.tugma, web_app: { url: `${manzil}${xabar.sahifa}` } }]] },
+      });
+      yuborildi += 1;
+    } catch (xato) {
+      if (xato instanceof BotTokenYoq) throw xato;
+      if (!doimiyXatomi(xato)) {
+        console.error("Fon: PRO xabari yuborilmadi, keyingi daqiqada qayta urinadi");
+        continue;
+      }
+      yangilanish = { proXabarKuni: 9999, reaktivatsiyaBosqichi: 3 };
+    }
+    await db.foydalanuvchi.update({ where: { id: f.id }, data: yangilanish });
+  }
+  return yuborildi;
+}
+
 /** Hech bir yozuvga bog'lanmagan eski rasmlarni ombordan va bazadan o'chiradi. */
 export async function yetimRasmlarniTozala(hozir = new Date()): Promise<number> {
   const yetimlar = await db.rasm.findMany({
@@ -210,6 +317,12 @@ export async function fonVazifalariniIshlat(): Promise<void> {
         if (marketing > 0) natija.push(`marketing xabarlari: ${marketing}`);
       } catch (xato) {
         console.error("Fon: marketing xabarlari to'xtadi", xato instanceof Error ? xato.message : "");
+      }
+      try {
+        const pro = await proXabarlariniYubor();
+        if (pro > 0) natija.push(`PRO xabarlari: ${pro}`);
+      } catch (xato) {
+        console.error("Fon: PRO xabarlari to'xtadi", xato instanceof Error ? xato.message : "");
       }
       if (Date.now() - oxirgiTozalash >= SOAT_MS) {
         oxirgiTozalash = Date.now();

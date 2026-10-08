@@ -653,6 +653,9 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-10-08 · F4 obuna ekranida «To'lovlar tarixi» bo'limi ko'rsatilmaydi: bo'lim va faqat unga tegishli uch tildagi lug'at yozuvlari olib tashlandi. To'lov API'lari (Click/Payme/Stars) keyinga qoldirilgan; bo'lim kerak bo'lsa, ular bilan birga qaytadi.**
 *Sabab:* egasining qarori — to'lov bo'lmaguncha tarix ko'rsatadigan narsa yo'q.
 
+**2026-10-08 · PRO xabarlari zanjiri (`lib/services/pro-xabar-hisob.ts`, `faollik.ts`, yuborish `fon-vazifalari.ts`). PRO olgan foydalanuvchiga tarif bo'yicha (oylik, yarim yillik, yillik) onboarding va foydalanishga undovchi xabarlar yuboriladi, faollik bo'yicha reaktivatsiya (7/10/14 kun). Birinchi xabar PRO berilgan zahoti, qolganlari Toshkent vaqti bo'yicha (Telegram mahalliy vaqtni bermaydi). Mavjud obuna tugashi xabarlari (7/3/1 kun, tugagan kun, +2) saqlanadi va o'sha kunlarda zanjir jim turadi; «qoldi» xabarlari zanjirga kirmaydi. Xabarlar rasmsiz, faqat matn va tugma. Muhim amal — skan, ovqat yozuvi, retsept, progress, statistika.**
+*Sabab:* egasining qarori 2026-10-08.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |
