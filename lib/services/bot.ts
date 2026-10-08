@@ -170,7 +170,15 @@ async function xabarniQaytaIshla(xabar: BotXabar): Promise<void> {
   if (xabar.chat.type !== "private" || xabar.from?.is_bot) return;
 
   if (xabar.text === "/start" || xabar.text?.startsWith("/start ")) {
-    await xabarYubor(xabar.chat.id, TIL_SAVOLI, { reply_markup: TIL_TUGMALARI });
+    // Til faqat birinchi /start da so'raladi (egasining qarori 2026-10-08): hisobi bor foydalanuvchi
+    // keyingi /start larda to'g'ridan-to'g'ri salom xabari va "Boshlash" tugmasini oladi.
+    const saqlangan = xabar.from ? await telegramTili(BigInt(xabar.from.id)) : null;
+    if (saqlangan === null) {
+      await xabarYubor(xabar.chat.id, TIL_SAVOLI, { reply_markup: TIL_TUGMALARI });
+      return;
+    }
+    const { matn, tugmalar } = salomXabari(tilniOqi(saqlangan));
+    await xabarYubor(xabar.chat.id, matn, { parse_mode: "HTML", reply_markup: tugmalar });
     return;
   }
 

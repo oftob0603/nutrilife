@@ -18,6 +18,7 @@ nazorat qilsin, xatolarni tuzatsin.
 - [x] Narxlarni panel orqali o'zgartirish
 - [x] Taomlar bazasini olib tashlash: Home taklifi retseptlardan, `taomlar` jadvali, E5, admin A6/A7 va Wikimedia rasmlari o'chirildi (egasining qarori 2026-10-07, DECISIONS)
 - [x] A9 kategoriya tanlovida kategoriyani o'chirish: xavfli oyna bog'langan retseptlar soni bilan, `DELETE /api/admin/kategoriyalar/[id]`, jurnal `kategoriya_ochirish` (egasining so'rovi 2026-10-07)
+- [x] Bot /start: til savoli faqat birinchi marta, hisobi bor foydalanuvchiga darhol salom xabari va "Boshlash" tugmasi (egasining so'rovi 2026-10-08)
 
 ## Qabul mezoni
 
@@ -80,6 +81,7 @@ avtomatik takroriy to'lov.
 - 2026-10-08: A9 kategoriya tanlovida «O'chirish» tugmasi (tanlanmagan bo'lsa o'chiq) va xavfli oyna: avval GET bilan bog'langan retseptlar soni yuklanadi va oynada ko'rsatiladi, tasdiq shundan keyin ochiladi; o'chirilgach ro'yxatdan chiqadi va tanlov «Tanlanmagan» ga qaytadi (app/admin/_components/KategoriyaTanlovi.tsx, Belgi.tsx ga trash-2 belgisi)
 - 2026-10-08: GET/DELETE /api/admin/kategoriyalar/[id] (admin tekshiruvi, UUID bo'lmagan id 404), servis kategoriyaOqibati va kategoriyaOchirish — bog'langan retseptlar kategoriyasiz qoladi (kategoriya_id SetNull), jurnalga kategoriya_ochirish bitta tranzaksiyada (tafsilot: nom · N retsept), sabab so'ralmaydi; AMAL_NOMLARI ga «Kategoriya o'chirildi» (app/api/admin/kategoriyalar/[id]/route.ts, lib/services/kategoriya-admin.ts, lib/services/admin-hisob.ts)
 - 2026-10-08: tsc, eslint, production build toza; lokal dev'da admin bo'lmagan hisobdan GET/DELETE 403; admin ekrani lokal ko'rilmadi (dev hisob admin emas) — deploy'dan keyin Telegram Desktop'da sinov
+- 2026-10-08: bot /start: Telegram ID bo'yicha hisob bor bo'lsa (`telegramTili` null emas) til savoli o'rniga darhol saqlangan tilda `salomXabari` va "Boshlash" tugmasi yuboriladi; hisobi yo'q foydalanuvchiga avvalgidek uch tilli savol; tsc va eslint toza, jonli sinov deploy'dan keyin Telegram'da (lib/services/bot.ts)
 
 ## Handoff
 
@@ -100,6 +102,7 @@ A9 AI tarjimasi (tugma «Ruscha va inglizchaga tarjima qilish», POST /api/admin
 8-task jonli sinovi deploy'dan keyin Telegram Desktop'da: oddiy foydalanuvchini bloklash → uning ilovasida «Hisobingiz bloklangan» ekrani va «Adminga yozish» tugmasi (ADMIN_TELEGRAM sozlangan bo'lsa), ish o'rtasida bloklansa «Ilovani qayta oching» pardasi; blokni yechish → qayta kiradi; sinov hisobni o'chirish → ism yozib tasdiqlash, bot xabari kelishi, ro'yxatga qaytish, A1 jurnalida «Hisob o'chirildi · ism · Telegram ID»; admin kartasida Bloklash va O'chirish o'chiq. Lokal: tsc, eslint, build, node sinovi va API 403 o'tdi.
 9-task jonli sinovi deploy'dan keyin Telegram Desktop'da: /admin/narxlar da bitta narxni o'zgartirib saqlash → tasdiq oynasida eski → yangi, A1 jurnalida «Narxlar o'zgartirildi · Oylik 39 000 → … so'm»; W1 paywall'da yangi narx; A10 daromadida eski obunalar summasi o'zgarmasligi; o'zgarishsiz saqlash tugmasi o'chiq. Narx tarixi admin_amallari jurnalida (narx_ozgartirish, eski/yangi JSON). Lokal: tsc, eslint, build, node sinovi, /api/tariflar bazadan, admin API 403 o'tdi.
 11-task jonli sinovi deploy'dan keyin Telegram Desktop'da: A9 da kategoriya tanlab «O'chirish» → oynada bog'langan retseptlar soni, tasdiqdan keyin tanlov «Tanlanmagan», A8 filtrida kategoriya yo'q, A1 jurnalida «Kategoriya o'chirildi · nom · N retsept»; bog'langan chop etilgan retsept ilovada «Hammasi» chipida qoladi.
+Bot /start jonli sinovi deploy'dan keyin: hisobi bor foydalanuvchi /start bosganda til savoli chiqmasligi, darhol salom xabari va «Boshlash» kelishi; yangi (hisobsiz) foydalanuvchida til savoli chiqishi.
 
 ---
 

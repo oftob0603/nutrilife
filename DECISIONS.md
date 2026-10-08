@@ -644,6 +644,9 @@ Ochiq qoldi: ilova ichidagi kamera suratni video kadrdan oladi (odatda 1280×720
 **2026-10-07 · A9 kategoriya tanlovida tanlangan kategoriyani o'chirish qo'shildi (prototipda yo'q, egasining so'rovi): `DELETE /api/admin/kategoriyalar/[id]`, oldin `GET` bog'langan retseptlar sonini beradi va xavfli oyna uni ko'rsatadi. Bog'langan retseptlar kategoriyasiz qoladi (`kategoriya_id` SetNull), chop etilganlar ilovada ko'rinaveradi va faqat «Hammasi» chipida chiqadi, keyingi saqlashda admin kategoriya tanlashi shart (chop etish to'liqlik qoidasi o'zgarmaydi). Jurnalga `kategoriya_ochirish` (nom va retseptlar soni), sabab so'ralmaydi. Nomini tahrirlash yo'q.**
 *Sabab:* kategoriya qo'shish bor edi, xato qo'shilganini olib tashlash yo'li yo'q edi; retseptlarni o'chirib yubormaslik uchun bog'lanish uziladi, retsept qoladi.
 
+**2026-10-08 · Bot /start: til faqat birinchi marta so'raladi. Telegram ID bo'yicha hisob bor bo'lsa (`telegramTili` null emas) /start darhol saqlangan tilda salom xabari va "Boshlash" tugmasini yuboradi; til savoli faqat hisobi yo'q foydalanuvchiga. Tilni keyin o'zgartirish ilovadagi Profil orqali (bot menyu tugmasi shu yerdan yangilanadi).**
+*Sabab:* egasining so'rovi — har /start da til savoli chiqishi ortiqcha; til allaqachon bazada.
+
 ## OCHIQ SAVOLLAR
 
 | # | Savol | Qachon hal qilamiz |
