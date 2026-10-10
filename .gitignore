@@ -50,3 +50,6 @@ lib/generated/
 
 # 7 kunlik bot xabarlari uchun asl PNG rasmlar (42 MB) — siqilgani public/bot/7kun da
 7kunlik rasmlar uz,eng,ru/
+
+# Claude Code shaxsiy sozlamalari
+.claude/settings.local.json
